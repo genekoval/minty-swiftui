@@ -1,0 +1,720 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BE465506270CFA8E00D3C4FB /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465505270CFA8E00D3C4FB /* Tests_iOS.swift */; };
+		BE465508270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465507270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift */; };
+		BE465512270CFA8E00D3C4FB /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465511270CFA8E00D3C4FB /* Tests_macOS.swift */; };
+		BE465514270CFA8E00D3C4FB /* Tests_macOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465513270CFA8E00D3C4FB /* Tests_macOSLaunchTests.swift */; };
+		BE465515270CFA8E00D3C4FB /* MintyUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4654ED270CFA8B00D3C4FB /* MintyUIApp.swift */; };
+		BE465516270CFA8E00D3C4FB /* MintyUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4654ED270CFA8B00D3C4FB /* MintyUIApp.swift */; };
+		BE465517270CFA8E00D3C4FB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4654EE270CFA8B00D3C4FB /* ContentView.swift */; };
+		BE465518270CFA8E00D3C4FB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4654EE270CFA8B00D3C4FB /* ContentView.swift */; };
+		BE465519270CFA8E00D3C4FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */; };
+		BE46551A270CFA8E00D3C4FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BE465502270CFA8E00D3C4FB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE4654E8270CFA8B00D3C4FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE4654F3270CFA8E00D3C4FB;
+			remoteInfo = "MintyUI (iOS)";
+		};
+		BE46550E270CFA8E00D3C4FB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE4654E8270CFA8B00D3C4FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE4654F9270CFA8E00D3C4FB;
+			remoteInfo = "MintyUI (macOS)";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BE4654ED270CFA8B00D3C4FB /* MintyUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MintyUIApp.swift; sourceTree = "<group>"; };
+		BE4654EE270CFA8B00D3C4FB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BE4654F4270CFA8E00D3C4FB /* MintyUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MintyUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE4654FA270CFA8E00D3C4FB /* MintyUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MintyUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE4654FC270CFA8E00D3C4FB /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		BE465501270CFA8E00D3C4FB /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE465505270CFA8E00D3C4FB /* Tests_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOS.swift; sourceTree = "<group>"; };
+		BE465507270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOSLaunchTests.swift; sourceTree = "<group>"; };
+		BE46550D270CFA8E00D3C4FB /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE465511270CFA8E00D3C4FB /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
+		BE465513270CFA8E00D3C4FB /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BE4654F1270CFA8E00D3C4FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE4654F7270CFA8E00D3C4FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE4654FE270CFA8E00D3C4FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE46550A270CFA8E00D3C4FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BE4654E7270CFA8B00D3C4FB = {
+			isa = PBXGroup;
+			children = (
+				BE4654EC270CFA8B00D3C4FB /* Shared */,
+				BE4654FB270CFA8E00D3C4FB /* macOS */,
+				BE465504270CFA8E00D3C4FB /* Tests iOS */,
+				BE465510270CFA8E00D3C4FB /* Tests macOS */,
+				BE4654F5270CFA8E00D3C4FB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BE4654EC270CFA8B00D3C4FB /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				BE4654ED270CFA8B00D3C4FB /* MintyUIApp.swift */,
+				BE4654EE270CFA8B00D3C4FB /* ContentView.swift */,
+				BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		BE4654F5270CFA8E00D3C4FB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BE4654F4270CFA8E00D3C4FB /* MintyUI.app */,
+				BE4654FA270CFA8E00D3C4FB /* MintyUI.app */,
+				BE465501270CFA8E00D3C4FB /* Tests iOS.xctest */,
+				BE46550D270CFA8E00D3C4FB /* Tests macOS.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BE4654FB270CFA8E00D3C4FB /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				BE4654FC270CFA8E00D3C4FB /* macOS.entitlements */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		BE465504270CFA8E00D3C4FB /* Tests iOS */ = {
+			isa = PBXGroup;
+			children = (
+				BE465505270CFA8E00D3C4FB /* Tests_iOS.swift */,
+				BE465507270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift */,
+			);
+			path = "Tests iOS";
+			sourceTree = "<group>";
+		};
+		BE465510270CFA8E00D3C4FB /* Tests macOS */ = {
+			isa = PBXGroup;
+			children = (
+				BE465511270CFA8E00D3C4FB /* Tests_macOS.swift */,
+				BE465513270CFA8E00D3C4FB /* Tests_macOSLaunchTests.swift */,
+			);
+			path = "Tests macOS";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BE4654F3270CFA8E00D3C4FB /* MintyUI (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE46551D270CFA8E00D3C4FB /* Build configuration list for PBXNativeTarget "MintyUI (iOS)" */;
+			buildPhases = (
+				BE4654F0270CFA8E00D3C4FB /* Sources */,
+				BE4654F1270CFA8E00D3C4FB /* Frameworks */,
+				BE4654F2270CFA8E00D3C4FB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MintyUI (iOS)";
+			productName = "MintyUI (iOS)";
+			productReference = BE4654F4270CFA8E00D3C4FB /* MintyUI.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BE4654F9270CFA8E00D3C4FB /* MintyUI (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE465520270CFA8E00D3C4FB /* Build configuration list for PBXNativeTarget "MintyUI (macOS)" */;
+			buildPhases = (
+				BE4654F6270CFA8E00D3C4FB /* Sources */,
+				BE4654F7270CFA8E00D3C4FB /* Frameworks */,
+				BE4654F8270CFA8E00D3C4FB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MintyUI (macOS)";
+			productName = "MintyUI (macOS)";
+			productReference = BE4654FA270CFA8E00D3C4FB /* MintyUI.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BE465500270CFA8E00D3C4FB /* Tests iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE465523270CFA8E00D3C4FB /* Build configuration list for PBXNativeTarget "Tests iOS" */;
+			buildPhases = (
+				BE4654FD270CFA8E00D3C4FB /* Sources */,
+				BE4654FE270CFA8E00D3C4FB /* Frameworks */,
+				BE4654FF270CFA8E00D3C4FB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BE465503270CFA8E00D3C4FB /* PBXTargetDependency */,
+			);
+			name = "Tests iOS";
+			productName = "Tests iOS";
+			productReference = BE465501270CFA8E00D3C4FB /* Tests iOS.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		BE46550C270CFA8E00D3C4FB /* Tests macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE465526270CFA8E00D3C4FB /* Build configuration list for PBXNativeTarget "Tests macOS" */;
+			buildPhases = (
+				BE465509270CFA8E00D3C4FB /* Sources */,
+				BE46550A270CFA8E00D3C4FB /* Frameworks */,
+				BE46550B270CFA8E00D3C4FB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BE46550F270CFA8E00D3C4FB /* PBXTargetDependency */,
+			);
+			name = "Tests macOS";
+			productName = "Tests macOS";
+			productReference = BE46550D270CFA8E00D3C4FB /* Tests macOS.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BE4654E8270CFA8B00D3C4FB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1300;
+				LastUpgradeCheck = 1300;
+				TargetAttributes = {
+					BE4654F3270CFA8E00D3C4FB = {
+						CreatedOnToolsVersion = 13.0;
+					};
+					BE4654F9270CFA8E00D3C4FB = {
+						CreatedOnToolsVersion = 13.0;
+					};
+					BE465500270CFA8E00D3C4FB = {
+						CreatedOnToolsVersion = 13.0;
+						TestTargetID = BE4654F3270CFA8E00D3C4FB;
+					};
+					BE46550C270CFA8E00D3C4FB = {
+						CreatedOnToolsVersion = 13.0;
+						TestTargetID = BE4654F9270CFA8E00D3C4FB;
+					};
+				};
+			};
+			buildConfigurationList = BE4654EB270CFA8B00D3C4FB /* Build configuration list for PBXProject "MintyUI" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BE4654E7270CFA8B00D3C4FB;
+			productRefGroup = BE4654F5270CFA8E00D3C4FB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BE4654F3270CFA8E00D3C4FB /* MintyUI (iOS) */,
+				BE4654F9270CFA8E00D3C4FB /* MintyUI (macOS) */,
+				BE465500270CFA8E00D3C4FB /* Tests iOS */,
+				BE46550C270CFA8E00D3C4FB /* Tests macOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BE4654F2270CFA8E00D3C4FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE465519270CFA8E00D3C4FB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE4654F8270CFA8E00D3C4FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE46551A270CFA8E00D3C4FB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE4654FF270CFA8E00D3C4FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE46550B270CFA8E00D3C4FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BE4654F0270CFA8E00D3C4FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE465517270CFA8E00D3C4FB /* ContentView.swift in Sources */,
+				BE465515270CFA8E00D3C4FB /* MintyUIApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE4654F6270CFA8E00D3C4FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE465518270CFA8E00D3C4FB /* ContentView.swift in Sources */,
+				BE465516270CFA8E00D3C4FB /* MintyUIApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE4654FD270CFA8E00D3C4FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE465508270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift in Sources */,
+				BE465506270CFA8E00D3C4FB /* Tests_iOS.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE465509270CFA8E00D3C4FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE465514270CFA8E00D3C4FB /* Tests_macOSLaunchTests.swift in Sources */,
+				BE465512270CFA8E00D3C4FB /* Tests_macOS.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BE465503270CFA8E00D3C4FB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE4654F3270CFA8E00D3C4FB /* MintyUI (iOS) */;
+			targetProxy = BE465502270CFA8E00D3C4FB /* PBXContainerItemProxy */;
+		};
+		BE46550F270CFA8E00D3C4FB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE4654F9270CFA8E00D3C4FB /* MintyUI (macOS) */;
+			targetProxy = BE46550E270CFA8E00D3C4FB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		BE46551B270CFA8E00D3C4FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BE46551C270CFA8E00D3C4FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		BE46551E270CFA8E00D3C4FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = aur.aurora.MintyUI;
+				PRODUCT_NAME = MintyUI;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BE46551F270CFA8E00D3C4FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = aur.aurora.MintyUI;
+				PRODUCT_NAME = MintyUI;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BE465521270CFA8E00D3C4FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = aur.aurora.MintyUI;
+				PRODUCT_NAME = MintyUI;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BE465522270CFA8E00D3C4FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = aur.aurora.MintyUI;
+				PRODUCT_NAME = MintyUI;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		BE465524270CFA8E00D3C4FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "aur.aurora.Tests-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "MintyUI (iOS)";
+			};
+			name = Debug;
+		};
+		BE465525270CFA8E00D3C4FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "aur.aurora.Tests-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "MintyUI (iOS)";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BE465527270CFA8E00D3C4FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "aur.aurora.Tests-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "MintyUI (macOS)";
+			};
+			name = Debug;
+		};
+		BE465528270CFA8E00D3C4FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "aur.aurora.Tests-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "MintyUI (macOS)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BE4654EB270CFA8B00D3C4FB /* Build configuration list for PBXProject "MintyUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE46551B270CFA8E00D3C4FB /* Debug */,
+				BE46551C270CFA8E00D3C4FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE46551D270CFA8E00D3C4FB /* Build configuration list for PBXNativeTarget "MintyUI (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE46551E270CFA8E00D3C4FB /* Debug */,
+				BE46551F270CFA8E00D3C4FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE465520270CFA8E00D3C4FB /* Build configuration list for PBXNativeTarget "MintyUI (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE465521270CFA8E00D3C4FB /* Debug */,
+				BE465522270CFA8E00D3C4FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE465523270CFA8E00D3C4FB /* Build configuration list for PBXNativeTarget "Tests iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE465524270CFA8E00D3C4FB /* Debug */,
+				BE465525270CFA8E00D3C4FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE465526270CFA8E00D3C4FB /* Build configuration list for PBXNativeTarget "Tests macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE465527270CFA8E00D3C4FB /* Debug */,
+				BE465528270CFA8E00D3C4FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BE4654E8270CFA8B00D3C4FB /* Project object */;
+}
