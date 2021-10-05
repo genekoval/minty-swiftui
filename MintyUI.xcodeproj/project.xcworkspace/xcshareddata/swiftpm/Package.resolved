@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Fstore",
+        "repositoryURL": "https://git.aurora.aur/genya/fstore-swift.git",
+        "state": {
+          "branch": null,
+          "revision": "ddcdd17f6cdc6093e7e9012c366b35240305bb39",
+          "version": "0.1.0"
+        }
+      },
+      {
+        "package": "Minty",
+        "repositoryURL": "https://git.aurora.aur/genya/minty-swift.git",
+        "state": {
+          "branch": "main",
+          "revision": "c83eb100386529dde401e3ed65cf48e619b12733",
+          "version": null
+        }
+      },
+      {
+        "package": "Zipline",
+        "repositoryURL": "https://git.aurora.aur/genya/zipline-swift.git",
+        "state": {
+          "branch": null,
+          "revision": "71e1b7e11442106f2d31ad5d8decb5d493854325",
+          "version": "0.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

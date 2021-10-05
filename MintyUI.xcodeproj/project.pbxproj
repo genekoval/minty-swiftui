@@ -17,6 +17,7 @@
 		BE465518270CFA8E00D3C4FB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4654EE270CFA8B00D3C4FB /* ContentView.swift */; };
 		BE465519270CFA8E00D3C4FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */; };
 		BE46551A270CFA8E00D3C4FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */; };
+		BE465570270D09FB00D3C4FB /* Minty in Frameworks */ = {isa = PBXBuildFile; productRef = BE46556F270D09FB00D3C4FB /* Minty */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE465570270D09FB00D3C4FB /* Minty in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +159,9 @@
 			dependencies = (
 			);
 			name = "MintyUI (iOS)";
+			packageProductDependencies = (
+				BE46556F270D09FB00D3C4FB /* Minty */,
+			);
 			productName = "MintyUI (iOS)";
 			productReference = BE4654F4270CFA8E00D3C4FB /* MintyUI.app */;
 			productType = "com.apple.product-type.application";
@@ -249,6 +254,9 @@
 				Base,
 			);
 			mainGroup = BE4654E7270CFA8B00D3C4FB;
+			packageReferences = (
+				BE46556E270D09FB00D3C4FB /* XCRemoteSwiftPackageReference "minty-swift" */,
+			);
 			productRefGroup = BE4654F5270CFA8E00D3C4FB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -715,6 +723,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BE46556E270D09FB00D3C4FB /* XCRemoteSwiftPackageReference "minty-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://git.aurora.aur/genya/minty-swift.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BE46556F270D09FB00D3C4FB /* Minty */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE46556E270D09FB00D3C4FB /* XCRemoteSwiftPackageReference "minty-swift" */;
+			productName = Minty;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BE4654E8270CFA8B00D3C4FB /* Project object */;
 }
