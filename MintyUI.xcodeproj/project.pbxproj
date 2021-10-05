@@ -11,8 +11,8 @@
 		BE465508270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465507270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift */; };
 		BE465512270CFA8E00D3C4FB /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465511270CFA8E00D3C4FB /* Tests_macOS.swift */; };
 		BE465514270CFA8E00D3C4FB /* Tests_macOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465513270CFA8E00D3C4FB /* Tests_macOSLaunchTests.swift */; };
-		BE465515270CFA8E00D3C4FB /* MintyUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4654ED270CFA8B00D3C4FB /* MintyUIApp.swift */; };
-		BE465516270CFA8E00D3C4FB /* MintyUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4654ED270CFA8B00D3C4FB /* MintyUIApp.swift */; };
+		BE465515270CFA8E00D3C4FB /* MintyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4654ED270CFA8B00D3C4FB /* MintyApp.swift */; };
+		BE465516270CFA8E00D3C4FB /* MintyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4654ED270CFA8B00D3C4FB /* MintyApp.swift */; };
 		BE465517270CFA8E00D3C4FB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4654EE270CFA8B00D3C4FB /* ContentView.swift */; };
 		BE465518270CFA8E00D3C4FB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4654EE270CFA8B00D3C4FB /* ContentView.swift */; };
 		BE465519270CFA8E00D3C4FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */; };
@@ -38,7 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BE4654ED270CFA8B00D3C4FB /* MintyUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MintyUIApp.swift; sourceTree = "<group>"; };
+		BE4654ED270CFA8B00D3C4FB /* MintyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MintyApp.swift; sourceTree = "<group>"; };
 		BE4654EE270CFA8B00D3C4FB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BE4654F4270CFA8E00D3C4FB /* MintyUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MintyUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,8 +99,8 @@
 		BE4654EC270CFA8B00D3C4FB /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				BE4654ED270CFA8B00D3C4FB /* MintyUIApp.swift */,
-				BE4654EE270CFA8B00D3C4FB /* ContentView.swift */,
+				BE465571270D0C1C00D3C4FB /* Views */,
+				BE4654ED270CFA8B00D3C4FB /* MintyApp.swift */,
 				BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -141,6 +141,14 @@
 				BE465513270CFA8E00D3C4FB /* Tests_macOSLaunchTests.swift */,
 			);
 			path = "Tests macOS";
+			sourceTree = "<group>";
+		};
+		BE465571270D0C1C00D3C4FB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BE4654EE270CFA8B00D3C4FB /* ContentView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -308,7 +316,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE465517270CFA8E00D3C4FB /* ContentView.swift in Sources */,
-				BE465515270CFA8E00D3C4FB /* MintyUIApp.swift in Sources */,
+				BE465515270CFA8E00D3C4FB /* MintyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,7 +325,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE465518270CFA8E00D3C4FB /* ContentView.swift in Sources */,
-				BE465516270CFA8E00D3C4FB /* MintyUIApp.swift in Sources */,
+				BE465516270CFA8E00D3C4FB /* MintyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

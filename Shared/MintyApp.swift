@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct MintyUIApp: App {
+struct MintyApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
