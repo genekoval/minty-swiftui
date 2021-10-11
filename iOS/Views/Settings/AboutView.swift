@@ -11,6 +11,15 @@ struct AboutView: View {
                         .foregroundColor(.secondary)
                 }
             }
+
+            if let build = MintyApp.build {
+                HStack {
+                    Text("Build")
+                    Spacer()
+                    Text(build)
+                        .foregroundColor(.secondary)
+                }
+            }
         }
         .navigationTitle("About")
         .navigationBarTitleDisplayMode(.inline)

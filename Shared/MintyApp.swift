@@ -1,6 +1,10 @@
 import Minty
 import SwiftUI
 
+private func info(key: String) -> String? {
+    Bundle.main.object(forInfoDictionaryKey: key) as? String
+}
+
 final class AppState: ObservableObject {
     @Published var repo: MintyRepo?
     @Published var settings = SettingsViewModel()
@@ -17,10 +21,12 @@ final class AppState: ObservableObject {
 
 @main
 struct MintyApp: App {
+    static var build: String? {
+        info(key: "CFBundleVersion")
+    }
+
     static var version: String? {
-        Bundle.main.object(
-            forInfoDictionaryKey: "CFBundleShortVersionString"
-        ) as? String
+        info(key: "CFBundleShortVersionString")
     }
 
     @StateObject private var state: AppState = {
