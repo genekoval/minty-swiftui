@@ -18,6 +18,19 @@
 		BE465519270CFA8E00D3C4FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */; };
 		BE46551A270CFA8E00D3C4FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */; };
 		BE465570270D09FB00D3C4FB /* Minty in Frameworks */ = {isa = PBXBuildFile; productRef = BE46556F270D09FB00D3C4FB /* Minty */; };
+		BE465578270D111B00D3C4FB /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465577270D111B00D3C4FB /* Server.swift */; };
+		BE465579270D111B00D3C4FB /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465577270D111B00D3C4FB /* Server.swift */; };
+		BE46557C270D118700D3C4FB /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557B270D118700D3C4FB /* SettingsViewModel.swift */; };
+		BE46557D270D118700D3C4FB /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557B270D118700D3C4FB /* SettingsViewModel.swift */; };
+		BE465580270D11CB00D3C4FB /* ConnectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557E270D11CB00D3C4FB /* ConnectionModal.swift */; };
+		BE465581270D11CB00D3C4FB /* ConnectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557E270D11CB00D3C4FB /* ConnectionModal.swift */; };
+		BE465582270D11CB00D3C4FB /* ServerEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557F270D11CB00D3C4FB /* ServerEditor.swift */; };
+		BE465583270D11CB00D3C4FB /* ServerEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557F270D11CB00D3C4FB /* ServerEditor.swift */; };
+		BE465595270F7E1100D3C4FB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465594270F7E1100D3C4FB /* SettingsView.swift */; };
+		BE465597270F819500D3C4FB /* ServerDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465596270F819500D3C4FB /* ServerDetail.swift */; };
+		BED04C41271026E900EF00B8 /* ResetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C40271026E900EF00B8 /* ResetButton.swift */; };
+		BED04C42271026E900EF00B8 /* ResetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C40271026E900EF00B8 /* ResetButton.swift */; };
+		BEE9D5F7270FF1CD0034CF1A /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE9D5F6270FF1CD0034CF1A /* AboutView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +63,14 @@
 		BE46550D270CFA8E00D3C4FB /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE465511270CFA8E00D3C4FB /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		BE465513270CFA8E00D3C4FB /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
+		BE465577270D111B00D3C4FB /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
+		BE46557B270D118700D3C4FB /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		BE46557E270D11CB00D3C4FB /* ConnectionModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionModal.swift; sourceTree = "<group>"; };
+		BE46557F270D11CB00D3C4FB /* ServerEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerEditor.swift; sourceTree = "<group>"; };
+		BE465594270F7E1100D3C4FB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		BE465596270F819500D3C4FB /* ServerDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDetail.swift; sourceTree = "<group>"; };
+		BED04C40271026E900EF00B8 /* ResetButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetButton.swift; sourceTree = "<group>"; };
+		BEE9D5F6270FF1CD0034CF1A /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +109,7 @@
 		BE4654E7270CFA8B00D3C4FB = {
 			isa = PBXGroup;
 			children = (
+				BE465591270F7D5B00D3C4FB /* iOS */,
 				BE4654EC270CFA8B00D3C4FB /* Shared */,
 				BE4654FB270CFA8E00D3C4FB /* macOS */,
 				BE465504270CFA8E00D3C4FB /* Tests iOS */,
@@ -99,6 +121,8 @@
 		BE4654EC270CFA8B00D3C4FB /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				BE465576270D111B00D3C4FB /* Models */,
+				BE46557A270D118700D3C4FB /* ViewModels */,
 				BE465571270D0C1C00D3C4FB /* Views */,
 				BE4654ED270CFA8B00D3C4FB /* MintyApp.swift */,
 				BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */,
@@ -146,9 +170,78 @@
 		BE465571270D0C1C00D3C4FB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BE46558A270F7C9000D3C4FB /* Settings */,
 				BE4654EE270CFA8B00D3C4FB /* ContentView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		BE465576270D111B00D3C4FB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BE46558D270F7CC400D3C4FB /* Settings */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BE46557A270D118700D3C4FB /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				BE46558B270F7CA000D3C4FB /* Settings */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		BE46558A270F7C9000D3C4FB /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				BE46557E270D11CB00D3C4FB /* ConnectionModal.swift */,
+				BE46557F270D11CB00D3C4FB /* ServerEditor.swift */,
+				BED04C40271026E900EF00B8 /* ResetButton.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		BE46558B270F7CA000D3C4FB /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				BE46557B270D118700D3C4FB /* SettingsViewModel.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		BE46558D270F7CC400D3C4FB /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				BE465577270D111B00D3C4FB /* Server.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		BE465591270F7D5B00D3C4FB /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				BE465592270F7D7200D3C4FB /* Views */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		BE465592270F7D7200D3C4FB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BE465593270F7D7900D3C4FB /* Settings */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BE465593270F7D7900D3C4FB /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				BE465594270F7E1100D3C4FB /* SettingsView.swift */,
+				BE465596270F819500D3C4FB /* ServerDetail.swift */,
+				BEE9D5F6270FF1CD0034CF1A /* AboutView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -315,8 +408,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE465595270F7E1100D3C4FB /* SettingsView.swift in Sources */,
+				BED04C41271026E900EF00B8 /* ResetButton.swift in Sources */,
 				BE465517270CFA8E00D3C4FB /* ContentView.swift in Sources */,
+				BE465580270D11CB00D3C4FB /* ConnectionModal.swift in Sources */,
+				BE465578270D111B00D3C4FB /* Server.swift in Sources */,
+				BEE9D5F7270FF1CD0034CF1A /* AboutView.swift in Sources */,
+				BE465582270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
 				BE465515270CFA8E00D3C4FB /* MintyApp.swift in Sources */,
+				BE46557C270D118700D3C4FB /* SettingsViewModel.swift in Sources */,
+				BE465597270F819500D3C4FB /* ServerDetail.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,7 +426,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE465518270CFA8E00D3C4FB /* ContentView.swift in Sources */,
+				BE465581270D11CB00D3C4FB /* ConnectionModal.swift in Sources */,
+				BE465579270D111B00D3C4FB /* Server.swift in Sources */,
+				BE465583270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
+				BED04C42271026E900EF00B8 /* ResetButton.swift in Sources */,
 				BE465516270CFA8E00D3C4FB /* MintyApp.swift in Sources */,
+				BE46557D270D118700D3C4FB /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,7 +594,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -517,7 +623,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
