@@ -30,6 +30,18 @@
 		BE465597270F819500D3C4FB /* ServerDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465596270F819500D3C4FB /* ServerDetail.swift */; };
 		BED04C41271026E900EF00B8 /* ResetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C40271026E900EF00B8 /* ResetButton.swift */; };
 		BED04C42271026E900EF00B8 /* ResetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C40271026E900EF00B8 /* ResetButton.swift */; };
+		BED04C4427153E7000EF00B8 /* AppShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C4327153E7000EF00B8 /* AppShell.swift */; };
+		BED04C4527153E7000EF00B8 /* AppShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C4327153E7000EF00B8 /* AppShell.swift */; };
+		BED04C48271542BE00EF00B8 /* TagRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C47271542BE00EF00B8 /* TagRow.swift */; };
+		BED04C49271542BE00EF00B8 /* TagRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C47271542BE00EF00B8 /* TagRow.swift */; };
+		BED04C4B2715465600EF00B8 /* TagQueryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C4A2715465600EF00B8 /* TagQueryViewModel.swift */; };
+		BED04C4C2715465600EF00B8 /* TagQueryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C4A2715465600EF00B8 /* TagQueryViewModel.swift */; };
+		BED04C4E27178A4C00EF00B8 /* TagSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C4D27178A4C00EF00B8 /* TagSearch.swift */; };
+		BED04C4F27178A4C00EF00B8 /* TagSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C4D27178A4C00EF00B8 /* TagSearch.swift */; };
+		BED04C5127179A1700EF00B8 /* TagDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C5027179A1700EF00B8 /* TagDetail.swift */; };
+		BED04C5227179A1700EF00B8 /* TagDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C5027179A1700EF00B8 /* TagDetail.swift */; };
+		BED04C542717A13E00EF00B8 /* SearchHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C532717A13E00EF00B8 /* SearchHome.swift */; };
+		BED04C552717A13E00EF00B8 /* SearchHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C532717A13E00EF00B8 /* SearchHome.swift */; };
 		BEE9D5F7270FF1CD0034CF1A /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE9D5F6270FF1CD0034CF1A /* AboutView.swift */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +82,12 @@
 		BE465594270F7E1100D3C4FB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BE465596270F819500D3C4FB /* ServerDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDetail.swift; sourceTree = "<group>"; };
 		BED04C40271026E900EF00B8 /* ResetButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetButton.swift; sourceTree = "<group>"; };
+		BED04C4327153E7000EF00B8 /* AppShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppShell.swift; sourceTree = "<group>"; };
+		BED04C47271542BE00EF00B8 /* TagRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagRow.swift; sourceTree = "<group>"; };
+		BED04C4A2715465600EF00B8 /* TagQueryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagQueryViewModel.swift; sourceTree = "<group>"; };
+		BED04C4D27178A4C00EF00B8 /* TagSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSearch.swift; sourceTree = "<group>"; };
+		BED04C5027179A1700EF00B8 /* TagDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDetail.swift; sourceTree = "<group>"; };
+		BED04C532717A13E00EF00B8 /* SearchHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHome.swift; sourceTree = "<group>"; };
 		BEE9D5F6270FF1CD0034CF1A /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -170,8 +188,11 @@
 		BE465571270D0C1C00D3C4FB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BED04C46271542A900EF00B8 /* Tags */,
 				BE46558A270F7C9000D3C4FB /* Settings */,
 				BE4654EE270CFA8B00D3C4FB /* ContentView.swift */,
+				BED04C4327153E7000EF00B8 /* AppShell.swift */,
+				BED04C532717A13E00EF00B8 /* SearchHome.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -188,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				BE46558B270F7CA000D3C4FB /* Settings */,
+				BED04C4A2715465600EF00B8 /* TagQueryViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -242,6 +264,16 @@
 				BEE9D5F6270FF1CD0034CF1A /* AboutView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		BED04C46271542A900EF00B8 /* Tags */ = {
+			isa = PBXGroup;
+			children = (
+				BED04C47271542BE00EF00B8 /* TagRow.swift */,
+				BED04C4D27178A4C00EF00B8 /* TagSearch.swift */,
+				BED04C5027179A1700EF00B8 /* TagDetail.swift */,
+			);
+			path = Tags;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -408,16 +440,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BED04C4427153E7000EF00B8 /* AppShell.swift in Sources */,
 				BE465595270F7E1100D3C4FB /* SettingsView.swift in Sources */,
 				BED04C41271026E900EF00B8 /* ResetButton.swift in Sources */,
+				BED04C5127179A1700EF00B8 /* TagDetail.swift in Sources */,
 				BE465517270CFA8E00D3C4FB /* ContentView.swift in Sources */,
 				BE465580270D11CB00D3C4FB /* ConnectionModal.swift in Sources */,
+				BED04C4B2715465600EF00B8 /* TagQueryViewModel.swift in Sources */,
 				BE465578270D111B00D3C4FB /* Server.swift in Sources */,
 				BEE9D5F7270FF1CD0034CF1A /* AboutView.swift in Sources */,
 				BE465582270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
+				BED04C542717A13E00EF00B8 /* SearchHome.swift in Sources */,
 				BE465515270CFA8E00D3C4FB /* MintyApp.swift in Sources */,
+				BED04C4E27178A4C00EF00B8 /* TagSearch.swift in Sources */,
 				BE46557C270D118700D3C4FB /* SettingsViewModel.swift in Sources */,
 				BE465597270F819500D3C4FB /* ServerDetail.swift in Sources */,
+				BED04C48271542BE00EF00B8 /* TagRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,12 +463,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BED04C552717A13E00EF00B8 /* SearchHome.swift in Sources */,
 				BE465518270CFA8E00D3C4FB /* ContentView.swift in Sources */,
 				BE465581270D11CB00D3C4FB /* ConnectionModal.swift in Sources */,
+				BED04C4527153E7000EF00B8 /* AppShell.swift in Sources */,
 				BE465579270D111B00D3C4FB /* Server.swift in Sources */,
+				BED04C4F27178A4C00EF00B8 /* TagSearch.swift in Sources */,
 				BE465583270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
+				BED04C49271542BE00EF00B8 /* TagRow.swift in Sources */,
 				BED04C42271026E900EF00B8 /* ResetButton.swift in Sources */,
 				BE465516270CFA8E00D3C4FB /* MintyApp.swift in Sources */,
+				BED04C5227179A1700EF00B8 /* TagDetail.swift in Sources */,
+				BED04C4C2715465600EF00B8 /* TagQueryViewModel.swift in Sources */,
 				BE46557D270D118700D3C4FB /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

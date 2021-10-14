@@ -5,7 +5,7 @@ struct ContentView: View {
     @State private var showingConnectionModal = false
 
     var body: some View {
-        SettingsView()
+        AppShell()
             .fullScreenCover(isPresented: $showingConnectionModal) {
                 ConnectionModal(closable: false)
             }
