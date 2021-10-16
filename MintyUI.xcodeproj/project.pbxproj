@@ -28,6 +28,12 @@
 		BE465583270D11CB00D3C4FB /* ServerEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557F270D11CB00D3C4FB /* ServerEditor.swift */; };
 		BE465595270F7E1100D3C4FB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465594270F7E1100D3C4FB /* SettingsView.swift */; };
 		BE465597270F819500D3C4FB /* ServerDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465596270F819500D3C4FB /* ServerDetail.swift */; };
+		BEC6782E2718FEF1009BCE5F /* NewTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC6782D2718FEF1009BCE5F /* NewTag.swift */; };
+		BEC6782F2718FEF1009BCE5F /* NewTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC6782D2718FEF1009BCE5F /* NewTag.swift */; };
+		BEC67837271A50EA009BCE5F /* TagHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC67836271A50EA009BCE5F /* TagHome.swift */; };
+		BEC67838271A50EA009BCE5F /* TagHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC67836271A50EA009BCE5F /* TagHome.swift */; };
+		BEC6783B271A53FF009BCE5F /* ResultCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC6783A271A53FF009BCE5F /* ResultCount.swift */; };
+		BEC6783C271A53FF009BCE5F /* ResultCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC6783A271A53FF009BCE5F /* ResultCount.swift */; };
 		BED04C41271026E900EF00B8 /* ResetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C40271026E900EF00B8 /* ResetButton.swift */; };
 		BED04C42271026E900EF00B8 /* ResetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C40271026E900EF00B8 /* ResetButton.swift */; };
 		BED04C4427153E7000EF00B8 /* AppShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C4327153E7000EF00B8 /* AppShell.swift */; };
@@ -81,6 +87,9 @@
 		BE46557F270D11CB00D3C4FB /* ServerEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerEditor.swift; sourceTree = "<group>"; };
 		BE465594270F7E1100D3C4FB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BE465596270F819500D3C4FB /* ServerDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDetail.swift; sourceTree = "<group>"; };
+		BEC6782D2718FEF1009BCE5F /* NewTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTag.swift; sourceTree = "<group>"; };
+		BEC67836271A50EA009BCE5F /* TagHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagHome.swift; sourceTree = "<group>"; };
+		BEC6783A271A53FF009BCE5F /* ResultCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCount.swift; sourceTree = "<group>"; };
 		BED04C40271026E900EF00B8 /* ResetButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetButton.swift; sourceTree = "<group>"; };
 		BED04C4327153E7000EF00B8 /* AppShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppShell.swift; sourceTree = "<group>"; };
 		BED04C47271542BE00EF00B8 /* TagRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagRow.swift; sourceTree = "<group>"; };
@@ -193,6 +202,7 @@
 				BE4654EE270CFA8B00D3C4FB /* ContentView.swift */,
 				BED04C4327153E7000EF00B8 /* AppShell.swift */,
 				BED04C532717A13E00EF00B8 /* SearchHome.swift */,
+				BEC6783A271A53FF009BCE5F /* ResultCount.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -272,6 +282,8 @@
 				BED04C47271542BE00EF00B8 /* TagRow.swift */,
 				BED04C4D27178A4C00EF00B8 /* TagSearch.swift */,
 				BED04C5027179A1700EF00B8 /* TagDetail.swift */,
+				BEC6782D2718FEF1009BCE5F /* NewTag.swift */,
+				BEC67836271A50EA009BCE5F /* TagHome.swift */,
 			);
 			path = Tags;
 			sourceTree = "<group>";
@@ -440,6 +452,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEC6783B271A53FF009BCE5F /* ResultCount.swift in Sources */,
+				BEC6782E2718FEF1009BCE5F /* NewTag.swift in Sources */,
 				BED04C4427153E7000EF00B8 /* AppShell.swift in Sources */,
 				BE465595270F7E1100D3C4FB /* SettingsView.swift in Sources */,
 				BED04C41271026E900EF00B8 /* ResetButton.swift in Sources */,
@@ -450,6 +464,7 @@
 				BE465578270D111B00D3C4FB /* Server.swift in Sources */,
 				BEE9D5F7270FF1CD0034CF1A /* AboutView.swift in Sources */,
 				BE465582270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
+				BEC67837271A50EA009BCE5F /* TagHome.swift in Sources */,
 				BED04C542717A13E00EF00B8 /* SearchHome.swift in Sources */,
 				BE465515270CFA8E00D3C4FB /* MintyApp.swift in Sources */,
 				BED04C4E27178A4C00EF00B8 /* TagSearch.swift in Sources */,
@@ -470,10 +485,13 @@
 				BE465579270D111B00D3C4FB /* Server.swift in Sources */,
 				BED04C4F27178A4C00EF00B8 /* TagSearch.swift in Sources */,
 				BE465583270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
+				BEC6782F2718FEF1009BCE5F /* NewTag.swift in Sources */,
 				BED04C49271542BE00EF00B8 /* TagRow.swift in Sources */,
+				BEC6783C271A53FF009BCE5F /* ResultCount.swift in Sources */,
 				BED04C42271026E900EF00B8 /* ResetButton.swift in Sources */,
 				BE465516270CFA8E00D3C4FB /* MintyApp.swift in Sources */,
 				BED04C5227179A1700EF00B8 /* TagDetail.swift in Sources */,
+				BEC67838271A50EA009BCE5F /* TagHome.swift in Sources */,
 				BED04C4C2715465600EF00B8 /* TagQueryViewModel.swift in Sources */,
 				BE46557D270D118700D3C4FB /* SettingsViewModel.swift in Sources */,
 			);
