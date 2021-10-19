@@ -28,6 +28,18 @@
 		BE465583270D11CB00D3C4FB /* ServerEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557F270D11CB00D3C4FB /* ServerEditor.swift */; };
 		BE465595270F7E1100D3C4FB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465594270F7E1100D3C4FB /* SettingsView.swift */; };
 		BE465597270F819500D3C4FB /* ServerDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465596270F819500D3C4FB /* ServerDetail.swift */; };
+		BE5AC1FF271B405800FCA45A /* TagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC1FE271B405800FCA45A /* TagViewModel.swift */; };
+		BE5AC200271B405800FCA45A /* TagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC1FE271B405800FCA45A /* TagViewModel.swift */; };
+		BE6A84F2271F259F00D4566B /* PreviewDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6A84F1271F259F00D4566B /* PreviewDate.swift */; };
+		BE6A84F4271F25E100D4566B /* PreviewError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6A84F3271F25E100D4566B /* PreviewError.swift */; };
+		BE6A84F6271F265000D4566B /* PreviewRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6A84F5271F265000D4566B /* PreviewRepo.swift */; };
+		BE6A84F8271F26A300D4566B /* PreviewAppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6A84F7271F26A300D4566B /* PreviewAppState.swift */; };
+		BE6A84FB271F2BB300D4566B /* PreviewSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6A84FA271F2BB300D4566B /* PreviewSource.swift */; };
+		BE6A84FD271F318000D4566B /* PreviewTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6A84FC271F318000D4566B /* PreviewTag.swift */; };
+		BE808C4D271B98CF0081F815 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE808C4C271B98CF0081F815 /* Date.swift */; };
+		BE808C4E271B9A820081F815 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE808C4C271B98CF0081F815 /* Date.swift */; };
+		BE808C50271C82800081F815 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE808C4F271C82800081F815 /* Timestamp.swift */; };
+		BE808C52271C8CB90081F815 /* SourceLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE808C51271C8CB90081F815 /* SourceLink.swift */; };
 		BEC6782E2718FEF1009BCE5F /* NewTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC6782D2718FEF1009BCE5F /* NewTag.swift */; };
 		BEC6782F2718FEF1009BCE5F /* NewTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC6782D2718FEF1009BCE5F /* NewTag.swift */; };
 		BEC67837271A50EA009BCE5F /* TagHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC67836271A50EA009BCE5F /* TagHome.swift */; };
@@ -87,6 +99,16 @@
 		BE46557F270D11CB00D3C4FB /* ServerEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerEditor.swift; sourceTree = "<group>"; };
 		BE465594270F7E1100D3C4FB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BE465596270F819500D3C4FB /* ServerDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDetail.swift; sourceTree = "<group>"; };
+		BE5AC1FE271B405800FCA45A /* TagViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewModel.swift; sourceTree = "<group>"; };
+		BE6A84F1271F259F00D4566B /* PreviewDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDate.swift; sourceTree = "<group>"; };
+		BE6A84F3271F25E100D4566B /* PreviewError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewError.swift; sourceTree = "<group>"; };
+		BE6A84F5271F265000D4566B /* PreviewRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewRepo.swift; sourceTree = "<group>"; };
+		BE6A84F7271F26A300D4566B /* PreviewAppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewAppState.swift; sourceTree = "<group>"; };
+		BE6A84FA271F2BB300D4566B /* PreviewSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSource.swift; sourceTree = "<group>"; };
+		BE6A84FC271F318000D4566B /* PreviewTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewTag.swift; sourceTree = "<group>"; };
+		BE808C4C271B98CF0081F815 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		BE808C4F271C82800081F815 /* Timestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timestamp.swift; sourceTree = "<group>"; };
+		BE808C51271C8CB90081F815 /* SourceLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceLink.swift; sourceTree = "<group>"; };
 		BEC6782D2718FEF1009BCE5F /* NewTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTag.swift; sourceTree = "<group>"; };
 		BEC67836271A50EA009BCE5F /* TagHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagHome.swift; sourceTree = "<group>"; };
 		BEC6783A271A53FF009BCE5F /* ResultCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCount.swift; sourceTree = "<group>"; };
@@ -148,6 +170,8 @@
 		BE4654EC270CFA8B00D3C4FB /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				BE808C4B271B98C10081F815 /* Helpers */,
+				BE808C48271B92570081F815 /* Preview Content */,
 				BE465576270D111B00D3C4FB /* Models */,
 				BE46557A270D118700D3C4FB /* ViewModels */,
 				BE465571270D0C1C00D3C4FB /* Views */,
@@ -203,6 +227,8 @@
 				BED04C4327153E7000EF00B8 /* AppShell.swift */,
 				BED04C532717A13E00EF00B8 /* SearchHome.swift */,
 				BEC6783A271A53FF009BCE5F /* ResultCount.swift */,
+				BE808C4F271C82800081F815 /* Timestamp.swift */,
+				BE808C51271C8CB90081F815 /* SourceLink.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -219,7 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				BE46558B270F7CA000D3C4FB /* Settings */,
-				BED04C4A2715465600EF00B8 /* TagQueryViewModel.swift */,
+				BE5AC201271B406500FCA45A /* Tags */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -274,6 +300,60 @@
 				BEE9D5F6270FF1CD0034CF1A /* AboutView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		BE5AC201271B406500FCA45A /* Tags */ = {
+			isa = PBXGroup;
+			children = (
+				BED04C4A2715465600EF00B8 /* TagQueryViewModel.swift */,
+				BE5AC1FE271B405800FCA45A /* TagViewModel.swift */,
+			);
+			path = Tags;
+			sourceTree = "<group>";
+		};
+		BE6A84EF271F255C00D4566B /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				BE6A84F9271F2B4800D4566B /* Data */,
+				BE6A84F0271F257800D4566B /* Helpers */,
+				BE6A84F5271F265000D4566B /* PreviewRepo.swift */,
+				BE6A84F7271F26A300D4566B /* PreviewAppState.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		BE6A84F0271F257800D4566B /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				BE6A84F1271F259F00D4566B /* PreviewDate.swift */,
+				BE6A84F3271F25E100D4566B /* PreviewError.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		BE6A84F9271F2B4800D4566B /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				BE6A84FA271F2BB300D4566B /* PreviewSource.swift */,
+				BE6A84FC271F318000D4566B /* PreviewTag.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		BE808C48271B92570081F815 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				BE6A84EF271F255C00D4566B /* Sources */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		BE808C4B271B98C10081F815 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				BE808C4C271B98CF0081F815 /* Date.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		BED04C46271542A900EF00B8 /* Tags */ = {
@@ -454,19 +534,29 @@
 			files = (
 				BEC6783B271A53FF009BCE5F /* ResultCount.swift in Sources */,
 				BEC6782E2718FEF1009BCE5F /* NewTag.swift in Sources */,
+				BE808C4D271B98CF0081F815 /* Date.swift in Sources */,
 				BED04C4427153E7000EF00B8 /* AppShell.swift in Sources */,
 				BE465595270F7E1100D3C4FB /* SettingsView.swift in Sources */,
 				BED04C41271026E900EF00B8 /* ResetButton.swift in Sources */,
+				BE6A84F2271F259F00D4566B /* PreviewDate.swift in Sources */,
+				BE5AC1FF271B405800FCA45A /* TagViewModel.swift in Sources */,
 				BED04C5127179A1700EF00B8 /* TagDetail.swift in Sources */,
+				BE6A84FB271F2BB300D4566B /* PreviewSource.swift in Sources */,
 				BE465517270CFA8E00D3C4FB /* ContentView.swift in Sources */,
 				BE465580270D11CB00D3C4FB /* ConnectionModal.swift in Sources */,
+				BE808C52271C8CB90081F815 /* SourceLink.swift in Sources */,
 				BED04C4B2715465600EF00B8 /* TagQueryViewModel.swift in Sources */,
 				BE465578270D111B00D3C4FB /* Server.swift in Sources */,
 				BEE9D5F7270FF1CD0034CF1A /* AboutView.swift in Sources */,
+				BE6A84F6271F265000D4566B /* PreviewRepo.swift in Sources */,
+				BE6A84F4271F25E100D4566B /* PreviewError.swift in Sources */,
+				BE808C50271C82800081F815 /* Timestamp.swift in Sources */,
 				BE465582270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
 				BEC67837271A50EA009BCE5F /* TagHome.swift in Sources */,
+				BE6A84FD271F318000D4566B /* PreviewTag.swift in Sources */,
 				BED04C542717A13E00EF00B8 /* SearchHome.swift in Sources */,
 				BE465515270CFA8E00D3C4FB /* MintyApp.swift in Sources */,
+				BE6A84F8271F26A300D4566B /* PreviewAppState.swift in Sources */,
 				BED04C4E27178A4C00EF00B8 /* TagSearch.swift in Sources */,
 				BE46557C270D118700D3C4FB /* SettingsViewModel.swift in Sources */,
 				BE465597270F819500D3C4FB /* ServerDetail.swift in Sources */,
@@ -482,6 +572,7 @@
 				BE465518270CFA8E00D3C4FB /* ContentView.swift in Sources */,
 				BE465581270D11CB00D3C4FB /* ConnectionModal.swift in Sources */,
 				BED04C4527153E7000EF00B8 /* AppShell.swift in Sources */,
+				BE5AC200271B405800FCA45A /* TagViewModel.swift in Sources */,
 				BE465579270D111B00D3C4FB /* Server.swift in Sources */,
 				BED04C4F27178A4C00EF00B8 /* TagSearch.swift in Sources */,
 				BE465583270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
@@ -489,6 +580,7 @@
 				BED04C49271542BE00EF00B8 /* TagRow.swift in Sources */,
 				BEC6783C271A53FF009BCE5F /* ResultCount.swift in Sources */,
 				BED04C42271026E900EF00B8 /* ResetButton.swift in Sources */,
+				BE808C4E271B9A820081F815 /* Date.swift in Sources */,
 				BE465516270CFA8E00D3C4FB /* MintyApp.swift in Sources */,
 				BED04C5227179A1700EF00B8 /* TagDetail.swift in Sources */,
 				BEC67838271A50EA009BCE5F /* TagHome.swift in Sources */,
@@ -649,6 +741,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "Shared/Preview\\ Content/Sources/PreviewAppState.swift Shared/Preview\\ Content Shared/Preview\\ Content/Sources/Data/PreviewTag.swift Shared/Preview\\ Content/Sources Shared/Preview\\ Content/Sources/Data/PreviewSource.swift Shared/Preview\\ Content/Sources/Helpers/PreviewError.swift Shared/Preview\\ Content/Sources/Data Shared/Preview\\ Content/Sources/Helpers Shared/Preview\\ Content/Sources/Helpers/PreviewDate.swift Shared/Preview\\ Content/Sources/PreviewRepo.swift";
 				DEVELOPMENT_TEAM = 9TD7B8YDKH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -680,6 +773,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "Shared/Preview\\ Content/Sources/PreviewAppState.swift Shared/Preview\\ Content Shared/Preview\\ Content/Sources/Data/PreviewTag.swift Shared/Preview\\ Content/Sources Shared/Preview\\ Content/Sources/Data/PreviewSource.swift Shared/Preview\\ Content/Sources/Helpers/PreviewError.swift Shared/Preview\\ Content/Sources/Data Shared/Preview\\ Content/Sources/Helpers Shared/Preview\\ Content/Sources/Helpers/PreviewDate.swift Shared/Preview\\ Content/Sources/PreviewRepo.swift";
 				DEVELOPMENT_TEAM = 9TD7B8YDKH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
