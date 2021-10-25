@@ -70,5 +70,6 @@ struct TagDetail_Previews: PreviewProvider {
     static var previews: some View {
         TagDetail(id: "1")
             .environmentObject(DataSource.preview)
+            .environmentObject(ObjectSource.preview)
     }
 }

@@ -144,5 +144,8 @@ private final class PreviewRepo: MintyRepo {
 }
 
 extension DataSource {
-    static let preview = DataSource(repo: PreviewRepo())
+    static let preview = DataSource(
+        connect: { _ in PreviewRepo() },
+        repo: PreviewRepo()
+    )
 }
