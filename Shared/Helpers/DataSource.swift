@@ -2,23 +2,26 @@ import Combine
 import Minty
 
 final class DataSource: ObservableObject {
+    typealias Connect = (Server) -> MintyRepo?
+
     @Published var repo: MintyRepo?
 
     private var cancellable: AnyCancellable?
+    private let connect: Connect?
 
-    init(repo: MintyRepo? = nil) {
+    init(connect: Connect? = nil, repo: MintyRepo? = nil) {
+        self.connect = connect
         self.repo = repo
     }
 
     func observe(server: Published<Server?>.Publisher) {
         cancellable = server.sink { [weak self] in
             if let value = $0 {
-                self?.connect(server: value)
+                self?.repo = self?.connect?(value)
+            }
+            else {
+                self?.repo = nil
             }
         }
-    }
-
-    private func connect(server: Server) {
-        repo = try? ZiplineClient(host: server.host, port: server.port)
     }
 }

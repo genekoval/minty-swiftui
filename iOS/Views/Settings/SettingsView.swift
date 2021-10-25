@@ -10,8 +10,8 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             List {
-                if let server = settings.server {
-                    Section(header: Text("Server")) {
+                Section(header: Text("Server")) {
+                    if let server = settings.server {
                         NavigationLink(destination: ServerDetail(
                             title: "Current Server",
                             server: server,
@@ -24,9 +24,9 @@ struct SettingsView: View {
                                     .foregroundColor(.secondary)
                             }
                         }
-
-                        Button("New Server") { showingConnectionModal.toggle() }
                     }
+
+                    Button("New Server") { showingConnectionModal.toggle() }
                 }
 
                 Section(header: Text("Cache")) {
