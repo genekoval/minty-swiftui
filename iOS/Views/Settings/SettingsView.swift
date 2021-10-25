@@ -47,11 +47,8 @@ struct SettingsView: View {
                     }
                 }
 
-                Section {
+                Section(header: Text("Help")) {
                     NavigationLink(destination: AboutView()) { Text("About") }
-                }
-
-                Section(header: Text("Troubleshoot")) {
                     ResetButton { reset() }
                 }
             }
