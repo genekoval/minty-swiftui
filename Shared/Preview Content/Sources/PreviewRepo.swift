@@ -38,7 +38,7 @@ private final class PreviewRepo: MintyRepo {
     }
 
     func addTag(name: String) throws -> String {
-        throw PreviewError.notSupported
+        Tag.preview(add: name)
     }
 
     func addTagAlias(tagId: String, alias: String) throws -> TagName {
@@ -102,7 +102,13 @@ private final class PreviewRepo: MintyRepo {
     }
 
     func getTags(query: TagQuery) throws -> SearchResult<TagPreview> {
-        throw PreviewError.notSupported
+        let tags = TagPreview.preview(query: query.name)
+        var result = SearchResult<TagPreview>()
+
+        result.total = UInt32(tags.count)
+        result.hits = tags
+
+        return result
     }
 
     func movePostObject(
