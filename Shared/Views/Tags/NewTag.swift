@@ -2,7 +2,7 @@ import SwiftUI
 
 struct NewTag: View {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var app: AppState
+    @EnvironmentObject var data: DataSource
     @Binding var id: String?
     @Binding var name: String
 
@@ -42,7 +42,7 @@ struct NewTag: View {
     }
 
     private func create() {
-        guard let repo = app.repo else { return }
+        guard let repo = data.repo else { return }
 
         do {
             id = try repo.addTag(name: name)
@@ -61,6 +61,6 @@ struct NewTag: View {
 struct NewTag_Previews: PreviewProvider {
     static var previews: some View {
         NewTag(id: .constant(""), name: .constant(""))
-            .environmentObject(AppState())
+            .environmentObject(DataSource.preview)
     }
 }

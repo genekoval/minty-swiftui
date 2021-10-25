@@ -1,22 +1,7 @@
-import Minty
 import SwiftUI
 
 private func info(key: String) -> String? {
     Bundle.main.object(forInfoDictionaryKey: key) as? String
-}
-
-final class AppState: ObservableObject {
-    @Published var repo: MintyRepo?
-    @Published var settings = SettingsViewModel()
-
-    func connect() {
-        guard let server = settings.server else { return }
-
-        repo = try? ZiplineClient(
-            host: server.host,
-            port: server.port
-        )
-    }
 }
 
 @main
@@ -29,16 +14,16 @@ struct MintyApp: App {
         info(key: "CFBundleShortVersionString")
     }
 
-    @StateObject private var state: AppState = {
-        let value = AppState()
-        value.connect()
-        return value
-    }()
+    @StateObject private var data = DataSource()
+    @StateObject private var objects: ObjectSource = ObjectCache()
+    @StateObject private var settings = SettingsViewModel()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(state)
+                .environmentObject(data)
+                .environmentObject(objects)
+                .environmentObject(settings)
         }
     }
 }

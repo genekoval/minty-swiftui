@@ -1,8 +1,7 @@
 import Foundation
 import Minty
-import Zipline
 
-final class PreviewRepo: MintyRepo {
+private final class PreviewRepo: MintyRepo {
     func addComment(
         postId: String,
         parentId: String?,
@@ -82,7 +81,7 @@ final class PreviewRepo: MintyRepo {
         throw PreviewError.notSupported
     }
 
-    func getObjectData(objectId: String) throws -> DataStream {
+    func getObjectData(objectId: String, handler: (Data) -> Void) throws {
         throw PreviewError.notSupported
     }
 
@@ -142,4 +141,8 @@ final class PreviewRepo: MintyRepo {
     func setTagName(tagId: String, newName: String) throws -> TagName {
         throw PreviewError.notSupported
     }
+}
+
+extension DataSource {
+    static let preview = DataSource(repo: PreviewRepo())
 }

@@ -4,7 +4,7 @@ import SwiftUI
 struct ConnectionModal: View {
     let closable: Bool
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var app: AppState
+    @EnvironmentObject var settings: SettingsViewModel
     @State private var server = Server(host: "", port: 0)
 
     var body: some View {
@@ -40,9 +40,7 @@ struct ConnectionModal: View {
     }
 
     private func connect() {
-        app.settings.server = server
-        app.connect()
-
+        settings.server = server
         dismiss()
     }
 
@@ -54,5 +52,6 @@ struct ConnectionModal: View {
 struct ConnectionModal_Previews: PreviewProvider {
     static var previews: some View {
         ConnectionModal(closable: true)
+            .environmentObject(SettingsViewModel())
     }
 }

@@ -5,9 +5,9 @@
         "package": "Fstore",
         "repositoryURL": "https://git.aurora.aur/genya/fstore-swift.git",
         "state": {
-          "branch": null,
-          "revision": "ddcdd17f6cdc6093e7e9012c366b35240305bb39",
-          "version": "0.1.0"
+          "branch": "main",
+          "revision": "71762f29c304719f85ea9ad0597248f7fcbd6966",
+          "version": null
         }
       },
       {
@@ -15,7 +15,7 @@
         "repositoryURL": "https://git.aurora.aur/genya/minty-swift.git",
         "state": {
           "branch": "main",
-          "revision": "4b0090c9bdaa6a59b4c1dfe9a0d9dbd523e58075",
+          "revision": "504932a0b71d45785d98166ae167ff135c41b5a8",
           "version": null
         }
       },

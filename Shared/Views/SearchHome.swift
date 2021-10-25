@@ -19,6 +19,5 @@ struct SearchHome: View {
 struct SearchHome_Previews: PreviewProvider {
     static var previews: some View {
         SearchHome()
-            .environmentObject(AppState())
     }
 }

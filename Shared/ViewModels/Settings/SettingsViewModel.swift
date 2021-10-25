@@ -1,9 +1,10 @@
 import Combine
 import Foundation
 
+private var cancellables: [String: AnyCancellable] = [:]
+
 final class SettingsViewModel: ObservableObject {
-    @Setting(key: "server", defaultValue: nil)
-    var server: Server?
+    @Published(key: "server") var server: Server? = nil
 
     func reset() {
         if let bundleId = Bundle.main.bundleIdentifier {
@@ -12,22 +13,11 @@ final class SettingsViewModel: ObservableObject {
     }
 }
 
-@propertyWrapper
-struct Setting<Value: Codable> {
-    private var key: String
-    private var value: Value
-
-    var wrappedValue: Value {
-        get { value }
-        set {
-            value = newValue
-            save(key, value)
-        }
-    }
-
-    fileprivate init(key: String, defaultValue: Value) {
-        self.key = key
-        value = load(key) ?? defaultValue
+extension Published where Value: Codable {
+    init(wrappedValue defaultValue: Value, key: String) {
+        let value = load(key) ?? defaultValue
+        self.init(initialValue: value)
+        cancellables[key] = projectedValue.sink { save(key, $0) }
     }
 }
 

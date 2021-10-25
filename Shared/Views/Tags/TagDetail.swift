@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TagDetail: View {
-    @EnvironmentObject var app: AppState
+    @EnvironmentObject var data: DataSource
     @StateObject private var tag = TagViewModel()
 
     let id: String
@@ -35,7 +35,6 @@ struct TagDetail: View {
                     ForEach(tag.sources) { source in
                         SourceLink(source: source)
                     }
-                    .font(.caption)
                 }
 
                 Timestamp(
@@ -63,13 +62,13 @@ struct TagDetail: View {
 
     private func load() {
         tag.id = id
-        tag.repo = app.repo
+        tag.repo = data.repo
     }
 }
 
 struct TagDetail_Previews: PreviewProvider {
     static var previews: some View {
         TagDetail(id: "1")
-            .environmentObject(AppState.preview)
+            .environmentObject(DataSource.preview)
     }
 }
