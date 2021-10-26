@@ -13,7 +13,12 @@ private let relativeDateTimeFormatter = RelativeDateTimeFormatter()
 
 extension Date {
     var relative: String {
-        relativeDateTimeFormatter.localizedString(for: self, relativeTo: Date())
+        let sinceNow = self.timeIntervalSinceNow
+        if sinceNow > -1 { return "just now" }
+
+        return relativeDateTimeFormatter.localizedString(
+            fromTimeInterval: sinceNow
+        )
     }
 
     var string: String {

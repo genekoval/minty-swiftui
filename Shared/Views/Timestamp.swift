@@ -28,10 +28,26 @@ struct Timestamp: View {
 
 struct Timestamp_Previews: PreviewProvider {
     static var previews: some View {
-        Timestamp(
-            prefix: "Created",
-            systemImage: "calendar",
-            date: Date(from: "2000-01-01 00:00:00.000-04")
-        )
+        Group {
+            Timestamp(
+                prefix: "Created",
+                systemImage: "calendar",
+                date: Date(from: "2000-01-01 00:00:00.000-04")
+            )
+
+            Timestamp(
+                prefix: "Posted",
+                systemImage: "clock",
+                date: Date() - (60 * 60)
+            )
+
+            Timestamp(
+                prefix: "Last edit",
+                systemImage: "pencil",
+                date: Date()
+            )
+        }
+        .padding()
+        .previewLayout(.sizeThatFits)
     }
 }
