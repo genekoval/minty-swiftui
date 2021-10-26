@@ -3,7 +3,7 @@ import SwiftUI
 struct Timestamp: View {
     let prefix: String
     let systemImage: String
-    @Binding var date: Date
+    var date: Date
 
     var body: some View {
         HStack {
@@ -31,7 +31,7 @@ struct Timestamp_Previews: PreviewProvider {
         Timestamp(
             prefix: "Created",
             systemImage: "calendar",
-            date: .constant(Date(from: "2000-01-01 00:00:00.000-04"))
+            date: Date(from: "2000-01-01 00:00:00.000-04")
         )
     }
 }

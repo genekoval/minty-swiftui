@@ -42,11 +42,14 @@ private final class PreviewRepo: MintyRepo {
     }
 
     func addTagAlias(tagId: String, alias: String) throws -> TagName {
-        throw PreviewError.notSupported
+        Tag.preview(edit: tagId) { $0.aliases.append(alias) }
+        return Tag.preview(namesFor: tagId)
     }
 
     func addTagSource(tagId: String, url: String) throws -> Source {
-        throw PreviewError.notSupported
+        let source = Source.preview(add: url)
+        Tag.preview(edit: tagId) { $0.sources.append(source) }
+        return source
     }
 
     func deletePost(postId: String) throws {
@@ -66,11 +69,22 @@ private final class PreviewRepo: MintyRepo {
     }
 
     func deleteTagAlias(tagId: String, alias: String) throws -> TagName {
-        throw PreviewError.notSupported
+        var tag = Tag.preview(id: tagId)
+        tag.aliases.removeAll { $0 == alias }
+
+        Tag.preview(set: tag)
+
+        var result = TagName()
+        result.name = tag.name
+        result.aliases = tag.aliases
+
+        return result
     }
 
     func deleteTagSource(tagId: String, sourceId: String) throws {
-        throw PreviewError.notSupported
+        Tag.preview(edit: tagId) { tag in
+            tag.sources.removeAll { $0.id == sourceId }
+        }
     }
 
     func getComments(postId: String) throws -> [Comment] {
@@ -141,11 +155,22 @@ private final class PreviewRepo: MintyRepo {
         tagId: String,
         description: String
     ) throws -> String? {
-        throw PreviewError.notSupported
+        let value = description.isEmpty ? nil : description
+        Tag.preview(edit: tagId) { $0.description = value }
+        return value
     }
 
     func setTagName(tagId: String, newName: String) throws -> TagName {
-        throw PreviewError.notSupported
+        var tag = Tag.preview(id: tagId)
+        tag.name = newName
+
+        Tag.preview(set: tag)
+
+        var result = TagName()
+        result.name = tag.name
+        result.aliases = tag.aliases
+
+        return result
     }
 }
 

@@ -33,20 +33,23 @@ private class PreviewData {
         if let date = dateCreated { tag.dateCreated = Date(from: date) }
         tag.sources = sources.map { Source.preview(id: $0) }
 
-        tags[id] = tag
-
-        var preview = TagPreview()
-
-        preview.id = id
-        preview.name = name
-
-        previews[id] = preview
+        setTag(tag: tag)
     }
 
     func getTags(query: String) -> [TagPreview] {
         let values = [TagPreview](previews.values)
         let results = values.drop { !$0.name.starts(with: query) }
         return [TagPreview](results)
+    }
+
+    func setTag(tag: Tag) {
+        tags[tag.id] = tag
+
+        var preview = TagPreview()
+        preview.id = tag.id
+        preview.name = tag.name
+
+        previews[tag.id] = preview
     }
 }
 
@@ -59,8 +62,26 @@ extension Tag {
         return id
     }
 
+    static func preview(edit id: String, action: (inout Tag) -> Void) {
+        var tag = Tag.preview(id: id)
+        action(&tag)
+        data.setTag(tag: tag)
+    }
+
     static func preview(id: String) -> Tag {
         data.tags[id]!
+    }
+
+    static func preview(namesFor id: String) -> TagName {
+        let tag = Tag.preview(id: id)
+        var result = TagName()
+        result.name = tag.name
+        result.aliases = tag.aliases
+        return result
+    }
+
+    static func preview(set tag: Tag) {
+        data.setTag(tag: tag)
     }
 }
 
@@ -72,4 +93,15 @@ extension TagPreview {
     static func preview(query: String) -> [TagPreview] {
         data.getTags(query: query)
     }
+}
+
+extension TagViewModel {
+    static let preview: TagViewModel = {
+        let value = TagViewModel()
+
+        value.id = "1"
+        value.repo = DataSource.preview.repo
+
+        return value
+    }()
 }

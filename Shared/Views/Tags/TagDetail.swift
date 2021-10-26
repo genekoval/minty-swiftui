@@ -3,6 +3,7 @@ import SwiftUI
 struct TagDetail: View {
     @EnvironmentObject var data: DataSource
     @StateObject private var tag = TagViewModel()
+    @State private var showingEditor = false
 
     let id: String
 
@@ -40,7 +41,7 @@ struct TagDetail: View {
                 Timestamp(
                     prefix: "Created",
                     systemImage: "calendar",
-                    date: $tag.dateCreated
+                    date: tag.dateCreated
                 )
 
                 HStack {
@@ -58,18 +59,31 @@ struct TagDetail: View {
         .navigationTitle(tag.name)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { load() }
+        .sheet(isPresented: $showingEditor) {
+            TagEditor(isPresented: $showingEditor, tag: tag)
+        }
+        .toolbar {
+            Button("Edit") {
+                showingEditor.toggle()
+            }
+        }
     }
 
     private func load() {
         tag.id = id
-        tag.repo = data.repo
+
+        if tag.repo == nil {
+            tag.repo = data.repo
+        }
     }
 }
 
 struct TagDetail_Previews: PreviewProvider {
     static var previews: some View {
-        TagDetail(id: "1")
-            .environmentObject(DataSource.preview)
-            .environmentObject(ObjectSource.preview)
+        NavigationView {
+            TagDetail(id: "1")
+        }
+        .environmentObject(DataSource.preview)
+        .environmentObject(ObjectSource.preview)
     }
 }

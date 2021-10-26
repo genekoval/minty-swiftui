@@ -72,9 +72,18 @@ final class ObjectCache: ObjectSource {
             let (data, _) = try await URLSession.shared.data(from: url)
             return data
         }
+        catch let ex as NSError {
+            if ex.code == NSURLErrorCancelled {
+                print("Cancelled task: reading cached object file: \(objectId)")
+            }
+            else {
+                print("Error reading cached object file '\(objectId)':\(ex)")
+            }
+            return Data()
+        }
         catch {
             fatalError(
-                "Failed to read cached object file '\(url.path)':\n\(error)"
+                "Failed to read cached object file '\(objectId)':\n\(error)"
             )
         }
     }
