@@ -96,12 +96,9 @@ extension TagPreview {
 }
 
 extension TagViewModel {
-    static let preview: TagViewModel = {
-        let value = TagViewModel()
-
-        value.id = "1"
-        value.repo = DataSource.preview.repo
-
-        return value
-    }()
+    static func preview(id: String) -> TagViewModel {
+        let tag = TagViewModel(id: "1")
+        tag.repo = DataSource.preview.repo
+        return tag
+    }
 }

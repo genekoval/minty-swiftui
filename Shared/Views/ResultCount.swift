@@ -3,9 +3,8 @@ import SwiftUI
 struct ResultCount: View {
     let typeSingular: String
     let typePlural: String
-
-    @Binding var count: Int
-    @Binding var text: String
+    let count: Int
+    let text: String
 
     var body: some View {
         if count > 0 {
@@ -45,12 +44,12 @@ struct ResultCount: View {
     }
 
     private var noResultsText: String {
-        "There were no results for \"\(text)\". Try a new search."
+        "There were no results for “\(text)”. Try a new search."
     }
 }
 
 struct ResultCount_Previews: PreviewProvider {
-    private static let text: Binding<String> = .constant("hello")
+    private static let text = "hello"
     private static let typeSingular = "Item"
     private static let typePlural = "Items"
 
@@ -59,23 +58,25 @@ struct ResultCount_Previews: PreviewProvider {
             ResultCount(
                 typeSingular: typeSingular,
                 typePlural: typePlural,
-                count: .constant(0),
+                count: 0,
+                text: text
+            )
+            .previewLayout(.fixed(width: 400, height: 200))
+
+            ResultCount(
+                typeSingular: typeSingular,
+                typePlural: typePlural,
+                count: 1,
                 text: text
             )
 
             ResultCount(
                 typeSingular: typeSingular,
                 typePlural: typePlural,
-                count: .constant(1),
-                text: text
-            )
-
-            ResultCount(
-                typeSingular: typeSingular,
-                typePlural: typePlural,
-                count: .constant(10_000),
+                count: 1_000,
                 text: text
             )
         }
+        .previewLayout(.sizeThatFits)
     }
 }

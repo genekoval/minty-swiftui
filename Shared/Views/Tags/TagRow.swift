@@ -2,7 +2,7 @@ import Minty
 import SwiftUI
 
 struct TagRow: View {
-    @Binding var tag: TagPreview
+    var tag: TagPreview
 
     var body: some View {
         VStack {
@@ -18,15 +18,9 @@ struct TagRow: View {
 }
 
 struct TagRow_Previews: PreviewProvider {
-    @State private static var tag: TagPreview = {
-        var tag = TagPreview()
-
-        tag.name = "Test Tag"
-
-        return tag
-    }()
+    @State private static var tag = TagPreview.preview(id: "1")
 
     static var previews: some View {
-        TagRow(tag: $tag)
+        TagRow(tag: tag)
     }
 }

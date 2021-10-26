@@ -15,12 +15,12 @@ struct TagHome: View {
                         ResultCount(
                             typeSingular: "Tag",
                             typePlural: "Tags",
-                            count: $query.total,
-                            text: $query.name
+                            count: query.total,
+                            text: query.name
                         )
                     }
 
-                    ForEach($query.hits) { tag in
+                    ForEach(query.hits) { tag in
                         NavigationLink(destination: TagDetail(id: tag.id)) {
                             TagRow(tag: tag)
                         }
@@ -42,7 +42,7 @@ struct TagHome: View {
                             Spacer()
                         }
 
-                        ForEach($recentlyCreated) { tag in
+                        ForEach(recentlyCreated) { tag in
                             NavigationLink(
                                 destination: TagDetail(id: tag.id),
                                 tag: tag.id,

@@ -49,7 +49,7 @@ struct EditorView: View {
 }
 
 struct EditorView_Previews: PreviewProvider {
-    @StateObject private static var tag = TagViewModel.preview
+    @StateObject private static var tag = TagViewModel.preview(id: "1")
 
     static var previews: some View {
         NavigationView {

@@ -2,10 +2,8 @@ import SwiftUI
 
 struct TagDetail: View {
     @EnvironmentObject var data: DataSource
-    @StateObject private var tag = TagViewModel()
+    @StateObject private var tag: TagViewModel
     @State private var showingEditor = false
-
-    let id: String
 
     var body: some View {
         ScrollView {
@@ -58,7 +56,7 @@ struct TagDetail: View {
         }
         .navigationTitle(tag.name)
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear { load() }
+        .onAppear { tag.repo = data.repo }
         .sheet(isPresented: $showingEditor) {
             TagEditor(isPresented: $showingEditor, tag: tag)
         }
@@ -69,12 +67,8 @@ struct TagDetail: View {
         }
     }
 
-    private func load() {
-        tag.id = id
-
-        if tag.repo == nil {
-            tag.repo = data.repo
-        }
+    init(id: String) {
+        _tag = StateObject(wrappedValue: TagViewModel(id: id))
     }
 }
 

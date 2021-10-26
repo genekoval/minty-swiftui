@@ -2,10 +2,7 @@ import Combine
 import Foundation
 import Minty
 
-final class TagViewModel: ObservableObject {
-    var id = ""
-    var repo: MintyRepo? { didSet { load() } }
-
+final class TagViewModel: IdentifiableEntity, ObservableObject {
     @Published private(set) var name = ""
     @Published private(set) var aliases: [String] = []
     @Published private(set) var description: String?
@@ -25,11 +22,6 @@ final class TagViewModel: ObservableObject {
         !draftAlias.isEmpty
     }
 
-    var draftDescriptionChanged: Bool {
-        let description = description ?? ""
-        return description != draftDescription
-    }
-
     var draftNameValid: Bool {
         !draftName.isEmpty
     }
@@ -38,7 +30,9 @@ final class TagViewModel: ObservableObject {
         URL(string: draftSource) != nil
     }
 
-    init() {
+    init(id: String) {
+        super.init(id: id, identifier: "tag")
+
         nameCancellable = $name.sink { [weak self] in self?.draftName = $0 }
         descriptionCancellable = $description.sink { [weak self] in
             self?.draftDescription = $0 ?? ""
@@ -82,16 +76,10 @@ final class TagViewModel: ObservableObject {
     }
 
     func deleteAlias(at index: Int) {
-        guard let repo = repo else { return }
-
-        let alias = aliases.remove(at: index)
-
-        do {
+        withRepo("delete alias") { repo in
+            let alias = aliases.remove(at: index)
             let result = try repo.deleteTagAlias(tagId: id, alias: alias)
             refreshNames(names: result)
-        }
-        catch {
-            fatalError("Failed to delete alias for tag '\(id)':\n\(error)")
         }
     }
 
@@ -104,15 +92,9 @@ final class TagViewModel: ObservableObject {
         sources.remove(at: index)
     }
 
-    private func load() {
-        guard let repo = repo else { return }
-
-        do {
-            let tag = try repo.getTag(tagId: id)
-            load(from: tag)
-        }
-        catch {
-            fatalError("Failed to get tag: \(error)")
+    override func refresh() {
+        withRepo("fetch data") { repo in
+            load(from: try repo.getTag(tagId: id))
         }
     }
 
@@ -138,23 +120,5 @@ final class TagViewModel: ObservableObject {
 
     func swap(alias: String) {
         setName(name: alias)
-    }
-
-    private func withRepo(
-        _ description: String,
-        action: (MintyRepo) throws -> Void
-    ) {
-        guard let repo = repo else { return }
-        let errorMessage = "Failed to \(description) for tag '\(id)'"
-
-        do {
-            try action(repo)
-        }
-        catch MintyError.unspecified(let message) {
-            fatalError("\(errorMessage): \(message)")
-        }
-        catch {
-            fatalError("\(errorMessage): \(error)")
-        }
     }
 }
