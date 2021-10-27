@@ -8,15 +8,10 @@ struct TagSearch: View {
     @State private var addingTag = false
     @State private var newTagId: String?
     @State private var newTagName = ""
-    @State private var recentlyCreated: [TagPreview] = []
     @State private var selection: String?
 
     var body: some View {
-        TagHome(
-            query: query,
-            recentlyCreated: $recentlyCreated,
-            selection: $selection
-        )
+        TagHome(query: query, selection: $selection)
             .buttonStyle(PlainButtonStyle())
             .navigationTitle("Tags")
             .onAppear { query.repo = data.repo }
@@ -39,7 +34,7 @@ struct TagSearch: View {
         tag.id = id
         tag.name = newTagName
 
-        recentlyCreated.append(tag)
+        query.excluded.append(tag)
 
         newTagId = nil
         newTagName = ""
@@ -50,7 +45,10 @@ struct TagSearch: View {
 
 struct TagSearch_Previews: PreviewProvider {
     static var previews: some View {
-        TagSearch()
-            .environmentObject(DataSource.preview)
+        NavigationView {
+            TagSearch()
+                .environmentObject(DataSource.preview)
+                .environmentObject(ObjectSource.preview)
+        }
     }
 }

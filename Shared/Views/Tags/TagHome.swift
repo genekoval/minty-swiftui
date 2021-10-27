@@ -7,7 +7,6 @@ struct TagHome: View {
 
     @Environment(\.isSearching) var isSearching
     @ObservedObject var query: TagQueryViewModel
-    @Binding var recentlyCreated: [TagPreview]
     @Binding var selection: String?
 
     var body: some View {
@@ -39,7 +38,7 @@ struct TagHome: View {
                     }
                 }
                 else {
-                    if !recentlyCreated.isEmpty {
+                    if !query.excluded.isEmpty {
                         HStack {
                             Text("Recently Added")
                                 .bold()
@@ -48,7 +47,7 @@ struct TagHome: View {
                             Spacer()
                         }
 
-                        ForEach(recentlyCreated) { tag in
+                        ForEach(query.excluded) { tag in
                             NavigationLink(
                                 destination: TagDetail(
                                     id: tag.id,
@@ -72,20 +71,15 @@ struct TagHome: View {
     }
 
     private func delete(id: String) {
-        if let index = recentlyCreated.firstIndex(where: { $0.id == id }) {
-            recentlyCreated.remove(at: index)
-        }
-
         query.remove(id: id)
     }
 }
 
 struct TagHome_Previews: PreviewProvider {
+    @StateObject private static var query = TagQueryViewModel()
+    @State private static var selection: String?
+
     static var previews: some View {
-        TagHome(
-            query: TagQueryViewModel(),
-            recentlyCreated: .constant([TagPreview]()),
-            selection: .constant("")
-        )
+        TagHome(query: query, selection: $selection)
     }
 }

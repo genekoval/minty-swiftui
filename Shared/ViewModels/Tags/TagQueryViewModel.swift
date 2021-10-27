@@ -10,7 +10,7 @@ final class TagQueryViewModel: RemoteEntity, ObservableObject {
     private var queryName = ""
 
     @Published var name = ""
-    @Published var exclude: [String] = []
+    @Published var excluded: [TagPreview] = []
     @Published private(set) var total = 0
     @Published private(set) var hits: [TagPreview] = []
 
@@ -24,7 +24,7 @@ final class TagQueryViewModel: RemoteEntity, ObservableObject {
         result.from = UInt32(from)
         result.size = UInt32(size)
         result.name = queryName
-        result.exclude = exclude
+        result.exclude = excluded.map { $0.id }
 
         return result
     }
@@ -59,6 +59,10 @@ final class TagQueryViewModel: RemoteEntity, ObservableObject {
     }
 
     func remove(id: String) {
+        if let index = excluded.firstIndex(where: { $0.id == id }) {
+            excluded.remove(at: index)
+        }
+
         if let index = hits.firstIndex(where: { $0.id == id }) {
             hits.remove(at: index)
             total -= 1
