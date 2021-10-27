@@ -42,6 +42,11 @@ private class PreviewData {
         return [TagPreview](results)
     }
 
+    func removeTag(id: String) {
+        previews.removeValue(forKey: id)
+        tags.removeValue(forKey: id)
+    }
+
     func setTag(tag: Tag) {
         tags[tag.id] = tag
 
@@ -78,6 +83,10 @@ extension Tag {
         result.name = tag.name
         result.aliases = tag.aliases
         return result
+    }
+
+    static func preview(remove id: String) {
+        data.removeTag(id: id)
     }
 
     static func preview(set tag: Tag) {

@@ -2,6 +2,8 @@ import Combine
 import SwiftUI
 
 struct TagEditor: View {
+    @State private var showingDeleteAlert = false
+
     @Binding var isPresented: Bool
     @ObservedObject var tag: TagViewModel
 
@@ -114,7 +116,19 @@ struct TagEditor: View {
                             .submitLabel(.done)
                     }
                 }
+
+                Section {
+                    Button("Delete Tag", role: .destructive) {
+                        showingDeleteAlert.toggle()
+                    }
+                }
             }
+            .alert(
+                Text("Delete this tag?"),
+                isPresented: $showingDeleteAlert
+            ) {
+                Button("Delete", role: .destructive) { delete() }
+            } message: { Text("This action cannot be undone.") }
             .navigationTitle("Edit Tag")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -124,6 +138,11 @@ struct TagEditor: View {
                 }
             }
         }
+    }
+
+    private func delete() {
+        tag.delete()
+        isPresented.toggle()
     }
 }
 

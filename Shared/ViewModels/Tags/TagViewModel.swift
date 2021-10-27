@@ -3,6 +3,7 @@ import Foundation
 import Minty
 
 final class TagViewModel: IdentifiableEntity, ObservableObject {
+    @Published private(set) var isActive = true
     @Published private(set) var name = ""
     @Published private(set) var aliases: [String] = []
     @Published private(set) var description: String?
@@ -73,6 +74,14 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
     func commitName() {
         guard draftNameValid && draftName != name else { return }
         setName(name: draftName)
+    }
+
+    func delete() {
+        withRepo("delete tag") { repo in
+            try repo.deleteTag(tagId: id)
+        }
+
+        isActive = false
     }
 
     func deleteAlias(at index: Int) {

@@ -65,7 +65,7 @@ private final class PreviewRepo: MintyRepo {
     }
 
     func deleteTag(tagId: String) throws {
-        throw PreviewError.notSupported
+        Tag.preview(remove: tagId)
     }
 
     func deleteTagAlias(tagId: String, alias: String) throws -> TagName {

@@ -58,6 +58,13 @@ final class TagQueryViewModel: RemoteEntity, ObservableObject {
         search()
     }
 
+    func remove(id: String) {
+        if let index = hits.firstIndex(where: { $0.id == id }) {
+            hits.remove(at: index)
+            total -= 1
+        }
+    }
+
     private func search() {
         withRepo("perform search") { repo in
             loadResult(result: try repo.getTags(query: query))

@@ -2,6 +2,9 @@ import Minty
 import SwiftUI
 
 struct TagHome: View {
+    @State private var deletedTag: String?
+    @StateObject private var deleted = Deleted()
+
     @Environment(\.isSearching) var isSearching
     @ObservedObject var query: TagQueryViewModel
     @Binding var recentlyCreated: [TagPreview]
@@ -21,7 +24,10 @@ struct TagHome: View {
                     }
 
                     ForEach(query.hits) { tag in
-                        NavigationLink(destination: TagDetail(id: tag.id)) {
+                        NavigationLink(destination: TagDetail(
+                            id: tag.id,
+                            deleted: $deleted.id
+                        )) {
                             TagRow(tag: tag)
                         }
                     }
@@ -44,7 +50,10 @@ struct TagHome: View {
 
                         ForEach(recentlyCreated) { tag in
                             NavigationLink(
-                                destination: TagDetail(id: tag.id),
+                                destination: TagDetail(
+                                    id: tag.id,
+                                    deleted: $deleted.id
+                                ),
                                 tag: tag.id,
                                 selection: $selection
                             ) {
@@ -55,6 +64,19 @@ struct TagHome: View {
                 }
             }
         }
+        .onReceive(deleted.$id) { id in
+            if let id = id {
+                delete(id: id)
+            }
+        }
+    }
+
+    private func delete(id: String) {
+        if let index = recentlyCreated.firstIndex(where: { $0.id == id }) {
+            recentlyCreated.remove(at: index)
+        }
+
+        query.remove(id: id)
     }
 }
 
