@@ -12,7 +12,7 @@ struct Timestamp: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text(prefix)
-                    Text(date.relative)
+                    Text(date.relative(.full))
                         .bold()
                 }
 

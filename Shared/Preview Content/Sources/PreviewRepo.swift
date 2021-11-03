@@ -104,7 +104,13 @@ private final class PreviewRepo: MintyRepo {
     }
 
     func getPosts(query: PostQuery) throws -> SearchResult<PostPreview> {
-        throw PreviewError.notSupported
+        let posts = PostPreview.preview(query: query)
+        var result = SearchResult<PostPreview>()
+
+        result.hits = posts
+        result.total = UInt32(posts.count)
+
+        return result
     }
 
     func getServerInfo() throws -> ServerInfo {

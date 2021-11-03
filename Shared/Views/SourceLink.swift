@@ -14,16 +14,12 @@ struct SourceLink: View {
 
     var body: some View {
         HStack {
-            if let objectId = source.icon {
-                ImageObject(objectId: objectId) {
-                    LinkIcon()
-                }
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 15)
+            ImageObject(id: source.icon) {
+                Image(systemName: "link")
+                    .foregroundColor(.secondary)
             }
-            else {
-                LinkIcon()
-            }
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 15)
 
             Link(destination: URL(string: source.url)!) {
                 ScrollView(.horizontal, showsIndicators: false) {

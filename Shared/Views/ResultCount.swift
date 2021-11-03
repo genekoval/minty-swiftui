@@ -4,7 +4,7 @@ struct ResultCount: View {
     let typeSingular: String
     let typePlural: String
     let count: Int
-    let text: String
+    let text: String?
 
     var body: some View {
         if count > 0 {
@@ -44,35 +44,56 @@ struct ResultCount: View {
     }
 
     private var noResultsText: String {
-        "There were no results for “\(text)”. Try a new search."
+        var message = "Try a new search."
+
+        if let text = text {
+            message = "There were no results for “\(text)”. \(message)"
+        }
+
+        return message
+    }
+
+    init(
+        type: String,
+        typePlural: String? = nil,
+        count: Int,
+        text: String? = nil
+    ) {
+        typeSingular = type
+        self.typePlural = typePlural ?? "\(type)s"
+        self.count = count
+        self.text = text
     }
 }
 
 struct ResultCount_Previews: PreviewProvider {
     private static let text = "hello"
-    private static let typeSingular = "Item"
-    private static let typePlural = "Items"
+    private static let type = "Item"
 
     static var previews: some View {
         Group {
             ResultCount(
-                typeSingular: typeSingular,
-                typePlural: typePlural,
+                type: type,
+                count: 0,
+                text: nil
+            )
+            .previewLayout(.fixed(width: 400, height: 200))
+
+            ResultCount(
+                type: type,
                 count: 0,
                 text: text
             )
             .previewLayout(.fixed(width: 400, height: 200))
 
             ResultCount(
-                typeSingular: typeSingular,
-                typePlural: typePlural,
+                type: type,
                 count: 1,
                 text: text
             )
 
             ResultCount(
-                typeSingular: typeSingular,
-                typePlural: typePlural,
+                type: type,
                 count: 1_000,
                 text: text
             )

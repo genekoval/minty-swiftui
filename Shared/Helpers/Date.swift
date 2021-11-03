@@ -9,16 +9,35 @@ private let dateFormatter: DateFormatter = {
     return formatter
 }()
 
-private let relativeDateTimeFormatter = RelativeDateTimeFormatter()
+private let relativeFullFormatter = RelativeDateTimeFormatter()
+private let relativeShortFormatter: RelativeDateTimeFormatter = {
+    let formatter = RelativeDateTimeFormatter()
+
+    formatter.unitsStyle = .abbreviated
+
+    return formatter
+}()
+
+enum RelativeDateTimeStyle {
+    case full
+    case short
+}
 
 extension Date {
-    var relative: String {
+    func relative(_ style: RelativeDateTimeStyle) -> String {
         let sinceNow = self.timeIntervalSinceNow
-        if sinceNow > -1 { return "just now" }
+        if sinceNow > -1 { return "now" }
 
-        return relativeDateTimeFormatter.localizedString(
-            fromTimeInterval: sinceNow
-        )
+        let formatter: RelativeDateTimeFormatter = {
+            switch style {
+            case .full:
+                return relativeFullFormatter
+            case .short:
+                return relativeShortFormatter
+            }
+        }()
+
+        return formatter.localizedString(fromTimeInterval: sinceNow)
     }
 
     var string: String {

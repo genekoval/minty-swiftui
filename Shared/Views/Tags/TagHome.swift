@@ -1,6 +1,18 @@
 import Minty
 import SwiftUI
 
+private struct TagDisplayRow: View {
+    let tag: TagPreview
+
+    var body: some View {
+        VStack {
+            TagRow(tag: tag)
+            Divider()
+        }
+        .padding(.horizontal)
+    }
+}
+
 struct TagHome: View {
     @State private var deletedTag: String?
     @StateObject private var deleted = Deleted()
@@ -15,8 +27,7 @@ struct TagHome: View {
                 if isSearching {
                     if !query.name.isEmpty {
                         ResultCount(
-                            typeSingular: "Tag",
-                            typePlural: "Tags",
+                            type: "Tag",
                             count: query.total,
                             text: query.name
                         )
@@ -27,7 +38,7 @@ struct TagHome: View {
                             id: tag.id,
                             deleted: $deleted.id
                         )) {
-                            TagRow(tag: tag)
+                            TagDisplayRow(tag: tag)
                         }
                     }
 
@@ -56,7 +67,7 @@ struct TagHome: View {
                                 tag: tag.id,
                                 selection: $selection
                             ) {
-                                TagRow(tag: tag)
+                                TagDisplayRow(tag: tag)
                             }
                         }
                     }

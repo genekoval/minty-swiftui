@@ -3,33 +3,40 @@ import SwiftUI
 @MainActor
 struct ImageObject<Content: View>: View {
     @EnvironmentObject var objects: ObjectSource
-    let objectId: String
-    @ViewBuilder let content: Content
+
+    let id: String?
+    @ViewBuilder let fallback: Content
 
     @State private var imageData: Data?
 
     var body: some View {
-        if let data = imageData {
-            if let image = UIImage(data: data) {
-                Image(uiImage: image)
-                    .resizable()
+        if let objectId = id {
+            if let data = imageData {
+                if let image = UIImage(data: data) {
+                    Image(uiImage: image)
+                        .resizable()
+                }
+                else {
+                    fallback
+                }
             }
             else {
-                content
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .task {
+                        imageData = await objects.data(for: objectId)
+                    }
             }
         }
         else {
-            content
-                .task {
-                    imageData = await objects.data(for: objectId)
-                }
+            fallback
         }
     }
 }
 
 struct ImageObject_Previews: PreviewProvider {
     static var previews: some View {
-        ImageObject(objectId: "wikipedia.png") {
+        ImageObject(id: "wikipedia.png") {
             ProgressView()
         }
         .environmentObject(ObjectSource.preview)

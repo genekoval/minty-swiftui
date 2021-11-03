@@ -11,6 +11,13 @@ private final class PreviewData {
             url: "https://en.wikipedia.org/wiki/%22Hello,_World!%22_program",
             icon: "wikipedia.png"
         )
+
+        // Preview Object Sources
+        addSource(
+            id: "sand dune",
+            url: "https://unsplash.com/photos/aL2jP0vi8nk",
+            icon: "unsplash.png"
+        )
     }
 
     @discardableResult

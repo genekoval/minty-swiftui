@@ -14,6 +14,12 @@ private class PreviewData {
             dateCreated: "2021-10-16 12:00:36.285634-04",
             sources: ["1", "2"]
         )
+
+        addTag(
+            id: "empty",
+            name: "Empty Tag",
+            dateCreated: "2021-05-12 5:00:00.000-04"
+        )
     }
 
     func addTag(
@@ -101,6 +107,14 @@ extension TagPreview {
 
     static func preview(query: String) -> [TagPreview] {
         data.getTags(query: query)
+    }
+}
+
+extension TagQueryViewModel {
+    static func preview() -> TagQueryViewModel {
+        let result = TagQueryViewModel()
+        result.repo = DataSource.preview.repo
+        return result
     }
 }
 
