@@ -20,12 +20,15 @@ private final class PreviewData {
             title: "This is a test post. Vivamus sollicitudin leo sed quam bibendum imperdiet. Nulla libero urna, aliquet in nibh et, tristique aliquam ipsum.",
             description: "Vivamus sollicitudin leo sed quam bibendum imperdiet. Nulla libero urna, aliquet in nibh et, tristique aliquam ipsum. Integer sit amet rutrum ex, id bibendum turpis. Proin blandit malesuada nunc in gravida. Etiam finibus aliquet porttitor. Nullam ut fermentum nisi. Proin nec arcu eget libero fringilla fermentum feugiat at lorem. Praesent nulla est, venenatis quis risus eget, auctor porttitor tellus. Proin scelerisque rutrum accumsan.",
             created: "2018-10-27 10:15:36.285-04",
-            tags: ["1"]
+            modified: 60_000,
+            objects: ["empty", "sand dune.jpg"],
+            tags: ["1", "empty"]
         )
 
         addPost(
             id: "untitled",
             description: "This post has no title.",
+            objects: ["empty"],
             tags: ["1"]
         )
     }
@@ -47,6 +50,9 @@ private final class PreviewData {
         if let date = created { post.dateCreated = Date(from: date) }
         if let interval = modified {
             post.dateModified = post.dateCreated.addingTimeInterval(interval)
+        }
+        else {
+            post.dateModified = post.dateCreated
         }
         post.objects = objects.map { ObjectPreview.preview(id: $0) }
         post.tags = tags.map { TagPreview.preview(id: $0) }
@@ -109,16 +115,26 @@ private let data = PreviewData()
 
 extension Post {
     static func preview(id: String) -> Post {
-        data.posts[id]!
+        if let post = data.posts[id] { return post }
+        fatalError("Post with ID (\(id)) does not exist")
     }
 }
 
 extension PostPreview {
     static func preview(id: String) -> PostPreview {
-        data.previews[id]!
+        if let preview = data.previews[id] { return preview }
+        fatalError("Post Preview with ID (\(id)) does not exist")
     }
 
     static func preview(query: PostQuery) -> [PostPreview] {
         data.getPosts(query: query)
+    }
+}
+
+extension PostViewModel {
+    static func preview(id: String) -> PostViewModel {
+        let post = PostViewModel(id: id)
+        post.repo = DataSource.preview.repo
+        return post
     }
 }

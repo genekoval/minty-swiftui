@@ -100,7 +100,7 @@ private final class PreviewRepo: MintyRepo {
     }
 
     func getPost(postId: String) throws -> Post {
-        throw PreviewError.notSupported
+        Post.preview(id: postId)
     }
 
     func getPosts(query: PostQuery) throws -> SearchResult<PostPreview> {

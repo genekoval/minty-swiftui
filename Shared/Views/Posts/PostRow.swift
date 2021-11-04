@@ -32,7 +32,7 @@ struct PostRow: View {
                     HStack(spacing: 20) {
                         Label(
                             "\(post.objectCount)",
-                            systemImage: "photo"
+                            systemImage: "doc"
                         )
                         Label(
                             "\(post.commentCount)",

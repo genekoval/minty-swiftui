@@ -19,7 +19,7 @@ struct TagSelectButton: View {
             search.excluded = tags
         }
         .sheet(isPresented: $selectorPresented) {
-            TagList(tags: $tags, search: search)
+            TagSelector(tags: $tags, search: search)
         }
     }
 }

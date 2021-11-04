@@ -36,7 +36,7 @@ struct ImageObject<Content: View>: View {
 
 struct ImageObject_Previews: PreviewProvider {
     static var previews: some View {
-        ImageObject(id: "wikipedia.png") {
+        ImageObject(id: "sand dune.jpg") {
             ProgressView()
         }
         .environmentObject(ObjectSource.preview)

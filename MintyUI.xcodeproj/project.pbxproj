@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BE009857273195360021E660 /* TagList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE009856273195360021E660 /* TagList.swift */; };
-		BE009858273195360021E660 /* TagList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE009856273195360021E660 /* TagList.swift */; };
+		BE009857273195360021E660 /* TagSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE009856273195360021E660 /* TagSelector.swift */; };
+		BE009858273195360021E660 /* TagSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE009856273195360021E660 /* TagSelector.swift */; };
 		BE00985A2731AB0C0021E660 /* SelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0098592731AB0C0021E660 /* SelectButton.swift */; };
 		BE00985B2731AB0C0021E660 /* SelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0098592731AB0C0021E660 /* SelectButton.swift */; };
 		BE00985D2731B4A00021E660 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00985C2731B4A00021E660 /* Binding.swift */; };
@@ -51,6 +51,7 @@
 		BE6A84FD271F318000D4566B /* PreviewTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6A84FC271F318000D4566B /* PreviewTag.swift */; };
 		BE6A84FF271F8E4400D4566B /* ObjectCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6A84FE271F8E4400D4566B /* ObjectCache.swift */; };
 		BE6A8500271F8E4400D4566B /* ObjectCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6A84FE271F8E4400D4566B /* ObjectCache.swift */; };
+		BE6DECE0273468FC00BB868B /* ObjectGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DECDF273468FC00BB868B /* ObjectGrid.swift */; };
 		BE7E0F412727350E00EF758A /* TagEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7E0F402727350E00EF758A /* TagEditor.swift */; };
 		BE7E0F422727350E00EF758A /* TagEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7E0F402727350E00EF758A /* TagEditor.swift */; };
 		BE808C4D271B98CF0081F815 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE808C4C271B98CF0081F815 /* Date.swift */; };
@@ -61,6 +62,9 @@
 		BE80C37D27264D14009616F5 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE80C37B27264D14009616F5 /* DataSource.swift */; };
 		BE80C37F2726605A009616F5 /* CacheRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE80C37E2726605A009616F5 /* CacheRow.swift */; };
 		BE80C3802726605A009616F5 /* CacheRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE80C37E2726605A009616F5 /* CacheRow.swift */; };
+		BE8E71C52732EFAE009A4FE9 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8E71C42732EFAE009A4FE9 /* PostViewModel.swift */; };
+		BE8E71C72732FA99009A4FE9 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8E71C62732FA99009A4FE9 /* Collection.swift */; };
+		BE8E71C927330F93009A4FE9 /* TagList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8E71C827330F93009A4FE9 /* TagList.swift */; };
 		BEB07B85272B07E3004A942C /* PostRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB07B84272B07E3004A942C /* PostRow.swift */; };
 		BEB07B87272B07F8004A942C /* PostSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB07B86272B07F8004A942C /* PostSearch.swift */; };
 		BEB07B8B272B082F004A942C /* PostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB07B8A272B082F004A942C /* PostDetail.swift */; };
@@ -125,7 +129,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BE009856273195360021E660 /* TagList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagList.swift; sourceTree = "<group>"; };
+		BE009856273195360021E660 /* TagSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelector.swift; sourceTree = "<group>"; };
 		BE0098592731AB0C0021E660 /* SelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectButton.swift; sourceTree = "<group>"; };
 		BE00985C2731B4A00021E660 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
 		BE00985F2731BBD20021E660 /* TagSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelectButton.swift; sourceTree = "<group>"; };
@@ -158,12 +162,16 @@
 		BE6A84FA271F2BB300D4566B /* PreviewSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSource.swift; sourceTree = "<group>"; };
 		BE6A84FC271F318000D4566B /* PreviewTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewTag.swift; sourceTree = "<group>"; };
 		BE6A84FE271F8E4400D4566B /* ObjectCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectCache.swift; sourceTree = "<group>"; };
+		BE6DECDF273468FC00BB868B /* ObjectGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectGrid.swift; sourceTree = "<group>"; };
 		BE7E0F402727350E00EF758A /* TagEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagEditor.swift; sourceTree = "<group>"; };
 		BE808C4C271B98CF0081F815 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		BE808C4F271C82800081F815 /* Timestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timestamp.swift; sourceTree = "<group>"; };
 		BE808C51271C8CB90081F815 /* SourceLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceLink.swift; sourceTree = "<group>"; };
 		BE80C37B27264D14009616F5 /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		BE80C37E2726605A009616F5 /* CacheRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheRow.swift; sourceTree = "<group>"; };
+		BE8E71C42732EFAE009A4FE9 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
+		BE8E71C62732FA99009A4FE9 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
+		BE8E71C827330F93009A4FE9 /* TagList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagList.swift; sourceTree = "<group>"; };
 		BEB07B84272B07E3004A942C /* PostRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRow.swift; sourceTree = "<group>"; };
 		BEB07B86272B07F8004A942C /* PostSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSearch.swift; sourceTree = "<group>"; };
 		BEB07B8A272B082F004A942C /* PostDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetail.swift; sourceTree = "<group>"; };
@@ -229,11 +237,11 @@
 			isa = PBXGroup;
 			children = (
 				BE465591270F7D5B00D3C4FB /* iOS */,
-				BE4654EC270CFA8B00D3C4FB /* Shared */,
 				BE4654FB270CFA8E00D3C4FB /* macOS */,
+				BE4654F5270CFA8E00D3C4FB /* Products */,
+				BE4654EC270CFA8B00D3C4FB /* Shared */,
 				BE465504270CFA8E00D3C4FB /* Tests iOS */,
 				BE465510270CFA8E00D3C4FB /* Tests macOS */,
-				BE4654F5270CFA8E00D3C4FB /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -291,18 +299,19 @@
 		BE465571270D0C1C00D3C4FB /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				BEB07B83272B07CC004A942C /* Posts */,
-				BED04C46271542A900EF00B8 /* Tags */,
-				BE46558A270F7C9000D3C4FB /* Settings */,
-				BE4654EE270CFA8B00D3C4FB /* ContentView.swift */,
 				BED04C4327153E7000EF00B8 /* AppShell.swift */,
-				BED04C532717A13E00EF00B8 /* SearchHome.swift */,
-				BEC6783A271A53FF009BCE5F /* ResultCount.swift */,
-				BE808C4F271C82800081F815 /* Timestamp.swift */,
-				BE808C51271C8CB90081F815 /* SourceLink.swift */,
-				BED811502720EC5700929D4C /* ImageObject.swift */,
+				BE4654EE270CFA8B00D3C4FB /* ContentView.swift */,
 				BE6A63DF272855FE00365D24 /* EditorView.swift */,
+				BED811502720EC5700929D4C /* ImageObject.swift */,
+				BEC6783A271A53FF009BCE5F /* ResultCount.swift */,
+				BED04C532717A13E00EF00B8 /* SearchHome.swift */,
 				BE0098592731AB0C0021E660 /* SelectButton.swift */,
+				BE808C51271C8CB90081F815 /* SourceLink.swift */,
+				BE808C4F271C82800081F815 /* Timestamp.swift */,
+				BE6DECDE273468C400BB868B /* Objects */,
+				BEB07B83272B07CC004A942C /* Posts */,
+				BE46558A270F7C9000D3C4FB /* Settings */,
+				BED04C46271542A900EF00B8 /* Tags */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -330,8 +339,8 @@
 			isa = PBXGroup;
 			children = (
 				BE46557E270D11CB00D3C4FB /* ConnectionModal.swift */,
-				BE46557F270D11CB00D3C4FB /* ServerEditor.swift */,
 				BED04C40271026E900EF00B8 /* ResetButton.swift */,
+				BE46557F270D11CB00D3C4FB /* ServerEditor.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -371,11 +380,11 @@
 		BE465593270F7D7900D3C4FB /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				BE465594270F7E1100D3C4FB /* SettingsView.swift */,
-				BE465596270F819500D3C4FB /* ServerDetail.swift */,
 				BEE9D5F6270FF1CD0034CF1A /* AboutView.swift */,
 				BEFDF5F22722524600F9EA09 /* CacheList.swift */,
 				BE80C37E2726605A009616F5 /* CacheRow.swift */,
+				BE465596270F819500D3C4FB /* ServerDetail.swift */,
+				BE465594270F7E1100D3C4FB /* SettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -411,13 +420,21 @@
 		BE6A84F9271F2B4800D4566B /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				BE6A84FA271F2BB300D4566B /* PreviewSource.swift */,
-				BE6A84FC271F318000D4566B /* PreviewTag.swift */,
+				BEB07B91272C546D004A942C /* PreviewObject.swift */,
 				BED8115B2721C29200929D4C /* PreviewObjectSource.swift */,
 				BEB07B8F272B2D38004A942C /* PreviewPost.swift */,
-				BEB07B91272C546D004A942C /* PreviewObject.swift */,
+				BE6A84FA271F2BB300D4566B /* PreviewSource.swift */,
+				BE6A84FC271F318000D4566B /* PreviewTag.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		BE6DECDE273468C400BB868B /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				BE6DECDF273468FC00BB868B /* ObjectGrid.swift */,
+			);
+			path = Objects;
 			sourceTree = "<group>";
 		};
 		BE808C48271B92570081F815 /* Preview Content */ = {
@@ -432,13 +449,14 @@
 		BE808C4B271B98C10081F815 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				BE00985C2731B4A00021E660 /* Binding.swift */,
+				BEFDF5F527225B9800F9EA09 /* ByteCount.swift */,
+				BE8E71C62732FA99009A4FE9 /* Collection.swift */,
+				BE80C37B27264D14009616F5 /* DataSource.swift */,
 				BE808C4C271B98CF0081F815 /* Date.swift */,
 				BE6A84FE271F8E4400D4566B /* ObjectCache.swift */,
 				BED811582721BECE00929D4C /* ObjectSource.swift */,
-				BEFDF5F527225B9800F9EA09 /* ByteCount.swift */,
-				BE80C37B27264D14009616F5 /* DataSource.swift */,
 				BE6A63E127289B2700365D24 /* RemoteEntity.swift */,
-				BE00985C2731B4A00021E660 /* Binding.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -446,10 +464,10 @@
 		BEB07B83272B07CC004A942C /* Posts */ = {
 			isa = PBXGroup;
 			children = (
-				BEB07B84272B07E3004A942C /* PostRow.swift */,
-				BEB07B86272B07F8004A942C /* PostSearch.swift */,
 				BEB07B8A272B082F004A942C /* PostDetail.swift */,
 				BE529A3627304D61001DB760 /* PostExplorer.swift */,
+				BEB07B84272B07E3004A942C /* PostRow.swift */,
+				BEB07B86272B07F8004A942C /* PostSearch.swift */,
 			);
 			path = Posts;
 			sourceTree = "<group>";
@@ -458,6 +476,7 @@
 			isa = PBXGroup;
 			children = (
 				BEB07B8D272B0EA2004A942C /* PostQueryViewModel.swift */,
+				BE8E71C42732EFAE009A4FE9 /* PostViewModel.swift */,
 			);
 			path = Posts;
 			sourceTree = "<group>";
@@ -465,14 +484,15 @@
 		BED04C46271542A900EF00B8 /* Tags */ = {
 			isa = PBXGroup;
 			children = (
+				BEC6782D2718FEF1009BCE5F /* NewTag.swift */,
+				BED04C5027179A1700EF00B8 /* TagDetail.swift */,
+				BE7E0F402727350E00EF758A /* TagEditor.swift */,
+				BEC67836271A50EA009BCE5F /* TagHome.swift */,
+				BE8E71C827330F93009A4FE9 /* TagList.swift */,
 				BED04C47271542BE00EF00B8 /* TagRow.swift */,
 				BED04C4D27178A4C00EF00B8 /* TagSearch.swift */,
-				BED04C5027179A1700EF00B8 /* TagDetail.swift */,
-				BEC6782D2718FEF1009BCE5F /* NewTag.swift */,
-				BEC67836271A50EA009BCE5F /* TagHome.swift */,
-				BE7E0F402727350E00EF758A /* TagEditor.swift */,
-				BE009856273195360021E660 /* TagList.swift */,
 				BE00985F2731BBD20021E660 /* TagSelectButton.swift */,
+				BE009856273195360021E660 /* TagSelector.swift */,
 			);
 			path = Tags;
 			sourceTree = "<group>";
@@ -660,6 +680,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE8E71C52732EFAE009A4FE9 /* PostViewModel.swift in Sources */,
 				BEB07B8B272B082F004A942C /* PostDetail.swift in Sources */,
 				BEC6783B271A53FF009BCE5F /* ResultCount.swift in Sources */,
 				BEC6782E2718FEF1009BCE5F /* NewTag.swift in Sources */,
@@ -683,6 +704,7 @@
 				BE0098602731BBD20021E660 /* TagSelectButton.swift in Sources */,
 				BE00985A2731AB0C0021E660 /* SelectButton.swift in Sources */,
 				BE529A3727304D61001DB760 /* PostExplorer.swift in Sources */,
+				BE8E71C927330F93009A4FE9 /* TagList.swift in Sources */,
 				BEB07B85272B07E3004A942C /* PostRow.swift in Sources */,
 				BED04C4B2715465600EF00B8 /* TagQueryViewModel.swift in Sources */,
 				BE465578270D111B00D3C4FB /* Server.swift in Sources */,
@@ -698,13 +720,15 @@
 				BE7E0F412727350E00EF758A /* TagEditor.swift in Sources */,
 				BE465582270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
 				BEC67837271A50EA009BCE5F /* TagHome.swift in Sources */,
-				BE009857273195360021E660 /* TagList.swift in Sources */,
+				BE8E71C72732FA99009A4FE9 /* Collection.swift in Sources */,
+				BE009857273195360021E660 /* TagSelector.swift in Sources */,
 				BE6A84FD271F318000D4566B /* PreviewTag.swift in Sources */,
 				BED04C542717A13E00EF00B8 /* SearchHome.swift in Sources */,
 				BED8115C2721C29200929D4C /* PreviewObjectSource.swift in Sources */,
 				BE465515270CFA8E00D3C4FB /* MintyApp.swift in Sources */,
 				BED04C4E27178A4C00EF00B8 /* TagSearch.swift in Sources */,
 				BE80C37C27264D14009616F5 /* DataSource.swift in Sources */,
+				BE6DECE0273468FC00BB868B /* ObjectGrid.swift in Sources */,
 				BEFDF5F32722524600F9EA09 /* CacheList.swift in Sources */,
 				BE46557C270D118700D3C4FB /* SettingsViewModel.swift in Sources */,
 				BEB07B90272B2D38004A942C /* PreviewPost.swift in Sources */,
@@ -746,7 +770,7 @@
 				BED04C4C2715465600EF00B8 /* TagQueryViewModel.swift in Sources */,
 				BE6A63E327289B2700365D24 /* RemoteEntity.swift in Sources */,
 				BE00985E2731B4A00021E660 /* Binding.swift in Sources */,
-				BE009858273195360021E660 /* TagList.swift in Sources */,
+				BE009858273195360021E660 /* TagSelector.swift in Sources */,
 				BE46557D270D118700D3C4FB /* SettingsViewModel.swift in Sources */,
 				BED8115D2721C29200929D4C /* PreviewObjectSource.swift in Sources */,
 				BE7E0F422727350E00EF758A /* TagEditor.swift in Sources */,

@@ -120,7 +120,7 @@ extension TagQueryViewModel {
 
 extension TagViewModel {
     static func preview(id: String) -> TagViewModel {
-        let tag = TagViewModel(id: "1")
+        let tag = TagViewModel(id: id)
         tag.repo = DataSource.preview.repo
         return tag
     }

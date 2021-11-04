@@ -21,6 +21,15 @@ private final class PreviewData {
             previewId: "sand dune (preview).png",
             source: "sand dune"
         )
+
+        addObject(
+            id: "empty",
+            hash: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            size: 0,
+            mimeType: "inode/x-empty",
+            dateAdded: "2000-04-01 16:00:00.000-04",
+            previewId: nil
+        )
     }
 
     func addObject(
@@ -61,12 +70,14 @@ private let data = PreviewData()
 
 extension Object {
     static func preview(id: String) -> Object {
-        data.objects[id]!
+        if let object = data.objects[id] { return object }
+        fatalError("Object with ID (\(id)) does not exist")
     }
 }
 
 extension ObjectPreview {
     static func preview(id: String) -> ObjectPreview {
-        data.previews[id]!
+        if let preview = data.previews[id] { return preview }
+        fatalError("Object Preview with ID (\(id)) does not exist")
     }
 }
