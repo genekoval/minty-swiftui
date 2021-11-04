@@ -1,7 +1,8 @@
 import Minty
 import SwiftUI
 
-private let spacing: CGFloat = 1
+// The spacing between individual items in the grid.
+private let spacing: CGFloat = 2
 
 private struct NoPreview: View {
     let type: String
