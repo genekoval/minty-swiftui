@@ -59,62 +59,6 @@ final class ObjectCache: ObjectSource {
         super.clearCache()
     }
 
-    override func data(for objectId: String) async -> Data {
-        let url = getObjectURL(id: objectId)
-
-        if !fileManager.fileExists(atPath: url.path) {
-            if !downloadObject(id: objectId, dest: url) {
-                return Data()
-            }
-        }
-
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            return data
-        }
-        catch let ex as NSError {
-            if ex.code == NSURLErrorCancelled {
-                print("Cancelled task: reading cached object file: \(objectId)")
-            }
-            else {
-                print("Error reading cached object file '\(objectId)':\(ex)")
-            }
-            return Data()
-        }
-        catch {
-            fatalError(
-                "Failed to read cached object file '\(objectId)':\n\(error)"
-            )
-        }
-    }
-
-    private func downloadObject(id: String, dest: URL) -> Bool {
-        guard let repo = repo else { return false }
-
-        if !fileManager.createFile(atPath: dest.path, contents: nil) {
-            return false
-        }
-
-        do {
-            let handle = try FileHandle(forWritingTo: dest)
-
-            try repo.getObjectData(objectId: id) { data in
-                do {
-                    try handle.write(contentsOf: data)
-                }
-                catch {
-                    fatalError("Failed to write data to object file:\n\(error)")
-                }
-            }
-        }
-        catch {
-            fatalError("Failed to download object:\n\(error)")
-        }
-
-        refresh()
-        return true
-    }
-
     private func getObjectURL(id: String) -> URL {
         objectsDirectory.appendingPathComponent(id)
     }
@@ -148,5 +92,38 @@ final class ObjectCache: ObjectSource {
         }
 
         super.remove(at: index)
+    }
+
+    override func url(for objectId: String) -> URL? {
+        let url = getObjectURL(id: objectId)
+
+        if fileManager.fileExists(atPath: url.path) {
+            return url
+        }
+
+        guard let repo = repo else { return nil }
+
+        if !fileManager.createFile(atPath: url.path, contents: nil) {
+            return nil
+        }
+
+        do {
+            let handle = try FileHandle(forWritingTo: url)
+
+            try repo.getObjectData(objectId: objectId) { data in
+                do {
+                    try handle.write(contentsOf: data)
+                }
+                catch {
+                    fatalError("Failed to write data to object file:\n\(error)")
+                }
+            }
+
+            refresh()
+            return url
+        }
+        catch {
+            fatalError("Failed to download object:\n\(error)")
+        }
     }
 }

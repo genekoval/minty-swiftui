@@ -18,7 +18,6 @@ private struct NoPreview: View {
     }
 }
 
-@MainActor
 struct ObjectGrid: View {
     let objects: [ObjectPreview]
 

@@ -1,35 +1,18 @@
 import SwiftUI
 
-@MainActor
 struct ImageObject<Content: View>: View {
     @EnvironmentObject var objects: ObjectSource
 
     let id: String?
-    @ViewBuilder let fallback: Content
+    @ViewBuilder let placeholder: Content
 
     @State private var imageData: Data?
 
     var body: some View {
-        if let objectId = id {
-            if let data = imageData {
-                if let image = UIImage(data: data) {
-                    Image(uiImage: image)
-                        .resizable()
-                }
-                else {
-                    fallback
-                }
-            }
-            else {
-                ProgressView()
-                    .progressViewStyle(.circular)
-                    .task {
-                        imageData = await objects.data(for: objectId)
-                    }
-            }
-        }
-        else {
-            fallback
+        AsyncImage(url: objects.url(for: id)) { image in
+            image.resizable()
+        } placeholder: {
+            placeholder
         }
     }
 }

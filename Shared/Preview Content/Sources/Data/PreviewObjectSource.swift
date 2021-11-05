@@ -7,20 +7,8 @@ final class PreviewObjectSource: ObjectSource {
         cachedObjects = objects
     }
 
-    override func data(for id: String) async -> Data {
-        guard let url = Bundle.main.url(
-            forResource: id,
-            withExtension: nil
-        ) else {
-            fatalError("Object not found: \(id)")
-        }
-
-        do {
-            return try Data(contentsOf: url)
-        }
-        catch {
-            fatalError("Failed to read object data for: \(id)")
-        }
+    override func url(for objectId: String) -> URL? {
+        Bundle.main.url(forResource: objectId, withExtension: nil)
     }
 }
 

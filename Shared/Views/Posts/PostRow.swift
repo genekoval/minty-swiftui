@@ -1,7 +1,6 @@
 import Minty
 import SwiftUI
 
-@MainActor
 struct PostRow: View {
     var post: PostPreview
 

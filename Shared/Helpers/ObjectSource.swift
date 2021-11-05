@@ -19,9 +19,14 @@ class ObjectSource: ObservableObject {
 
     func clearCache() { cachedObjects.removeAll() }
 
-    func data(for id: String) async -> Data { Data() }
-
     func remove(at index: Int) {
         cachedObjects.remove(at: index)
     }
+
+    final func url(for objectId: String?) -> URL? {
+        guard let id = objectId else { return nil }
+        return url(for: id)
+     }
+
+    func url(for objectId: String) -> URL? { nil }
 }

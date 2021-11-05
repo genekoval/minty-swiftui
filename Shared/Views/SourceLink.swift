@@ -1,14 +1,6 @@
 import Minty
 import SwiftUI
 
-private struct LinkIcon: View {
-    var body: some View {
-        Image(systemName: "link")
-            .foregroundColor(.secondary)
-    }
-}
-
-@MainActor
 struct SourceLink: View {
     var source: Source
 
