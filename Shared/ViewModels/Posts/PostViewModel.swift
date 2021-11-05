@@ -3,6 +3,8 @@ import Foundation
 import Minty
 
 final class PostViewModel: IdentifiableEntity, ObservableObject {
+    let deletedTag = Deleted()
+
     @Published private(set) var title: String?
     @Published private(set) var description: String?
     @Published private(set) var created: Date = Date()
@@ -10,14 +12,12 @@ final class PostViewModel: IdentifiableEntity, ObservableObject {
     @Published private(set) var objects: [ObjectPreview] = []
     @Published private(set) var tags: [TagPreview] = []
 
-    @Published var deletedTag: String?
-
     private var deletedTagCancellable: AnyCancellable?
 
     init(id: String, repo: MintyRepo?) {
         super.init(id: id, identifier: "post", repo: repo)
 
-        deletedTagCancellable = $deletedTag.sink { [weak self] in
+        deletedTagCancellable = deletedTag.$id.sink { [weak self] in
             if let id = $0 {
                 self?.removeLocalTag(id: id)
             }

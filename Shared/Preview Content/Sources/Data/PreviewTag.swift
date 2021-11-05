@@ -117,7 +117,7 @@ extension TagQueryViewModel {
 }
 
 extension TagViewModel {
-    static func preview(id: String) -> TagViewModel {
-        TagViewModel(id: id, repo: PreviewRepo())
+    static func preview(id: String, deleted: Deleted) -> TagViewModel {
+        TagViewModel(id: id, repo: PreviewRepo(), deleted: deleted)
     }
 }

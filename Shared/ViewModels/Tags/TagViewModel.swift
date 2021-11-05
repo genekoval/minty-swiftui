@@ -3,7 +3,6 @@ import Foundation
 import Minty
 
 final class TagViewModel: IdentifiableEntity, ObservableObject {
-    @Published private(set) var isActive = true
     @Published private(set) var name = ""
     @Published private(set) var aliases: [String] = []
     @Published private(set) var description: String?
@@ -16,6 +15,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
     @Published var draftName = ""
     @Published var draftSource = ""
 
+    private let deleted: Deleted
     private var nameCancellable: AnyCancellable?
     private var descriptionCancellable: AnyCancellable?
 
@@ -31,7 +31,9 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
         URL(string: draftSource) != nil
     }
 
-    init(id: String, repo: MintyRepo?) {
+    init(id: String, repo: MintyRepo?, deleted: Deleted) {
+        self.deleted = deleted
+
         super.init(id: id, identifier: "tag", repo: repo)
 
         nameCancellable = $name.sink { [weak self] in self?.draftName = $0 }
@@ -81,7 +83,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
             try repo.deleteTag(tagId: id)
         }
 
-        isActive = false
+        deleted.id = id
     }
 
     func deleteAlias(at index: Int) {

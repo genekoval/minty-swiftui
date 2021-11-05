@@ -49,7 +49,11 @@ struct EditorView: View {
 }
 
 struct EditorView_Previews: PreviewProvider {
-    @StateObject private static var tag = TagViewModel.preview(id: "1")
+    private static let deleted = Deleted()
+    @StateObject private static var tag = TagViewModel.preview(
+        id: "1",
+        deleted: deleted
+    )
 
     static var previews: some View {
         NavigationView {

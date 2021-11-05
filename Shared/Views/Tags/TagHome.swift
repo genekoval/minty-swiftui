@@ -22,8 +22,6 @@ struct TagHome: View {
 
     @StateObject private var deleted = Deleted()
 
-    @State private var deletedTag: String?
-
     var body: some View {
         ScrollView {
             LazyVStack {
@@ -40,7 +38,7 @@ struct TagHome: View {
                         NavigationLink(destination: TagDetail(
                             id: tag.id,
                             repo: query.repo,
-                            deleted: $deleted.id
+                            deleted: deleted
                         )) {
                             TagDisplayRow(tag: tag)
                         }
@@ -67,7 +65,7 @@ struct TagHome: View {
                                 destination: TagDetail(
                                     id: tag.id,
                                     repo: query.repo,
-                                    deleted: $deleted.id
+                                    deleted: deleted
                                 ),
                                 tag: tag.id,
                                 selection: $selection

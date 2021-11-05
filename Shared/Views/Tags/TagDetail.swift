@@ -4,7 +4,7 @@ import SwiftUI
 struct TagDetail: View {
     @Environment(\.dismiss) var dismiss
 
-    @Binding var deleted: String?
+    @ObservedObject var deleted: Deleted
 
     @StateObject private var tag: TagViewModel
 
@@ -61,10 +61,11 @@ struct TagDetail: View {
         }
         .navigationTitle(tag.name)
         .navigationBarTitleDisplayMode(.inline)
-        .onReceive(tag.$isActive) { isActive in
-            if !isActive {
-                deleted = tag.id
-                dismiss()
+        .onReceive(deleted.$id) { id in
+            if let id = id {
+                if id == tag.id {
+                    dismiss()
+                }
             }
         }
         .sheet(isPresented: $showingEditor) {
@@ -77,18 +78,20 @@ struct TagDetail: View {
         }
     }
 
-    init(id: String, repo: MintyRepo?, deleted: Binding<String?>) {
-        _tag = StateObject(wrappedValue: TagViewModel(id: id, repo: repo))
-        _deleted = deleted
+    init(id: String, repo: MintyRepo?, deleted: Deleted) {
+        self.deleted = deleted
+        _tag = StateObject(
+            wrappedValue: TagViewModel(id: id, repo: repo, deleted: deleted)
+        )
     }
 }
 
 struct TagDetail_Previews: PreviewProvider {
-    @State private static var deleted: String?
+    @StateObject private static var deleted = Deleted()
 
     static var previews: some View {
         NavigationView {
-            TagDetail(id: "1", repo: PreviewRepo(), deleted: $deleted)
+            TagDetail(id: "1", repo: PreviewRepo(), deleted: deleted)
         }
         .environmentObject(DataSource.preview)
         .environmentObject(ObjectSource.preview)

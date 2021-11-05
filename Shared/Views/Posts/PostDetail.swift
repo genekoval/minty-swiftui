@@ -48,7 +48,7 @@ struct PostDetail: View {
                     NavigationLink( destination: TagDetail(
                         id: tag.id,
                         repo: post.repo,
-                        deleted: $post.deletedTag
+                        deleted: post.deletedTag
                     )) {
                         Label(tag.name, systemImage: "tag")
                             .font(.caption)
