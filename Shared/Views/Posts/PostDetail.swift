@@ -2,9 +2,13 @@ import Minty
 import SwiftUI
 
 struct PostDetail: View {
-    @Binding var deleted: String?
+    @Environment(\.dismiss) var dismiss
+
+    @ObservedObject var deleted: Deleted
 
     @StateObject private var post: PostViewModel
+
+    @State private var showingEditor = false
 
     var body: some View {
         ScrollView {
@@ -71,15 +75,33 @@ struct PostDetail: View {
         }
         .navigationTitle("Post")
         .navigationBarTitleDisplayMode(.inline)
+        .onReceive(deleted.$id) { id in
+            if let id = id {
+                if id == post.id {
+                    dismiss()
+                }
+            }
+        }
+        .sheet(isPresented: $showingEditor) {
+            PostEditor(post: post)
+        }
+        .toolbar {
+            Button("Edit") {
+                showingEditor.toggle()
+            }
+        }
     }
 
-    init(id: String, repo: MintyRepo?, deleted: Binding<String?>) {
-        _post = StateObject(wrappedValue: PostViewModel(id: id, repo: repo))
-        _deleted = deleted
+    init(id: String, repo: MintyRepo?, deleted: Deleted) {
+        self.deleted = deleted
+        _post = StateObject(
+            wrappedValue: PostViewModel(id: id, repo: repo, deleted: deleted)
+        )
     }
 }
 
 struct PostDetail_Previews: PreviewProvider {
+    private static let deleted = Deleted()
     private static let posts = [
         "test",
         "sand dune",
@@ -93,7 +115,7 @@ struct PostDetail_Previews: PreviewProvider {
                     PostDetail(
                         id: post,
                         repo: PreviewRepo(),
-                        deleted: .constant("")
+                        deleted: deleted
                     )
                 }
             }

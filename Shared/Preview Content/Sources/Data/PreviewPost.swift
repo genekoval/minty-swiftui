@@ -96,6 +96,11 @@ private final class PreviewData {
         return results.map { previews[$0.id]! }
     }
 
+    func removePost(id: String) {
+        previews.removeValue(forKey: id)
+        posts.removeValue(forKey: id)
+    }
+
     func setPost(post: Post) {
         posts[post.id] = post
 
@@ -118,6 +123,10 @@ extension Post {
         if let post = data.posts[id] { return post }
         fatalError("Post with ID (\(id)) does not exist")
     }
+
+    static func preview(remove id: String) {
+        data.removePost(id: id)
+    }
 }
 
 extension PostPreview {
@@ -138,7 +147,7 @@ extension PostQueryViewModel {
 }
 
 extension PostViewModel {
-    static func preview(id: String) -> PostViewModel {
-        PostViewModel(id: id, repo: PreviewRepo())
+    static func preview(id: String, deleted: Deleted) -> PostViewModel {
+        PostViewModel(id: id, repo: PreviewRepo(), deleted: deleted)
     }
 }

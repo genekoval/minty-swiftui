@@ -100,7 +100,7 @@ struct PostSearch: View {
                     NavigationLink(destination: PostDetail(
                         id: post.id,
                         repo: search.repo,
-                        deleted: $deleted.id
+                        deleted: deleted
                     )) {
                         PostRow(post: post)
                     }
@@ -117,6 +117,11 @@ struct PostSearch: View {
         .buttonStyle(PlainButtonStyle())
         .navigationTitle("Search")
         .navigationBarTitleDisplayMode(.inline)
+        .onReceive(deleted.$id) { id in
+            if let id = id {
+                search.remove(id: id)
+            }
+        }
     }
 }
 
@@ -127,9 +132,9 @@ struct PostSearch_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             PostSearch(search: search, deleted: deleted)
-                .environmentObject(DataSource.preview)
-                .environmentObject(ObjectSource.preview)
         }
         .padding(.horizontal)
+        .environmentObject(DataSource.preview)
+        .environmentObject(ObjectSource.preview)
     }
 }

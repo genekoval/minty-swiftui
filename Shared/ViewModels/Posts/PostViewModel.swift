@@ -12,9 +12,12 @@ final class PostViewModel: IdentifiableEntity, ObservableObject {
     @Published private(set) var objects: [ObjectPreview] = []
     @Published private(set) var tags: [TagPreview] = []
 
+    private let deleted: Deleted
     private var deletedTagCancellable: AnyCancellable?
 
-    init(id: String, repo: MintyRepo?) {
+    init(id: String, repo: MintyRepo?, deleted: Deleted) {
+        self.deleted = deleted
+
         super.init(id: id, identifier: "post", repo: repo)
 
         deletedTagCancellable = deletedTag.$id.sink { [weak self] in
@@ -22,6 +25,14 @@ final class PostViewModel: IdentifiableEntity, ObservableObject {
                 self?.removeLocalTag(id: id)
             }
         }
+    }
+
+    func delete() {
+        withRepo("delete post") { repo in
+            try repo.deletePost(postId: id)
+        }
+
+        deleted.id = id
     }
 
     private func load(from post: Post) {

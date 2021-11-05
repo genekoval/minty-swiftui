@@ -38,8 +38,13 @@ struct TagList: View {
 }
 
 struct TagList_Previews: PreviewProvider {
+    private static let deleted = Deleted()
+
     private struct Preview: View {
-        @StateObject private var post = PostViewModel.preview(id: "test")
+        @StateObject private var post = PostViewModel.preview(
+            id: "test",
+            deleted: deleted
+        )
 
         var body: some View {
             NavigationView {

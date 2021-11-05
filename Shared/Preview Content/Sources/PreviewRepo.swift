@@ -53,7 +53,7 @@ final class PreviewRepo: MintyRepo {
     }
 
     func deletePost(postId: String) throws {
-        throw PreviewError.notSupported
+        Post.preview(remove: postId)
     }
 
     func deletePostObjects(postId: String, ranges: [Range<Int32>]) throws {

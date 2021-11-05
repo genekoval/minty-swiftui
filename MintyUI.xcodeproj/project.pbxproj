@@ -15,6 +15,7 @@
 		BE00985E2731B4A00021E660 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00985C2731B4A00021E660 /* Binding.swift */; };
 		BE0098602731BBD20021E660 /* TagSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00985F2731BBD20021E660 /* TagSelectButton.swift */; };
 		BE0098612731BBD20021E660 /* TagSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00985F2731BBD20021E660 /* TagSelectButton.swift */; };
+		BE3068992735F5C90038972B /* PostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3068982735F5C90038972B /* PostEditor.swift */; };
 		BE465506270CFA8E00D3C4FB /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465505270CFA8E00D3C4FB /* Tests_iOS.swift */; };
 		BE465508270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465507270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift */; };
 		BE465512270CFA8E00D3C4FB /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465511270CFA8E00D3C4FB /* Tests_macOS.swift */; };
@@ -133,6 +134,7 @@
 		BE0098592731AB0C0021E660 /* SelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectButton.swift; sourceTree = "<group>"; };
 		BE00985C2731B4A00021E660 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
 		BE00985F2731BBD20021E660 /* TagSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelectButton.swift; sourceTree = "<group>"; };
+		BE3068982735F5C90038972B /* PostEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditor.swift; sourceTree = "<group>"; };
 		BE4654ED270CFA8B00D3C4FB /* MintyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MintyApp.swift; sourceTree = "<group>"; };
 		BE4654EE270CFA8B00D3C4FB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -465,6 +467,7 @@
 			isa = PBXGroup;
 			children = (
 				BEB07B8A272B082F004A942C /* PostDetail.swift */,
+				BE3068982735F5C90038972B /* PostEditor.swift */,
 				BE529A3627304D61001DB760 /* PostExplorer.swift */,
 				BEB07B84272B07E3004A942C /* PostRow.swift */,
 				BEB07B86272B07F8004A942C /* PostSearch.swift */,
@@ -688,6 +691,7 @@
 				BED811512720EC5700929D4C /* ImageObject.swift in Sources */,
 				BE6A63E52728C29100365D24 /* Deleted.swift in Sources */,
 				BED04C4427153E7000EF00B8 /* AppShell.swift in Sources */,
+				BE3068992735F5C90038972B /* PostEditor.swift in Sources */,
 				BE465595270F7E1100D3C4FB /* SettingsView.swift in Sources */,
 				BEB07B92272C546D004A942C /* PreviewObject.swift in Sources */,
 				BEB07B8E272B0EA2004A942C /* PostQueryViewModel.swift in Sources */,
