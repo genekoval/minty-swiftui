@@ -2,11 +2,9 @@ import Minty
 import SwiftUI
 
 struct TagSelectButton: View {
-    @EnvironmentObject var data: DataSource
-
     @Binding var tags: [TagPreview]
 
-    @StateObject private var search = TagQueryViewModel()
+    @StateObject private var search: TagQueryViewModel
     @State private var selectorPresented = false
 
     var body: some View {
@@ -15,12 +13,16 @@ struct TagSelectButton: View {
                 .foregroundColor(.accentColor)
         }
         .onAppear {
-            search.repo = data.repo
             search.excluded = tags
         }
         .sheet(isPresented: $selectorPresented) {
             TagSelector(tags: $tags, search: search)
         }
+    }
+
+    init(tags: Binding<[TagPreview]>, repo: MintyRepo?) {
+        _tags = tags
+        _search = StateObject(wrappedValue: TagQueryViewModel(repo: repo))
     }
 }
 
@@ -29,8 +31,7 @@ struct TagSelectButton_Previews: PreviewProvider {
         @State private var tags: [TagPreview] = []
 
         var body: some View {
-            TagSelectButton(tags: $tags)
-                .environmentObject(DataSource.preview)
+            TagSelectButton(tags: $tags, repo: PreviewRepo())
         }
     }
 

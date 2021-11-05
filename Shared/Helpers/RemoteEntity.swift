@@ -1,20 +1,14 @@
-import Combine
 import Minty
 
 class RemoteEntity {
-    private var cancellable: AnyCancellable?
+    let repo: MintyRepo?
+
     private let identifier: String
-    var repo: MintyRepo? {
-        didSet {
-            if oldValue == nil { refresh() }
-        }
-    }
 
-    init(identifier: String) {
+    init(identifier: String, repo: MintyRepo?) {
         self.identifier = identifier
+        self.repo = repo
     }
-
-    func refresh() { }
 
     final func withRepo(
         _ description: String,
@@ -38,8 +32,13 @@ class RemoteEntity {
 class IdentifiableEntity: RemoteEntity, Identifiable {
     let id: String
 
-    init(id: String, identifier: String) {
+    init(id: String, identifier: String, repo: MintyRepo?) {
         self.id = id
-        super.init(identifier: "\(identifier) '\(id)'")
+
+        super.init(identifier: "\(identifier) '\(id)'", repo: repo)
+
+        refresh()
     }
+
+    func refresh() { }
 }

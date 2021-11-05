@@ -1,7 +1,7 @@
 import Foundation
 import Minty
 
-private final class PreviewRepo: MintyRepo {
+final class PreviewRepo: MintyRepo {
     func addComment(
         postId: String,
         parentId: String?,

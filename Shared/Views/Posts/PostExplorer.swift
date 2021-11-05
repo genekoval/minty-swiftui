@@ -2,10 +2,9 @@ import Minty
 import SwiftUI
 
 struct PostExplorer: View {
-    @EnvironmentObject var data: DataSource
-
     @StateObject private var deleted = Deleted()
-    @StateObject private var search = PostQueryViewModel()
+    @StateObject private var search: PostQueryViewModel
+
     @State private var selection: String?
 
     var body: some View {
@@ -25,16 +24,18 @@ struct PostExplorer: View {
             .padding(.horizontal)
         }
         .navigationTitle("Posts")
-        .onAppear { search.repo = data.repo }
+    }
+
+    init(repo: MintyRepo?) {
+        _search = StateObject(wrappedValue: PostQueryViewModel(repo: repo))
     }
 }
 
 struct PostExplorer_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            PostExplorer()
+            PostExplorer(repo: PreviewRepo())
         }
-        .environmentObject(DataSource.preview)
         .environmentObject(ObjectSource.preview)
     }
 }

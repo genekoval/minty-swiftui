@@ -1,13 +1,14 @@
+import Minty
 import SwiftUI
 
 struct TagDetail: View {
-    @StateObject private var tag: TagViewModel
-    @State private var showingEditor = false
-
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var data: DataSource
 
     @Binding var deleted: String?
+
+    @StateObject private var tag: TagViewModel
+
+    @State private var showingEditor = false
 
     var body: some View {
         ScrollView {
@@ -60,7 +61,6 @@ struct TagDetail: View {
         }
         .navigationTitle(tag.name)
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear { tag.repo = data.repo }
         .onReceive(tag.$isActive) { isActive in
             if !isActive {
                 deleted = tag.id
@@ -77,8 +77,8 @@ struct TagDetail: View {
         }
     }
 
-    init(id: String, deleted: Binding<String?>) {
-        _tag = StateObject(wrappedValue: TagViewModel(id: id))
+    init(id: String, repo: MintyRepo?, deleted: Binding<String?>) {
+        _tag = StateObject(wrappedValue: TagViewModel(id: id, repo: repo))
         _deleted = deleted
     }
 }
@@ -88,7 +88,7 @@ struct TagDetail_Previews: PreviewProvider {
 
     static var previews: some View {
         NavigationView {
-            TagDetail(id: "1", deleted: $deleted)
+            TagDetail(id: "1", repo: PreviewRepo(), deleted: $deleted)
         }
         .environmentObject(DataSource.preview)
         .environmentObject(ObjectSource.preview)

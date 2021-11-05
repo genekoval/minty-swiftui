@@ -30,27 +30,27 @@ final class PostQueryViewModel: RemoteEntity, ObservableObject {
         hits.count < total
     }
 
-    init() {
-        super.init(identifier: "post query")
+    init(repo: MintyRepo?) {
+        super.init(identifier: "post query", repo: repo)
 
         query.size = 30
 
-        sortOrderCancellable = $sortOrder.sink { [weak self] in
+        sortOrderCancellable = $sortOrder.dropFirst().sink { [weak self] in
             self?.query.sort.order = $0
             self?.newSearch()
         }
 
-        sortValueCancellable = $sortValue.sink { [weak self] in
+        sortValueCancellable = $sortValue.dropFirst().sink { [weak self] in
             self?.query.sort.value = $0
             self?.newSearch()
         }
 
-        tagsCancellable = $tags.sink { [weak self] in
+        tagsCancellable = $tags.dropFirst().sink { [weak self] in
             self?.query.tags = $0.map { $0.id }
             self?.newSearch()
         }
 
-        textCancellable = $text.sink { [weak self] in
+        textCancellable = $text.dropFirst().sink { [weak self] in
             self?.query.text = $0.isEmpty ? nil : $0
         }
     }

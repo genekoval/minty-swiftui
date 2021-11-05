@@ -2,8 +2,7 @@ import Minty
 import SwiftUI
 
 struct TagSearch: View {
-    @EnvironmentObject var data: DataSource
-    @StateObject private var query = TagQueryViewModel()
+    @StateObject private var query: TagQueryViewModel
 
     @State private var addingTag = false
     @State private var newTagId: String?
@@ -14,7 +13,6 @@ struct TagSearch: View {
         TagHome(query: query, selection: $selection)
             .buttonStyle(PlainButtonStyle())
             .navigationTitle("Tags")
-            .onAppear { query.repo = data.repo }
             .searchable(text: $query.name)
             .sheet(isPresented: $addingTag, onDismiss: newTagDismissed) {
                 NewTag(id: $newTagId, name: $newTagName)
@@ -25,6 +23,10 @@ struct TagSearch: View {
                         .accessibilityLabel("Add Tag")
                 }
             }
+    }
+
+    init(repo: MintyRepo?) {
+        _query = StateObject(wrappedValue: TagQueryViewModel(repo: repo))
     }
 
     private func newTagDismissed() {
@@ -46,8 +48,7 @@ struct TagSearch: View {
 struct TagSearch_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            TagSearch()
-                .environmentObject(DataSource.preview)
+            TagSearch(repo: PreviewRepo())
                 .environmentObject(ObjectSource.preview)
         }
     }

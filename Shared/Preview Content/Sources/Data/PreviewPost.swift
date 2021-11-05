@@ -131,10 +131,14 @@ extension PostPreview {
     }
 }
 
+extension PostQueryViewModel {
+    static func preview() -> PostQueryViewModel {
+        PostQueryViewModel(repo: PreviewRepo())
+    }
+}
+
 extension PostViewModel {
     static func preview(id: String) -> PostViewModel {
-        let post = PostViewModel(id: id)
-        post.repo = DataSource.preview.repo
-        return post
+        PostViewModel(id: id, repo: PreviewRepo())
     }
 }

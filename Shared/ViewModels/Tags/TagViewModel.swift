@@ -31,8 +31,8 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
         URL(string: draftSource) != nil
     }
 
-    init(id: String) {
-        super.init(id: id, identifier: "tag")
+    init(id: String, repo: MintyRepo?) {
+        super.init(id: id, identifier: "tag", repo: repo)
 
         nameCancellable = $name.sink { [weak self] in self?.draftName = $0 }
         descriptionCancellable = $description.sink { [weak self] in

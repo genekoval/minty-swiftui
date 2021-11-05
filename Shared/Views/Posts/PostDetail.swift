@@ -1,8 +1,7 @@
+import Minty
 import SwiftUI
 
 struct PostDetail: View {
-    @EnvironmentObject var data: DataSource
-
     @Binding var deleted: String?
 
     @StateObject private var post: PostViewModel
@@ -48,6 +47,7 @@ struct PostDetail: View {
                 else if let tag = post.tags.first {
                     NavigationLink( destination: TagDetail(
                         id: tag.id,
+                        repo: post.repo,
                         deleted: $post.deletedTag
                     )) {
                         Label(tag.name, systemImage: "tag")
@@ -71,11 +71,10 @@ struct PostDetail: View {
         }
         .navigationTitle("Post")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear { post.repo = data.repo }
     }
 
-    init(id: String, deleted: Binding<String?>) {
-        _post = StateObject(wrappedValue: PostViewModel(id: id))
+    init(id: String, repo: MintyRepo?, deleted: Binding<String?>) {
+        _post = StateObject(wrappedValue: PostViewModel(id: id, repo: repo))
         _deleted = deleted
     }
 }
@@ -91,7 +90,11 @@ struct PostDetail_Previews: PreviewProvider {
         Group {
             ForEach(posts, id: \.self) { post in
                 NavigationView {
-                    PostDetail(id: post, deleted: .constant(""))
+                    PostDetail(
+                        id: post,
+                        repo: PreviewRepo(),
+                        deleted: .constant("")
+                    )
                 }
             }
         }

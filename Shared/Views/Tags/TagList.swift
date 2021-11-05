@@ -15,6 +15,7 @@ struct TagList: View {
                     VStack {
                         NavigationLink(destination: TagDetail(
                             id: tag.id,
+                            repo: post.repo,
                             deleted: $post.deletedTag
                         )) {
                             HStack {

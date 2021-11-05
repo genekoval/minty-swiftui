@@ -73,7 +73,7 @@ private struct SearchControls: View {
 
                 Spacer()
 
-                TagSelectButton(tags: $search.tags)
+                TagSelectButton(tags: $search.tags, repo: search.repo)
             }
         }
     }
@@ -99,6 +99,7 @@ struct PostSearch: View {
                 ForEach(search.hits) { post in
                     NavigationLink(destination: PostDetail(
                         id: post.id,
+                        repo: search.repo,
                         deleted: $deleted.id
                     )) {
                         PostRow(post: post)
@@ -120,7 +121,7 @@ struct PostSearch: View {
 }
 
 struct PostSearch_Previews: PreviewProvider {
-    @StateObject private static var search = PostQueryViewModel()
+    @StateObject private static var search = PostQueryViewModel.preview()
     @StateObject private static var deleted = Deleted()
 
     static var previews: some View {

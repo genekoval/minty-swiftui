@@ -14,8 +14,8 @@ final class PostViewModel: IdentifiableEntity, ObservableObject {
 
     private var deletedTagCancellable: AnyCancellable?
 
-    init(id: String) {
-        super.init(id: id, identifier: "post")
+    init(id: String, repo: MintyRepo?) {
+        super.init(id: id, identifier: "post", repo: repo)
 
         deletedTagCancellable = $deletedTag.sink { [weak self] in
             if let id = $0 {

@@ -1,10 +1,12 @@
 import SwiftUI
 
 struct SearchHome: View {
+    @EnvironmentObject var data: DataSource
+
     var body: some View {
         NavigationView {
             List {
-                NavigationLink(destination: TagSearch()) {
+                NavigationLink(destination: TagSearch(repo: data.repo)) {
                     HStack {
                         Image(systemName: "tag.fill")
                             .foregroundColor(.green)
@@ -13,7 +15,7 @@ struct SearchHome: View {
                 }
 
                 NavigationLink(
-                    destination: PostExplorer()) {
+                    destination: PostExplorer(repo: data.repo)) {
                     HStack {
                         Image(systemName: "doc.text.image.fill")
                             .foregroundColor(.blue)
@@ -30,5 +32,6 @@ struct SearchHome_Previews: PreviewProvider {
     static var previews: some View {
         SearchHome()
             .environmentObject(DataSource.preview)
+            .environmentObject(ObjectSource.preview)
     }
 }

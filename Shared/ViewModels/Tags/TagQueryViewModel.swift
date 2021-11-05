@@ -29,8 +29,8 @@ final class TagQueryViewModel: RemoteEntity, ObservableObject {
         return result
     }
 
-    init() {
-        super.init(identifier: "tag query")
+    init(repo: MintyRepo?) {
+        super.init(identifier: "tag query", repo: repo)
 
         cancellable = $name.sink() { [weak self] in
             self?.clear()
