@@ -34,6 +34,8 @@ final class PostQueryViewModel: RemoteEntity, ObservableObject {
         super.init(identifier: "post query", repo: repo)
 
         query.size = 30
+        query.sort.order = sortOrder
+        query.sort.value = sortValue
 
         sortOrderCancellable = $sortOrder.dropFirst().sink { [weak self] in
             self?.query.sort.order = $0
