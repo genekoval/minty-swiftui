@@ -119,6 +119,12 @@ private final class PreviewData {
 private let data = PreviewData()
 
 extension Post {
+    static func preview(edit id: String, action: (inout Post) -> Void) {
+        var post = Post.preview(id: id)
+        action(&post)
+        data.setPost(post: post)
+    }
+
     static func preview(id: String) -> Post {
         if let post = data.posts[id] { return post }
         fatalError("Post with ID (\(id)) does not exist")
@@ -148,6 +154,11 @@ extension PostQueryViewModel {
 
 extension PostViewModel {
     static func preview(id: String, deleted: Deleted) -> PostViewModel {
-        PostViewModel(id: id, repo: PreviewRepo(), deleted: deleted)
+        PostViewModel(
+            id: id,
+            repo: PreviewRepo(),
+            deleted: deleted,
+            preview: PostPreview.preview(id: id)
+        )
     }
 }

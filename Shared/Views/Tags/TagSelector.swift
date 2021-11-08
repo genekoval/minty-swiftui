@@ -60,14 +60,17 @@ private struct TagSelectorCore: View {
     @Binding var tags: [TagPreview]
     @ObservedObject var search: TagQueryViewModel
 
+    var onAdd: ((TagPreview) -> Void)?
+    var onRemove: ((TagPreview) -> Void)?
+
     var body: some View {
         if isSearching {
             SearchView(search: search) { tag in
                 TagSelectRow(tag: tag, onSelect: {
-                    tags.append(tag)
+                    add(tag: tag)
                 }, onDeselect: {
                     if let index = tags.firstIndex(of: tag) {
-                        tags.remove(at: index)
+                        remove(index: index)
                     }
                 })
             }
@@ -96,13 +99,23 @@ private struct TagSelectorCore: View {
                     }
                     .onDelete { offsets in
                         if let index = offsets.first {
-                            tags.remove(at: index)
+                            remove(index: index)
                         }
                     }
                 }
                 .buttonStyle(PlainButtonStyle())
             }
         }
+    }
+
+    private func add(tag: TagPreview) {
+        onAdd?(tag)
+        tags.append(tag)
+    }
+
+    private func remove(index: Int) {
+        onRemove?(tags[index])
+        tags.remove(at: index)
     }
 }
 
@@ -112,19 +125,37 @@ struct TagSelector: View {
     @Binding var tags: [TagPreview]
     @ObservedObject var search: TagQueryViewModel
 
+    private let onAdd: ((TagPreview) -> Void)?
+    private let onRemove: ((TagPreview) -> Void)?
+
     var body: some View {
-        NavigationView {
-            TagSelectorCore(tags: $tags.onChange(tagsChanged), search: search)
-                .searchable(text: $search.name)
-                .navigationTitle("Selected Tags")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    Button(action: { dimiss() }) {
-                        Text("Done")
-                            .bold()
-                    }
-                }
+        TagSelectorCore(
+            tags: $tags.onChange(tagsChanged),
+            search: search,
+            onAdd: onAdd,
+            onRemove: onRemove
+        )
+        .searchable(text: $search.name)
+        .navigationTitle("Selected Tags")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            Button(action: { dimiss() }) {
+                Text("Done")
+                    .bold()
+            }
         }
+    }
+
+    init(
+        tags: Binding<[TagPreview]>,
+        search: TagQueryViewModel,
+        onAdd: ((TagPreview) -> Void)? = nil,
+        onRemove: ((TagPreview) -> Void)? = nil
+    ) {
+        _tags = tags
+        self.search = search
+        self.onAdd = onAdd
+        self.onRemove = onRemove
     }
 
     private func tagsChanged(to value: [TagPreview]) {
@@ -136,6 +167,8 @@ struct TagSelector_Previews: PreviewProvider {
     @StateObject private static var search = TagQueryViewModel.preview()
 
     static var previews: some View {
-        TagSelector(tags: .constant([TagPreview]()), search: search)
+        NavigationView {
+            TagSelector(tags: .constant([TagPreview]()), search: search)
+        }
     }
 }

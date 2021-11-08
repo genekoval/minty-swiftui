@@ -16,7 +16,9 @@ struct TagSelectButton: View {
             search.excluded = tags
         }
         .sheet(isPresented: $selectorPresented) {
-            TagSelector(tags: $tags, search: search)
+            NavigationView {
+                TagSelector(tags: $tags, search: search)
+            }
         }
     }
 

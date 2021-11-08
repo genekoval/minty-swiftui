@@ -70,24 +70,12 @@ struct TagEditor: View {
                     }
                 }
 
-                Section(header: Text("Description")) {
-                    NavigationLink(destination: EditorView(
-                        title: "Description",
-                        save: { tag.commitDescription() },
-                        draft: $tag.draftDescription,
-                        original: tag.description
-                    )) {
-                        if let description = tag.description {
-                            Text(description)
-                                .lineLimit(1)
-                        }
-                        else {
-                            Text("No description")
-                                .foregroundColor(.secondary)
-                                .italic()
-                        }
-                    }
-                }
+                EditorLink(
+                    title: "Description",
+                    onSave: { tag.commitDescription() },
+                    draft: $tag.draftDescription,
+                    original: tag.description
+                )
 
                 Section(header: Text("Links")) {
                     ForEach(tag.sources) { SourceLink(source: $0) }

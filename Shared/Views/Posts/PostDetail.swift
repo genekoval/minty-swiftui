@@ -6,6 +6,8 @@ struct PostDetail: View {
 
     @ObservedObject var deleted: Deleted
 
+    @Binding var preview: PostPreview
+
     @StateObject private var post: PostViewModel
 
     @State private var showingEditor = false
@@ -82,6 +84,9 @@ struct PostDetail: View {
                 }
             }
         }
+        .onReceive(post.$preview) { preview in
+            self.preview = preview
+        }
         .sheet(isPresented: $showingEditor) {
             PostEditor(post: post)
         }
@@ -92,11 +97,20 @@ struct PostDetail: View {
         }
     }
 
-    init(id: String, repo: MintyRepo?, deleted: Deleted) {
+    init(
+        id: String,
+        repo: MintyRepo?,
+        deleted: Deleted,
+        preview: Binding<PostPreview>
+    ) {
         self.deleted = deleted
-        _post = StateObject(
-            wrappedValue: PostViewModel(id: id, repo: repo, deleted: deleted)
-        )
+        _preview = preview
+        _post = StateObject(wrappedValue: PostViewModel(
+            id: id,
+            repo: repo,
+            deleted: deleted,
+            preview: preview.wrappedValue
+        ))
     }
 }
 
@@ -115,7 +129,8 @@ struct PostDetail_Previews: PreviewProvider {
                     PostDetail(
                         id: post,
                         repo: PreviewRepo(),
-                        deleted: deleted
+                        deleted: deleted,
+                        preview: .constant(PostPreview.preview(id: post))
                     )
                 }
             }

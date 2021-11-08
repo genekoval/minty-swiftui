@@ -23,7 +23,7 @@ final class PostQueryViewModel: RemoteEntity, ObservableObject {
     @Published var tags: [TagPreview] = []
     @Published var text = ""
 
-    @Published private(set) var hits: [PostPreview] = []
+    @Published var hits: [PostPreview] = []
     @Published private(set) var total = 0
 
     var resultsAvailable: Bool {

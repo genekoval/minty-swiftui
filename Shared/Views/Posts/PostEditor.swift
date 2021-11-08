@@ -5,11 +5,43 @@ struct PostEditor: View {
 
     @ObservedObject var post: PostViewModel
 
+    @StateObject private var tagSearch: TagQueryViewModel
+
     @State private var showingDeleteAlert = false
 
     var body: some View {
         NavigationView {
             Form {
+                EditorLink(
+                    title: "Title",
+                    onSave: { post.commitTitle() },
+                    draft: $post.draftTitle,
+                    original: post.title
+                )
+
+                EditorLink(
+                    title: "Description",
+                    onSave: { post.commitDescription() },
+                    draft: $post.draftDescription,
+                    original: post.description
+                )
+
+                Section {
+                    NavigationLink(destination: TagSelector(
+                        tags: $post.tags,
+                        search: tagSearch,
+                        onAdd: { post.addTag(tag: $0) },
+                        onRemove: { post.removeTag(tag: $0) }
+                    )) {
+                        HStack {
+                            Label("Tags", systemImage: "tag")
+                            Spacer()
+                            Text("\(post.tags.count)")
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
+
                 Section {
                     Button("Delete Post", role: .destructive) {
                         showingDeleteAlert.toggle()
@@ -24,6 +56,7 @@ struct PostEditor: View {
             } message: { Text("This action cannot be undone.") }
             .navigationTitle("Edit Post")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear { tagSearch.excluded = post.tags }
             .toolbar {
                 Button(action: { dismiss() }) {
                     Text("Done")
@@ -31,6 +64,13 @@ struct PostEditor: View {
                 }
             }
         }
+    }
+
+    init(post: PostViewModel) {
+        self.post = post
+        _tagSearch = StateObject(
+            wrappedValue: TagQueryViewModel(repo: post.repo)
+        )
     }
 
     private func delete() {

@@ -34,7 +34,9 @@ final class PreviewRepo: MintyRepo {
     }
 
     func addPostTag(postId: String, tagId: String) throws {
-        throw PreviewError.notSupported
+        Post.preview(edit: postId) { post in
+            post.tags.append(TagPreview.preview(id: tagId))
+        }
     }
 
     func addTag(name: String) throws -> String {
@@ -61,7 +63,11 @@ final class PreviewRepo: MintyRepo {
     }
 
     func deletePostTag(postId: String, tagId: String) throws {
-        throw PreviewError.notSupported
+        Post.preview(edit: postId) { post in
+            if let index = post.tags.firstIndex(where: { $0.id == tagId }) {
+                post.tags.remove(at: index)
+            }
+        }
     }
 
     func deleteTag(tagId: String) throws {
@@ -149,12 +155,23 @@ final class PreviewRepo: MintyRepo {
     func setPostDescription(
         postId: String,
         description: String
-    ) throws -> String? {
-        throw PreviewError.notSupported
+    ) throws -> Modification<String?> {
+        let result = Modification<String?>(
+            newValue: description.isEmpty ? nil : description
+        )
+        Post.preview(edit: postId) { $0.description = result.newValue }
+        return result
     }
 
-    func setPostTitle(postId: String, title: String) throws -> String? {
-        throw PreviewError.notSupported
+    func setPostTitle(
+        postId: String,
+        title: String
+    ) throws -> Modification<String?> {
+        let result = Modification<String?>(
+            newValue: title.isEmpty ? nil : title
+        )
+        Post.preview(edit: postId) { $0.title = result.newValue }
+        return result
     }
 
     func setTagDescription(

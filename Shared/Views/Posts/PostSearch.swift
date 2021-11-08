@@ -96,13 +96,14 @@ struct PostSearch: View {
                     ResultCount(type: "Post", count: search.total)
                 }
 
-                ForEach(search.hits) { post in
+                ForEach($search.hits) { post in
                     NavigationLink(destination: PostDetail(
                         id: post.id,
                         repo: search.repo,
-                        deleted: deleted
+                        deleted: deleted,
+                        preview: post
                     )) {
-                        PostRow(post: post)
+                        PostRow(post: post.wrappedValue)
                     }
                 }
 
