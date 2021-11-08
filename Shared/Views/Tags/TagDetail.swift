@@ -68,9 +68,7 @@ struct TagDetail: View {
                 }
             }
         }
-        .sheet(isPresented: $showingEditor) {
-            TagEditor(isPresented: $showingEditor, tag: tag)
-        }
+        .sheet(isPresented: $showingEditor) { TagEditor(tag: tag) }
         .toolbar {
             Button("Edit") {
                 showingEditor.toggle()

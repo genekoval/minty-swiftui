@@ -7,8 +7,6 @@ struct PostEditor: View {
 
     @StateObject private var tagSearch: TagQueryViewModel
 
-    @State private var showingDeleteAlert = false
-
     var body: some View {
         NavigationView {
             Form {
@@ -42,18 +40,8 @@ struct PostEditor: View {
                     }
                 }
 
-                Section {
-                    Button("Delete Post", role: .destructive) {
-                        showingDeleteAlert.toggle()
-                    }
-                }
+                DeleteButton(for: "Post") { delete() }
             }
-            .alert(
-                Text("Delete this post?"),
-                isPresented: $showingDeleteAlert
-            ) {
-                Button("Delete", role: .destructive) { delete() }
-            } message: { Text("This action cannot be undone.") }
             .navigationTitle("Edit Post")
             .navigationBarTitleDisplayMode(.inline)
             .onAppear { tagSearch.excluded = post.tags }

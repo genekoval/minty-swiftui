@@ -16,6 +16,7 @@
 		BE0098602731BBD20021E660 /* TagSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00985F2731BBD20021E660 /* TagSelectButton.swift */; };
 		BE0098612731BBD20021E660 /* TagSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00985F2731BBD20021E660 /* TagSelectButton.swift */; };
 		BE3068992735F5C90038972B /* PostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3068982735F5C90038972B /* PostEditor.swift */; };
+		BE3E16AE2739968C00052660 /* DeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3E16AD2739968C00052660 /* DeleteButton.swift */; };
 		BE465506270CFA8E00D3C4FB /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465505270CFA8E00D3C4FB /* Tests_iOS.swift */; };
 		BE465508270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465507270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift */; };
 		BE465512270CFA8E00D3C4FB /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465511270CFA8E00D3C4FB /* Tests_macOS.swift */; };
@@ -135,6 +136,7 @@
 		BE00985C2731B4A00021E660 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
 		BE00985F2731BBD20021E660 /* TagSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelectButton.swift; sourceTree = "<group>"; };
 		BE3068982735F5C90038972B /* PostEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditor.swift; sourceTree = "<group>"; };
+		BE3E16AD2739968C00052660 /* DeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteButton.swift; sourceTree = "<group>"; };
 		BE4654ED270CFA8B00D3C4FB /* MintyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MintyApp.swift; sourceTree = "<group>"; };
 		BE4654EE270CFA8B00D3C4FB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 				BEB07B83272B07CC004A942C /* Posts */,
 				BE46558A270F7C9000D3C4FB /* Settings */,
 				BED04C46271542A900EF00B8 /* Tags */,
+				BE3E16AD2739968C00052660 /* DeleteButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -709,6 +712,7 @@
 				BE00985A2731AB0C0021E660 /* SelectButton.swift in Sources */,
 				BE529A3727304D61001DB760 /* PostExplorer.swift in Sources */,
 				BE8E71C927330F93009A4FE9 /* TagList.swift in Sources */,
+				BE3E16AE2739968C00052660 /* DeleteButton.swift in Sources */,
 				BEB07B85272B07E3004A942C /* PostRow.swift in Sources */,
 				BED04C4B2715465600EF00B8 /* TagQueryViewModel.swift in Sources */,
 				BE465578270D111B00D3C4FB /* Server.swift in Sources */,
