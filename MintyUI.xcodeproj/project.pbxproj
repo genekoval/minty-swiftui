@@ -17,6 +17,12 @@
 		BE0098612731BBD20021E660 /* TagSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00985F2731BBD20021E660 /* TagSelectButton.swift */; };
 		BE3068992735F5C90038972B /* PostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3068982735F5C90038972B /* PostEditor.swift */; };
 		BE3E16AE2739968C00052660 /* DeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3E16AD2739968C00052660 /* DeleteButton.swift */; };
+		BE3E16B027399AEE00052660 /* ObjectEditorGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3E16AF27399AEE00052660 /* ObjectEditorGrid.swift */; };
+		BE3E16B22739F5B100052660 /* ObjectUploadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3E16B12739F5B000052660 /* ObjectUploadButton.swift */; };
+		BE3E16B42739F61900052660 /* ObjectUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3E16B32739F61900052660 /* ObjectUploadView.swift */; };
+		BE3E16B6273A0B8100052660 /* ClearableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3E16B5273A0B8100052660 /* ClearableTextField.swift */; };
+		BE3E16B8273A177300052660 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3E16B7273A177300052660 /* Grid.swift */; };
+		BE3E16BA273A1F0D00052660 /* PreviewImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3E16B9273A1F0D00052660 /* PreviewImage.swift */; };
 		BE465506270CFA8E00D3C4FB /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465505270CFA8E00D3C4FB /* Tests_iOS.swift */; };
 		BE465508270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465507270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift */; };
 		BE465512270CFA8E00D3C4FB /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465511270CFA8E00D3C4FB /* Tests_macOS.swift */; };
@@ -137,6 +143,12 @@
 		BE00985F2731BBD20021E660 /* TagSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelectButton.swift; sourceTree = "<group>"; };
 		BE3068982735F5C90038972B /* PostEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditor.swift; sourceTree = "<group>"; };
 		BE3E16AD2739968C00052660 /* DeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteButton.swift; sourceTree = "<group>"; };
+		BE3E16AF27399AEE00052660 /* ObjectEditorGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectEditorGrid.swift; sourceTree = "<group>"; };
+		BE3E16B12739F5B000052660 /* ObjectUploadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectUploadButton.swift; sourceTree = "<group>"; };
+		BE3E16B32739F61900052660 /* ObjectUploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectUploadView.swift; sourceTree = "<group>"; };
+		BE3E16B5273A0B8100052660 /* ClearableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearableTextField.swift; sourceTree = "<group>"; };
+		BE3E16B7273A177300052660 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
+		BE3E16B9273A1F0D00052660 /* PreviewImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewImage.swift; sourceTree = "<group>"; };
 		BE4654ED270CFA8B00D3C4FB /* MintyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MintyApp.swift; sourceTree = "<group>"; };
 		BE4654EE270CFA8B00D3C4FB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -304,19 +316,21 @@
 			isa = PBXGroup;
 			children = (
 				BED04C4327153E7000EF00B8 /* AppShell.swift */,
+				BE3E16B5273A0B8100052660 /* ClearableTextField.swift */,
 				BE4654EE270CFA8B00D3C4FB /* ContentView.swift */,
+				BE3E16AD2739968C00052660 /* DeleteButton.swift */,
 				BE6A63DF272855FE00365D24 /* EditorLink.swift */,
+				BE3E16B7273A177300052660 /* Grid.swift */,
 				BED811502720EC5700929D4C /* ImageObject.swift */,
+				BE6DECDE273468C400BB868B /* Objects */,
+				BEB07B83272B07CC004A942C /* Posts */,
 				BEC6783A271A53FF009BCE5F /* ResultCount.swift */,
 				BED04C532717A13E00EF00B8 /* SearchHome.swift */,
 				BE0098592731AB0C0021E660 /* SelectButton.swift */,
-				BE808C51271C8CB90081F815 /* SourceLink.swift */,
-				BE808C4F271C82800081F815 /* Timestamp.swift */,
-				BE6DECDE273468C400BB868B /* Objects */,
-				BEB07B83272B07CC004A942C /* Posts */,
 				BE46558A270F7C9000D3C4FB /* Settings */,
+				BE808C51271C8CB90081F815 /* SourceLink.swift */,
 				BED04C46271542A900EF00B8 /* Tags */,
-				BE3E16AD2739968C00052660 /* DeleteButton.swift */,
+				BE808C4F271C82800081F815 /* Timestamp.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -437,7 +451,11 @@
 		BE6DECDE273468C400BB868B /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				BE3E16AF27399AEE00052660 /* ObjectEditorGrid.swift */,
 				BE6DECDF273468FC00BB868B /* ObjectGrid.swift */,
+				BE3E16B12739F5B000052660 /* ObjectUploadButton.swift */,
+				BE3E16B32739F61900052660 /* ObjectUploadView.swift */,
+				BE3E16B9273A1F0D00052660 /* PreviewImage.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -695,6 +713,7 @@
 				BE6A63E52728C29100365D24 /* Deleted.swift in Sources */,
 				BED04C4427153E7000EF00B8 /* AppShell.swift in Sources */,
 				BE3068992735F5C90038972B /* PostEditor.swift in Sources */,
+				BE3E16BA273A1F0D00052660 /* PreviewImage.swift in Sources */,
 				BE465595270F7E1100D3C4FB /* SettingsView.swift in Sources */,
 				BEB07B92272C546D004A942C /* PreviewObject.swift in Sources */,
 				BEB07B8E272B0EA2004A942C /* PostQueryViewModel.swift in Sources */,
@@ -704,6 +723,7 @@
 				BE5AC1FF271B405800FCA45A /* TagViewModel.swift in Sources */,
 				BED04C5127179A1700EF00B8 /* TagDetail.swift in Sources */,
 				BE6A84FB271F2BB300D4566B /* PreviewSource.swift in Sources */,
+				BE3E16B6273A0B8100052660 /* ClearableTextField.swift in Sources */,
 				BE465517270CFA8E00D3C4FB /* ContentView.swift in Sources */,
 				BE465580270D11CB00D3C4FB /* ConnectionModal.swift in Sources */,
 				BEB07B87272B07F8004A942C /* PostSearch.swift in Sources */,
@@ -714,7 +734,9 @@
 				BE8E71C927330F93009A4FE9 /* TagList.swift in Sources */,
 				BE3E16AE2739968C00052660 /* DeleteButton.swift in Sources */,
 				BEB07B85272B07E3004A942C /* PostRow.swift in Sources */,
+				BE3E16B42739F61900052660 /* ObjectUploadView.swift in Sources */,
 				BED04C4B2715465600EF00B8 /* TagQueryViewModel.swift in Sources */,
+				BE3E16B027399AEE00052660 /* ObjectEditorGrid.swift in Sources */,
 				BE465578270D111B00D3C4FB /* Server.swift in Sources */,
 				BE80C37F2726605A009616F5 /* CacheRow.swift in Sources */,
 				BEE9D5F7270FF1CD0034CF1A /* AboutView.swift in Sources */,
@@ -730,12 +752,14 @@
 				BEC67837271A50EA009BCE5F /* TagHome.swift in Sources */,
 				BE8E71C72732FA99009A4FE9 /* Collection.swift in Sources */,
 				BE009857273195360021E660 /* TagSelector.swift in Sources */,
+				BE3E16B8273A177300052660 /* Grid.swift in Sources */,
 				BE6A84FD271F318000D4566B /* PreviewTag.swift in Sources */,
 				BED04C542717A13E00EF00B8 /* SearchHome.swift in Sources */,
 				BED8115C2721C29200929D4C /* PreviewObjectSource.swift in Sources */,
 				BE465515270CFA8E00D3C4FB /* MintyApp.swift in Sources */,
 				BED04C4E27178A4C00EF00B8 /* TagSearch.swift in Sources */,
 				BE80C37C27264D14009616F5 /* DataSource.swift in Sources */,
+				BE3E16B22739F5B100052660 /* ObjectUploadButton.swift in Sources */,
 				BE6DECE0273468FC00BB868B /* ObjectGrid.swift in Sources */,
 				BEFDF5F32722524600F9EA09 /* CacheList.swift in Sources */,
 				BE46557C270D118700D3C4FB /* SettingsViewModel.swift in Sources */,

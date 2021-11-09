@@ -25,6 +25,15 @@ struct PostEditor: View {
                 )
 
                 Section {
+                    NavigationLink(destination: ObjectEditorGrid(post: post)) {
+                        HStack {
+                            Label("Objects", systemImage: "doc")
+                            Spacer()
+                            Text("\(post.objects.count)")
+                                .foregroundColor(.secondary)
+                        }
+                    }
+
                     NavigationLink(destination: TagSelector(
                         tags: $post.tags,
                         search: tagSearch,
@@ -76,5 +85,6 @@ struct PostEditor_Previews: PreviewProvider {
 
     static var previews: some View {
         PostEditor(post: post)
+            .environmentObject(ObjectSource.preview)
     }
 }

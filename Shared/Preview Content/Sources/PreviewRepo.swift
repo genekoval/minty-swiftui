@@ -30,7 +30,13 @@ final class PreviewRepo: MintyRepo {
         objects: [String],
         position: UInt32
     ) throws -> [ObjectPreview] {
-        throw PreviewError.notSupported
+        let previews = objects.map { ObjectPreview.preview(id: $0) }
+
+        Post.preview(edit: postId) { post in
+            post.objects.insert(contentsOf: previews, at: Int(position))
+        }
+
+        return previews
     }
 
     func addPostTag(postId: String, tagId: String) throws {

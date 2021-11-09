@@ -10,7 +10,9 @@ struct ImageObject<Content: View>: View {
 
     var body: some View {
         AsyncImage(url: objects.url(for: id)) { image in
-            image.resizable()
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
         } placeholder: {
             placeholder
         }

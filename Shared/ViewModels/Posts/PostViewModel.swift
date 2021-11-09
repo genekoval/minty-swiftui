@@ -46,6 +46,22 @@ final class PostViewModel: IdentifiableEntity, ObservableObject {
         $description.sink { [weak self] in
             self?.draftDescription = $0 ?? ""
         }.store(in: &cancellables)
+
+        $objects.sink { [weak self] in
+            self?.preview.objectCount = UInt32($0.count)
+        }.store(in: &cancellables)
+    }
+
+    func addObjects(_ objects: [String], at position: Int) {
+        withRepo("add objects") { repo in
+            let previews = try repo.addPostObjects(
+                postId: id,
+                objects: objects,
+                position: UInt32(position)
+            )
+
+            self.objects.insert(contentsOf: previews, at: position)
+        }
     }
 
     func addTag(tag: TagPreview) {
