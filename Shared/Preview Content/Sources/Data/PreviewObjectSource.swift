@@ -7,6 +7,15 @@ final class PreviewObjectSource: ObjectSource {
         cachedObjects = objects
     }
 
+    override func makeUploadable(text: String) -> Uploadable {
+        if text.starts(with: "https://") {
+            return .url(text)
+        }
+        else {
+            return .existingObject(text)
+        }
+    }
+
     override func url(for objectId: String) -> URL? {
         Bundle.main.url(forResource: objectId, withExtension: nil)
     }

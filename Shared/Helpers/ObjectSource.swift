@@ -19,6 +19,15 @@ class ObjectSource: ObservableObject {
 
     func clearCache() { cachedObjects.removeAll() }
 
+    func makeUploadable(text: String) -> Uploadable {
+        if UUID(uuidString: text) != nil {
+            return .existingObject(text)
+        }
+        else {
+            return .url(text)
+        }
+    }
+
     func remove(at index: Int) {
         cachedObjects.remove(at: index)
     }

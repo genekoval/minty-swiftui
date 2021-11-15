@@ -85,6 +85,8 @@
 		BEB07B98272C5BA6004A942C /* sand dune.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BEB07B96272C5BA6004A942C /* sand dune.jpg */; };
 		BEB07B9A272C81A9004A942C /* sand dune (preview).png in Resources */ = {isa = PBXBuildFile; fileRef = BEB07B99272C81A9004A942C /* sand dune (preview).png */; };
 		BEB07B9B272C81A9004A942C /* sand dune (preview).png in Resources */ = {isa = PBXBuildFile; fileRef = BEB07B99272C81A9004A942C /* sand dune (preview).png */; };
+		BEBFDF8B2741E7EB00A3E2A8 /* Uploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBFDF8A2741E7EB00A3E2A8 /* Uploadable.swift */; };
+		BEBFDF8C2741E7EB00A3E2A8 /* Uploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBFDF8A2741E7EB00A3E2A8 /* Uploadable.swift */; };
 		BEC6782E2718FEF1009BCE5F /* NewTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC6782D2718FEF1009BCE5F /* NewTag.swift */; };
 		BEC6782F2718FEF1009BCE5F /* NewTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC6782D2718FEF1009BCE5F /* NewTag.swift */; };
 		BEC67837271A50EA009BCE5F /* TagHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC67836271A50EA009BCE5F /* TagHome.swift */; };
@@ -197,6 +199,7 @@
 		BEB07B93272C5ACA004A942C /* unsplash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unsplash.png; sourceTree = "<group>"; };
 		BEB07B96272C5BA6004A942C /* sand dune.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sand dune.jpg"; sourceTree = "<group>"; };
 		BEB07B99272C81A9004A942C /* sand dune (preview).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sand dune (preview).png"; sourceTree = "<group>"; };
+		BEBFDF8A2741E7EB00A3E2A8 /* Uploadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uploadable.swift; sourceTree = "<group>"; };
 		BEC6782D2718FEF1009BCE5F /* NewTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTag.swift; sourceTree = "<group>"; };
 		BEC67836271A50EA009BCE5F /* TagHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagHome.swift; sourceTree = "<group>"; };
 		BEC6783A271A53FF009BCE5F /* ResultCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCount.swift; sourceTree = "<group>"; };
@@ -480,6 +483,7 @@
 				BE6A84FE271F8E4400D4566B /* ObjectCache.swift */,
 				BED811582721BECE00929D4C /* ObjectSource.swift */,
 				BE6A63E127289B2700365D24 /* RemoteEntity.swift */,
+				BEBFDF8A2741E7EB00A3E2A8 /* Uploadable.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -740,6 +744,7 @@
 				BE465578270D111B00D3C4FB /* Server.swift in Sources */,
 				BE80C37F2726605A009616F5 /* CacheRow.swift in Sources */,
 				BEE9D5F7270FF1CD0034CF1A /* AboutView.swift in Sources */,
+				BEBFDF8B2741E7EB00A3E2A8 /* Uploadable.swift in Sources */,
 				BE6A84F6271F265000D4566B /* PreviewRepo.swift in Sources */,
 				BE00985D2731B4A00021E660 /* Binding.swift in Sources */,
 				BE6A84F4271F25E100D4566B /* PreviewError.swift in Sources */,
@@ -798,6 +803,7 @@
 				BE465516270CFA8E00D3C4FB /* MintyApp.swift in Sources */,
 				BE6A8500271F8E4400D4566B /* ObjectCache.swift in Sources */,
 				BED04C5227179A1700EF00B8 /* TagDetail.swift in Sources */,
+				BEBFDF8C2741E7EB00A3E2A8 /* Uploadable.swift in Sources */,
 				BEC67838271A50EA009BCE5F /* TagHome.swift in Sources */,
 				BED04C4C2715465600EF00B8 /* TagQueryViewModel.swift in Sources */,
 				BE6A63E327289B2700365D24 /* RemoteEntity.swift in Sources */,

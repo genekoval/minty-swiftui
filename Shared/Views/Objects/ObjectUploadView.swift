@@ -1,22 +1,5 @@
+import Minty
 import SwiftUI
-
-private enum Uploadable: Identifiable {
-    case existingObject(String)
-
-    var id: String {
-        switch self {
-        case .existingObject(let objectId):
-            return objectId
-        }
-    }
-
-    func upload(objects: inout [String], source: ObjectSource) {
-        switch self {
-        case .existingObject(let objectId):
-            objects.append(objectId)
-        }
-    }
-}
 
 struct ObjectUploadView: View {
     @Environment(\.dismiss) var dismiss
@@ -24,8 +7,8 @@ struct ObjectUploadView: View {
 
     let onUpload: ([String]) -> Void
 
+    @State private var text = ""
     @State private var uploads: [Uploadable] = []
-    @State private var id = ""
 
     var body: some View {
         VStack {
@@ -41,14 +24,11 @@ struct ObjectUploadView: View {
             }
 
             VStack {
-                ClearableTextField("Object ID", text: $id, icon: "doc")
+                ClearableTextField("Object ID or URL", text: $text)
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                     .submitLabel(.done)
-                    .onSubmit {
-                        uploads.append(.existingObject(id))
-                        id.removeAll()
-                    }
+                    .onSubmit { textSubmitted() }
             }
             .padding()
         }
@@ -70,11 +50,18 @@ struct ObjectUploadView: View {
         }
     }
 
+    private func textSubmitted() {
+        uploads.append(source.makeUploadable(text: text))
+        text.removeAll()
+    }
+
     private func upload() {
         var objects: [String] = []
 
-        for item in uploads {
-            item.upload(objects: &objects, source: source)
+        if let repo = source.repo {
+            for item in uploads {
+                item.upload(objects: &objects, repo: repo)
+            }
         }
 
         if !objects.isEmpty {
@@ -89,6 +76,8 @@ struct ObjectUploadView: View {
         switch upload {
         case .existingObject(let objectId):
             Label(objectId, systemImage: "doc")
+        case .url(let urlString):
+            Label(urlString, systemImage: "network")
         }
     }
 }
