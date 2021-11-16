@@ -94,6 +94,20 @@ final class ObjectCache: ObjectSource {
         super.remove(at: index)
     }
 
+    override func upload(url: URL) async -> String? {
+        guard let repo = repo else { return nil }
+
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            return try repo.addObjectData(count: data.count, data: { writer in
+                writer.write(data: data)
+            })
+        }
+        catch {
+            fatalError("Failed to upload file:\n\(error)")
+        }
+    }
+
     override func url(for objectId: String) -> URL? {
         let url = getObjectURL(id: objectId)
 

@@ -7,6 +7,10 @@ struct ObjectUploadView: View {
 
     let onUpload: ([String]) -> Void
 
+    @State private var imageURL: URL?
+    @State private var inputImage: UIImage?
+    @State private var showingFileImporter = false
+    @State private var showingImagePicker = false
     @State private var text = ""
     @State private var uploads: [Uploadable] = []
 
@@ -14,7 +18,7 @@ struct ObjectUploadView: View {
         VStack {
             List {
                 ForEach(uploads) {
-                    uploadView($0)
+                    $0.view()
                 }
                 .onDelete { offsets in
                     if let index = offsets.first {
@@ -29,6 +33,22 @@ struct ObjectUploadView: View {
                     .disableAutocorrection(true)
                     .submitLabel(.done)
                     .onSubmit { textSubmitted() }
+
+                HStack(spacing: 50) {
+                    Button(action: { showingImagePicker = true }) {
+                        Image(systemName: "photo.circle.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 50)
+                    }
+
+                    Button(action: { showingFileImporter = true }) {
+                        Image(systemName: "folder.circle.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 50)
+                    }
+                }
             }
             .padding()
         }
@@ -48,6 +68,32 @@ struct ObjectUploadView: View {
                 Button("Cancel") { dismiss() }
             }
         }
+        .sheet(isPresented: $showingImagePicker, onDismiss: loadImage) {
+            ImagePicker(image: $inputImage, url: $imageURL)
+        }
+        .fileImporter(
+            isPresented: $showingFileImporter,
+            allowedContentTypes: [.item],
+            allowsMultipleSelection: true,
+            onCompletion: loadFile
+        )
+    }
+
+    private func loadFile(result: Result<[URL], Error>) {
+        do {
+            let urls = try result.get()
+            uploads.append(contentsOf: urls.map { .file($0) })
+        }
+        catch {
+            fatalError("Failed to import files:\n\(error)")
+        }
+    }
+
+    private func loadImage() {
+        guard let inputImage = inputImage else { return }
+        guard let imageURL = imageURL else { return }
+
+        uploads.append(.image(inputImage, imageURL))
     }
 
     private func textSubmitted() {
@@ -56,28 +102,18 @@ struct ObjectUploadView: View {
     }
 
     private func upload() {
-        var objects: [String] = []
+        Task {
+            var objects: [String] = []
 
-        if let repo = source.repo {
             for item in uploads {
-                item.upload(objects: &objects, repo: repo)
+                await item.upload(objects: &objects, source: source)
             }
-        }
 
-        if !objects.isEmpty {
-            onUpload(objects)
-        }
+            if !objects.isEmpty {
+                onUpload(objects)
+            }
 
-        dismiss()
-    }
-
-    @ViewBuilder
-    private func uploadView(_ upload: Uploadable) -> some View {
-        switch upload {
-        case .existingObject(let objectId):
-            Label(objectId, systemImage: "doc")
-        case .url(let urlString):
-            Label(urlString, systemImage: "network")
+            dismiss()
         }
     }
 }

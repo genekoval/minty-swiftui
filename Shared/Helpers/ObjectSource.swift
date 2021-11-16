@@ -32,6 +32,8 @@ class ObjectSource: ObservableObject {
         cachedObjects.remove(at: index)
     }
 
+    func upload(url: URL) async -> String? { nil }
+
     final func url(for objectId: String?) -> URL? {
         guard let id = objectId else { return nil }
         return url(for: id)

@@ -87,6 +87,8 @@
 		BEB07B9B272C81A9004A942C /* sand dune (preview).png in Resources */ = {isa = PBXBuildFile; fileRef = BEB07B99272C81A9004A942C /* sand dune (preview).png */; };
 		BEBFDF8B2741E7EB00A3E2A8 /* Uploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBFDF8A2741E7EB00A3E2A8 /* Uploadable.swift */; };
 		BEBFDF8C2741E7EB00A3E2A8 /* Uploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBFDF8A2741E7EB00A3E2A8 /* Uploadable.swift */; };
+		BEBFDF8E274214AA00A3E2A8 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBFDF8D274214AA00A3E2A8 /* ImagePicker.swift */; };
+		BEBFDF8F274214AA00A3E2A8 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBFDF8D274214AA00A3E2A8 /* ImagePicker.swift */; };
 		BEC6782E2718FEF1009BCE5F /* NewTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC6782D2718FEF1009BCE5F /* NewTag.swift */; };
 		BEC6782F2718FEF1009BCE5F /* NewTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC6782D2718FEF1009BCE5F /* NewTag.swift */; };
 		BEC67837271A50EA009BCE5F /* TagHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC67836271A50EA009BCE5F /* TagHome.swift */; };
@@ -200,6 +202,7 @@
 		BEB07B96272C5BA6004A942C /* sand dune.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sand dune.jpg"; sourceTree = "<group>"; };
 		BEB07B99272C81A9004A942C /* sand dune (preview).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sand dune (preview).png"; sourceTree = "<group>"; };
 		BEBFDF8A2741E7EB00A3E2A8 /* Uploadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uploadable.swift; sourceTree = "<group>"; };
+		BEBFDF8D274214AA00A3E2A8 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		BEC6782D2718FEF1009BCE5F /* NewTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTag.swift; sourceTree = "<group>"; };
 		BEC67836271A50EA009BCE5F /* TagHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagHome.swift; sourceTree = "<group>"; };
 		BEC6783A271A53FF009BCE5F /* ResultCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCount.swift; sourceTree = "<group>"; };
@@ -325,15 +328,16 @@
 				BE6A63DF272855FE00365D24 /* EditorLink.swift */,
 				BE3E16B7273A177300052660 /* Grid.swift */,
 				BED811502720EC5700929D4C /* ImageObject.swift */,
-				BE6DECDE273468C400BB868B /* Objects */,
-				BEB07B83272B07CC004A942C /* Posts */,
+				BEBFDF8D274214AA00A3E2A8 /* ImagePicker.swift */,
 				BEC6783A271A53FF009BCE5F /* ResultCount.swift */,
 				BED04C532717A13E00EF00B8 /* SearchHome.swift */,
 				BE0098592731AB0C0021E660 /* SelectButton.swift */,
-				BE46558A270F7C9000D3C4FB /* Settings */,
 				BE808C51271C8CB90081F815 /* SourceLink.swift */,
-				BED04C46271542A900EF00B8 /* Tags */,
 				BE808C4F271C82800081F815 /* Timestamp.swift */,
+				BE6DECDE273468C400BB868B /* Objects */,
+				BEB07B83272B07CC004A942C /* Posts */,
+				BE46558A270F7C9000D3C4FB /* Settings */,
+				BED04C46271542A900EF00B8 /* Tags */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -718,6 +722,7 @@
 				BED04C4427153E7000EF00B8 /* AppShell.swift in Sources */,
 				BE3068992735F5C90038972B /* PostEditor.swift in Sources */,
 				BE3E16BA273A1F0D00052660 /* PreviewImage.swift in Sources */,
+				BEBFDF8E274214AA00A3E2A8 /* ImagePicker.swift in Sources */,
 				BE465595270F7E1100D3C4FB /* SettingsView.swift in Sources */,
 				BEB07B92272C546D004A942C /* PreviewObject.swift in Sources */,
 				BEB07B8E272B0EA2004A942C /* PostQueryViewModel.swift in Sources */,
@@ -790,6 +795,7 @@
 				BE0098612731BBD20021E660 /* TagSelectButton.swift in Sources */,
 				BE80C3802726605A009616F5 /* CacheRow.swift in Sources */,
 				BE465583270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
+				BEBFDF8F274214AA00A3E2A8 /* ImagePicker.swift in Sources */,
 				BE00985B2731AB0C0021E660 /* SelectButton.swift in Sources */,
 				BEFDF5F42722524600F9EA09 /* CacheList.swift in Sources */,
 				BEC6782F2718FEF1009BCE5F /* NewTag.swift in Sources */,
