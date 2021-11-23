@@ -20,12 +20,16 @@ struct ObjectUploadView: View {
                 ForEach(uploads) {
                     $0.view()
                 }
+                .onMove { (source, destination) in
+                    uploads.move(fromOffsets: source, toOffset: destination)
+                }
                 .onDelete { offsets in
                     if let index = offsets.first {
                         uploads.remove(at: index)
                     }
                 }
             }
+            .environment(\.editMode, .constant(.active))
 
             VStack {
                 ClearableTextField("Object ID or URL", text: $text)
