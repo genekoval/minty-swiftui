@@ -12,6 +12,7 @@ private struct TagSelectRow: View {
         VStack {
             HStack {
                 SelectButton(isSelected: $isSelected.onChange(selectionChanged))
+                    .frame(width: 30, height: 30)
                 TagRow(tag: tag)
             }
 
@@ -164,11 +165,18 @@ struct TagSelector: View {
 }
 
 struct TagSelector_Previews: PreviewProvider {
-    @StateObject private static var search = TagQueryViewModel.preview()
+    private struct Preview: View {
+        @StateObject private var search = TagQueryViewModel.preview()
+        @State private var tags: [TagPreview] = []
+
+        var body: some View {
+            NavigationView {
+                TagSelector(tags: $tags, search: search)
+            }
+        }
+    }
 
     static var previews: some View {
-        NavigationView {
-            TagSelector(tags: .constant([TagPreview]()), search: search)
-        }
+        Preview()
     }
 }

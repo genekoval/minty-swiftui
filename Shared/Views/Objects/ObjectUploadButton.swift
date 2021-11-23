@@ -8,7 +8,7 @@ struct ObjectUploadButton: View {
 
     var body: some View {
         Button(action: { showingUploadView.toggle() }) {
-            Image(systemName: "doc.badge.plus")
+            Image(systemName: "doc.fill.badge.plus")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
         }

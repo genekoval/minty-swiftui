@@ -1,66 +1,116 @@
-import Minty
 import SwiftUI
 
-private enum EditorItem: Identifiable {
-    case object(ObjectPreview)
-    case addButton
+private struct SelectorItem: View {
+    @ObservedObject var selectable: Selectable
 
-    var id: String {
-        switch self {
-        case .object(let object):
-            return object.id
-        case .addButton:
-            return "button.add"
+    let isSelecting: Bool
+
+    var body: some View {
+        PreviewImage(object: selectable.object)
+            .onTapGesture {
+                if isSelecting {
+                    selectable.selected.toggle()
+                }
+            }
+            .overlay {
+                if isSelecting {
+                    SelectionIndicator(isSelected: selectable.selected)
+                        .font(.title2)
+                }
+            }
+    }
+}
+
+private struct EditorItemView: View {
+    let item: EditorItem
+    let isSelecting: Bool
+
+    var body: some View {
+        switch item {
+        case .object(let selectable):
+            SelectorItem(selectable: selectable, isSelecting: isSelecting)
+        case .addButton(let didUpload):
+            ObjectUploadButton(onUpload: didUpload)
+                .frame(width: 50)
         }
     }
 }
 
 struct ObjectEditorGrid: View {
-    @ObservedObject var post: PostViewModel
-
-    @State private var items: [EditorItem] = []
-    @State private var insertionPoint: Int = -1
+    @StateObject private var editor: ObjectEditorViewModel
 
     var body: some View {
         ScrollView {
             VStack {
-                Grid {
-                    ForEach(items) { itemView($0) }
-                }
+                itemGrid
             }
         }
-        .navigationTitle("Objects")
+        .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
-        .onReceive(post.$objects) { rebuildItems(objects: $0) }
-    }
-
-    private func didUpload(objects: [String]) {
-        post.addObjects(objects, at: insertionPoint)
-    }
-
-    private func rebuildItems(objects: [ObjectPreview]) {
-        if insertionPoint < 0 {
-            insertionPoint = objects.count
+        .navigationBarBackButtonHidden(editor.isSelecting)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) { selectButton }
+            ToolbarItem(placement: .cancellationAction) { selectAllButton }
+            ToolbarItem(placement: .bottomBar) { deleteButton }
         }
-
-        items.removeAll(keepingCapacity: true)
-
-        for object in objects {
-            items.append(.object(object))
-        }
-
-        items.append(.addButton)
     }
 
     @ViewBuilder
-    private func itemView(_ item: EditorItem) -> some View {
-        switch item {
-        case .object(let object):
-            PreviewImage(object: object)
-        case .addButton:
-            ObjectUploadButton(onUpload: { didUpload(objects: $0) })
-                .frame(width: 50)
+    private var deleteButton: some View {
+        if editor.isSelecting {
+            Button(action: { editor.deleteSelected() }) {
+                Image(systemName: "trash")
+            }
+            .disabled(editor.selected.isEmpty)
         }
+    }
+
+    @ViewBuilder
+    private var itemGrid: some View {
+        Grid {
+            ForEach(editor.items) {
+                EditorItemView(item: $0, isSelecting: editor.isSelecting)
+            }
+        }
+        .animation(Animation.easeOut(duration: 0.25), value: editor.isSelecting)
+    }
+
+    @ViewBuilder
+    private var selectButton: some View {
+        if editor.isSelecting || !editor.isEmpty {
+            Button(action: { editor.isSelecting.toggle() }) {
+                if editor.isSelecting {
+                    Text("Done")
+                        .bold()
+                }
+                else {
+                    Text("Select")
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var selectAllButton: some View {
+        if editor.isSelecting && !editor.isEmpty {
+            Button("\(editor.allSelected ? "Deselect" : "Select") All") {
+                editor.allSelected ? editor.deselectAll() : editor.selectAll()
+            }
+        }
+    }
+
+    private var title: String {
+        if !editor.isSelecting { return "Objects" }
+
+        let selected = editor.selected.count
+        if selected == 0 { return "Select Objects" }
+
+        let suffix = selected == 1 ? "Object" : "Objects"
+        return "\(selected) \(suffix)"
+    }
+
+    init(post: PostViewModel) {
+        _editor = StateObject(wrappedValue: ObjectEditorViewModel(post: post))
     }
 }
 

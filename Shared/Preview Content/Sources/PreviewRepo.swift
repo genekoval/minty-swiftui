@@ -64,7 +64,22 @@ final class PreviewRepo: MintyRepo {
         Post.preview(remove: postId)
     }
 
-    func deletePostObjects(postId: String, ranges: [Range<Int32>]) throws {
+    func deletePostObjects(postId: String, objects: [String]) throws -> Date {
+        Post.preview(edit: postId) { post in
+            for id in objects {
+                if let index = post.objects.firstIndex(where: { $0.id == id }) {
+                    post.objects.remove(at: index)
+                }
+            }
+        }
+
+        return Date()
+    }
+
+    func deletePostObjects(
+        postId: String,
+        ranges: [Range<Int32>]
+    ) throws -> Date {
         throw PreviewError.notSupported
     }
 

@@ -48,6 +48,7 @@ final class PostViewModel: IdentifiableEntity, ObservableObject {
         }.store(in: &cancellables)
 
         $objects.sink { [weak self] in
+            self?.preview.previewId = $0.first?.previewId
             self?.preview.objectCount = UInt32($0.count)
         }.store(in: &cancellables)
     }
@@ -97,6 +98,18 @@ final class PostViewModel: IdentifiableEntity, ObservableObject {
         }
 
         deleted.id = id
+    }
+
+    func delete(objects: [String]) {
+        withRepo("delete objects") { repo in
+            modified = try repo.deletePostObjects(postId: id, objects: objects)
+        }
+
+        for id in objects {
+            if let index = self.objects.firstIndex(where: { $0.id == id }) {
+                self.objects.remove(at: index)
+            }
+        }
     }
 
     private func load(from post: Post) {
