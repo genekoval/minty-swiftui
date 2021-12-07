@@ -33,7 +33,6 @@
 		BE465518270CFA8E00D3C4FB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4654EE270CFA8B00D3C4FB /* ContentView.swift */; };
 		BE465519270CFA8E00D3C4FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */; };
 		BE46551A270CFA8E00D3C4FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */; };
-		BE465570270D09FB00D3C4FB /* Minty in Frameworks */ = {isa = PBXBuildFile; productRef = BE46556F270D09FB00D3C4FB /* Minty */; };
 		BE465578270D111B00D3C4FB /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465577270D111B00D3C4FB /* Server.swift */; };
 		BE465579270D111B00D3C4FB /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465577270D111B00D3C4FB /* Server.swift */; };
 		BE46557C270D118700D3C4FB /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557B270D118700D3C4FB /* SettingsViewModel.swift */; };
@@ -74,6 +73,7 @@
 		BE8E71C52732EFAE009A4FE9 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8E71C42732EFAE009A4FE9 /* PostViewModel.swift */; };
 		BE8E71C72732FA99009A4FE9 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8E71C62732FA99009A4FE9 /* Collection.swift */; };
 		BE8E71C927330F93009A4FE9 /* TagList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8E71C827330F93009A4FE9 /* TagList.swift */; };
+		BEADAC13275F2A6A0098ED0D /* Minty in Frameworks */ = {isa = PBXBuildFile; productRef = BEADAC12275F2A6A0098ED0D /* Minty */; };
 		BEB07B85272B07E3004A942C /* PostRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB07B84272B07E3004A942C /* PostRow.swift */; };
 		BEB07B87272B07F8004A942C /* PostSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB07B86272B07F8004A942C /* PostSearch.swift */; };
 		BEB07B8B272B082F004A942C /* PostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB07B8A272B082F004A942C /* PostDetail.swift */; };
@@ -229,7 +229,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE465570270D09FB00D3C4FB /* Minty in Frameworks */,
+				BEADAC13275F2A6A0098ED0D /* Minty in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -568,7 +568,7 @@
 			);
 			name = "MintyUI (iOS)";
 			packageProductDependencies = (
-				BE46556F270D09FB00D3C4FB /* Minty */,
+				BEADAC12275F2A6A0098ED0D /* Minty */,
 			);
 			productName = "MintyUI (iOS)";
 			productReference = BE4654F4270CFA8E00D3C4FB /* MintyUI.app */;
@@ -663,7 +663,7 @@
 			);
 			mainGroup = BE4654E7270CFA8B00D3C4FB;
 			packageReferences = (
-				BE46556E270D09FB00D3C4FB /* XCRemoteSwiftPackageReference "minty-swift" */,
+				BEADAC11275F2A6A0098ED0D /* XCRemoteSwiftPackageReference "minty-swift" */,
 			);
 			productRefGroup = BE4654F5270CFA8E00D3C4FB /* Products */;
 			projectDirPath = "";
@@ -1247,7 +1247,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		BE46556E270D09FB00D3C4FB /* XCRemoteSwiftPackageReference "minty-swift" */ = {
+		BEADAC11275F2A6A0098ED0D /* XCRemoteSwiftPackageReference "minty-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://git.aurora.aur/genya/minty-swift.git";
 			requirement = {
@@ -1258,9 +1258,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BE46556F270D09FB00D3C4FB /* Minty */ = {
+		BEADAC12275F2A6A0098ED0D /* Minty */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE46556E270D09FB00D3C4FB /* XCRemoteSwiftPackageReference "minty-swift" */;
+			package = BEADAC11275F2A6A0098ED0D /* XCRemoteSwiftPackageReference "minty-swift" */;
 			productName = Minty;
 		};
 /* End XCSwiftPackageProductDependency section */

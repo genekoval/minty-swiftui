@@ -121,6 +121,25 @@ final class PostViewModel: IdentifiableEntity, ObservableObject {
         tags = post.tags
     }
 
+    func moveObjects(objects: [String], destination: String?) {
+        withRepo("move objects") { repo in
+            modified = try repo.movePostObjects(
+                postId: id,
+                objects: objects,
+                destination: destination
+            )
+        }
+
+        let source = IndexSet(objects.map { object in
+            self.objects.firstIndex(where: { $0.id == object })!
+        })
+
+        let destination = destination == nil ? self.objects.count :
+            self.objects.firstIndex(where: { $0.id == destination })!
+
+        self.objects.move(fromOffsets: source, toOffset: destination)
+    }
+
     override func refresh() {
         withRepo("fetch data") { repo in
             load(from: try repo.getPost(postId: id))

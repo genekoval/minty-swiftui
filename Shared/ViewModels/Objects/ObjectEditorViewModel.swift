@@ -1,26 +1,43 @@
 import Combine
+import Foundation
 import Minty
+
+enum EditorState {
+    case adding
+    case moving
+    case movingInsertionPoint
+    case selecting
+}
 
 class Selectable: ObservableObject {
     let object: ObjectPreview
+    private let action: (String) -> Void
 
     @Published var selected = false
 
-    init(object: ObjectPreview) {
+    init(object: ObjectPreview, action: @escaping (String) -> Void) {
         self.object = object
+        self.action = action
+    }
+
+    func performAction() {
+        action(object.id)
     }
 }
 
 enum EditorItem: Identifiable {
     case object(Selectable)
-    case addButton(([String]) -> Void)
+    case addButton(([String]) -> Void, () -> Void)
+    case placeholder(() -> Void)
 
     var id: String {
         switch self {
         case .object(let selectable):
             return selectable.object.id
-        case .addButton(_):
+        case .addButton(_, _):
             return "button.add"
+        case .placeholder(_):
+            return "placeholder"
         }
     }
 }
@@ -37,13 +54,13 @@ class ObjectEditorViewModel: ObservableObject {
                 .store(in: &cancellables)
         }
     }
-    @Published var isSelecting = false
+    @Published var state: EditorState = .adding
 
     private var addButton: EditorItem!
     private var cancellables = Set<AnyCancellable>()
-    private var isSelectingCancellable: AnyCancellable?
     private var objectsCancellable: AnyCancellable?
     private let post: PostViewModel
+    private var stateCancellable: AnyCancellable?
 
     var allSelected: Bool {
         selected.count == post.objects.count
@@ -66,23 +83,18 @@ class ObjectEditorViewModel: ObservableObject {
     }
 
     var selected: [String] {
-        items.compactMap {
-            switch $0 {
-            case .object(let selectable):
-                return selectable.selected ? selectable.object.id : nil
-            default:
-                return nil
-            }
-        }
+        selectables.compactMap { $0.selected ? $0.object.id : nil }
     }
 
     init(post: PostViewModel) {
         self.post = post
-        addButton = .addButton(addObjects)
+        addButton = .addButton(addObjects, {
+            self.state = .movingInsertionPoint
+        })
 
-        isSelectingCancellable = $isSelecting
-            .dropFirst()
-            .sink { [weak self] in self?.selectionModeChanged(to: $0) }
+        stateCancellable = $state.dropFirst().sink { [weak self] in
+            self?.stateChanged(to: $0)
+        }
 
         objectsCancellable = post.$objects.sink { [weak self] in
             self?.rebuildItems(objects: $0)
@@ -101,7 +113,7 @@ class ObjectEditorViewModel: ObservableObject {
         post.delete(objects: selected)
 
         if isEmpty {
-            isSelecting = false
+            state = .adding
         }
     }
 
@@ -118,25 +130,64 @@ class ObjectEditorViewModel: ObservableObject {
         items.insert(addButton, at: insertionPoint)
     }
 
+    private func moveInsertionPoint(to destination: Int) {
+        disableAddButton()
+        insertionPoint = destination
+        enableAddButton()
+
+        state = .adding
+    }
+
+    private func moveSelected(to destination: String? = nil) {
+        post.moveObjects(objects: selected, destination: destination)
+        state = .adding
+    }
+
+    private func moveSelectedToEnd() {
+        moveSelected()
+    }
+
     private func rebuildItems(objects: [ObjectPreview]) {
         items.removeAll(keepingCapacity: true)
 
         items.append(contentsOf: objects.map {
-            .object(Selectable(object: $0))
+            .object(Selectable(object: $0, action: selectableAction))
         })
+    }
+
+    private func selectableAction(id: String) {
+        if state == .moving {
+            moveSelected(to: id)
+        }
+        else if state == .movingInsertionPoint {
+            let index = items.firstIndex(where: { $0.id == id })!
+            moveInsertionPoint(to: index)
+        }
     }
 
     func selectAll() {
         setSelection(true)
     }
 
-    private func selectionModeChanged(to selecting: Bool) {
-        if selecting {
-            disableAddButton()
+    private func stateChanged(to state: EditorState) {
+        let previous = self.state
+
+        if
+            (previous == .moving || previous == .movingInsertionPoint) &&
+            items.last?.id == "placeholder"
+        {
+            items.removeLast()
         }
-        else {
+
+        if state == .adding && previous != .movingInsertionPoint {
             deselectAll()
             enableAddButton()
+        }
+        else if state == .moving {
+            items.append(.placeholder(moveSelectedToEnd))
+        }
+        else if state == .selecting && previous == .adding {
+            disableAddButton()
         }
     }
 

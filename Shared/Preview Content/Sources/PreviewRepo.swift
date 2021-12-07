@@ -163,7 +163,31 @@ final class PreviewRepo: MintyRepo {
         oldIndex: UInt32,
         newIndex: UInt32
     ) throws {
-        throw PreviewError.notSupported
+        Post.preview(edit: postId) { post in
+            let source = IndexSet(integer: Int(oldIndex))
+            let destination = Int(newIndex)
+
+            post.objects.move(fromOffsets: source, toOffset: destination)
+        }
+    }
+
+    func movePostObjects(
+        postId: String,
+        objects: [String],
+        destination: String?
+    ) throws -> Date {
+        Post.preview(edit: postId) { post in
+            let source = IndexSet(objects.map { object in
+                post.objects.firstIndex(where: { $0.id == object })!
+            })
+
+            let destination = destination == nil ? post.objects.count :
+                post.objects.firstIndex(where: { $0.id == destination })!
+
+            post.objects.move(fromOffsets: source, toOffset: destination)
+        }
+
+        return Date()
     }
 
     func setCommentContent(
