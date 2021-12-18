@@ -94,7 +94,7 @@ final class ObjectCache: ObjectSource {
         super.remove(at: index)
     }
 
-    override func upload(url: URL) async -> String? {
+    override func upload(url: URL) async -> ObjectPreview? {
         guard let repo = repo else { return nil }
 
         do {

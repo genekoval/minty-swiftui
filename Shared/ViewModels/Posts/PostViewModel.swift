@@ -2,24 +2,30 @@ import Combine
 import Foundation
 import Minty
 
-final class PostViewModel: IdentifiableEntity, ObservableObject {
+final class PostViewModel:
+    IdentifiableEntity,
+    ObjectCollection,
+    ObjectEditorSubscriber,
+    ObservableObject
+{
     let deletedTag = Deleted()
 
     @Published var draftTitle = ""
     @Published var draftDescription = ""
-
+    @Published var objects: [ObjectPreview] = []
     @Published var tags: [TagPreview] = []
 
     @Published private(set) var title: String?
     @Published private(set) var description: String?
     @Published private(set) var created: Date = Date()
     @Published private(set) var modified: Date = Date()
-    @Published private(set) var objects: [ObjectPreview] = []
     @Published private(set) var preview: PostPreview
 
     private let deleted: Deleted
 
     private var cancellables = Set<AnyCancellable>()
+
+    var objectsPublisher: Published<[ObjectPreview]>.Publisher { $objects }
 
     init(
         id: String,
@@ -53,15 +59,13 @@ final class PostViewModel: IdentifiableEntity, ObservableObject {
         }.store(in: &cancellables)
     }
 
-    func addObjects(_ objects: [String], at position: Int) {
+    func add(objects: [String], at position: Int) {
         withRepo("add objects") { repo in
-            let previews = try repo.addPostObjects(
+            modified = try repo.addPostObjects(
                 postId: id,
                 objects: objects,
                 position: UInt32(position)
             )
-
-            self.objects.insert(contentsOf: previews, at: position)
         }
     }
 
@@ -104,12 +108,6 @@ final class PostViewModel: IdentifiableEntity, ObservableObject {
         withRepo("delete objects") { repo in
             modified = try repo.deletePostObjects(postId: id, objects: objects)
         }
-
-        for id in objects {
-            if let index = self.objects.firstIndex(where: { $0.id == id }) {
-                self.objects.remove(at: index)
-            }
-        }
     }
 
     private func load(from post: Post) {
@@ -121,7 +119,7 @@ final class PostViewModel: IdentifiableEntity, ObservableObject {
         tags = post.tags
     }
 
-    func moveObjects(objects: [String], destination: String?) {
+    func move(objects: [String], to destination: String?) {
         withRepo("move objects") { repo in
             modified = try repo.movePostObjects(
                 postId: id,
@@ -129,15 +127,6 @@ final class PostViewModel: IdentifiableEntity, ObservableObject {
                 destination: destination
             )
         }
-
-        let source = IndexSet(objects.map { object in
-            self.objects.firstIndex(where: { $0.id == object })!
-        })
-
-        let destination = destination == nil ? self.objects.count :
-            self.objects.firstIndex(where: { $0.id == destination })!
-
-        self.objects.move(fromOffsets: source, toOffset: destination)
     }
 
     override func refresh() {

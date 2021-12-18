@@ -13,30 +13,30 @@ final class PreviewRepo: MintyRepo {
     func addObjectData(
         count: Int,
         data: @escaping (DataWriter) -> Void
-    ) throws -> String {
+    ) throws -> ObjectPreview {
         throw PreviewError.notSupported
     }
 
-    func addObjectsUrl(url: String) throws -> [String] {
+    func addObjectsUrl(url: String) throws -> [ObjectPreview] {
         throw PreviewError.notSupported
     }
 
     func addPost(parts: PostParts) throws -> String {
-        throw PreviewError.notSupported
+        return Post.preview(add: parts)
     }
 
     func addPostObjects(
         postId: String,
         objects: [String],
         position: UInt32
-    ) throws -> [ObjectPreview] {
+    ) throws -> Date {
         let previews = objects.map { ObjectPreview.preview(id: $0) }
 
         Post.preview(edit: postId) { post in
             post.objects.insert(contentsOf: previews, at: Int(position))
         }
 
-        return previews
+        return Date()
     }
 
     func addPostTag(postId: String, tagId: String) throws {

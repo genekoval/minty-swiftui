@@ -1,9 +1,10 @@
+import Minty
 import SwiftUI
 
 private let moveSymbol = "arrow.up.and.down.and.arrow.left.and.right"
 
 private struct AddButton: View {
-    let onUpload: ([String]) -> Void
+    let onUpload: ([ObjectPreview]) -> Void
     let alternateAction: () -> Void
 
     let state: EditorState
@@ -228,8 +229,14 @@ struct ObjectEditorGrid: View {
         }
     }
 
-    init(post: PostViewModel) {
-        _editor = StateObject(wrappedValue: ObjectEditorViewModel(post: post))
+    init(
+        collection: ObjectCollection,
+        subscriber: ObjectEditorSubscriber? = nil
+    ) {
+        _editor = StateObject( wrappedValue: ObjectEditorViewModel(
+            collection: collection,
+            subscriber: subscriber
+        ))
     }
 }
 
@@ -242,7 +249,7 @@ struct ObjectEditorGrid_Previews: PreviewProvider {
 
     static var previews: some View {
         NavigationView {
-            ObjectEditorGrid(post: post)
+            ObjectEditorGrid(collection: post)
         }
         .environmentObject(ObjectSource.preview)
     }

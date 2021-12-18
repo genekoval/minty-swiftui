@@ -27,7 +27,7 @@ class Selectable: ObservableObject {
 
 enum EditorItem: Identifiable {
     case object(Selectable)
-    case addButton(([String]) -> Void, () -> Void)
+    case addButton(([ObjectPreview]) -> Void, () -> Void)
     case placeholder(() -> Void)
 
     var id: String {
@@ -40,6 +40,20 @@ enum EditorItem: Identifiable {
             return "placeholder"
         }
     }
+}
+
+protocol ObjectCollection {
+    var objects: [ObjectPreview] { get set }
+
+    var objectsPublisher: Published<[ObjectPreview]>.Publisher { get }
+}
+
+protocol ObjectEditorSubscriber {
+    func add(objects: [String], at position: Int)
+
+    func delete(objects: [String])
+
+    func move(objects: [String], to destination: String?)
 }
 
 class ObjectEditorViewModel: ObservableObject {
@@ -58,16 +72,17 @@ class ObjectEditorViewModel: ObservableObject {
 
     private var addButton: EditorItem!
     private var cancellables = Set<AnyCancellable>()
+    private var collection: ObjectCollection
     private var objectsCancellable: AnyCancellable?
-    private let post: PostViewModel
     private var stateCancellable: AnyCancellable?
+    private var subscriber: ObjectEditorSubscriber?
 
     var allSelected: Bool {
-        selected.count == post.objects.count
+        selected.count == collection.objects.count
     }
 
     var isEmpty: Bool {
-        post.objects.isEmpty
+        collection.objects.isEmpty
     }
 
     private var selectables: [Selectable] {
@@ -82,39 +97,56 @@ class ObjectEditorViewModel: ObservableObject {
             }
     }
 
-    var selected: [String] {
-        selectables.compactMap { $0.selected ? $0.object.id : nil }
+    var selected: [ObjectPreview] {
+        selectables.compactMap { $0.selected ? $0.object : nil }
     }
 
-    init(post: PostViewModel) {
-        self.post = post
+    init(
+        collection: ObjectCollection,
+        subscriber: ObjectEditorSubscriber? = nil
+    ) {
+        self.collection = collection
+        self.subscriber = subscriber
+
         addButton = .addButton(addObjects, {
             self.state = .movingInsertionPoint
         })
+
+        objectsCancellable = collection.objectsPublisher.sink { [weak self] in
+            self?.rebuildItems(objects: $0)
+        }
 
         stateCancellable = $state.dropFirst().sink { [weak self] in
             self?.stateChanged(to: $0)
         }
 
-        objectsCancellable = post.$objects.sink { [weak self] in
-            self?.rebuildItems(objects: $0)
+        enableAddButton()
+    }
+
+    private func addObjects(_ objects: [ObjectPreview]) {
+        subscriber?.add(objects: objects.map { $0.id }, at: insertionPoint)
+        collection.objects.insert(contentsOf: objects, at: insertionPoint)
+
+        insertionPoint += collection.objects.count
+        enableAddButton()
+    }
+
+    private func deleteObjects(_ objects: [ObjectPreview]) {
+        subscriber?.delete(objects: objects.map { $0.id })
+
+        for object in objects {
+            if let index = collection.objects.firstIndex(of: object) {
+                collection.objects.remove(at: index)
+            }
         }
-
-        enableAddButton()
-    }
-
-    private func addObjects(objects: [String]) {
-        post.addObjects(objects, at: insertionPoint)
-        insertionPoint += objects.count
-        enableAddButton()
-    }
-
-    func deleteSelected() {
-        post.delete(objects: selected)
 
         if isEmpty {
             state = .adding
         }
+    }
+
+    func deleteSelected() {
+        deleteObjects(selected)
     }
 
     func deselectAll() {
@@ -138,9 +170,27 @@ class ObjectEditorViewModel: ObservableObject {
         state = .adding
     }
 
-    private func moveSelected(to destination: String? = nil) {
-        post.moveObjects(objects: selected, destination: destination)
+    private func moveObjects(
+        _ objects: [ObjectPreview],
+        to destination: String?
+    ) {
+        subscriber?.move(objects: objects.map { $0.id }, to: destination)
+
+        let source = IndexSet(objects.compactMap { object in
+            collection.objects.firstIndex(of: object)
+        })
+
+        let offset = destination == nil ?
+            collection.objects.count :
+            collection.objects.firstIndex(where: { $0.id == destination })!
+
+        collection.objects.move(fromOffsets: source, toOffset: offset)
+
         state = .adding
+    }
+
+    private func moveSelected(to destination: String? = nil) {
+        moveObjects(selected, to: destination)
     }
 
     private func moveSelectedToEnd() {

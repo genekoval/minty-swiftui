@@ -1,7 +1,8 @@
+import Minty
 import SwiftUI
 
 struct ObjectUploadButton: View {
-    let onUpload: ([String]) -> Void
+    let onUpload: ([ObjectPreview]) -> Void
 
     @State private var objects: [String] = []
     @State private var showingUploadView = false

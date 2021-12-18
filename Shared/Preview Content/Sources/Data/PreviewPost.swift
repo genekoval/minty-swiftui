@@ -33,7 +33,21 @@ private final class PreviewData {
         )
     }
 
-    func addPost(
+    func addPost(parts: PostParts) -> String {
+        let id = UUID().uuidString
+
+        addPost(
+            id: id,
+            title: parts.title,
+            description: parts.description,
+            objects: parts.objects,
+            tags: parts.tags
+        )
+
+        return id
+    }
+
+    private func addPost(
         id: String,
         title: String? = nil,
         description: String? = nil,
@@ -119,6 +133,10 @@ private final class PreviewData {
 private let data = PreviewData()
 
 extension Post {
+    static func preview(add parts: PostParts) -> String {
+        return data.addPost(parts: parts)
+    }
+
     static func preview(edit id: String, action: (inout Post) -> Void) {
         var post = Post.preview(id: id)
         action(&post)

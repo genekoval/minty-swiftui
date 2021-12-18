@@ -15,6 +15,10 @@
 		BE00985E2731B4A00021E660 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00985C2731B4A00021E660 /* Binding.swift */; };
 		BE0098602731BBD20021E660 /* TagSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00985F2731BBD20021E660 /* TagSelectButton.swift */; };
 		BE0098612731BBD20021E660 /* TagSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00985F2731BBD20021E660 /* TagSelectButton.swift */; };
+		BE11FDD127615F5D007B58BA /* NewPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE11FDD027615F5D007B58BA /* NewPostViewModel.swift */; };
+		BE11FDD227615F5D007B58BA /* NewPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE11FDD027615F5D007B58BA /* NewPostViewModel.swift */; };
+		BE11FDD427616380007B58BA /* NewPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE11FDD327616380007B58BA /* NewPostView.swift */; };
+		BE11FDD627616DA5007B58BA /* NewPostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE11FDD527616DA5007B58BA /* NewPostButton.swift */; };
 		BE3068992735F5C90038972B /* PostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3068982735F5C90038972B /* PostEditor.swift */; };
 		BE3E16AE2739968C00052660 /* DeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3E16AD2739968C00052660 /* DeleteButton.swift */; };
 		BE3E16B027399AEE00052660 /* ObjectEditorGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3E16AF27399AEE00052660 /* ObjectEditorGrid.swift */; };
@@ -146,6 +150,9 @@
 		BE0098592731AB0C0021E660 /* SelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectButton.swift; sourceTree = "<group>"; };
 		BE00985C2731B4A00021E660 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
 		BE00985F2731BBD20021E660 /* TagSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelectButton.swift; sourceTree = "<group>"; };
+		BE11FDD027615F5D007B58BA /* NewPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewModel.swift; sourceTree = "<group>"; };
+		BE11FDD327616380007B58BA /* NewPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostView.swift; sourceTree = "<group>"; };
+		BE11FDD527616DA5007B58BA /* NewPostButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostButton.swift; sourceTree = "<group>"; };
 		BE3068982735F5C90038972B /* PostEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditor.swift; sourceTree = "<group>"; };
 		BE3E16AD2739968C00052660 /* DeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteButton.swift; sourceTree = "<group>"; };
 		BE3E16AF27399AEE00052660 /* ObjectEditorGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectEditorGrid.swift; sourceTree = "<group>"; };
@@ -511,6 +518,8 @@
 				BE529A3627304D61001DB760 /* PostExplorer.swift */,
 				BEB07B84272B07E3004A942C /* PostRow.swift */,
 				BEB07B86272B07F8004A942C /* PostSearch.swift */,
+				BE11FDD327616380007B58BA /* NewPostView.swift */,
+				BE11FDD527616DA5007B58BA /* NewPostButton.swift */,
 			);
 			path = Posts;
 			sourceTree = "<group>";
@@ -520,6 +529,7 @@
 			children = (
 				BEB07B8D272B0EA2004A942C /* PostQueryViewModel.swift */,
 				BE8E71C42732EFAE009A4FE9 /* PostViewModel.swift */,
+				BE11FDD027615F5D007B58BA /* NewPostViewModel.swift */,
 			);
 			path = Posts;
 			sourceTree = "<group>";
@@ -743,6 +753,7 @@
 				BE5AC1FF271B405800FCA45A /* TagViewModel.swift in Sources */,
 				BED04C5127179A1700EF00B8 /* TagDetail.swift in Sources */,
 				BE6A84FB271F2BB300D4566B /* PreviewSource.swift in Sources */,
+				BE11FDD627616DA5007B58BA /* NewPostButton.swift in Sources */,
 				BE3E16B6273A0B8100052660 /* ClearableTextField.swift in Sources */,
 				BE465517270CFA8E00D3C4FB /* ContentView.swift in Sources */,
 				BE465580270D11CB00D3C4FB /* ConnectionModal.swift in Sources */,
@@ -768,7 +779,9 @@
 				BE808C50271C82800081F815 /* Timestamp.swift in Sources */,
 				BED811592721BECE00929D4C /* ObjectSource.swift in Sources */,
 				BE6A63E227289B2700365D24 /* RemoteEntity.swift in Sources */,
+				BE11FDD127615F5D007B58BA /* NewPostViewModel.swift in Sources */,
 				BE6A63E0272855FE00365D24 /* EditorLink.swift in Sources */,
+				BE11FDD427616380007B58BA /* NewPostView.swift in Sources */,
 				BE7E0F412727350E00EF758A /* TagEditor.swift in Sources */,
 				BE465582270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
 				BEC67837271A50EA009BCE5F /* TagHome.swift in Sources */,
@@ -799,6 +812,7 @@
 				BED04C552717A13E00EF00B8 /* SearchHome.swift in Sources */,
 				BE465518270CFA8E00D3C4FB /* ContentView.swift in Sources */,
 				BE465581270D11CB00D3C4FB /* ConnectionModal.swift in Sources */,
+				BE11FDD227615F5D007B58BA /* NewPostViewModel.swift in Sources */,
 				BED04C4527153E7000EF00B8 /* AppShell.swift in Sources */,
 				BE5AC200271B405800FCA45A /* TagViewModel.swift in Sources */,
 				BE465579270D111B00D3C4FB /* Server.swift in Sources */,

@@ -5,7 +5,7 @@ struct ObjectUploadView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var source: ObjectSource
 
-    let onUpload: ([String]) -> Void
+    let onUpload: ([ObjectPreview]) -> Void
 
     @State private var imageURL: URL?
     @State private var inputImage: UIImage?
@@ -107,7 +107,7 @@ struct ObjectUploadView: View {
 
     private func upload() {
         Task {
-            var objects: [String] = []
+            var objects: [ObjectPreview] = []
 
             for item in uploads {
                 await item.upload(objects: &objects, source: source)

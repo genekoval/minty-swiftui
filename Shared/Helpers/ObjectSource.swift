@@ -21,7 +21,23 @@ class ObjectSource: ObservableObject {
 
     func makeUploadable(text: String) -> Uploadable {
         if UUID(uuidString: text) != nil {
-            return .existingObject(text)
+            guard let repo = repo else {
+                fatalError("Cannot get object: repo missing")
+            }
+
+            do {
+                let object = try repo.getObject(objectId: text)
+
+                var preview = ObjectPreview()
+                preview.id = object.id
+                preview.previewId = object.previewId
+                preview.mimeType = object.mimeType
+
+                return .existingObject(preview)
+            }
+            catch {
+                fatalError("Failed to get object (\(text)): \(error)")
+            }
         }
         else {
             return .url(text)
@@ -32,12 +48,12 @@ class ObjectSource: ObservableObject {
         cachedObjects.remove(at: index)
     }
 
-    func upload(url: URL) async -> String? { nil }
+    func upload(url: URL) async -> ObjectPreview? { nil }
 
     final func url(for objectId: String?) -> URL? {
         guard let id = objectId else { return nil }
         return url(for: id)
-     }
+    }
 
     func url(for objectId: String) -> URL? { nil }
 }

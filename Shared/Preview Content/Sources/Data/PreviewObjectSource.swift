@@ -12,7 +12,7 @@ final class PreviewObjectSource: ObjectSource {
             return .url(text)
         }
         else {
-            return .existingObject(text)
+            return .existingObject(ObjectPreview.preview(id: text))
         }
     }
 

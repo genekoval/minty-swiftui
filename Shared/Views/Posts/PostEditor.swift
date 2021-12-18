@@ -25,7 +25,10 @@ struct PostEditor: View {
                 )
 
                 Section {
-                    NavigationLink(destination: ObjectEditorGrid(post: post)) {
+                    NavigationLink(destination: ObjectEditorGrid(
+                        collection: post,
+                        subscriber: post
+                    )) {
                         HStack {
                             Label("Objects", systemImage: "doc")
                             Spacer()

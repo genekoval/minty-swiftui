@@ -4,7 +4,7 @@ import SwiftUI
 
 private func uploadFile(
     src url: URL,
-    dest: inout [String],
+    dest: inout [ObjectPreview],
     source: ObjectSource
 ) async {
     if let id = await source.upload(url: url) {
@@ -14,7 +14,7 @@ private func uploadFile(
 
 private func uploadSecureFile(
     src url: URL,
-    dest: inout [String],
+    dest: inout [ObjectPreview],
     source: ObjectSource
 ) async {
     guard url.startAccessingSecurityScopedResource() else {
@@ -28,7 +28,7 @@ private func uploadSecureFile(
     await uploadFile(src: url, dest: &dest, source: source)
 }
 
-private func uploadURL(_ url: String, source: ObjectSource) -> [String] {
+private func uploadURL(_ url: String, source: ObjectSource) -> [ObjectPreview] {
     guard let repo = source.repo else { return [] }
 
     do {
@@ -40,15 +40,15 @@ private func uploadURL(_ url: String, source: ObjectSource) -> [String] {
 }
 
 enum Uploadable: Identifiable {
-    case existingObject(String)
+    case existingObject(ObjectPreview)
     case file(URL)
     case image(UIImage, URL)
     case url(String)
 
     var id: String {
         switch self {
-        case .existingObject(let objectId):
-            return objectId
+        case .existingObject(let object):
+            return object.id
         case .file(let url):
             return url.path
         case .image(_, let url):
@@ -58,10 +58,10 @@ enum Uploadable: Identifiable {
         }
     }
 
-    func upload(objects: inout [String], source: ObjectSource) async {
+    func upload(objects: inout [ObjectPreview], source: ObjectSource) async {
         switch self {
-        case .existingObject(let objectId):
-            objects.append(objectId)
+        case .existingObject(let object):
+            objects.append(object)
         case .file(let url):
             await uploadSecureFile(src: url, dest: &objects, source: source)
         case .image(_, let url):
@@ -74,8 +74,11 @@ enum Uploadable: Identifiable {
     @ViewBuilder
     func view() -> some View {
         switch self {
-        case .existingObject(let objectId):
-            Label(objectId, systemImage: "doc.fill")
+        case .existingObject(let object):
+            HStack {
+                PreviewImage(object: object)
+                Text(object.id)
+            }
         case .file(let url):
             Label(url.lastPathComponent, systemImage: "folder.fill")
         case .image(let image, _):
