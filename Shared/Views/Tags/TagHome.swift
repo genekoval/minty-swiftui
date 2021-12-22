@@ -36,7 +36,7 @@ struct TagHome: View {
 
                     ForEach(query.hits) { tag in
                         NavigationLink(destination: TagDetail(
-                            id: tag.id,
+                            tag: tag,
                             repo: query.repo,
                             deleted: deleted
                         )) {
@@ -63,7 +63,7 @@ struct TagHome: View {
                         ForEach(query.excluded) { tag in
                             NavigationLink(
                                 destination: TagDetail(
-                                    id: tag.id,
+                                    tag: tag,
                                     repo: query.repo,
                                     deleted: deleted
                                 ),

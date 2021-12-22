@@ -80,7 +80,17 @@ extension Tag {
     }
 
     static func preview(id: String) -> Tag {
-        data.tags[id]!
+        guard var tag = data.tags[id] else {
+            fatalError("Tag with ID (\(id)) does not exist")
+        }
+
+        var query = PostQuery()
+        query.tags.append(id)
+
+        let posts = PostPreview.preview(query: query)
+        tag.postCount = UInt32(posts.count)
+
+        return tag
     }
 
     static func preview(namesFor id: String) -> TagName {
@@ -102,7 +112,11 @@ extension Tag {
 
 extension TagPreview {
     static func preview(id: String) -> TagPreview {
-        data.previews[id]!
+        guard let preview = data.previews[id] else {
+            fatalError("Tag Preview with ID (\(id)) does not exist")
+        }
+
+        return preview
     }
 
     static func preview(query: String) -> [TagPreview] {

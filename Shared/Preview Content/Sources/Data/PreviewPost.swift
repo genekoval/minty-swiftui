@@ -155,8 +155,11 @@ extension Post {
 
 extension PostPreview {
     static func preview(id: String) -> PostPreview {
-        if let preview = data.previews[id] { return preview }
-        fatalError("Post Preview with ID (\(id)) does not exist")
+        guard let preview = data.previews[id] else {
+            fatalError("Post Preview with ID (\(id)) does not exist")
+        }
+
+        return preview
     }
 
     static func preview(query: PostQuery) -> [PostPreview] {
@@ -165,8 +168,8 @@ extension PostPreview {
 }
 
 extension PostQueryViewModel {
-    static func preview() -> PostQueryViewModel {
-        PostQueryViewModel(repo: PreviewRepo())
+    static func preview(searchNow: Bool = false) -> PostQueryViewModel {
+        PostQueryViewModel(repo: PreviewRepo(), searchNow: searchNow)
     }
 }
 

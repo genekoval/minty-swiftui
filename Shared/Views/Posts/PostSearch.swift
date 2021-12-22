@@ -17,17 +17,13 @@ private struct SearchControls: View {
                     TextField(
                         "Search",
                         text: $search.text,
-                        onCommit: { search.newSearch() }
+                        onCommit: {
+                            search.query.text =
+                                search.text.isEmpty ? nil : search.text
+                        }
                     )
                     .focused($searchFocused)
                     .foregroundColor(.primary)
-                    .task {
-                        if !search.initialSearch {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                searchFocused = true
-                            }
-                        }
-                    }
 
                     Button(action: {
                         search.text = ""
@@ -56,7 +52,7 @@ private struct SearchControls: View {
             }
 
             HStack {
-                Button(action: { search.sortOrder.toggle() }) {
+                Button(action: { search.query.sort.order.toggle() }) {
                     Image(systemName:
                         "chevron.\(sortDirection).circle.fill"
                     )
@@ -64,7 +60,7 @@ private struct SearchControls: View {
 
                 .foregroundColor(.accentColor)
 
-                Picker("Sort Value",  selection: $search.sortValue) {
+                Picker("Sort Value",  selection: $search.query.sort.value) {
                     Text("Date Created").tag(SortValue.dateCreated)
                     Text("Date Modified").tag(SortValue.dateModified)
                     Text("Relevance").tag(SortValue.relevance)
@@ -79,7 +75,7 @@ private struct SearchControls: View {
     }
 
     private var sortDirection: String {
-        search.sortOrder == .ascending ? "up" : "down"
+        search.query.sort.order == .ascending ? "up" : "down"
     }
 }
 
@@ -89,40 +85,19 @@ struct PostSearch: View {
 
     var body: some View {
         ScrollView {
-            LazyVStack {
+            VStack {
                 SearchControls(search: search)
+                    .padding(.horizontal)
 
-                if search.initialSearch {
-                    ResultCount(type: "Post", count: search.total)
-                }
-
-                ForEach($search.hits) { post in
-                    NavigationLink(destination: PostDetail(
-                        id: post.id,
-                        repo: search.repo,
-                        deleted: deleted,
-                        preview: post
-                    )) {
-                        PostRow(post: post.wrappedValue)
-                    }
-                }
-
-                if search.resultsAvailable {
-                    ProgressView()
-                        .onAppear { search.nextPage() }
-                        .progressViewStyle(.circular)
-                }
+                PostSearchResults(
+                    search: search,
+                    deleted: deleted,
+                    showResultCount: true
+                )
             }
-            .padding()
         }
-        .buttonStyle(PlainButtonStyle())
         .navigationTitle("Search")
         .navigationBarTitleDisplayMode(.inline)
-        .onReceive(deleted.$id) { id in
-            if let id = id {
-                search.remove(id: id)
-            }
-        }
     }
 }
 

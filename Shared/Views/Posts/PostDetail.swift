@@ -52,7 +52,7 @@ struct PostDetail: View {
                 }
                 else if let tag = post.tags.first {
                     NavigationLink( destination: TagDetail(
-                        id: tag.id,
+                        tag: tag,
                         repo: post.repo,
                         deleted: post.deletedTag
                     )) {

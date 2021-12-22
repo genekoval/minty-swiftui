@@ -8,87 +8,36 @@ extension Minty.SortOrder {
     }
 }
 
-final class PostQueryViewModel: RemoteEntity, ObservableObject {
-    private var query = PostQuery()
+extension PostQuery: Query { }
 
-    private var sortOrderCancellable: AnyCancellable?
-    private var sortValueCancellable: AnyCancellable?
-    private var tagsCancellable: AnyCancellable?
-    private var textCancellable: AnyCancellable?
+extension PostPreview: SearchElement { }
 
-    @Published var initialSearch = false
-
-    @Published var sortOrder = SortOrder.descending
-    @Published var sortValue = PostQuery.Sort.SortValue.dateCreated
-    @Published var tags: [TagPreview] = []
+final class PostQueryViewModel: Search<PostPreview, PostQuery> {
     @Published var text = ""
+    @Published var tags: [TagPreview] = []
 
-    @Published var hits: [PostPreview] = []
-    @Published private(set) var total = 0
+    private var tagsCancellable: AnyCancellable?
 
-    var resultsAvailable: Bool {
-        hits.count < total
-    }
-
-    init(repo: MintyRepo?) {
-        super.init(identifier: "post query", repo: repo)
+    init(repo: MintyRepo?, tag: TagPreview? = nil, searchNow: Bool = false) {
+        var query = PostQuery()
 
         query.size = 30
-        query.sort.order = sortOrder
-        query.sort.value = sortValue
+        query.sort.order = .descending
+        query.sort.value = .dateCreated
 
-        sortOrderCancellable = $sortOrder.dropFirst().sink { [weak self] in
-            self?.query.sort.order = $0
-            self?.newSearch()
+        super.init(
+            type: "post",
+            repo: repo,
+            query: query,
+            searchNow: searchNow
+        ) { (repo, query) in try repo.getPosts(query: query) }
+
+        if let tag = tag {
+            tags.append(tag)
         }
 
-        sortValueCancellable = $sortValue.dropFirst().sink { [weak self] in
-            self?.query.sort.value = $0
-            self?.newSearch()
-        }
-
-        tagsCancellable = $tags.dropFirst().sink { [weak self] in
-            self?.query.tags = $0.map { $0.id }
-            self?.newSearch()
-        }
-
-        textCancellable = $text.dropFirst().sink { [weak self] in
-            self?.query.text = $0.isEmpty ? nil : $0
-        }
-    }
-
-    private func clear() {
-        query.from = 0
-        total = 0
-        hits.removeAll()
-    }
-
-    private func loadResult(result: SearchResult<PostPreview>) {
-        total = Int(result.total)
-        hits.append(contentsOf: result.hits)
-    }
-
-    func nextPage() {
-        query.from += query.size
-        search()
-    }
-
-    func newSearch() {
-        clear()
-        search()
-    }
-
-    func remove(id: String) {
-        if let index = hits.firstIndex(where: { $0.id == id }) {
-            hits.remove(at: index)
-            total -= 1
-        }
-    }
-
-    private func search() {
-        withRepo("perform search") { repo in
-            loadResult(result: try repo.getPosts(query: query))
-            initialSearch = true
+        tagsCancellable = $tags.dropFirst().sink { [weak self] tags in
+            self?.query.tags = tags.map { $0.id }
         }
     }
 }

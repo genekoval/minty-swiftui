@@ -14,7 +14,7 @@ struct TagList: View {
                 ForEach(post.tags) { tag in
                     VStack {
                         NavigationLink(destination: TagDetail(
-                            id: tag.id,
+                            tag: tag,
                             repo: post.repo,
                             deleted: post.deletedTag
                         )) {
