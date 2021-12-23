@@ -1,10 +1,9 @@
+import Combine
 import Minty
 import SwiftUI
 
 struct NewPostView: View {
     @Environment(\.dismiss) var dismiss
-
-    private let onCreate: (String) -> Void
 
     @StateObject private var post: NewPostViewModel
     @StateObject private var tagSearch: TagQueryViewModel
@@ -94,23 +93,31 @@ struct NewPostView: View {
         )
     }
 
-    init(repo: MintyRepo?, onCreate: @escaping (String) -> Void) {
-        self.onCreate = onCreate
-        _post = StateObject(wrappedValue: NewPostViewModel(repo: repo))
+    init(
+        repo: MintyRepo?,
+        newPost: PassthroughSubject<String, Never>,
+        tag: TagPreview? = nil
+    ) {
+        _post = StateObject(wrappedValue: NewPostViewModel(
+            repo: repo,
+            newPost: newPost,
+            tag: tag
+        ))
         _tagSearch = StateObject(wrappedValue: TagQueryViewModel(repo: repo))
     }
 
     private func create() {
-        guard let postId = post.create() else { return }
-
-        onCreate(postId)
+        post.create()
         dismiss()
     }
 }
 
 struct NewPostView_Previews: PreviewProvider {
     static var previews: some View {
-        NewPostView(repo: PreviewRepo(), onCreate: { _ in })
-            .environmentObject(ObjectSource.preview)
+        NewPostView(
+            repo: PreviewRepo(),
+            newPost: PassthroughSubject<String, Never>()
+        )
+        .environmentObject(ObjectSource.preview)
     }
 }

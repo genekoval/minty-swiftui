@@ -31,6 +31,15 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
         URL(string: draftSource) != nil
     }
 
+    var preview: TagPreview {
+        var tag = TagPreview()
+
+        tag.id = id
+        tag.name = name
+
+        return tag
+    }
+
     init(id: String, repo: MintyRepo?, deleted: Deleted) {
         self.deleted = deleted
 

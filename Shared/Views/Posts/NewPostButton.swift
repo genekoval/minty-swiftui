@@ -1,9 +1,12 @@
+import Combine
+import Minty
 import SwiftUI
 
 struct NewPostButton: View {
     @EnvironmentObject var data: DataSource
 
-    let onCreate: (String) -> Void
+    let newPost: PassthroughSubject<String, Never>
+    let tag: TagPreview?
 
     @State private var showingEditor = false
 
@@ -12,14 +15,21 @@ struct NewPostButton: View {
             Image(systemName: "plus")
         }
         .sheet(isPresented: $showingEditor) {
-            NewPostView(repo: data.repo, onCreate: onCreate)
+            NewPostView(repo: data.repo, newPost: newPost, tag: tag)
         }
+    }
+
+    init(newPost: PassthroughSubject<String, Never>, tag: TagPreview? = nil) {
+        self.newPost = newPost
+        self.tag = tag
     }
 }
 
 struct NewPostButton_Previews: PreviewProvider {
+    private static let newPost = PassthroughSubject<String, Never>()
+
     static var previews: some View {
-        NewPostButton(onCreate: { _ in })
+        NewPostButton(newPost: PassthroughSubject<String, Never>())
             .environmentObject(DataSource.preview)
     }
 }

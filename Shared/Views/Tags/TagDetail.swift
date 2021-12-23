@@ -9,9 +9,15 @@ struct TagDetail: View {
     @StateObject private var tag: TagViewModel
     @StateObject private var recentPosts: PostQueryViewModel
     @StateObject private var search: PostQueryViewModel
+    @StateObject private var newPosts = NewPostListViewModel()
     @StateObject private var deletedPost = Deleted()
 
     @State private var showingEditor = false
+
+    @ViewBuilder
+    private var addButton: some View {
+        NewPostButton(newPost: newPosts.newPost, tag: tag.preview)
+    }
 
     @ViewBuilder
     private var aliases: some View {
@@ -32,6 +38,7 @@ struct TagDetail: View {
             tagInfo
             controls
 
+            recentlyAdded
             posts
         }
         .navigationTitle(tag.name)
@@ -56,6 +63,8 @@ struct TagDetail: View {
         HStack {
             Spacer()
             searchButton
+            Spacer()
+            addButton
             Spacer()
         }
         .padding(.vertical, 5)
@@ -97,7 +106,18 @@ struct TagDetail: View {
     @ViewBuilder
     private var posts: some View {
         if tag.postCount > 0 {
-            Divider()
+            if newPosts.posts.isEmpty {
+                Divider()
+            }
+            else {
+                HStack {
+                    Text("Tagged Posts")
+                        .bold()
+                        .font(.title2)
+                        .padding([.horizontal, .top])
+                    Spacer()
+                }
+            }
 
             PostSearchResults(
                 search: recentPosts,
@@ -115,6 +135,11 @@ struct TagDetail: View {
         )
         .font(.caption)
         .foregroundColor(.secondary)
+    }
+
+    @ViewBuilder
+    private var recentlyAdded: some View {
+        NewPostList(newPosts: newPosts)
     }
 
     @ViewBuilder
