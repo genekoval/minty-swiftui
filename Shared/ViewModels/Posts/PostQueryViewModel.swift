@@ -25,6 +25,10 @@ final class PostQueryViewModel: Search<PostPreview, PostQuery> {
         query.sort.order = .descending
         query.sort.value = .dateCreated
 
+        if let tag = tag {
+            query.tags.append(tag.id)
+        }
+
         super.init(
             type: "post",
             repo: repo,
