@@ -8,41 +8,36 @@ final class PostViewModel:
     ObjectEditorSubscriber,
     ObservableObject
 {
-    let deletedTag = Deleted()
-
     @Published var draftTitle = ""
     @Published var draftDescription = ""
     @Published var objects: [ObjectPreview] = []
     @Published var tags: [TagPreview] = []
 
+    @Published private(set) var deleted = false
     @Published private(set) var title: String?
     @Published private(set) var description: String?
     @Published private(set) var created: Date = Date()
     @Published private(set) var modified: Date = Date()
     @Published private(set) var preview: PostPreview
 
-    private let deleted: Deleted
-
     private var cancellables = Set<AnyCancellable>()
 
     var objectsPublisher: Published<[ObjectPreview]>.Publisher { $objects }
 
-    init(
-        id: String,
-        repo: MintyRepo?,
-        deleted: Deleted,
-        preview: PostPreview
-    ) {
-        self.deleted = deleted
+    init(id: String, repo: MintyRepo?, preview: PostPreview) {
         self.preview = preview
 
         super.init(id: id, identifier: "post", repo: repo)
 
-        deletedTag.$id.sink { [weak self] in
-            if let id = $0 {
-                self?.removeLocalTag(id: id)
-            }
-        }.store(in: &cancellables)
+        Events
+            .postDeleted
+            .sink { [weak self] in self?.postDeleted(id: $0) }
+            .store(in: &cancellables)
+
+        Events
+            .tagDeleted
+            .sink { [weak self] in self?.removeLocalTag(id: $0)}
+            .store(in: &cancellables)
 
         $title.sink { [weak self] in
             self?.draftTitle = $0 ?? ""
@@ -101,7 +96,7 @@ final class PostViewModel:
             try repo.deletePost(postId: id)
         }
 
-        deleted.id = id
+        Events.postDeleted.send(id)
     }
 
     func delete(objects: [String]) {
@@ -126,6 +121,12 @@ final class PostViewModel:
                 objects: objects,
                 destination: destination
             )
+        }
+    }
+
+    private func postDeleted(id: String) {
+        if id == self.id {
+            deleted = true
         }
     }
 

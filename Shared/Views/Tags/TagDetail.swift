@@ -4,19 +4,16 @@ import SwiftUI
 struct TagDetail: View {
     @Environment(\.dismiss) var dismiss
 
-    @ObservedObject var deleted: Deleted
-
     @StateObject private var tag: TagViewModel
     @StateObject private var recentPosts: PostQueryViewModel
     @StateObject private var search: PostQueryViewModel
     @StateObject private var newPosts = NewPostListViewModel()
-    @StateObject private var deletedPost = Deleted()
 
     @State private var showingEditor = false
 
     @ViewBuilder
     private var addButton: some View {
-        NewPostButton(newPost: newPosts.newPost, tag: tag.preview)
+        NewPostButton(tag: tag.preview)
     }
 
     @ViewBuilder
@@ -43,19 +40,14 @@ struct TagDetail: View {
         }
         .navigationTitle(tag.name)
         .navigationBarTitleDisplayMode(.inline)
-        .onReceive(deleted.$id) { id in
-            if let id = id {
-                if id == tag.id {
-                    dismiss()
-                }
-            }
-        }
         .sheet(isPresented: $showingEditor) { TagEditor(tag: tag) }
         .toolbar {
             Button("Edit") {
                 showingEditor.toggle()
             }
         }
+        .onAppear { if tag.deleted { dismiss() } }
+        .onReceive(tag.$deleted) { if $0 { dismiss() } }
     }
 
     @ViewBuilder
@@ -119,11 +111,7 @@ struct TagDetail: View {
                 }
             }
 
-            PostSearchResults(
-                search: recentPosts,
-                deleted: deletedPost,
-                showResultCount: false
-            )
+            PostSearchResults(search: recentPosts, showResultCount: false)
         }
     }
 
@@ -144,9 +132,7 @@ struct TagDetail: View {
 
     @ViewBuilder
     private var searchButton: some View {
-        NavigationLink(
-            destination: PostSearch(search: search, deleted: deleted)
-        ) {
+        NavigationLink(destination: PostSearch(search: search)) {
             Image(systemName: "magnifyingglass")
         }
     }
@@ -169,12 +155,10 @@ struct TagDetail: View {
         .padding()
     }
 
-    init(tag: TagPreview, repo: MintyRepo?, deleted: Deleted) {
-        self.deleted = deleted
+    init(tag: TagPreview, repo: MintyRepo?) {
         _tag = StateObject(wrappedValue: TagViewModel(
             id: tag.id,
-            repo: repo,
-            deleted: deleted
+            repo: repo
         ))
         _recentPosts = StateObject(wrappedValue: PostQueryViewModel(
             repo: repo,
@@ -191,11 +175,9 @@ struct TagDetail: View {
 struct TagDetail_Previews: PreviewProvider {
     private static let tag = TagPreview.preview(id: "1")
 
-    @StateObject private static var deleted = Deleted()
-
     static var previews: some View {
         NavigationView {
-            TagDetail(tag: tag, repo: PreviewRepo(), deleted: deleted)
+            TagDetail(tag: tag, repo: PreviewRepo())
         }
         .environmentObject(DataSource.preview)
         .environmentObject(ObjectSource.preview)

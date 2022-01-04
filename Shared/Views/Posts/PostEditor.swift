@@ -80,11 +80,7 @@ struct PostEditor: View {
 }
 
 struct PostEditor_Previews: PreviewProvider {
-    private static let deleted = Deleted()
-    private static let post = PostViewModel.preview(
-        id: "test",
-        deleted: deleted
-    )
+    private static let post = PostViewModel.preview(id: "test")
 
     static var previews: some View {
         PostEditor(post: post)

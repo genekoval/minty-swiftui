@@ -4,7 +4,6 @@ import SwiftUI
 struct PostExplorer: View {
     @EnvironmentObject var data: DataSource
 
-    @StateObject private var deleted = Deleted()
     @StateObject private var newPosts = NewPostListViewModel()
     @StateObject private var search: PostQueryViewModel
 
@@ -12,7 +11,7 @@ struct PostExplorer: View {
         ScrollView {
             VStack {
                 NavigationLink(
-                    destination: PostSearch(search: search, deleted: deleted)
+                    destination: PostSearch(search: search)
                 ) {
                     HStack {
                         Image(systemName: "magnifyingglass")
@@ -34,7 +33,7 @@ struct PostExplorer: View {
 
     @ViewBuilder
     private var addButton: some View {
-        NewPostButton(newPost: newPosts.newPost)
+        NewPostButton()
     }
 
     @ViewBuilder

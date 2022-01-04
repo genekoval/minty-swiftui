@@ -4,8 +4,6 @@ import SwiftUI
 struct PostDetail: View {
     @Environment(\.dismiss) var dismiss
 
-    @ObservedObject var deleted: Deleted
-
     @Binding var preview: PostPreview
 
     @StateObject private var post: PostViewModel
@@ -53,8 +51,7 @@ struct PostDetail: View {
                 else if let tag = post.tags.first {
                     NavigationLink( destination: TagDetail(
                         tag: tag,
-                        repo: post.repo,
-                        deleted: post.deletedTag
+                        repo: post.repo
                     )) {
                         Label(tag.name, systemImage: "tag")
                             .font(.caption)
@@ -77,16 +74,11 @@ struct PostDetail: View {
         }
         .navigationTitle("Post")
         .navigationBarTitleDisplayMode(.inline)
-        .onReceive(deleted.$id) { id in
-            if let id = id {
-                if id == post.id {
-                    dismiss()
-                }
-            }
-        }
         .onReceive(post.$preview) { preview in
             self.preview = preview
         }
+        .onAppear { if post.deleted { dismiss() } }
+        .onReceive(post.$deleted) { if $0 { dismiss() } }
         .sheet(isPresented: $showingEditor) {
             PostEditor(post: post)
         }
@@ -100,22 +92,18 @@ struct PostDetail: View {
     init(
         id: String,
         repo: MintyRepo?,
-        deleted: Deleted,
         preview: Binding<PostPreview>
     ) {
-        self.deleted = deleted
         _preview = preview
         _post = StateObject(wrappedValue: PostViewModel(
             id: id,
             repo: repo,
-            deleted: deleted,
             preview: preview.wrappedValue
         ))
     }
 }
 
 struct PostDetail_Previews: PreviewProvider {
-    private static let deleted = Deleted()
     private static let posts = [
         "test",
         "sand dune",
@@ -129,7 +117,6 @@ struct PostDetail_Previews: PreviewProvider {
                     PostDetail(
                         id: post,
                         repo: PreviewRepo(),
-                        deleted: deleted,
                         preview: .constant(PostPreview.preview(id: post))
                     )
                 }

@@ -241,11 +241,7 @@ struct ObjectEditorGrid: View {
 }
 
 struct ObjectEditorGrid_Previews: PreviewProvider {
-    private static let deleted = Deleted()
-    @State private static var post = PostViewModel.preview(
-        id: "test",
-        deleted: deleted
-    )
+    @State private static var post = PostViewModel.preview(id: "test")
 
     static var previews: some View {
         NavigationView {

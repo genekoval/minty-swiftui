@@ -124,11 +124,7 @@ struct TagEditor: View {
 }
 
 struct TagEditor_Previews: PreviewProvider {
-    private static let deleted = Deleted()
-    @StateObject private static var tag = TagViewModel.preview(
-        id: "1",
-        deleted: deleted
-    )
+    @StateObject private static var tag = TagViewModel.preview(id: "1")
 
     static var previews: some View {
         TagEditor(tag: tag)

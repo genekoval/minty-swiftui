@@ -11,8 +11,6 @@ final class NewPostViewModel: RemoteEntity, ObjectCollection, ObservableObject {
     @Published private(set) var title: String?
     @Published private(set) var description: String?
 
-    private let newPost: PassthroughSubject<String, Never>
-
     var isValid: Bool {
         title != nil || description != nil || !objects.isEmpty
     }
@@ -30,13 +28,7 @@ final class NewPostViewModel: RemoteEntity, ObjectCollection, ObservableObject {
         return result
     }
 
-    init(
-        repo: MintyRepo?,
-        newPost: PassthroughSubject<String, Never>,
-        tag: TagPreview? = nil
-    ) {
-        self.newPost = newPost
-
+    init(repo: MintyRepo?, tag: TagPreview? = nil) {
         super.init(identifier: "new post", repo: repo)
 
         if let tag = tag {
@@ -55,7 +47,7 @@ final class NewPostViewModel: RemoteEntity, ObjectCollection, ObservableObject {
     func create() {
         withRepo("create") { repo in
             let postId = try repo.addPost(parts: parts)
-            newPost.send(postId)
+            Events.postCreated.send(postId)
         }
     }
 

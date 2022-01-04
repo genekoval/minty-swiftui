@@ -20,37 +20,13 @@ struct TagHome: View {
 
     @Binding var selection: String?
 
-    @StateObject private var deleted = Deleted()
-
     var body: some View {
         ScrollView {
-            LazyVStack {
-                if isSearching {
-                    if !query.name.isEmpty {
-                        ResultCount(
-                            type: "Tag",
-                            count: query.total,
-                            text: query.name
-                        )
-                    }
-
-                    ForEach(query.hits) { tag in
-                        NavigationLink(destination: TagDetail(
-                            tag: tag,
-                            repo: query.repo,
-                            deleted: deleted
-                        )) {
-                            TagDisplayRow(tag: tag)
-                        }
-                    }
-
-                    if query.resultsAvailable {
-                        ProgressView()
-                            .onAppear { query.nextPage() }
-                            .progressViewStyle(.circular)
-                    }
-                }
-                else {
+            if isSearching {
+                TagSearchResults(search: query)
+            }
+            else {
+                VStack {
                     if !query.excluded.isEmpty {
                         HStack {
                             Text("Recently Added")
@@ -64,8 +40,7 @@ struct TagHome: View {
                             NavigationLink(
                                 destination: TagDetail(
                                     tag: tag,
-                                    repo: query.repo,
-                                    deleted: deleted
+                                    repo: query.repo
                                 ),
                                 tag: tag.id,
                                 selection: $selection
@@ -77,15 +52,6 @@ struct TagHome: View {
                 }
             }
         }
-        .onReceive(deleted.$id) { id in
-            if let id = id {
-                delete(id: id)
-            }
-        }
-    }
-
-    private func delete(id: String) {
-        query.remove(id: id)
     }
 }
 

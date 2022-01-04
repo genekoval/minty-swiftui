@@ -33,6 +33,7 @@ final class PostQueryViewModel: Search<PostPreview, PostQuery> {
             type: "post",
             repo: repo,
             query: query,
+            deletionPublisher: Events.postDeleted,
             searchNow: searchNow
         ) { (repo, query) in try repo.getPosts(query: query) }
 

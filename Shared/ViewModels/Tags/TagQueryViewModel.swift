@@ -2,76 +2,58 @@ import Combine
 import Foundation
 import Minty
 
-final class TagQueryViewModel: RemoteEntity, ObservableObject {
-    private let size = 50
+extension TagQuery: Query { }
 
-    private var cancellable: AnyCancellable?
-    private var from = 0
-    private var queryName = ""
+extension TagPreview: SearchElement { }
 
+final class TagQueryViewModel: Search<TagPreview, TagQuery> {
     @Published var name = ""
     @Published var excluded: [TagPreview] = []
-    @Published private(set) var total = 0
-    @Published private(set) var hits: [TagPreview] = []
 
-    var resultsAvailable: Bool {
-        hits.count < total
-    }
-
-    private var query: TagQuery {
-        var result = TagQuery()
-
-        result.from = UInt32(from)
-        result.size = UInt32(size)
-        result.name = queryName
-        result.exclude = excluded.map { $0.id }
-
-        return result
-    }
+    private var cancellables = Set<AnyCancellable>()
 
     init(repo: MintyRepo?) {
-        super.init(identifier: "tag query", repo: repo)
+        var query = TagQuery()
 
-        cancellable = $name.sink() { [weak self] in
-            self?.clear()
+        query.size = 50
 
-            if !$0.isEmpty {
-                self?.queryName = $0
-                self?.search()
-            }
-        }
+        super.init(
+            type: "tag",
+            repo: repo,
+            query: query,
+            deletionPublisher: Events.tagDeleted
+        ) { (repo, query) in try repo.getTags(query: query) }
+
+        Events
+            .tagDeleted
+            .sink { [weak self] in self?.remove(id: $0) }
+            .store(in: &cancellables)
+
+        $name
+            .sink { [weak self] in self?.search(name: $0) }
+            .store(in: &cancellables)
+
+        $excluded
+            .sink { [weak self] in self?.updateExcluded($0) }
+            .store(in: &cancellables)
     }
 
-    private func clear() {
-        from = 0
-        total = 0
-        hits.removeAll()
+    private func updateExcluded(_ tags: [TagPreview]) {
+        modifyQuery { query.exclude = tags.map { $0.id } }
     }
 
-    private func loadResult(result: SearchResult<TagPreview>) {
-        total = Int(result.total)
-        hits.append(contentsOf: result.hits)
-    }
-
-    func nextPage() {
-        from += size
-        search()
-    }
-
-    func remove(id: String) {
+    private func remove(id: String) {
         if let index = excluded.firstIndex(where: { $0.id == id }) {
             excluded.remove(at: index)
         }
-
-        if let index = hits.firstIndex(where: { $0.id == id }) {
-            hits.remove(at: index)
-            total -= 1
-        }
     }
 
-    private func search() {
-        withRepo("perform search") { repo in
-            loadResult(result: try repo.getTags(query: query))
+    private func search(name: String) {
+        if name.isEmpty {
+            clear()
+        }
+        else {
+            query.name = name
         }
     }
 }

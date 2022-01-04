@@ -93,16 +93,10 @@ struct NewPostView: View {
         )
     }
 
-    init(
-        repo: MintyRepo?,
-        newPost: PassthroughSubject<String, Never>,
-        tag: TagPreview? = nil
-    ) {
-        _post = StateObject(wrappedValue: NewPostViewModel(
-            repo: repo,
-            newPost: newPost,
-            tag: tag
-        ))
+    init(repo: MintyRepo?, tag: TagPreview? = nil) {
+        _post = StateObject(
+            wrappedValue: NewPostViewModel(repo: repo, tag: tag)
+        )
         _tagSearch = StateObject(wrappedValue: TagQueryViewModel(repo: repo))
     }
 
@@ -114,10 +108,7 @@ struct NewPostView: View {
 
 struct NewPostView_Previews: PreviewProvider {
     static var previews: some View {
-        NewPostView(
-            repo: PreviewRepo(),
-            newPost: PassthroughSubject<String, Never>()
-        )
-        .environmentObject(ObjectSource.preview)
+        NewPostView(repo: PreviewRepo())
+            .environmentObject(ObjectSource.preview)
     }
 }

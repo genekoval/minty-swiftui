@@ -3,6 +3,12 @@ import Foundation
 import Minty
 
 final class TagViewModel: IdentifiableEntity, ObservableObject {
+    @Published var draftAlias = ""
+    @Published var draftDescription = ""
+    @Published var draftName = ""
+    @Published var draftSource = ""
+
+    @Published private(set) var deleted = false
     @Published private(set) var name = ""
     @Published private(set) var aliases: [String] = []
     @Published private(set) var description: String?
@@ -10,14 +16,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
     @Published private(set) var sources: [Source] = []
     @Published private(set) var postCount: Int = 0
 
-    @Published var draftAlias = ""
-    @Published var draftDescription = ""
-    @Published var draftName = ""
-    @Published var draftSource = ""
-
-    private let deleted: Deleted
-    private var nameCancellable: AnyCancellable?
-    private var descriptionCancellable: AnyCancellable?
+    private var cancellables = Set<AnyCancellable>()
 
     var draftAliasValid: Bool {
         !draftAlias.isEmpty
@@ -40,15 +39,21 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
         return tag
     }
 
-    init(id: String, repo: MintyRepo?, deleted: Deleted) {
-        self.deleted = deleted
-
+    init(id: String, repo: MintyRepo?) {
         super.init(id: id, identifier: "tag", repo: repo)
 
-        nameCancellable = $name.sink { [weak self] in self?.draftName = $0 }
-        descriptionCancellable = $description.sink { [weak self] in
-            self?.draftDescription = $0 ?? ""
-        }
+        Events
+            .tagDeleted
+            .sink { [weak self] in self?.tagDeleted(id: $0) }
+            .store(in: &cancellables)
+
+        $name
+            .sink { [weak self] in self?.draftName = $0 }
+            .store(in: &cancellables)
+
+        $description
+            .sink { [weak self] in self?.draftDescription = $0 ?? "" }
+            .store(in: &cancellables)
     }
 
     func addAlias() {
@@ -92,7 +97,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
             try repo.deleteTag(tagId: id)
         }
 
-        deleted.id = id
+        Events.tagDeleted.send(id)
     }
 
     func deleteAlias(at index: Int) {
@@ -140,5 +145,11 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
 
     func swap(alias: String) {
         setName(name: alias)
+    }
+
+    private func tagDeleted(id: String) {
+        if id == self.id {
+            deleted = true
+        }
     }
 }

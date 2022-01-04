@@ -19,18 +19,19 @@ class Search<Element, QueryType> : RemoteEntity, ObservableObject where
         (MintyRepo, QueryType) throws -> SearchResult<Element>
 
     @Published var hits: [Element] = []
-    @Published var initialSearch = false
     @Published var query: QueryType {
         didSet {
-            if oldValue.from == query.from {
+            if !modifyingQuery {
                 newSearch()
             }
         }
     }
 
+    @Published private(set) var initialSearch = false
     @Published private(set) var total = 0
 
-    private var queryCancellable: AnyCancellable?
+    private var deletionCancellable: AnyCancellable?
+    private var modifyingQuery = false
     private let search: SearchAction
 
     final var resultsAvailable: Bool {
@@ -41,6 +42,7 @@ class Search<Element, QueryType> : RemoteEntity, ObservableObject where
         type: String,
         repo: MintyRepo?,
         query: QueryType,
+        deletionPublisher: PassthroughSubject<String, Never>,
         searchNow: Bool = false,
         search: @escaping SearchAction
     ) {
@@ -49,16 +51,17 @@ class Search<Element, QueryType> : RemoteEntity, ObservableObject where
 
         super.init(identifier: "\(type) search", repo: repo)
 
+        deletionCancellable = deletionPublisher.sink { [weak self] in
+            self?.remove(id: $0)
+        }
+
         if searchNow {
             newSearch()
         }
     }
 
-    private func clear() {
-        if query.from != 0 {
-            query.from = 0
-        }
-
+    final func clear() {
+        modifyQuery { query.from = 0 }
         total = 0
         hits.removeAll()
     }
@@ -68,13 +71,19 @@ class Search<Element, QueryType> : RemoteEntity, ObservableObject where
         hits.append(contentsOf: result.hits)
     }
 
+    final func modifyQuery(action: () -> Void) {
+        modifyingQuery = true
+        action()
+        modifyingQuery = false
+    }
+
     private func newSearch() {
         clear()
         performSearch()
     }
 
     final func nextPage() {
-        query.from += query.size
+        modifyQuery { query.from += query.size }
         performSearch()
     }
 
@@ -85,7 +94,7 @@ class Search<Element, QueryType> : RemoteEntity, ObservableObject where
         }
     }
 
-    final func remove(id: String) {
+    private func remove(id: String) {
         if let index = hits.firstIndex(where: { $0.id == id }) {
             hits.remove(at: index)
             total -= 1

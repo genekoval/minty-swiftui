@@ -81,7 +81,6 @@ private struct SearchControls: View {
 
 struct PostSearch: View {
     @ObservedObject var search: PostQueryViewModel
-    @ObservedObject var deleted: Deleted
 
     var body: some View {
         ScrollView {
@@ -91,7 +90,6 @@ struct PostSearch: View {
 
                 PostSearchResults(
                     search: search,
-                    deleted: deleted,
                     showResultCount: true
                 )
             }
@@ -103,11 +101,10 @@ struct PostSearch: View {
 
 struct PostSearch_Previews: PreviewProvider {
     @StateObject private static var search = PostQueryViewModel.preview()
-    @StateObject private static var deleted = Deleted()
 
     static var previews: some View {
         NavigationView {
-            PostSearch(search: search, deleted: deleted)
+            PostSearch(search: search)
         }
         .padding(.horizontal)
         .environmentObject(DataSource.preview)

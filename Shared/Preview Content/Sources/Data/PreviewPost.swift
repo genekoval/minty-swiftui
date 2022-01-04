@@ -174,11 +174,10 @@ extension PostQueryViewModel {
 }
 
 extension PostViewModel {
-    static func preview(id: String, deleted: Deleted) -> PostViewModel {
+    static func preview(id: String) -> PostViewModel {
         PostViewModel(
             id: id,
             repo: PreviewRepo(),
-            deleted: deleted,
             preview: PostPreview.preview(id: id)
         )
     }

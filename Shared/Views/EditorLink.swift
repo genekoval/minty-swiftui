@@ -77,10 +77,7 @@ struct EditorLink: View {
 
 struct EditorLink_Previews: PreviewProvider {
     private struct Preview: View {
-        @StateObject private var tag = TagViewModel.preview(
-            id: "1",
-            deleted: Deleted()
-        )
+        @StateObject private var tag = TagViewModel.preview(id: "1")
 
         var body: some View {
             NavigationView {

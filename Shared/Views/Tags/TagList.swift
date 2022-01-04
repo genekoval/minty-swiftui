@@ -15,8 +15,7 @@ struct TagList: View {
                     VStack {
                         NavigationLink(destination: TagDetail(
                             tag: tag,
-                            repo: post.repo,
-                            deleted: post.deletedTag
+                            repo: post.repo
                         )) {
                             HStack {
                                 TagRow(tag: tag)
@@ -38,13 +37,8 @@ struct TagList: View {
 }
 
 struct TagList_Previews: PreviewProvider {
-    private static let deleted = Deleted()
-
     private struct Preview: View {
-        @StateObject private var post = PostViewModel.preview(
-            id: "test",
-            deleted: deleted
-        )
+        @StateObject private var post = PostViewModel.preview(id: "test")
 
         var body: some View {
             NavigationView {
