@@ -19,6 +19,7 @@ final class PostViewModel:
     @Published private(set) var created: Date = Date()
     @Published private(set) var modified: Date = Date()
     @Published private(set) var preview: PostPreview
+    @Published private(set) var comments: [Comment] = []
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -54,6 +55,18 @@ final class PostViewModel:
         }.store(in: &cancellables)
     }
 
+    func add(comment: String) {
+        withRepo("add comment") { repo in
+            let result = try repo.addComment(
+                postId: id,
+                parentId: nil,
+                content: comment
+            )
+
+            comments.insert(result, at: 0)
+        }
+    }
+
     func add(objects: [String], at position: Int) {
         withRepo("add objects") { repo in
             modified = try repo.addPostObjects(
@@ -62,6 +75,15 @@ final class PostViewModel:
                 position: UInt32(position)
             )
         }
+    }
+
+    func add(reply: Comment, to parentId: String) {
+        guard let index = comments.firstIndex(where: { $0.id == parentId })
+        else {
+            fatalError("Parent comment does not exist")
+        }
+
+        comments.insert(reply, at: index + 1)
     }
 
     func addTag(tag: TagPreview) {
@@ -105,6 +127,18 @@ final class PostViewModel:
         }
     }
 
+    private func fetchComments() {
+        withRepo("fetch comments") { repo in
+            comments = try repo.getComments(postId: id)
+        }
+    }
+
+    private func fetchData() {
+        withRepo("fetch data") { repo in
+            load(from: try repo.getPost(postId: id))
+        }
+    }
+
     private func load(from post: Post) {
         title = post.title
         description = post.description
@@ -131,9 +165,8 @@ final class PostViewModel:
     }
 
     override func refresh() {
-        withRepo("fetch data") { repo in
-            load(from: try repo.getPost(postId: id))
-        }
+        fetchData()
+        fetchComments()
     }
 
     private func removeLocalTag(id: String) {

@@ -13,6 +13,8 @@ struct PostDetail: View {
     var body: some View {
         ScrollView {
             postInfo
+            controls
+            comments
         }
         .navigationTitle("Post")
         .navigationBarTitleDisplayMode(.inline)
@@ -23,6 +25,33 @@ struct PostDetail: View {
         .onReceive(post.$deleted) { if $0 { dismiss() } }
         .sheet(isPresented: $showingEditor) { PostEditor(post: post) }
         .toolbar { Button("Edit") { showingEditor = true } }
+    }
+
+    @ViewBuilder
+    private var comments: some View {
+        ForEach(post.comments) { CommentRow(comment: $0, post: post) }
+    }
+
+    @ViewBuilder
+    private var commentCount: some View {
+        if !post.comments.isEmpty {
+            Label(
+                post.comments.countOf(type: "Comment"),
+                systemImage: "text.bubble"
+            )
+            .font(.caption)
+            .foregroundColor(.secondary)
+        }
+    }
+
+    @ViewBuilder
+    private var controls: some View {
+        HStack {
+            Spacer()
+            NewCommentButton(post: post)
+            Spacer()
+        }
+        .padding(.vertical, 5)
     }
 
     @ViewBuilder
@@ -48,6 +77,7 @@ struct PostDetail: View {
             created
             modified
             objectCount
+            commentCount
             tags
         }
         .padding()

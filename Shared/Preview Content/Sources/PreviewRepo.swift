@@ -115,7 +115,7 @@ final class PreviewRepo: MintyRepo {
     }
 
     func getComments(postId: String) throws -> [Comment] {
-        throw PreviewError.notSupported
+        Comment.preview(for: postId)
     }
 
     func getObject(objectId: String) throws -> Object {
