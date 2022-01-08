@@ -8,8 +8,8 @@ private let sizeFormatter: ByteCountFormatter = {
 }()
 
 private final class PreviewData {
-    private(set) var objects: [String: Object] = [:]
-    private(set) var previews: [String: ObjectPreview] = [:]
+    private var objects: [String: Object] = [:]
+    private var previews: [String: ObjectPreview] = [:]
 
     init() {
         addObject(
@@ -32,7 +32,7 @@ private final class PreviewData {
         )
     }
 
-    func addObject(
+    private func addObject(
         id: String,
         hash: String,
         size: UInt64,
@@ -64,20 +64,41 @@ private final class PreviewData {
         objects[id] = object
         previews[id] = preview
     }
+
+    func get(object id: String) -> Object {
+        guard var object = objects[id] else {
+            fatalError("Object with ID (\(id)) does not exist")
+        }
+
+        let previews = PostPreview.preview(query: PostQuery())
+
+        for preview in previews {
+            let post = Post.preview(id: preview.id)
+
+            if post.objects.contains(where: { $0.id == id }) {
+                object.posts.append(preview)
+            }
+        }
+
+        return object
+    }
+
+    func get(preview id: String) -> ObjectPreview {
+        if let preview = data.previews[id] { return preview }
+        fatalError("Object Preview with ID (\(id)) does not exist")
+    }
 }
 
 private let data = PreviewData()
 
 extension Object {
     static func preview(id: String) -> Object {
-        if let object = data.objects[id] { return object }
-        fatalError("Object with ID (\(id)) does not exist")
+        data.get(object: id)
     }
 }
 
 extension ObjectPreview {
     static func preview(id: String) -> ObjectPreview {
-        if let preview = data.previews[id] { return preview }
-        fatalError("Object Preview with ID (\(id)) does not exist")
+        data.get(preview: id)
     }
 }
