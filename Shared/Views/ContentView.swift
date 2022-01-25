@@ -11,6 +11,7 @@ struct ContentView: View {
             .fullScreenCover(isPresented: $showingConnectionModal) {
                 ConnectionModal(closable: false)
             }
+            .viewerOverlay()
             .onAppear {
                 setUpEnvironment()
                 showingConnectionModal = settings.server == nil
@@ -28,6 +29,7 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
             .environmentObject(DataSource.preview)
             .environmentObject(ObjectSource.preview)
+            .environmentObject(Overlay())
             .environmentObject(SettingsViewModel())
     }
 }

@@ -27,5 +27,8 @@ struct AppShell: View {
 struct AppShell_Previews: PreviewProvider {
     static var previews: some View {
         AppShell()
+            .environmentObject(DataSource.preview)
+            .environmentObject(ObjectSource.preview)
+            .environmentObject(SettingsViewModel())
     }
 }
