@@ -50,7 +50,7 @@ final class PostViewModel:
         }.store(in: &cancellables)
 
         $objects.sink { [weak self] in
-            self?.preview.previewId = $0.first?.previewId
+            self?.preview.preview = $0.first
             self?.preview.objectCount = UInt32($0.count)
         }.store(in: &cancellables)
     }

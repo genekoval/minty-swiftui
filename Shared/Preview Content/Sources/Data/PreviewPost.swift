@@ -122,7 +122,7 @@ private final class PreviewData {
 
         preview.id = post.id
         preview.title = post.title
-        preview.previewId = post.objects.first?.previewId
+        preview.preview = post.objects.first
         preview.objectCount = UInt32(post.objects.count)
         preview.dateCreated = post.dateCreated
 

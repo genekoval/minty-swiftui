@@ -7,12 +7,8 @@ struct PostRow: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .top) {
-                ImageObject(id: post.previewId) {
-                    Image(systemName: "text.justifyleft")
-                        .font(.title)
-                        .foregroundColor(.secondary)
-                }
-                .frame(width: 100, height: 100)
+                preview
+                    .frame(width: 100, height: 100)
 
                 VStack(alignment: .leading) {
                     Spacer(minLength: 1)
@@ -50,6 +46,18 @@ struct PostRow: View {
             Divider()
         }
         .padding([.horizontal, .top], 5)
+    }
+
+    @ViewBuilder
+    private var preview: some View {
+        if let preview = post.preview {
+            PreviewImage(object: preview)
+        }
+        else {
+            Image(systemName: "text.justifyleft")
+                .font(.title)
+                .foregroundColor(.secondary)
+        }
     }
 }
 
