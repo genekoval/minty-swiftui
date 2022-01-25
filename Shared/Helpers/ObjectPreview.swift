@@ -1,6 +1,6 @@
 import Minty
 
-private struct MimeType {
+struct MimeType {
     let type: String
     let subtype: String
 

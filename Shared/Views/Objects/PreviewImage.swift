@@ -17,12 +17,43 @@ private struct NoPreview: View {
     }
 }
 
+private struct PreviewBadge: View {
+    private let mimeType: MimeType
+
+    @ViewBuilder
+    private var badge: some View {
+        switch (mimeType.type) {
+        case "video":
+            Image(systemName: "play.fill")
+        default:
+            EmptyView()
+        }
+    }
+
+    var body: some View {
+        badge
+            .font(.title)
+            .foregroundColor(.white)
+            .shadow(color: .black, radius: 1, x: 0, y: 1)
+            .padding(8)
+    }
+
+    init(type: String) {
+        self.mimeType = MimeType(type)
+    }
+}
+
 struct PreviewImage: View {
     let previewId: String?
     let mimeType: String
 
     var body: some View {
-        ImageObject(id: previewId) {
+        ImageObject(id: previewId) { image in
+            image
+                .overlay(alignment: .bottomTrailing) {
+                    PreviewBadge(type: mimeType)
+                }
+        } placeholder: {
             NoPreview(type: mimeType)
         }
     }

@@ -1,29 +1,59 @@
 import SwiftUI
 
-struct ImageObject<Content: View>: View {
+struct ImageObject<Content, Placeholder>: View where
+    Content : View,
+    Placeholder : View
+{
     @EnvironmentObject var objects: ObjectSource
 
     let id: String?
-    @ViewBuilder let placeholder: Content
 
-    @State private var imageData: Data?
+    let content: (Image) -> Content
+    let placeholder: () -> Placeholder
 
     var body: some View {
         AsyncImage(url: objects.url(for: id)) { image in
-            image
-                .resizable()
-                .aspectRatio(contentMode: .fit)
+            content(
+                image
+                    .resizable()
+            )
+            .aspectRatio(contentMode: .fit)
         } placeholder: {
-            placeholder
+            placeholder()
         }
+    }
+
+    init(id: String?) where
+        Content == Image,
+        Placeholder == ProgressView<EmptyView, EmptyView>
+    {
+        self.id = id
+        content = { image in image }
+        placeholder = { ProgressView() }
+    }
+
+    init(id: String?, placeholder: @escaping () -> Placeholder) where
+        Content == Image
+    {
+        self.id = id
+        self.content = { image in image }
+        self.placeholder = placeholder
+    }
+
+    init(
+        id: String?,
+        content: @escaping (Image) -> Content,
+        placeholder: @escaping () -> Placeholder
+    ) {
+        self.id = id
+        self.content = content
+        self.placeholder = placeholder
     }
 }
 
 struct ImageObject_Previews: PreviewProvider {
     static var previews: some View {
-        ImageObject(id: "sand dune.jpg") {
-            ProgressView()
-        }
-        .environmentObject(ObjectSource.preview)
+        ImageObject(id: "sand dune.jpg")
+            .environmentObject(ObjectSource.preview)
     }
 }
