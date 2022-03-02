@@ -22,6 +22,7 @@ struct MintyApp: App {
     @StateObject private var data = DataSource(connect: connect)
     @StateObject private var objects: ObjectSource = ObjectCache()
     @StateObject private var overlay = Overlay()
+    @StateObject private var player = MediaPlayer()
     @StateObject private var settings = SettingsViewModel()
 
     var body: some Scene {
@@ -30,6 +31,7 @@ struct MintyApp: App {
                 .environmentObject(data)
                 .environmentObject(objects)
                 .environmentObject(overlay)
+                .environmentObject(player)
                 .environmentObject(settings)
         }
     }

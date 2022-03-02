@@ -20,5 +20,6 @@ struct ImageViewer_Previews: PreviewProvider {
     static var previews: some View {
         ImageViewer(object: ObjectPreview.preview(id: "sand dune.jpg"))
             .environmentObject(ObjectSource.preview)
+            .environmentObject(Overlay())
     }
 }

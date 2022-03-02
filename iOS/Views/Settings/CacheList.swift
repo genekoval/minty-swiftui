@@ -32,6 +32,7 @@ struct CacheList: View {
                 }
             }
         }
+        .playerSpacing()
         .navigationTitle("Cache")
         .navigationBarTitleDisplayMode(.inline)
     }

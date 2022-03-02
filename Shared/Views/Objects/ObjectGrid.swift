@@ -23,13 +23,14 @@ private struct ObjectDetailLink<Content>: View where Content : View {
 
 private struct ObjectGridItem: View {
     @EnvironmentObject var overlay: Overlay
+    @EnvironmentObject var player: MediaPlayer
 
     let object: ObjectPreview
 
     @Binding var selection: String?
 
     var body: some View {
-        if object.isViewable {
+        if object.isMedia || object.isViewable {
             Button(action: viewObject) {
                 preview
             }
@@ -60,7 +61,13 @@ private struct ObjectGridItem: View {
     }
 
     private func viewObject() {
-        overlay.show(object: object)
+        if object.isMedia {
+            player.currentItem = object
+            player.isMaximized = true
+        }
+        else if object.isViewable {
+            overlay.show(object: object)
+        }
     }
 }
 
@@ -100,6 +107,7 @@ struct ObjectGrid_Previews: PreviewProvider {
                 .environmentObject(DataSource.preview)
                 .environmentObject(ObjectSource.preview)
                 .environmentObject(Overlay())
+                .environmentObject(MediaPlayer.preview)
         }
     }
 }

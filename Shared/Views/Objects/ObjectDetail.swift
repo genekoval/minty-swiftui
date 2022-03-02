@@ -43,7 +43,7 @@ struct ObjectDetail: View {
     @StateObject private var vm: ObjectViewModel
 
     var body: some View {
-        ScrollView {
+        PaddedScrollView {
             VStack(alignment: .leading) {
                 HStack {
                     Spacer()

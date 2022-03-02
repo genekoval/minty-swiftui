@@ -6,21 +6,42 @@ private enum Tab {
 }
 
 struct AppShell: View {
+    @State private var playerFrame: CGRect = .zero
     @State private var selection: Tab = .search
 
     var body: some View {
         TabView(selection: $selection) {
-            SearchHome()
-                .tabItem {
-                    Label("Search", systemImage: "magnifyingglass")
-                }
-                .tag(Tab.search)
-            SettingsView()
-                .tabItem {
-                    Label("Settings", systemImage: "gear")
-                }
-                .tag(Tab.settings)
+            search
+            settings
         }
+        .onPreferenceChange(Size.self) { size in
+            playerFrame = size.last ?? .zero
+        }
+        .overlay(alignment: .bottom) {
+            MediaOverlay(frame: playerFrame)
+        }
+    }
+
+    @ViewBuilder
+    private var search: some View {
+        TabFrame {
+            SearchHome()
+        }
+        .tabItem {
+            Label("Search", systemImage: "magnifyingglass")
+        }
+        .tag(Tab.search)
+    }
+
+    @ViewBuilder
+    private var settings: some View {
+        TabFrame {
+            SettingsView()
+        }
+        .tabItem {
+            Label("Settings", systemImage: "gear")
+        }
+        .tag(Tab.settings)
     }
 }
 
@@ -28,6 +49,7 @@ struct AppShell_Previews: PreviewProvider {
     static var previews: some View {
         AppShell()
             .environmentObject(DataSource.preview)
+            .environmentObject(MediaPlayer.preview)
             .environmentObject(ObjectSource.preview)
             .environmentObject(SettingsViewModel())
     }

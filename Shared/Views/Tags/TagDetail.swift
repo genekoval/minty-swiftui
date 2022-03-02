@@ -31,7 +31,7 @@ struct TagDetail: View {
     }
 
     var body: some View {
-        ScrollView {
+        PaddedScrollView {
             tagInfo
             controls
 

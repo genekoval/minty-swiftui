@@ -103,6 +103,9 @@ final class ObjectCache: ObjectSource {
                 writer.write(data: data)
             })
         }
+        catch MintyError.unspecified(let message) {
+            fatalError("Failed to upload file: \(message)")
+        }
         catch {
             fatalError("Failed to upload file:\n\(error)")
         }
@@ -118,7 +121,7 @@ final class ObjectCache: ObjectSource {
         guard let repo = repo else { return nil }
 
         if !fileManager.createFile(atPath: url.path, contents: nil) {
-            return nil
+            fatalError("Failed to create file at path: \(url.path)")
         }
 
         do {

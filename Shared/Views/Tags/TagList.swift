@@ -4,7 +4,7 @@ struct TagList: View {
     @ObservedObject var post: PostViewModel
 
     var body: some View {
-        ScrollView {
+        PaddedScrollView {
             VStack(alignment: .leading) {
                 Text(post.tags.countOf(type: "Tag"))
                     .bold()

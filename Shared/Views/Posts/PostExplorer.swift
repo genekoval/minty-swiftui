@@ -8,7 +8,7 @@ struct PostExplorer: View {
     @StateObject private var search: PostQueryViewModel
 
     var body: some View {
-        ScrollView {
+        PaddedScrollView {
             VStack {
                 NavigationLink(
                     destination: PostSearch(search: search)

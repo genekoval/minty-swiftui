@@ -15,11 +15,20 @@ struct MimeType {
     }
 }
 
+private func isMediaType(_ mimeType: MimeType) -> Bool {
+    ["video"].contains(mimeType.type)
+}
+
 private func isViewableType(_ mimeType: MimeType) -> Bool {
-    mimeType.type == "image"
+    ["image"].contains(mimeType.type)
 }
 
 extension ObjectPreview {
+    var isMedia: Bool {
+        let mimeType = MimeType(self.mimeType)
+        return isMediaType(mimeType)
+    }
+
     var isViewable: Bool {
         let mimeType = MimeType(self.mimeType)
         return isViewableType(mimeType)

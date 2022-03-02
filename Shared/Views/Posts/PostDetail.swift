@@ -11,7 +11,7 @@ struct PostDetail: View {
     @State private var showingEditor = false
 
     var body: some View {
-        ScrollView {
+        PaddedScrollView {
             postInfo
             controls
             comments

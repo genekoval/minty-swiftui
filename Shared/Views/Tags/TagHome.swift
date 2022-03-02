@@ -21,7 +21,7 @@ struct TagHome: View {
     @Binding var selection: String?
 
     var body: some View {
-        ScrollView {
+        PaddedScrollView {
             if isSearching {
                 TagSearchResults(search: query)
             }

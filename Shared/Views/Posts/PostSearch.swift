@@ -83,7 +83,7 @@ struct PostSearch: View {
     @ObservedObject var search: PostQueryViewModel
 
     var body: some View {
-        ScrollView {
+        PaddedScrollView {
             VStack {
                 SearchControls(search: search)
                     .padding(.horizontal)

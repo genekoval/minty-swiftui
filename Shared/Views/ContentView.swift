@@ -3,7 +3,9 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var data: DataSource
     @EnvironmentObject var objects: ObjectSource
+    @EnvironmentObject var player: MediaPlayer
     @EnvironmentObject var settings: SettingsViewModel
+
     @State private var showingConnectionModal = false
 
     var body: some View {
@@ -19,6 +21,7 @@ struct ContentView: View {
     }
 
     private func setUpEnvironment() {
+        player.source = objects
         objects.dataSource = data
         data.observe(server: settings.$server)
     }

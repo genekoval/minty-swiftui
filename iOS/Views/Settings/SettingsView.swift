@@ -52,6 +52,7 @@ struct SettingsView: View {
                     ResetButton { reset() }
                 }
             }
+            .playerSpacing()
             .navigationTitle("Settings")
             .sheet(isPresented: $showingConnectionModal) {
                 ConnectionModal(closable: true)
