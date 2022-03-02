@@ -1,5 +1,14 @@
 import Minty
 
+private let mediaTypes = [
+    "audio",
+    "video"
+]
+
+private let viewableTypes = [
+    "image"
+]
+
 struct MimeType {
     let type: String
     let subtype: String
@@ -16,11 +25,11 @@ struct MimeType {
 }
 
 private func isMediaType(_ mimeType: MimeType) -> Bool {
-    ["video"].contains(mimeType.type)
+    mediaTypes.contains(mimeType.type)
 }
 
 private func isViewableType(_ mimeType: MimeType) -> Bool {
-    ["image"].contains(mimeType.type)
+    viewableTypes.contains(mimeType.type)
 }
 
 extension ObjectPreview {
