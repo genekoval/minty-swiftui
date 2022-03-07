@@ -11,7 +11,7 @@ private struct SwipeToDismiss: ViewModifier {
     private var offset: CGSize = .zero
 
     private var drag: some Gesture {
-        DragGesture(minimumDistance: 20, coordinateSpace: .local)
+        DragGesture(minimumDistance: 25, coordinateSpace: .local)
             .updating($offset) { (value, state, transaction) in
                 state = value.translation
 
