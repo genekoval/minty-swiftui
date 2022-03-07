@@ -20,17 +20,18 @@ final class CommentViewModel: IdentifiableEntity, ObservableObject {
         self.created = comment.dateCreated
         self.post = post
 
-        super.init(id: comment.id, identifier: "comment", repo: post.repo)
+        super.init(id: comment.id, identifier: "comment")
+        self.repo = post.repo
 
         contentCancellable = $content.sink { [weak self] in
             self?.draftContent = $0
         }
     }
 
-    func commitContent() {
+    func commitContent() throws {
         if draftContent == content { return }
 
-        withRepo("update content") { repo in
+        try withRepo("update content") { repo in
             content = try repo.setCommentContent(
                 commentId: id,
                 content: draftContent
@@ -38,15 +39,15 @@ final class CommentViewModel: IdentifiableEntity, ObservableObject {
         }
     }
 
-    func reply() {
-        withRepo("add reply") { repo in
+    func reply() throws {
+        try withRepo("add reply") { repo in
             let comment = try repo.addComment(
                 postId: post.id,
                 parentId: id,
                 content: draftReply
             )
 
-            post.add(reply: comment, to: id)
+            try post.add(reply: comment, to: id)
         }
     }
 }

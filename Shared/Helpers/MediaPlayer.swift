@@ -13,6 +13,7 @@ final class MediaPlayer: ObservableObject {
     @Published var currentTime: Double = .zero
     @Published var duration: Double?
 
+    var errorHandler: ErrorHandler?
     let player = AVPlayer()
     var source: ObjectSource?
 
@@ -138,7 +139,17 @@ final class MediaPlayer: ObservableObject {
             return
         }
 
-        guard let url = source?.url(for: object.id) else { return }
+        var url: URL?
+
+        do {
+            url = try source?.url(for: object.id)
+        }
+        catch {
+            errorHandler?.handle(error: error)
+        }
+
+        guard let url = url else { return }
+
         let asset = AVURLAsset(
             url: url,
             options: ["AVURLAssetOutOfBandMIMETypeKey": object.mimeType]
@@ -156,7 +167,9 @@ final class MediaPlayer: ObservableObject {
                 case .readyToPlay:
                     self?.duration = item.asset.duration.seconds
                 case .failed:
-                    fatalError("Media Item failed: \(item.error!)")
+                    if let error = item.error {
+                        self?.errorHandler?.handle(error: error)
+                    }
                 default:
                     break
                 }

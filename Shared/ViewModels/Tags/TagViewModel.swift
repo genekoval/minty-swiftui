@@ -39,8 +39,8 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
         return tag
     }
 
-    init(id: String, repo: MintyRepo?) {
-        super.init(id: id, identifier: "tag", repo: repo)
+    init(id: String) {
+        super.init(id: id, identifier: "tag")
 
         Events
             .tagDeleted
@@ -56,10 +56,10 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
             .store(in: &cancellables)
     }
 
-    func addAlias() {
+    func addAlias() throws {
         guard draftAliasValid else { return }
 
-        withRepo("add alias") { repo in
+        try withRepo("add alias") { repo in
             refreshNames(
                 names: try repo.addTagAlias(tagId: id, alias: draftAlias)
             )
@@ -68,18 +68,18 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
         draftAlias = ""
     }
 
-    func addSource() {
+    func addSource() throws {
         guard draftSourceValid else { return }
 
-        withRepo("add source") { repo in
+        try withRepo("add source") { repo in
             sources.append(try repo.addTagSource(tagId: id, url: draftSource))
         }
 
         draftSource = ""
     }
 
-    func commitDescription() {
-        withRepo("set description") { repo in
+    func commitDescription() throws {
+        try withRepo("set description") { repo in
             description = try repo.setTagDescription(
                 tagId: id,
                 description: draftDescription
@@ -87,29 +87,29 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
         }
     }
 
-    func commitName() {
+    func commitName() throws {
         guard draftNameValid && draftName != name else { return }
-        setName(name: draftName)
+        try setName(name: draftName)
     }
 
-    func delete() {
-        withRepo("delete tag") { repo in
+    func delete() throws {
+        try withRepo("delete tag") { repo in
             try repo.deleteTag(tagId: id)
         }
 
         Events.tagDeleted.send(id)
     }
 
-    func deleteAlias(at index: Int) {
-        withRepo("delete alias") { repo in
+    func deleteAlias(at index: Int) throws {
+        try withRepo("delete alias") { repo in
             let alias = aliases.remove(at: index)
             let result = try repo.deleteTagAlias(tagId: id, alias: alias)
             refreshNames(names: result)
         }
     }
 
-    func deleteSource(at index: Int) {
-        withRepo("delete source") { repo in
+    func deleteSource(at index: Int) throws {
+        try withRepo("delete source") { repo in
             let source = sources[index].id
             try repo.deleteTagSource(tagId: id, sourceId: source)
         }
@@ -117,8 +117,8 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
         sources.remove(at: index)
     }
 
-    override func refresh() {
-        withRepo("fetch data") { repo in
+    override func refresh() throws {
+        try withRepo("fetch data") { repo in
             load(from: try repo.getTag(tagId: id))
         }
     }
@@ -137,14 +137,14 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
         aliases = names.aliases
     }
 
-    private func setName(name: String) {
-        withRepo("set name") { repo in
+    private func setName(name: String) throws {
+        try withRepo("set name") { repo in
             refreshNames(names: try repo.setTagName(tagId: id, newName: name))
         }
     }
 
-    func swap(alias: String) {
-        setName(name: alias)
+    func swap(alias: String) throws {
+        try setName(name: alias)
     }
 
     private func tagDeleted(id: String) {

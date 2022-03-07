@@ -46,6 +46,9 @@ struct TagDetail: View {
                 showingEditor.toggle()
             }
         }
+        .loadEntity(tag)
+        .prepareSearch(recentPosts)
+        .prepareSearch(search)
         .onAppear { if tag.deleted { dismiss() } }
         .onReceive(tag.$deleted) { if $0 { dismiss() } }
     }
@@ -156,19 +159,12 @@ struct TagDetail: View {
     }
 
     init(tag: TagPreview, repo: MintyRepo?) {
-        _tag = StateObject(wrappedValue: TagViewModel(
-            id: tag.id,
-            repo: repo
-        ))
+        _tag = StateObject(wrappedValue: TagViewModel(id: tag.id))
         _recentPosts = StateObject(wrappedValue: PostQueryViewModel(
-            repo: repo,
             tag: tag,
             searchNow: true
         ))
-        _search = StateObject(wrappedValue: PostQueryViewModel(
-            repo: repo,
-            tag: tag
-        ))
+        _search = StateObject(wrappedValue: PostQueryViewModel(tag: tag))
     }
 }
 

@@ -77,6 +77,8 @@ struct EditorLink: View {
 
 struct EditorLink_Previews: PreviewProvider {
     private struct Preview: View {
+        @EnvironmentObject var errorHandler: ErrorHandler
+
         @StateObject private var tag = TagViewModel.preview(id: "1")
 
         var body: some View {
@@ -84,7 +86,9 @@ struct EditorLink_Previews: PreviewProvider {
                 Form {
                     EditorLink(
                         title: "Description",
-                        onSave: { tag.commitDescription() },
+                        onSave: {
+                            errorHandler.handle { try tag.commitDescription() }
+                        },
                         draft: $tag.draftDescription,
                         original: tag.description
                     )
@@ -97,5 +101,6 @@ struct EditorLink_Previews: PreviewProvider {
 
     static var previews: some View {
         Preview()
+            .withErrorHandling()
     }
 }

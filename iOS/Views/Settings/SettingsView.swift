@@ -3,6 +3,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var data: DataSource
+    @EnvironmentObject var errorHandler: ErrorHandler
     @EnvironmentObject var objects: ObjectSource
     @EnvironmentObject var settings: SettingsViewModel
     @State private var showingConnectionModal = false
@@ -43,7 +44,7 @@ struct SettingsView: View {
                             Text("Inspect")
                         }
 
-                        Button("Clear Cache") { objects.clearCache() }
+                        Button("Clear Cache") { clearCache() }
                     }
                 }
 
@@ -57,11 +58,20 @@ struct SettingsView: View {
             .sheet(isPresented: $showingConnectionModal) {
                 ConnectionModal(closable: true)
             }
+            .onAppear { refreshCache() }
         }
     }
 
+    private func clearCache() {
+        errorHandler.handle { try objects.clearCache() }
+    }
+
+    private func refreshCache() {
+        errorHandler.handle { try objects.refresh() }
+    }
+
     private func reset() {
-        objects.clearCache()
+        clearCache()
         settings.reset()
     }
 }

@@ -3,23 +3,27 @@ import SwiftUI
 struct PostEditor: View {
     @Environment(\.dismiss) var dismiss
 
+    @EnvironmentObject var errorHandler: ErrorHandler
+
     @ObservedObject var post: PostViewModel
 
-    @StateObject private var tagSearch: TagQueryViewModel
+    @StateObject private var tagSearch = TagQueryViewModel()
 
     var body: some View {
         NavigationView {
             Form {
                 EditorLink(
                     title: "Title",
-                    onSave: { post.commitTitle() },
+                    onSave: { errorHandler.handle { try post.commitTitle() } },
                     draft: $post.draftTitle,
                     original: post.title
                 )
 
                 EditorLink(
                     title: "Description",
-                    onSave: { post.commitDescription() },
+                    onSave: {
+                        errorHandler.handle{ try post.commitDescription() }
+                    },
                     draft: $post.draftDescription,
                     original: post.description
                 )
@@ -40,8 +44,12 @@ struct PostEditor: View {
                     NavigationLink(destination: TagSelector(
                         tags: $post.tags,
                         search: tagSearch,
-                        onAdd: { post.addTag(tag: $0) },
-                        onRemove: { post.removeTag(tag: $0) }
+                        onAdd: { tag in
+                            errorHandler.handle { try post.addTag(tag: tag) }
+                        },
+                        onRemove: { tag in
+                            errorHandler.handle { try post.removeTag(tag: tag) }
+                        }
                     )) {
                         HStack {
                             Label("Tags", systemImage: "tag")
@@ -56,7 +64,9 @@ struct PostEditor: View {
             }
             .navigationTitle("Edit Post")
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear { tagSearch.excluded = post.tags }
+            .onAppear {
+                tagSearch.excluded = post.tags
+            }
             .toolbar {
                 Button(action: { dismiss() }) {
                     Text("Done")
@@ -66,16 +76,11 @@ struct PostEditor: View {
         }
     }
 
-    init(post: PostViewModel) {
-        self.post = post
-        _tagSearch = StateObject(
-            wrappedValue: TagQueryViewModel(repo: post.repo)
-        )
-    }
-
     private func delete() {
-        post.delete()
-        dismiss()
+        errorHandler.handle {
+            try post.delete()
+            dismiss()
+        }
     }
 }
 
@@ -84,6 +89,7 @@ struct PostEditor_Previews: PreviewProvider {
 
     static var previews: some View {
         PostEditor(post: post)
+            .withErrorHandling()
             .environmentObject(ObjectSource.preview)
     }
 }

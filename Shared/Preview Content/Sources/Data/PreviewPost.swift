@@ -169,7 +169,7 @@ extension PostPreview {
 
 extension PostQueryViewModel {
     static func preview(searchNow: Bool = false) -> PostQueryViewModel {
-        PostQueryViewModel(repo: PreviewRepo(), searchNow: searchNow)
+        PostQueryViewModel(searchNow: searchNow)
     }
 }
 
@@ -177,7 +177,6 @@ extension PostViewModel {
     static func preview(id: String) -> PostViewModel {
         PostViewModel(
             id: id,
-            repo: PreviewRepo(),
             preview: PostPreview.preview(id: id)
         )
     }

@@ -28,8 +28,8 @@ final class NewPostViewModel: RemoteEntity, ObjectCollection, ObservableObject {
         return result
     }
 
-    init(repo: MintyRepo?, tag: TagPreview? = nil) {
-        super.init(identifier: "new post", repo: repo)
+    init(tag: TagPreview? = nil) {
+        super.init(identifier: "new post")
 
         if let tag = tag {
             tags.append(tag)
@@ -44,8 +44,8 @@ final class NewPostViewModel: RemoteEntity, ObjectCollection, ObservableObject {
         title = processText(text: &draftTitle)
     }
 
-    func create() {
-        withRepo("create") { repo in
+    func create() throws {
+        try withRepo("create") { repo in
             let postId = try repo.addPost(parts: parts)
             Events.postCreated.send(postId)
         }

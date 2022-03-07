@@ -12,14 +12,13 @@ final class TagQueryViewModel: Search<TagPreview, TagQuery> {
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(repo: MintyRepo?) {
+    init() {
         var query = TagQuery()
 
         query.size = 50
 
         super.init(
             type: "tag",
-            repo: repo,
             query: query,
             deletionPublisher: Events.tagDeleted
         ) { (repo, query) in try repo.getTags(query: query) }

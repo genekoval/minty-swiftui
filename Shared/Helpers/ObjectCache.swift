@@ -20,7 +20,7 @@ private func createCacheDirectory(name: String) -> URL {
         return directory
     }
     catch {
-        fatalError("Failed to create '\(name)' cache directory:\n\(error)")
+        fatalError("Failed to create '\(name)' cache directory: \(error)")
     }
 }
 
@@ -30,9 +30,11 @@ private func getFileSize(for url: URL) -> Int64 {
         return attributes[.size] as! Int64
     }
     catch {
-        fatalError("Failed to attributes for file '\(url.path)':\n\(error)")
+        let log = "Failed to get attributes for file: '\(url.path)': \(error)"
+        defaultLog.error("\(log)")
     }
 
+    return 0
 }
 
 final class ObjectCache: ObjectSource {
@@ -42,28 +44,27 @@ final class ObjectCache: ObjectSource {
 
     private let objectsDirectory: URL = ObjectCache.createCacheDirectory()
 
-    override init() {
-        super.init()
-        refresh()
-    }
-
-    override func clearCache() {
+    override func clearCache() throws {
         do {
             try fileManager.removeItem(at: objectsDirectory)
         }
         catch {
-            fatalError("Failed to remove object cache directory:\n\(error)")
+            let message = "Failed to remove object cache directory"
+            let logMessage = "\(message): \(error)"
+
+            defaultLog.error("\(logMessage)")
+            throw MintyError.unspecified(message: message)
         }
 
         _ = ObjectCache.createCacheDirectory()
-        super.clearCache()
+        try super.clearCache()
     }
 
     private func getObjectURL(id: String) -> URL {
         objectsDirectory.appendingPathComponent(id)
     }
 
-    private func refresh() {
+    override func refresh() throws {
         do {
             cachedObjects = try fileManager
                 .contentsOfDirectory(
@@ -76,11 +77,15 @@ final class ObjectCache: ObjectSource {
                 )}
         }
         catch {
-            fatalError("Failed to get cache directory contents:\n\(error)")
+            let message = "Failed to get cache directory contents"
+            let log = "\(message): \(error)"
+
+            defaultLog.error("\(log)")
+            throw MintyError.unspecified(message: message)
         }
     }
 
-    override func remove(at index: Int) {
+    override func remove(at index: Int) throws {
         let file = cachedObjects[index]
         let url = objectsDirectory.appendingPathComponent(file.id)
 
@@ -88,30 +93,26 @@ final class ObjectCache: ObjectSource {
             try fileManager.removeItem(at: url)
         }
         catch {
-            fatalError("Failed to delete cached file '\(file.id)':\n\(error)")
+            let message = "Failed to delete cached file"
+            let log = "\(message) '\(file.id)': \(error)"
+
+            defaultLog.error("\(log)")
+            throw MintyError.unspecified(message: message)
         }
 
-        super.remove(at: index)
+        try super.remove(at: index)
     }
 
-    override func upload(url: URL) async -> ObjectPreview? {
+    override func upload(url: URL) async throws -> ObjectPreview? {
         guard let repo = repo else { return nil }
 
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            return try repo.addObjectData(count: data.count, data: { writer in
-                writer.write(data: data)
-            })
-        }
-        catch MintyError.unspecified(let message) {
-            fatalError("Failed to upload file: \(message)")
-        }
-        catch {
-            fatalError("Failed to upload file:\n\(error)")
-        }
+        let (data, _) = try await URLSession.shared.data(from: url)
+        return try repo.addObjectData(count: data.count, data: { writer in
+            writer.write(data: data)
+        })
     }
 
-    override func url(for objectId: String) -> URL? {
+    override func url(for objectId: String) throws -> URL? {
         let url = getObjectURL(id: objectId)
 
         if fileManager.fileExists(atPath: url.path) {
@@ -121,26 +122,33 @@ final class ObjectCache: ObjectSource {
         guard let repo = repo else { return nil }
 
         if !fileManager.createFile(atPath: url.path, contents: nil) {
-            fatalError("Failed to create file at path: \(url.path)")
+            defaultLog.error("Failed to create file at path: \(url.path)")
+            throw MintyError.unspecified(message: "Failed to create cache file")
         }
 
         do {
             let handle = try FileHandle(forWritingTo: url)
 
             try repo.getObjectData(objectId: objectId) { data in
-                do {
-                    try handle.write(contentsOf: data)
-                }
-                catch {
-                    fatalError("Failed to write data to object file:\n\(error)")
-                }
+                try handle.write(contentsOf: data)
             }
-
-            refresh()
-            return url
         }
         catch {
-            fatalError("Failed to download object:\n\(error)")
+            let message = "Failed to download object"
+            let log = "\(message): \(error)"
+
+            defaultLog.error("\(log)")
+            throw MintyError.unspecified(message: message)
         }
+
+        do {
+            try refresh()
+        }
+        catch {
+            let log = "Failed to refresh cache list after download: \(error)"
+            defaultLog.error("\(log)")
+        }
+
+        return url
     }
 }

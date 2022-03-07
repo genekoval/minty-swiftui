@@ -14,7 +14,6 @@ struct PostSearchResults: View {
         ) { post in
             NavigationLink(destination: PostDetail(
                 id: post.id,
-                repo: search.repo,
                 preview: post
             )) {
                 PostRow(post: post.wrappedValue)

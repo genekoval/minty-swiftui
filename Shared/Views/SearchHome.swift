@@ -6,7 +6,7 @@ struct SearchHome: View {
     var body: some View {
         NavigationView {
             List {
-                NavigationLink(destination: TagSearch(repo: data.repo)) {
+                NavigationLink(destination: TagSearch()) {
                     HStack {
                         Image(systemName: "tag.fill")
                             .foregroundColor(.green)
@@ -15,7 +15,7 @@ struct SearchHome: View {
                 }
 
                 NavigationLink(
-                    destination: PostExplorer(repo: data.repo)) {
+                    destination: PostExplorer()) {
                     HStack {
                         Image(systemName: "doc.text.image.fill")
                             .foregroundColor(.blue)
@@ -31,6 +31,7 @@ struct SearchHome: View {
 struct SearchHome_Previews: PreviewProvider {
     static var previews: some View {
         SearchHome()
+            .withErrorHandling()
             .environmentObject(DataSource.preview)
             .environmentObject(ObjectSource.preview)
     }

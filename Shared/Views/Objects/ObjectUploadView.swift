@@ -3,9 +3,11 @@ import SwiftUI
 
 struct ObjectUploadView: View {
     @Environment(\.dismiss) var dismiss
+
+    @EnvironmentObject var errorHandler: ErrorHandler
     @EnvironmentObject var source: ObjectSource
 
-    let onUpload: ([ObjectPreview]) -> Void
+    let onUpload: ([ObjectPreview]) throws -> Void
 
     @State private var imageURL: URL?
     @State private var inputImage: UIImage?
@@ -84,12 +86,9 @@ struct ObjectUploadView: View {
     }
 
     private func loadFile(result: Result<[URL], Error>) {
-        do {
+        errorHandler.handle {
             let urls = try result.get()
             uploads.append(contentsOf: urls.map { .file($0) })
-        }
-        catch {
-            fatalError("Failed to import files:\n\(error)")
         }
     }
 
@@ -101,8 +100,13 @@ struct ObjectUploadView: View {
     }
 
     private func textSubmitted() {
-        uploads.append(source.makeUploadable(text: text))
-        text.removeAll()
+        do {
+            uploads.append(try source.makeUploadable(text: text))
+            text.removeAll()
+        }
+        catch {
+            errorHandler.handle(error: error)
+        }
     }
 
     private func upload() {
@@ -110,11 +114,23 @@ struct ObjectUploadView: View {
             var objects: [ObjectPreview] = []
 
             for item in uploads {
-                await item.upload(objects: &objects, source: source)
+                do {
+                    try await item.upload(objects: &objects, source: source)
+                }
+                catch {
+                    errorHandler.handle(error: error)
+                    return
+                }
             }
 
             if !objects.isEmpty {
-                onUpload(objects)
+                do {
+                    try onUpload(objects)
+                }
+                catch {
+                    errorHandler.handle(error: error)
+                    return
+                }
             }
 
             dismiss()

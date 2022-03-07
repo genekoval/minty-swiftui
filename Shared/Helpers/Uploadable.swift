@@ -4,39 +4,34 @@ import SwiftUI
 
 private func uploadFile(
     src url: URL,
-    dest: inout [ObjectPreview],
     source: ObjectSource
-) async {
-    if let id = await source.upload(url: url) {
-        dest.append(id)
-    }
+) async throws -> ObjectPreview? {
+    try await source.upload(url: url)
 }
 
 private func uploadSecureFile(
     src url: URL,
-    dest: inout [ObjectPreview],
     source: ObjectSource
-) async {
+) async throws -> ObjectPreview? {
     guard url.startAccessingSecurityScopedResource() else {
-        fatalError("Failed to obtain access to resource: \(url)")
+        throw MintyError.unspecified(
+            message: "Failed to obtain access to resource: \(url)"
+        )
     }
 
     defer {
         url.stopAccessingSecurityScopedResource()
     }
 
-    await uploadFile(src: url, dest: &dest, source: source)
+    return try await uploadFile(src: url, source: source)
 }
 
-private func uploadURL(_ url: String, source: ObjectSource) -> [ObjectPreview] {
+private func uploadURL(
+    _ url: String,
+    source: ObjectSource
+) throws -> [ObjectPreview] {
     guard let repo = source.repo else { return [] }
-
-    do {
-        return try repo.addObjectsUrl(url: url)
-    }
-    catch {
-        fatalError("Failed to extract objects from URL '\(url)': \(error)")
-    }
+    return try repo.addObjectsUrl(url: url)
 }
 
 enum Uploadable: Identifiable {
@@ -58,16 +53,25 @@ enum Uploadable: Identifiable {
         }
     }
 
-    func upload(objects: inout [ObjectPreview], source: ObjectSource) async {
+    func upload(
+        objects: inout [ObjectPreview],
+        source: ObjectSource
+    ) async throws {
         switch self {
         case .existingObject(let object):
             objects.append(object)
         case .file(let url):
-            await uploadSecureFile(src: url, dest: &objects, source: source)
+            if let object =
+                try await uploadSecureFile(src: url, source: source)
+            {
+                objects.append(object)
+            }
         case .image(_, let url):
-            await uploadFile(src: url, dest: &objects, source: source)
+            if let object = try await uploadFile(src: url, source: source) {
+                objects.append(object)
+            }
         case .url(let urlString):
-            objects.append(contentsOf: uploadURL(urlString, source: source))
+            objects.append(contentsOf: try uploadURL(urlString, source: source))
         }
     }
 

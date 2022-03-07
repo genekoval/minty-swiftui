@@ -4,6 +4,8 @@ import SwiftUI
 struct TagEditor: View {
     @Environment(\.dismiss) var dismiss
 
+    @EnvironmentObject var errorHandler: ErrorHandler
+
     @ObservedObject var tag: TagViewModel
 
     var body: some View {
@@ -12,7 +14,10 @@ struct TagEditor: View {
                 Section {
                     HStack {
                         TextField("Name", text: $tag.draftName)
-                            .onSubmit { tag.commitName() }
+                            .onSubmit {
+                                errorHandler.handle { try tag.commitName() }
+
+                            }
                             .submitLabel(.done)
                     }
 
@@ -25,7 +30,11 @@ struct TagEditor: View {
                         }
 
                         if tag.draftNameValid {
-                            Button(action: { tag.commitName() }) {
+                            Button(action: {
+                                errorHandler.handle {
+                                    try tag.commitName()
+                                }
+                            }) {
                                 HStack {
                                     Image(systemName: "arrow.triangle.2.circlepath")
                                     Text("Save")
@@ -40,20 +49,28 @@ struct TagEditor: View {
                         HStack {
                             Text(alias)
                             Spacer()
-                            Button(action: { tag.swap(alias: alias) }) {
+                            Button(action: {
+                                errorHandler.handle {
+                                    try tag.swap(alias: alias)
+                                }
+                            }) {
                                 Image(systemName: "rectangle.2.swap")
                             }
                         }
                     }
                     .onDelete {
                         if let index = $0.first {
-                            tag.deleteAlias(at: index)
+                            errorHandler.handle {
+                                try tag.deleteAlias(at: index)
+                            }
                         }
                     }
 
                     HStack {
                         if tag.draftAliasValid {
-                            Button(action: { tag.addAlias() }) {
+                            Button(action: {
+                                errorHandler.handle { try tag.addAlias() }
+                            }) {
                                 Image(systemName: "plus.circle.fill")
                                     .foregroundColor(.green)
                             }
@@ -64,14 +81,18 @@ struct TagEditor: View {
                         }
 
                         TextField("Add alias", text: $tag.draftAlias)
-                            .onSubmit { tag.addAlias() }
+                            .onSubmit {
+                                errorHandler.handle { try tag.addAlias() }
+                            }
                             .submitLabel(.done)
                     }
                 }
 
                 EditorLink(
                     title: "Description",
-                    onSave: { tag.commitDescription() },
+                    onSave: {
+                        errorHandler.handle { try tag.commitDescription() }
+                    },
                     draft: $tag.draftDescription,
                     original: tag.description
                 )
@@ -80,13 +101,17 @@ struct TagEditor: View {
                     ForEach(tag.sources) { SourceLink(source: $0) }
                         .onDelete {
                             if let index = $0.first {
-                                tag.deleteSource(at: index)
+                                errorHandler.handle {
+                                    try tag.deleteSource(at: index)
+                                }
                             }
                         }
 
                     HStack {
                         if tag.draftSourceValid {
-                            Button(action: { tag.addSource() }) {
+                            Button(action: {
+                                errorHandler.handle { try tag.addSource() }
+                            }) {
                                 Image(systemName: "plus.circle.fill")
                                     .foregroundColor(.green)
                             }
@@ -99,7 +124,9 @@ struct TagEditor: View {
                         TextField("Add link", text: $tag.draftSource)
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
-                            .onSubmit { tag.addSource() }
+                            .onSubmit {
+                                errorHandler.handle { try tag.addSource() }
+                            }
                             .submitLabel(.done)
                     }
                 }
@@ -118,8 +145,10 @@ struct TagEditor: View {
     }
 
     private func delete() {
-        tag.delete()
-        dismiss()
+        errorHandler.handle {
+            try tag.delete()
+            dismiss()
+        }
     }
 }
 

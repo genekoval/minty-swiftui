@@ -28,6 +28,7 @@ struct MintyApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .withErrorHandling()
                 .environmentObject(data)
                 .environmentObject(objects)
                 .environmentObject(overlay)

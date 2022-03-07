@@ -2,10 +2,8 @@ import Minty
 import SwiftUI
 
 struct PostExplorer: View {
-    @EnvironmentObject var data: DataSource
-
     @StateObject private var newPosts = NewPostListViewModel()
-    @StateObject private var search: PostQueryViewModel
+    @StateObject private var search = PostQueryViewModel()
 
     var body: some View {
         PaddedScrollView {
@@ -29,6 +27,7 @@ struct PostExplorer: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) { addButton }
         }
+        .prepareSearch(search)
     }
 
     @ViewBuilder
@@ -40,16 +39,12 @@ struct PostExplorer: View {
     private var recentlyAdded: some View {
         NewPostList(newPosts: newPosts)
     }
-
-    init(repo: MintyRepo?) {
-        _search = StateObject(wrappedValue: PostQueryViewModel(repo: repo))
-    }
 }
 
 struct PostExplorer_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            PostExplorer(repo: PreviewRepo())
+            PostExplorer()
         }
         .environmentObject(DataSource.preview)
         .environmentObject(ObjectSource.preview)

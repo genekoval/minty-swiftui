@@ -4,7 +4,7 @@ import SwiftUI
 private let moveSymbol = "arrow.up.and.down.and.arrow.left.and.right"
 
 private struct AddButton: View {
-    let onUpload: ([ObjectPreview]) -> Void
+    let onUpload: ([ObjectPreview]) throws -> Void
     let alternateAction: () -> Void
 
     let state: EditorState
@@ -42,6 +42,8 @@ private struct AddButton: View {
 }
 
 private struct SelectorItem: View {
+    @EnvironmentObject var errorHandler: ErrorHandler
+
     @ObservedObject var selectable: Selectable
 
     let state: EditorState
@@ -54,7 +56,7 @@ private struct SelectorItem: View {
                     selectable.selected.toggle()
                 }
                 else if isMoveTarget {
-                    selectable.performAction()
+                    errorHandler.handle { try selectable.performAction() }
                 }
             }
             .overlay {
@@ -82,7 +84,9 @@ private struct SelectorItem: View {
 }
 
 private struct Placeholder: View {
-    let action: () -> Void
+    @EnvironmentObject var errorHandler: ErrorHandler
+
+    let action: () throws -> Void
 
     var body: some View {
         Image(systemName: "square.dashed")
@@ -90,7 +94,9 @@ private struct Placeholder: View {
             .aspectRatio(contentMode: .fit)
             .foregroundColor(.secondary)
             .frame(width: 50)
-            .onTapGesture { action() }
+            .onTapGesture {
+                errorHandler.handle { try action() }
+            }
     }
 }
 
@@ -116,6 +122,8 @@ private struct EditorItemView: View {
 }
 
 struct ObjectEditorGrid: View {
+    @EnvironmentObject var errorHandler: ErrorHandler
+
     @StateObject private var editor: ObjectEditorViewModel
 
     var body: some View {
@@ -145,7 +153,11 @@ struct ObjectEditorGrid: View {
     @ViewBuilder
     private var deleteButton: some View {
         if editor.state == .selecting {
-            Button(action: { editor.deleteSelected() }) {
+            Button(action: {
+                errorHandler.handle {
+                    try editor.deleteSelected()
+                }
+            }) {
                 Image(systemName: "trash")
             }
             .disabled(editor.selected.isEmpty)

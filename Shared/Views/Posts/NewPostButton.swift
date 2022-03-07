@@ -13,7 +13,7 @@ struct NewPostButton: View {
             Image(systemName: "plus")
         }
         .sheet(isPresented: $showingEditor) {
-            NewPostView(repo: data.repo, tag: tag)
+            NewPostView(tag: tag)
         }
     }
 

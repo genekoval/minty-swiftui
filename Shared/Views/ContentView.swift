@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var data: DataSource
+    @EnvironmentObject var errorHandler: ErrorHandler
     @EnvironmentObject var objects: ObjectSource
     @EnvironmentObject var player: MediaPlayer
     @EnvironmentObject var settings: SettingsViewModel
@@ -21,6 +22,7 @@ struct ContentView: View {
     }
 
     private func setUpEnvironment() {
+        player.errorHandler = errorHandler
         player.source = objects
         objects.dataSource = data
         data.observe(server: settings.$server)
@@ -30,7 +32,9 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .withErrorHandling()
             .environmentObject(DataSource.preview)
+            .environmentObject(MediaPlayer.preview)
             .environmentObject(ObjectSource.preview)
             .environmentObject(Overlay())
             .environmentObject(SettingsViewModel())

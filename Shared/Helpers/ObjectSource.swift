@@ -17,43 +17,41 @@ class ObjectSource: ObservableObject {
         cachedObjects.reduce(0) { $0 + $1.size }
     }
 
-    func clearCache() { cachedObjects.removeAll() }
+    func clearCache() throws { cachedObjects.removeAll() }
 
-    func makeUploadable(text: String) -> Uploadable {
-        if UUID(uuidString: text) != nil {
-            guard let repo = repo else {
-                fatalError("Cannot get object: repo missing")
-            }
-
-            do {
-                let object = try repo.getObject(objectId: text)
-
-                var preview = ObjectPreview()
-                preview.id = object.id
-                preview.previewId = object.previewId
-                preview.mimeType = object.mimeType
-
-                return .existingObject(preview)
-            }
-            catch {
-                fatalError("Failed to get object (\(text)): \(error)")
-            }
-        }
-        else {
+    func makeUploadable(text: String) throws -> Uploadable {
+        if UUID(uuidString: text) == nil {
             return .url(text)
         }
+
+        guard let repo = repo else {
+            throw MintyError.unspecified(
+                message: "Cannot get object: repo missing"
+            )
+        }
+
+        let object = try repo.getObject(objectId: text)
+
+        var preview = ObjectPreview()
+        preview.id = object.id
+        preview.previewId = object.previewId
+        preview.mimeType = object.mimeType
+
+        return .existingObject(preview)
     }
 
-    func remove(at index: Int) {
+    func refresh() throws { }
+
+    func remove(at index: Int) throws {
         cachedObjects.remove(at: index)
     }
 
-    func upload(url: URL) async -> ObjectPreview? { nil }
+    func upload(url: URL) async throws -> ObjectPreview? { nil }
 
-    final func url(for objectId: String?) -> URL? {
+    final func url(for objectId: String?) throws -> URL? {
         guard let id = objectId else { return nil }
-        return url(for: id)
+        return try url(for: id)
     }
 
-    func url(for objectId: String) -> URL? { nil }
+    func url(for objectId: String) throws -> URL? { nil }
 }

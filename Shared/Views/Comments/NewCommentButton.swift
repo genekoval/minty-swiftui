@@ -2,6 +2,8 @@ import Minty
 import SwiftUI
 
 struct NewCommentButton: View {
+    @EnvironmentObject var errorHandler: ErrorHandler
+
     let post: PostViewModel
 
     @State private var draft = ""
@@ -17,12 +19,13 @@ struct NewCommentButton: View {
     }
 
     private func done() {
-        post.add(comment: draft)
+        errorHandler.handle { try post.add(comment: draft) }
     }
 }
 
 struct NewCommentButton_Previews: PreviewProvider {
     static var previews: some View {
         NewCommentButton(post: PostViewModel.preview(id: "test"))
+            .withErrorHandling()
     }
 }

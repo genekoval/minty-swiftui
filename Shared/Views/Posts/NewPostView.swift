@@ -5,8 +5,10 @@ import SwiftUI
 struct NewPostView: View {
     @Environment(\.dismiss) var dismiss
 
+    @EnvironmentObject var errorHandler: ErrorHandler
+
     @StateObject private var post: NewPostViewModel
-    @StateObject private var tagSearch: TagQueryViewModel
+    @StateObject private var tagSearch = TagQueryViewModel()
 
     var body: some View {
         NavigationView {
@@ -25,6 +27,7 @@ struct NewPostView: View {
                 ToolbarItem(placement: .primaryAction) { doneButton }
                 ToolbarItem(placement: .cancellationAction) { cancelButton }
             }
+            .prepareSearch(tagSearch)
         }
     }
 
@@ -93,22 +96,25 @@ struct NewPostView: View {
         )
     }
 
-    init(repo: MintyRepo?, tag: TagPreview? = nil) {
-        _post = StateObject(
-            wrappedValue: NewPostViewModel(repo: repo, tag: tag)
-        )
-        _tagSearch = StateObject(wrappedValue: TagQueryViewModel(repo: repo))
+    init(tag: TagPreview? = nil) {
+        _post = StateObject(wrappedValue: NewPostViewModel(tag: tag))
     }
 
     private func create() {
-        post.create()
-        dismiss()
+        do {
+            try post.create()
+            dismiss()
+        }
+        catch {
+            errorHandler.handle(error: error)
+        }
     }
 }
 
 struct NewPostView_Previews: PreviewProvider {
     static var previews: some View {
-        NewPostView(repo: PreviewRepo())
+        NewPostView()
+            .withErrorHandling()
             .environmentObject(ObjectSource.preview)
     }
 }

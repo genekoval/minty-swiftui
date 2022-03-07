@@ -18,10 +18,13 @@ struct PostDetail: View {
         }
         .navigationTitle("Post")
         .navigationBarTitleDisplayMode(.inline)
+        .loadEntity(post)
         .onReceive(post.$preview) { preview in
             self.preview = preview
         }
-        .onAppear { if post.deleted { dismiss() } }
+        .onAppear {
+            if post.deleted { dismiss() }
+        }
         .onReceive(post.$deleted) { if $0 { dismiss() } }
         .sheet(isPresented: $showingEditor) { PostEditor(post: post) }
         .toolbar { Button("Edit") { showingEditor = true } }
@@ -148,15 +151,10 @@ struct PostDetail: View {
         }
     }
 
-    init(
-        id: String,
-        repo: MintyRepo?,
-        preview: Binding<PostPreview>
-    ) {
+    init(id: String, preview: Binding<PostPreview>) {
         _preview = preview
         _post = StateObject(wrappedValue: PostViewModel(
             id: id,
-            repo: repo,
             preview: preview.wrappedValue
         ))
     }
@@ -175,13 +173,14 @@ struct PostDetail_Previews: PreviewProvider {
                 NavigationView {
                     PostDetail(
                         id: post,
-                        repo: PreviewRepo(),
                         preview: .constant(PostPreview.preview(id: post))
                     )
                 }
             }
         }
+        .withErrorHandling()
         .environmentObject(DataSource.preview)
         .environmentObject(ObjectSource.preview)
+        .environmentObject(Overlay())
     }
 }

@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct CacheList: View {
+    @EnvironmentObject var errorHandler: ErrorHandler
     @EnvironmentObject var objects: ObjectSource
 
     var body: some View {
@@ -27,7 +28,9 @@ struct CacheList: View {
                 }
                 .onDelete { offsets in
                     if let index = offsets.first {
-                        objects.remove(at: index)
+                        errorHandler.handle {
+                            try objects.remove(at: index)
+                        }
                     }
                 }
             }
@@ -41,6 +44,7 @@ struct CacheList: View {
 struct CacheList_Previews: PreviewProvider {
     static var previews: some View {
         CacheList()
+            .withErrorHandling()
             .environmentObject(ObjectSource.preview)
     }
 }

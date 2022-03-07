@@ -3,8 +3,6 @@ import Minty
 import SwiftUI
 
 struct NewPostList: View {
-    @EnvironmentObject var data: DataSource
-
     @ObservedObject var newPosts: NewPostListViewModel
 
     var body: some View {
@@ -22,7 +20,6 @@ struct NewPostList: View {
                     NavigationLink(
                         destination: PostDetail(
                             id: post.id,
-                            repo: data.repo,
                             preview: post
                         ),
                         tag: post.id,

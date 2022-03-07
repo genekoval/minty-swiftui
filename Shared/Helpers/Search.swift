@@ -12,8 +12,17 @@ protocol SearchElement : Identifiable, ZiplineCodable {
     var id: String { get }
 }
 
-class Search<Element, QueryType> : RemoteEntity, ObservableObject where
-    Element: SearchElement, QueryType: Query
+protocol SearchObject {
+    func prepare(repo: MintyRepo?, errorHandler: ErrorHandler);
+}
+
+class Search<Element, QueryType> :
+    RemoteEntity,
+    ObservableObject,
+    SearchObject
+where
+    Element: SearchElement,
+    QueryType: Query
 {
     typealias SearchAction =
         (MintyRepo, QueryType) throws -> SearchResult<Element>
@@ -31,8 +40,10 @@ class Search<Element, QueryType> : RemoteEntity, ObservableObject where
     @Published private(set) var total = 0
 
     private var deletionCancellable: AnyCancellable?
+    private var errorHandler: ErrorHandler?
     private var modifyingQuery = false
     private let search: SearchAction
+    private let searchNow: Bool
 
     final var resultsAvailable: Bool {
         hits.count < total
@@ -40,7 +51,6 @@ class Search<Element, QueryType> : RemoteEntity, ObservableObject where
 
     init(
         type: String,
-        repo: MintyRepo?,
         query: QueryType,
         deletionPublisher: PassthroughSubject<String, Never>,
         searchNow: Bool = false,
@@ -48,15 +58,12 @@ class Search<Element, QueryType> : RemoteEntity, ObservableObject where
     ) {
         self.query = query
         self.search = search
+        self.searchNow = searchNow
 
-        super.init(identifier: "\(type) search", repo: repo)
+        super.init(identifier: "\(type) search")
 
         deletionCancellable = deletionPublisher.sink { [weak self] in
             self?.remove(id: $0)
-        }
-
-        if searchNow {
-            newSearch()
         }
     }
 
@@ -64,6 +71,11 @@ class Search<Element, QueryType> : RemoteEntity, ObservableObject where
         modifyQuery { query.from = 0 }
         total = 0
         hits.removeAll()
+    }
+
+    override func refresh() throws {
+        clear()
+        if searchNow { performSearch() }
     }
 
     private func load(result: SearchResult<Element>) {
@@ -88,10 +100,20 @@ class Search<Element, QueryType> : RemoteEntity, ObservableObject where
     }
 
     private func performSearch() {
-        withRepo("perform search") { repo in
-            load(result: try search(repo, query))
-            initialSearch = true
+        do {
+            try withRepo("perform search") { repo in
+                load(result: try search(repo, query))
+                initialSearch = true
+            }
         }
+        catch {
+            errorHandler?.handle(error: error)
+        }
+    }
+
+    func prepare(repo: MintyRepo?, errorHandler: ErrorHandler) {
+        self.errorHandler = errorHandler
+        errorHandler.handle { try load(repo: repo) }
     }
 
     private func remove(id: String) {

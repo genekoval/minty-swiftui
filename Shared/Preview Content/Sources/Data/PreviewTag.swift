@@ -126,12 +126,12 @@ extension TagPreview {
 
 extension TagQueryViewModel {
     static func preview() -> TagQueryViewModel {
-        TagQueryViewModel(repo: PreviewRepo())
+        TagQueryViewModel()
     }
 }
 
 extension TagViewModel {
     static func preview(id: String) -> TagViewModel {
-        TagViewModel(id: id, repo: PreviewRepo())
+        TagViewModel(id: id)
     }
 }

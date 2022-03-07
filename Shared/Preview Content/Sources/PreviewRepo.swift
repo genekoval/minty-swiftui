@@ -122,7 +122,10 @@ final class PreviewRepo: MintyRepo {
         Object.preview(id: objectId)
     }
 
-    func getObjectData(objectId: String, handler: (Data) -> Void) throws {
+    func getObjectData(
+        objectId: String,
+        handler: (Data) throws -> Void
+    ) throws {
         throw PreviewError.notSupported
     }
 

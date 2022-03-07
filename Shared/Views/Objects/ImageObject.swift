@@ -4,6 +4,7 @@ struct ImageObject<Content, Placeholder>: View where
     Content : View,
     Placeholder : View
 {
+    @EnvironmentObject var errorHandler: ErrorHandler
     @EnvironmentObject var objects: ObjectSource
 
     let id: String?
@@ -12,7 +13,7 @@ struct ImageObject<Content, Placeholder>: View where
     let placeholder: () -> Placeholder
 
     var body: some View {
-        AsyncImage(url: objects.url(for: id)) { image in
+        AsyncImage(url: url) { image in
             content(
                 image
                     .resizable()
@@ -21,6 +22,17 @@ struct ImageObject<Content, Placeholder>: View where
         } placeholder: {
             placeholder()
         }
+    }
+
+    private var url: URL? {
+        do {
+            return try objects.url(for: id)
+        }
+        catch {
+            errorHandler.handle(error: error)
+        }
+
+        return nil
     }
 
     init(id: String?) where
@@ -54,6 +66,7 @@ struct ImageObject<Content, Placeholder>: View where
 struct ImageObject_Previews: PreviewProvider {
     static var previews: some View {
         ImageObject(id: "sand dune.jpg")
+            .withErrorHandling()
             .environmentObject(ObjectSource.preview)
     }
 }

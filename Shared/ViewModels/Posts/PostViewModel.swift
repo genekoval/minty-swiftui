@@ -25,10 +25,10 @@ final class PostViewModel:
 
     var objectsPublisher: Published<[ObjectPreview]>.Publisher { $objects }
 
-    init(id: String, repo: MintyRepo?, preview: PostPreview) {
+    init(id: String, preview: PostPreview) {
         self.preview = preview
 
-        super.init(id: id, identifier: "post", repo: repo)
+        super.init(id: id, identifier: "post")
 
         Events
             .postDeleted
@@ -55,8 +55,8 @@ final class PostViewModel:
         }.store(in: &cancellables)
     }
 
-    func add(comment: String) {
-        withRepo("add comment") { repo in
+    func add(comment: String) throws {
+        try withRepo("add comment") { repo in
             let result = try repo.addComment(
                 postId: id,
                 parentId: nil,
@@ -67,8 +67,8 @@ final class PostViewModel:
         }
     }
 
-    func add(objects: [String], at position: Int) {
-        withRepo("add objects") { repo in
+    func add(objects: [String], at position: Int) throws {
+        try withRepo("add objects") { repo in
             modified = try repo.addPostObjects(
                 postId: id,
                 objects: objects,
@@ -77,23 +77,25 @@ final class PostViewModel:
         }
     }
 
-    func add(reply: Comment, to parentId: String) {
+    func add(reply: Comment, to parentId: String) throws {
         guard let index = comments.firstIndex(where: { $0.id == parentId })
         else {
-            fatalError("Parent comment does not exist")
+            throw MintyError.unspecified(
+                message: "Parent comment does not exist"
+            )
         }
 
         comments.insert(reply, at: index + 1)
     }
 
-    func addTag(tag: TagPreview) {
-        withRepo("add tag") { repo in
+    func addTag(tag: TagPreview) throws {
+        try withRepo("add tag") { repo in
             try repo.addPostTag(postId: id, tagId: tag.id)
         }
     }
 
-    func commitDescription() {
-        withRepo("set description") { repo in
+    func commitDescription() throws {
+        try withRepo("set description") { repo in
             let update = try repo.setPostDescription(
                 postId: id,
                 description: draftDescription
@@ -104,8 +106,8 @@ final class PostViewModel:
         }
     }
 
-    func commitTitle() {
-        withRepo("set title") { repo in
+    func commitTitle() throws {
+        try withRepo("set title") { repo in
             let update = try repo.setPostTitle(postId: id, title: draftTitle)
 
             title = update.newValue
@@ -113,28 +115,28 @@ final class PostViewModel:
         }
     }
 
-    func delete() {
-        withRepo("delete post") { repo in
+    func delete() throws {
+        try withRepo("delete post") { repo in
             try repo.deletePost(postId: id)
         }
 
         Events.postDeleted.send(id)
     }
 
-    func delete(objects: [String]) {
-        withRepo("delete objects") { repo in
+    func delete(objects: [String]) throws {
+        try withRepo("delete objects") { repo in
             modified = try repo.deletePostObjects(postId: id, objects: objects)
         }
     }
 
-    private func fetchComments() {
-        withRepo("fetch comments") { repo in
+    private func fetchComments() throws {
+        try withRepo("fetch comments") { repo in
             comments = try repo.getComments(postId: id)
         }
     }
 
-    private func fetchData() {
-        withRepo("fetch data") { repo in
+    private func fetchData() throws {
+        try withRepo("fetch data") { repo in
             load(from: try repo.getPost(postId: id))
         }
     }
@@ -148,8 +150,8 @@ final class PostViewModel:
         tags = post.tags
     }
 
-    func move(objects: [String], to destination: String?) {
-        withRepo("move objects") { repo in
+    func move(objects: [String], to destination: String?) throws {
+        try withRepo("move objects") { repo in
             modified = try repo.movePostObjects(
                 postId: id,
                 objects: objects,
@@ -164,9 +166,9 @@ final class PostViewModel:
         }
     }
 
-    override func refresh() {
-        fetchData()
-        fetchComments()
+    override func refresh() throws {
+        try fetchData()
+        try fetchComments()
     }
 
     private func removeLocalTag(id: String) {
@@ -175,8 +177,8 @@ final class PostViewModel:
         }
     }
 
-    func removeTag(tag: TagPreview) {
-        withRepo("delete tag") { repo in
+    func removeTag(tag: TagPreview) throws {
+        try withRepo("delete tag") { repo in
             try repo.deletePostTag(postId: id, tagId: tag.id)
         }
     }

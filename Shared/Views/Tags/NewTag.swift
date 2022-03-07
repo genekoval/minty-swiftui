@@ -2,7 +2,10 @@ import SwiftUI
 
 struct NewTag: View {
     @Environment(\.presentationMode) var presentationMode
+
     @EnvironmentObject var data: DataSource
+    @EnvironmentObject var errorHandler: ErrorHandler
+
     @Binding var id: String?
     @Binding var name: String
 
@@ -44,12 +47,9 @@ struct NewTag: View {
     private func create() {
         guard let repo = data.repo else { return }
 
-        do {
+        errorHandler.handle {
             id = try repo.addTag(name: name)
             dismiss()
-        }
-        catch {
-            fatalError("Failed to create tag:\n\(error)")
         }
     }
 

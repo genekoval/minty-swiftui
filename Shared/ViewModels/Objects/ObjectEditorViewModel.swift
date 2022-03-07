@@ -11,24 +11,24 @@ enum EditorState {
 
 class Selectable: ObservableObject {
     let object: ObjectPreview
-    private let action: (String) -> Void
+    private let action: (String) throws -> Void
 
     @Published var selected = false
 
-    init(object: ObjectPreview, action: @escaping (String) -> Void) {
+    init(object: ObjectPreview, action: @escaping (String) throws -> Void) {
         self.object = object
         self.action = action
     }
 
-    func performAction() {
-        action(object.id)
+    func performAction() throws {
+        try action(object.id)
     }
 }
 
 enum EditorItem: Identifiable {
     case object(Selectable)
-    case addButton(([ObjectPreview]) -> Void, () -> Void)
-    case placeholder(() -> Void)
+    case addButton(([ObjectPreview]) throws -> Void, () -> Void)
+    case placeholder(() throws -> Void)
 
     var id: String {
         switch self {
@@ -49,11 +49,11 @@ protocol ObjectCollection {
 }
 
 protocol ObjectEditorSubscriber {
-    func add(objects: [String], at position: Int)
+    func add(objects: [String], at position: Int) throws
 
-    func delete(objects: [String])
+    func delete(objects: [String]) throws
 
-    func move(objects: [String], to destination: String?)
+    func move(objects: [String], to destination: String?) throws
 }
 
 class ObjectEditorViewModel: ObservableObject {
@@ -123,16 +123,16 @@ class ObjectEditorViewModel: ObservableObject {
         enableAddButton()
     }
 
-    private func addObjects(_ objects: [ObjectPreview]) {
-        subscriber?.add(objects: objects.map { $0.id }, at: insertionPoint)
+    private func addObjects(_ objects: [ObjectPreview]) throws {
+        try subscriber?.add(objects: objects.map { $0.id }, at: insertionPoint)
         collection.objects.insert(contentsOf: objects, at: insertionPoint)
 
         insertionPoint += collection.objects.count
         enableAddButton()
     }
 
-    private func deleteObjects(_ objects: [ObjectPreview]) {
-        subscriber?.delete(objects: objects.map { $0.id })
+    private func deleteObjects(_ objects: [ObjectPreview]) throws {
+        try subscriber?.delete(objects: objects.map { $0.id })
 
         for object in objects {
             if let index = collection.objects.firstIndex(of: object) {
@@ -145,8 +145,8 @@ class ObjectEditorViewModel: ObservableObject {
         }
     }
 
-    func deleteSelected() {
-        deleteObjects(selected)
+    func deleteSelected() throws {
+        try deleteObjects(selected)
     }
 
     func deselectAll() {
@@ -173,8 +173,8 @@ class ObjectEditorViewModel: ObservableObject {
     private func moveObjects(
         _ objects: [ObjectPreview],
         to destination: String?
-    ) {
-        subscriber?.move(objects: objects.map { $0.id }, to: destination)
+    ) throws {
+        try subscriber?.move(objects: objects.map { $0.id }, to: destination)
 
         let source = IndexSet(objects.compactMap { object in
             collection.objects.firstIndex(of: object)
@@ -189,12 +189,12 @@ class ObjectEditorViewModel: ObservableObject {
         state = .adding
     }
 
-    private func moveSelected(to destination: String? = nil) {
-        moveObjects(selected, to: destination)
+    private func moveSelected(to destination: String? = nil) throws {
+        try moveObjects(selected, to: destination)
     }
 
-    private func moveSelectedToEnd() {
-        moveSelected()
+    private func moveSelectedToEnd() throws {
+        try moveSelected()
     }
 
     private func rebuildItems(objects: [ObjectPreview]) {
@@ -205,9 +205,9 @@ class ObjectEditorViewModel: ObservableObject {
         })
     }
 
-    private func selectableAction(id: String) {
+    private func selectableAction(id: String) throws {
         if state == .moving {
-            moveSelected(to: id)
+            try moveSelected(to: id)
         }
         else if state == .movingInsertionPoint {
             let index = items.firstIndex(where: { $0.id == id })!

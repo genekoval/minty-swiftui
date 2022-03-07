@@ -69,7 +69,7 @@ private struct SearchControls: View {
 
                 Spacer()
 
-                TagSelectButton(tags: $search.tags, repo: search.repo)
+                TagSelectButton(tags: $search.tags)
             }
         }
     }
@@ -107,6 +107,7 @@ struct PostSearch_Previews: PreviewProvider {
             PostSearch(search: search)
         }
         .padding(.horizontal)
+        .withErrorHandling()
         .environmentObject(DataSource.preview)
         .environmentObject(ObjectSource.preview)
     }

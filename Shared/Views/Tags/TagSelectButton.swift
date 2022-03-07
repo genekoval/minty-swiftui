@@ -4,7 +4,7 @@ import SwiftUI
 struct TagSelectButton: View {
     @Binding var tags: [TagPreview]
 
-    @StateObject private var search: TagQueryViewModel
+    @StateObject private var search = TagQueryViewModel()
     @State private var selectorPresented = false
 
     var body: some View {
@@ -12,6 +12,7 @@ struct TagSelectButton: View {
             Label("\(tags.count)", systemImage: "tag")
                 .foregroundColor(.accentColor)
         }
+        .prepareSearch(search)
         .onAppear {
             search.excluded = tags
         }
@@ -21,11 +22,6 @@ struct TagSelectButton: View {
             }
         }
     }
-
-    init(tags: Binding<[TagPreview]>, repo: MintyRepo?) {
-        _tags = tags
-        _search = StateObject(wrappedValue: TagQueryViewModel(repo: repo))
-    }
 }
 
 struct TagSelectButton_Previews: PreviewProvider {
@@ -33,7 +29,7 @@ struct TagSelectButton_Previews: PreviewProvider {
         @State private var tags: [TagPreview] = []
 
         var body: some View {
-            TagSelectButton(tags: $tags, repo: PreviewRepo())
+            TagSelectButton(tags: $tags)
         }
     }
 

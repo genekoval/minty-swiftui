@@ -94,7 +94,6 @@ struct ObjectDetail: View {
                     ForEach($vm.object.posts) { post in
                         NavigationLink(destination: PostDetail(
                             id: post.id,
-                            repo: vm.repo,
                             preview: post
                         )) {
                             PostRow(post: post.wrappedValue)
@@ -107,10 +106,11 @@ struct ObjectDetail: View {
         }
         .navigationTitle("Object")
         .navigationBarTitleDisplayMode(.inline)
+        .loadEntity(vm)
     }
 
     init(id: String, repo: MintyRepo?) {
-        _vm = StateObject(wrappedValue: ObjectViewModel(id: id, repo: repo))
+        _vm = StateObject(wrappedValue: ObjectViewModel(id: id))
     }
 }
 

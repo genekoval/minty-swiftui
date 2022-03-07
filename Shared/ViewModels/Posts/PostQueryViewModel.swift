@@ -18,7 +18,7 @@ final class PostQueryViewModel: Search<PostPreview, PostQuery> {
 
     private var tagsCancellable: AnyCancellable?
 
-    init(repo: MintyRepo?, tag: TagPreview? = nil, searchNow: Bool = false) {
+    init(tag: TagPreview? = nil, searchNow: Bool = false) {
         var query = PostQuery()
 
         query.size = 30
@@ -31,7 +31,6 @@ final class PostQueryViewModel: Search<PostPreview, PostQuery> {
 
         super.init(
             type: "post",
-            repo: repo,
             query: query,
             deletionPublisher: Events.postDeleted,
             searchNow: searchNow
