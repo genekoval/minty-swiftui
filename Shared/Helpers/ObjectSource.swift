@@ -40,7 +40,9 @@ class ObjectSource: ObservableObject {
         return .existingObject(preview)
     }
 
-    func refresh() throws { }
+    func refresh() throws {
+        cachedObjects.sort(by: { $0.size > $1.size })
+    }
 
     func remove(at index: Int) throws {
         cachedObjects.remove(at: index)

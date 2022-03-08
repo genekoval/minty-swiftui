@@ -75,6 +75,8 @@ final class ObjectCache: ObjectSource {
                     id: $0.lastPathComponent,
                     size: getFileSize(for: $0)
                 )}
+
+            try super.refresh()
         }
         catch {
             let message = "Failed to get cache directory contents"
