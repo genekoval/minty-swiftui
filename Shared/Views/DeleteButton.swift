@@ -4,19 +4,21 @@ struct DeleteButton: View {
     let action: () -> Void
     let resource: String
 
-    @State private var showingAlert = false
+    @State private var showingConfirmation = false
 
     var body: some View {
         Section {
             Button("Delete \(resource)", role: .destructive) {
-                showingAlert.toggle()
+                showingConfirmation.toggle()
             }
         }
-        .alert(
-            Text("Delete this \(resource.lowercased())?"),
-            isPresented: $showingAlert
+        .confirmationDialog(
+            "Delete this \(resource.lowercased())?",
+            isPresented: $showingConfirmation,
+            titleVisibility: .visible
         ) {
             Button("Delete", role: .destructive) { action() }
+            Button("Cancel", role: .cancel) { }
         } message: {
             Text("This action cannot be undone.")
         }
