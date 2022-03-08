@@ -38,6 +38,11 @@ struct CacheList: View {
         .playerSpacing()
         .navigationTitle("Cache")
         .navigationBarTitleDisplayMode(.inline)
+        .refreshable {
+            Task {
+                errorHandler.handle { try objects.refresh() }
+            }
+        }
     }
 }
 
