@@ -27,6 +27,7 @@ struct NewPostView: View {
                 ToolbarItem(placement: .primaryAction) { doneButton }
                 ToolbarItem(placement: .cancellationAction) { cancelButton }
             }
+            .loadEntity(post)
             .prepareSearch(tagSearch)
         }
     }

@@ -6,7 +6,7 @@ private struct LoadEntity: ViewModifier {
     @EnvironmentObject var data: DataSource
     @EnvironmentObject var errorHandler: ErrorHandler
 
-    let entity: IdentifiableEntity
+    let entity: RemoteEntity
 
     func body(content: Content) -> some View {
         content
@@ -21,7 +21,7 @@ private struct LoadEntity: ViewModifier {
 }
 
 extension View {
-    func loadEntity(_ entity: IdentifiableEntity) -> some View {
+    func loadEntity(_ entity: RemoteEntity) -> some View {
         modifier(LoadEntity(entity: entity))
     }
 }
