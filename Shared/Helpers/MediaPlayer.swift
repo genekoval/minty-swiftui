@@ -1,6 +1,7 @@
 import AVKit
 import Combine
 import Minty
+import SwiftUI
 
 private let timescale: CMTimeScale = 100
 
@@ -8,10 +9,11 @@ final class MediaPlayer: ObservableObject {
     @Published var isPip = false
     @Published var isPlaying = false
     @Published var isEditingTime = false
-    @Published var isMaximized = false
     @Published var currentItem: ObjectPreview?
     @Published var currentTime: Double = .zero
     @Published var duration: Double?
+
+    @Published private(set) var isMaximized = false
 
     var errorHandler: ErrorHandler?
     let player = AVPlayer()
@@ -95,6 +97,18 @@ final class MediaPlayer: ObservableObject {
 
     func jump(_ seconds: Double) {
         seek(to: currentTime + seconds)
+    }
+
+    func maximize() {
+        withAnimation {
+            isMaximized = true
+        }
+    }
+
+    func minimize() {
+        withAnimation {
+            isMaximized = false
+        }
     }
 
     func play() {

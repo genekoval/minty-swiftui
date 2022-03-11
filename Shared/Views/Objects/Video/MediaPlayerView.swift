@@ -74,56 +74,70 @@ struct CustomVideoPlayer: UIViewRepresentable {
         }
     }
 }
-struct MediaPlayerView: View {
-    @Environment(\.dismiss) var dismiss
 
+struct MediaPlayerView: View {
     @EnvironmentObject var player: MediaPlayer
 
+    @State private var offset: CGFloat = 0
     @State private var uiVisible = true
 
     @ViewBuilder
     private var background: some View {
-        Color.black
-            .ignoresSafeArea()
+        player.currentItem?.type == "video" ?
+            .black :
+            Color(.secondarySystemBackground)
     }
 
     var body: some View {
         ZStack {
             background
+            playerView
+            timeJumpOverlay
 
-            CustomVideoPlayer(player: player)
-                .onTapGesture { toggleUI() }
-                .overlay {
-                    TimeJumpOverlay()
-                        .onTapGesture { toggleUI() }
-                }
-                .overlay(alignment: .bottom) {
-                    if uiVisible {
-                        PlayerControls(player: player)
-                    }
-                    else {
-                        EmptyView()
-                    }
-                }
-                .overlay(alignment: .topLeading) {
-                    if uiVisible {
-                        dismissButton
-                    }
-                    else {
-                        EmptyView()
-                    }
-                }
-                .statusBar(hidden: !uiVisible)
+            if uiVisible {
+                controls
+            }
         }
+        .statusBar(hidden: !uiVisible)
+        .cornerRadius(16)
+        .offset(y: offset)
+        .gesture(drag)
     }
 
     @ViewBuilder
-    private var dismissButton: some View {
-        Button(action: { dismiss() }) {
-            Image(systemName: "chevron.down")
-                .foregroundColor(.white)
-                .padding()
-        }
+    private var controls: some View {
+        PlayerControls(player: player)
+    }
+
+    private var drag: some Gesture {
+        DragGesture()
+            .onChanged { value in
+                offset = max(value.translation.height, 0)
+            }
+            .onEnded { value in
+                let delta = value.predictedEndLocation.y - value.location.y
+
+                if delta > 10 {
+                    player.minimize()
+                }
+                else {
+                    withAnimation {
+                        offset = 0
+                    }
+                }
+            }
+    }
+
+    @ViewBuilder
+    private var playerView: some View {
+        CustomVideoPlayer(player: player)
+            .onTapGesture { toggleUI() }
+    }
+
+    @ViewBuilder
+    private var timeJumpOverlay: some View {
+        TimeJumpOverlay()
+            .onTapGesture { toggleUI() }
     }
 
     private func toggleUI() {

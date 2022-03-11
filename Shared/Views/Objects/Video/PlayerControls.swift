@@ -39,11 +39,16 @@ struct PlayerControls: View {
 
     var body: some View {
         VStack {
-            slider
-            playButton
+            Spacer()
+
+            VStack {
+                slider
+                playButton
+            }
+            .padding()
+            .background(background)
         }
         .foregroundColor(.white)
-        .background(background)
     }
 
     @ViewBuilder

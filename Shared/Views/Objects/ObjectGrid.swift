@@ -63,7 +63,7 @@ private struct ObjectGridItem: View {
     private func viewObject() {
         if object.isMedia {
             player.currentItem = object
-            player.isMaximized = true
+            player.maximize()
         }
         else if object.isViewable {
             overlay.show(object: object)
