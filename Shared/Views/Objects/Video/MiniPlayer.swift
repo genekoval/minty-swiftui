@@ -1,13 +1,41 @@
 import SwiftUI
 
+let miniPlayerHeight: CGFloat = 70
+
+private func albumCoverSpacing(_ geometry: GeometryProxy) -> CGFloat {
+    geometry.size.height / 3
+}
+
+private func albumCoverSize(_ geometry: GeometryProxy) -> CGFloat {
+    geometry.size.height - albumCoverSpacing(geometry)
+}
+
 struct MiniPlayer: View {
     @EnvironmentObject var player: MediaPlayer
+
+    @ViewBuilder
+    private var albumCover: some View {
+        if player.currentItem == nil || player.currentItem?.type == "audio" {
+            GeometryReader { geometry in
+                AlbumCover(id: player.currentItem?.previewId)
+                    .frame(
+                        width: albumCoverSize(geometry),
+                        height: albumCoverSize(geometry)
+                    )
+                    .cornerRadius(5)
+                    .shadow(radius: albumCoverSpacing(geometry) / 2)
+                    .padding(albumCoverSpacing(geometry) / 2)
+            }
+        }
+    }
 
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                playerFrame
-                    .shadow(radius: 2)
+                ZStack {
+                    playerFrame
+                    albumCover
+                }
 
                 Spacer()
 
@@ -17,6 +45,7 @@ struct MiniPlayer: View {
 
             Divider()
         }
+        .frame(height: miniPlayerHeight)
         .foregroundColor(.white)
         .background {
             Rectangle()
@@ -35,6 +64,8 @@ struct MiniPlayer: View {
 struct MiniPlayer_Previews: PreviewProvider {
     static var previews: some View {
         MiniPlayer()
+            .withErrorHandling()
             .environmentObject(MediaPlayer.preview)
+            .environmentObject(ObjectSource.preview)
     }
 }

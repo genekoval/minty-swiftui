@@ -1,7 +1,5 @@
 import SwiftUI
 
-let miniPlayerHeight: CGFloat = 50
-
 struct MediaOverlay: View {
     @EnvironmentObject var player: MediaPlayer
 
@@ -21,7 +19,6 @@ struct MediaOverlay: View {
     @ViewBuilder
     private var miniPlayer: some View {
         MiniPlayer()
-            .frame(height: miniPlayerHeight)
             .onTapGesture {
                 player.maximize()
             }
@@ -44,5 +41,6 @@ struct MediaOverlay_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
             .environmentObject(MediaPlayer.preview)
+            .environmentObject(ObjectSource.preview)
     }
 }

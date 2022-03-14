@@ -82,6 +82,16 @@ struct MediaPlayerView: View {
     @State private var uiVisible = true
 
     @ViewBuilder
+    private var albumCover: some View {
+        if player.currentItem == nil || player.currentItem?.type == "audio" {
+            AlbumCover(id: player.currentItem?.previewId)
+                .cornerRadius(16)
+                .shadow(radius: 10)
+                .frame(width: 200, height: 200)
+        }
+    }
+
+    @ViewBuilder
     private var background: some View {
         player.currentItem?.type == "video" ?
             .black :
@@ -92,6 +102,7 @@ struct MediaPlayerView: View {
         ZStack {
             background
             playerView
+            albumCover
             timeJumpOverlay
 
             if uiVisible {

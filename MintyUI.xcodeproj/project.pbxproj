@@ -15,6 +15,8 @@
 		BE00985E2731B4A00021E660 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00985C2731B4A00021E660 /* Binding.swift */; };
 		BE0098602731BBD20021E660 /* TagSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00985F2731BBD20021E660 /* TagSelectButton.swift */; };
 		BE0098612731BBD20021E660 /* TagSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00985F2731BBD20021E660 /* TagSelectButton.swift */; };
+		BE06CAB327DFFB97005940FB /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE06CAB227DFFB97005940FB /* Color.swift */; };
+		BE06CAB427DFFB97005940FB /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE06CAB227DFFB97005940FB /* Color.swift */; };
 		BE07661F2787BCFC00AA3AD7 /* CommentMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE07661E2787BCFC00AA3AD7 /* CommentMenu.swift */; };
 		BE11FDD127615F5D007B58BA /* NewPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE11FDD027615F5D007B58BA /* NewPostViewModel.swift */; };
 		BE11FDD227615F5D007B58BA /* NewPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE11FDD027615F5D007B58BA /* NewPostViewModel.swift */; };
@@ -131,6 +133,8 @@
 		BEB07B98272C5BA6004A942C /* sand dune.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BEB07B96272C5BA6004A942C /* sand dune.jpg */; };
 		BEB07B9A272C81A9004A942C /* sand dune (preview).png in Resources */ = {isa = PBXBuildFile; fileRef = BEB07B99272C81A9004A942C /* sand dune (preview).png */; };
 		BEB07B9B272C81A9004A942C /* sand dune (preview).png in Resources */ = {isa = PBXBuildFile; fileRef = BEB07B99272C81A9004A942C /* sand dune (preview).png */; };
+		BEB96D3727DB54E6007F6821 /* AlbumCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB96D3627DB54E6007F6821 /* AlbumCover.swift */; };
+		BEB96D3827DB54E6007F6821 /* AlbumCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB96D3627DB54E6007F6821 /* AlbumCover.swift */; };
 		BEBFDF8B2741E7EB00A3E2A8 /* Uploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBFDF8A2741E7EB00A3E2A8 /* Uploadable.swift */; };
 		BEBFDF8C2741E7EB00A3E2A8 /* Uploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBFDF8A2741E7EB00A3E2A8 /* Uploadable.swift */; };
 		BEBFDF8E274214AA00A3E2A8 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBFDF8D274214AA00A3E2A8 /* ImagePicker.swift */; };
@@ -209,6 +213,7 @@
 		BE0098592731AB0C0021E660 /* SelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectButton.swift; sourceTree = "<group>"; };
 		BE00985C2731B4A00021E660 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
 		BE00985F2731BBD20021E660 /* TagSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelectButton.swift; sourceTree = "<group>"; };
+		BE06CAB227DFFB97005940FB /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		BE07661E2787BCFC00AA3AD7 /* CommentMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentMenu.swift; sourceTree = "<group>"; };
 		BE11FDD027615F5D007B58BA /* NewPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewModel.swift; sourceTree = "<group>"; };
 		BE11FDD327616380007B58BA /* NewPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostView.swift; sourceTree = "<group>"; };
@@ -300,6 +305,7 @@
 		BEB07B93272C5ACA004A942C /* unsplash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unsplash.png; sourceTree = "<group>"; };
 		BEB07B96272C5BA6004A942C /* sand dune.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sand dune.jpg"; sourceTree = "<group>"; };
 		BEB07B99272C81A9004A942C /* sand dune (preview).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sand dune (preview).png"; sourceTree = "<group>"; };
+		BEB96D3627DB54E6007F6821 /* AlbumCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCover.swift; sourceTree = "<group>"; };
 		BEBFDF8A2741E7EB00A3E2A8 /* Uploadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uploadable.swift; sourceTree = "<group>"; };
 		BEBFDF8D274214AA00A3E2A8 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		BEBFF67D278BB42A00E38BBB /* OverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
@@ -660,6 +666,7 @@
 				BE57DBAF2787A07D00597FF2 /* String.swift */,
 				BEAB78FB27925ECB00CF9AD6 /* Swipe.swift */,
 				BEBFDF8A2741E7EB00A3E2A8 /* Uploadable.swift */,
+				BE06CAB227DFFB97005940FB /* Color.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -741,6 +748,7 @@
 		BEFFEC8327A216900021391B /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				BEB96D3627DB54E6007F6821 /* AlbumCover.swift */,
 				BE354F9E27A4D20900649B68 /* MediaOverlay.swift */,
 				BEFFEC8627A228740021391B /* MediaPlayerView.swift */,
 				BE354FA027A4D34E00649B68 /* MiniPlayer.swift */,
@@ -941,6 +949,7 @@
 				BED811512720EC5700929D4C /* ImageObject.swift in Sources */,
 				BEA8C56D2785285300FFB7DD /* CommentEditor.swift in Sources */,
 				BED04C4427153E7000EF00B8 /* AppShell.swift in Sources */,
+				BE06CAB327DFFB97005940FB /* Color.swift in Sources */,
 				BE9DE2FB2784CF3F00A1BE29 /* NewPostListViewModel.swift in Sources */,
 				BE3068992735F5C90038972B /* PostEditor.swift in Sources */,
 				BEBFF686278BC60000E38BBB /* ImageViewer.swift in Sources */,
@@ -1011,6 +1020,7 @@
 				BE11FDD427616380007B58BA /* NewPostView.swift in Sources */,
 				BE7E0F412727350E00EF758A /* TagEditor.swift in Sources */,
 				BE465582270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
+				BEB96D3727DB54E6007F6821 /* AlbumCover.swift in Sources */,
 				BE19ED33279A1C6E00B041DD /* PageViewController.swift in Sources */,
 				BEC67837271A50EA009BCE5F /* TagHome.swift in Sources */,
 				BE8E71C72732FA99009A4FE9 /* Collection.swift in Sources */,
@@ -1082,6 +1092,8 @@
 				BED7585F27A37A7B0044562D /* MediaPlayer.swift in Sources */,
 				BED04C5227179A1700EF00B8 /* TagDetail.swift in Sources */,
 				BE158F7227D1905600F152C0 /* ErrorHandler.swift in Sources */,
+				BEB96D3827DB54E6007F6821 /* AlbumCover.swift in Sources */,
+				BE06CAB427DFFB97005940FB /* Color.swift in Sources */,
 				BEBFDF8C2741E7EB00A3E2A8 /* Uploadable.swift in Sources */,
 				BEC67838271A50EA009BCE5F /* TagHome.swift in Sources */,
 				BE21A5F2276ED306007105BA /* SearchResults.swift in Sources */,
