@@ -118,6 +118,7 @@ struct MediaPlayerView: View {
     @ViewBuilder
     private var controls: some View {
         PlayerControls(player: player)
+            .padding()
     }
 
     private var drag: some Gesture {

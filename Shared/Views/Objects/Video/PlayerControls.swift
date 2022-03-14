@@ -30,11 +30,10 @@ struct PlayerControls: View {
 
     @ViewBuilder
     private var background: some View {
-        LinearGradient(
-            colors: [.black.opacity(0.8), .black.opacity(0)],
-            startPoint: .bottom,
-            endPoint: .top
-        )
+        if let item = player.currentItem, item.type == "video" {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.thinMaterial)
+        }
     }
 
     var body: some View {
@@ -45,16 +44,16 @@ struct PlayerControls: View {
                 slider
                 playButton
             }
-            .padding()
             .background(background)
+            .foregroundColor(.primary)
         }
-        .foregroundColor(.white)
     }
 
     @ViewBuilder
     private var playButton: some View {
         PlayButton(player: player, size: 30)
             .padding()
+            .foregroundColor(.primary)
     }
 
     @ViewBuilder
@@ -69,7 +68,7 @@ struct PlayerControls: View {
                     player.isEditingTime = isEditing
                 }
             )
-            .tint(.white)
+            .tint(.secondary)
 
             HStack {
                 Text(formatTime(player.currentTime, duration))
