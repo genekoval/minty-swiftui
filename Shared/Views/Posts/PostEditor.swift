@@ -64,6 +64,7 @@ struct PostEditor: View {
             }
             .navigationTitle("Edit Post")
             .navigationBarTitleDisplayMode(.inline)
+            .loadEntity(tagSearch)
             .onAppear {
                 tagSearch.excluded = post.tags
             }
@@ -90,6 +91,7 @@ struct PostEditor_Previews: PreviewProvider {
     static var previews: some View {
         PostEditor(post: post)
             .withErrorHandling()
+            .environmentObject(DataSource.preview)
             .environmentObject(ObjectSource.preview)
     }
 }
