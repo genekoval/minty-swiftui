@@ -49,7 +49,8 @@ struct ObjectDetail: View {
                     Spacer()
                     PreviewImage(
                         previewId: vm.object.previewId,
-                        mimeType: vm.object.mimeType
+                        type: vm.object.type,
+                        subtype: vm.object.subtype
                     )
                     .frame(width: 150)
                     .padding(.bottom)

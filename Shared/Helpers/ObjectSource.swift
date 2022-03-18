@@ -35,7 +35,8 @@ class ObjectSource: ObservableObject {
         var preview = ObjectPreview()
         preview.id = object.id
         preview.previewId = object.previewId
-        preview.mimeType = object.mimeType
+        preview.type = object.type
+        preview.subtype = object.subtype
 
         return .existingObject(preview)
     }

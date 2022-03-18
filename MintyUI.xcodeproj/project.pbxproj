@@ -112,6 +112,8 @@
 		BE8E71C52732EFAE009A4FE9 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8E71C42732EFAE009A4FE9 /* PostViewModel.swift */; };
 		BE8E71C72732FA99009A4FE9 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8E71C62732FA99009A4FE9 /* Collection.swift */; };
 		BE8E71C927330F93009A4FE9 /* TagList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8E71C827330F93009A4FE9 /* TagList.swift */; };
+		BE8F5C7527E413A10007A8E9 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8F5C7427E413A10007A8E9 /* Object.swift */; };
+		BE8F5C7627E413A10007A8E9 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8F5C7427E413A10007A8E9 /* Object.swift */; };
 		BE9DE2FB2784CF3F00A1BE29 /* NewPostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9DE2FA2784CF3F00A1BE29 /* NewPostListViewModel.swift */; };
 		BE9DE2FE2784E77B00A1BE29 /* CommentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9DE2FD2784E77B00A1BE29 /* CommentRow.swift */; };
 		BE9DE3012784E7DE00A1BE29 /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9DE3002784E7DE00A1BE29 /* CommentViewModel.swift */; };
@@ -288,6 +290,7 @@
 		BE8E71C42732EFAE009A4FE9 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		BE8E71C62732FA99009A4FE9 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		BE8E71C827330F93009A4FE9 /* TagList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagList.swift; sourceTree = "<group>"; };
+		BE8F5C7427E413A10007A8E9 /* Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
 		BE9DE2FA2784CF3F00A1BE29 /* NewPostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostListViewModel.swift; sourceTree = "<group>"; };
 		BE9DE2FD2784E77B00A1BE29 /* CommentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRow.swift; sourceTree = "<group>"; };
 		BE9DE3002784E7DE00A1BE29 /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
@@ -651,12 +654,14 @@
 				BE00985C2731B4A00021E660 /* Binding.swift */,
 				BEFDF5F527225B9800F9EA09 /* ByteCount.swift */,
 				BE8E71C62732FA99009A4FE9 /* Collection.swift */,
+				BE06CAB227DFFB97005940FB /* Color.swift */,
 				BE80C37B27264D14009616F5 /* DataSource.swift */,
 				BE808C4C271B98CF0081F815 /* Date.swift */,
 				BE158F7027D1905600F152C0 /* ErrorHandler.swift */,
 				BED6EF5327829CB200947F46 /* Events.swift */,
 				BE158F7627D1AA1A00F152C0 /* Logger.swift */,
 				BED7585D27A37A7B0044562D /* MediaPlayer.swift */,
+				BE8F5C7427E413A10007A8E9 /* Object.swift */,
 				BE6A84FE271F8E4400D4566B /* ObjectCache.swift */,
 				BEBFF681278BBB6C00E38BBB /* ObjectPreview.swift */,
 				BED811582721BECE00929D4C /* ObjectSource.swift */,
@@ -666,7 +671,6 @@
 				BE57DBAF2787A07D00597FF2 /* String.swift */,
 				BEAB78FB27925ECB00CF9AD6 /* Swipe.swift */,
 				BEBFDF8A2741E7EB00A3E2A8 /* Uploadable.swift */,
-				BE06CAB227DFFB97005940FB /* Color.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -981,6 +985,7 @@
 				BE465517270CFA8E00D3C4FB /* ContentView.swift in Sources */,
 				BE465580270D11CB00D3C4FB /* ConnectionModal.swift in Sources */,
 				BEB07B87272B07F8004A942C /* PostSearch.swift in Sources */,
+				BE8F5C7527E413A10007A8E9 /* Object.swift in Sources */,
 				BE59E32E274C4EB2006B6843 /* ObjectEditorViewModel.swift in Sources */,
 				BE808C52271C8CB90081F815 /* SourceLink.swift in Sources */,
 				BE21A5EE276EB84E007105BA /* Search.swift in Sources */,
@@ -1065,6 +1070,7 @@
 				BE5AC200271B405800FCA45A /* TagViewModel.swift in Sources */,
 				BE158F7827D1AA1A00F152C0 /* Logger.swift in Sources */,
 				BE465579270D111B00D3C4FB /* Server.swift in Sources */,
+				BE8F5C7627E413A10007A8E9 /* Object.swift in Sources */,
 				BEAB78FD27925ECB00CF9AD6 /* Swipe.swift in Sources */,
 				BE80C37D27264D14009616F5 /* DataSource.swift in Sources */,
 				BED04C4F27178A4C00EF00B8 /* TagSearch.swift in Sources */,

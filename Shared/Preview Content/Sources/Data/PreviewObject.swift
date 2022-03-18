@@ -16,7 +16,8 @@ private final class PreviewData {
             id: "sand dune.jpg",
             hash: "1231a42cd48638c8cf80eff03ee9a3da91ff4a3d7136d8883a35f329c7a2e7c0",
             size: 1_140_573,
-            mimeType: "image/jpeg",
+            type: "image",
+            subtype: "jpeg",
             dateAdded: "2020-12-29 12:00:00.000-04",
             previewId: "sand dune (preview).png",
             source: "sand dune"
@@ -26,7 +27,8 @@ private final class PreviewData {
             id: "empty",
             hash: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
             size: 0,
-            mimeType: "inode/x-empty",
+            type: "inode",
+            subtype: "x-empty",
             dateAdded: "2000-04-01 16:00:00.000-04",
             previewId: nil
         )
@@ -36,7 +38,8 @@ private final class PreviewData {
         id: String,
         hash: String,
         size: UInt64,
-        mimeType: String,
+        type: String,
+        subtype: String,
         dateAdded: String? = nil,
         previewId: String? = nil,
         source: String? = nil
@@ -50,7 +53,8 @@ private final class PreviewData {
         object.id = id
         object.hash = hash
         object.size = dataSize
-        object.mimeType = mimeType
+        object.type = type
+        object.subtype = subtype
         if let date = dateAdded { object.dateAdded = Date(from: date) }
         object.previewId = previewId
         if let source = source { object.source = Source.preview(id: source) }
@@ -59,7 +63,8 @@ private final class PreviewData {
 
         preview.id = object.id
         preview.previewId = object.previewId
-        preview.mimeType = object.mimeType
+        preview.type = object.type
+        preview.subtype = object.subtype
 
         objects[id] = object
         previews[id] = preview

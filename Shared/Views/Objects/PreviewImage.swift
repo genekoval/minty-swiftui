@@ -2,7 +2,7 @@ import Minty
 import SwiftUI
 
 private struct NoPreview: View {
-    let type: String
+    let mimeType: String
 
     var body: some View {
         VStack(spacing: 5) {
@@ -10,7 +10,7 @@ private struct NoPreview: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 50)
-            Text(type)
+            Text(mimeType)
                 .font(.caption)
         }
         .foregroundColor(.secondary)
@@ -18,11 +18,11 @@ private struct NoPreview: View {
 }
 
 private struct PreviewBadge: View {
-    private let mimeType: MimeType
+    let type: String
 
     @ViewBuilder
     private var badge: some View {
-        switch (mimeType.type) {
+        switch (type) {
         case "audio":
             Image(systemName: "music.note")
         case "video":
@@ -39,34 +39,36 @@ private struct PreviewBadge: View {
             .shadow(color: .black, radius: 1, x: 0, y: 1)
             .padding(8)
     }
-
-    init(type: String) {
-        self.mimeType = MimeType(type)
-    }
 }
 
 struct PreviewImage: View {
     let previewId: String?
-    let mimeType: String
+    let type: String
+    let subtype: String
 
     var body: some View {
         ImageObject(id: previewId) { image in
             image
                 .overlay(alignment: .bottomTrailing) {
-                    PreviewBadge(type: mimeType)
+                    PreviewBadge(type: type)
                 }
         } placeholder: {
-            NoPreview(type: mimeType)
+            NoPreview(mimeType: "\(type)/\(subtype)")
         }
     }
 
-    init(previewId: String?, mimeType: String) {
+    init(previewId: String?, type: String, subtype: String) {
         self.previewId = previewId
-        self.mimeType = mimeType
+        self.type = type
+        self.subtype = subtype
     }
 
     init(object: ObjectPreview) {
-        self.init(previewId: object.previewId, mimeType: object.mimeType)
+        self.init(
+            previewId: object.previewId,
+            type: object.type,
+            subtype: object.subtype
+        )
     }
 }
 
