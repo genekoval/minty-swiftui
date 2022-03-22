@@ -1,34 +1,32 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "Fstore",
-        "repositoryURL": "https://git.aurora.aur/genya/fstore-swift.git",
-        "state": {
-          "branch": "main",
-          "revision": "9538f78e7cfa6a2f2c82300d7a8eda0a0029817f",
-          "version": null
-        }
-      },
-      {
-        "package": "Minty",
-        "repositoryURL": "https://git.aurora.aur/genya/minty-swift.git",
-        "state": {
-          "branch": "main",
-          "revision": "5b92e950c6edf5d28bf019dda14976a749c18dfd",
-          "version": null
-        }
-      },
-      {
-        "package": "Zipline",
-        "repositoryURL": "https://git.aurora.aur/genya/zipline-swift.git",
-        "state": {
-          "branch": "main",
-          "revision": "4a94f27ec03eaacababbeb0d1a211c0adbda40b3",
-          "version": null
-        }
+  "pins" : [
+    {
+      "identity" : "fstore-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://git.aurora.aur/genya/fstore-swift.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "9538f78e7cfa6a2f2c82300d7a8eda0a0029817f"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "minty-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://git.aurora.aur/genya/minty-swift.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "160d414a2f8d56a3f3b9e47e959c0a8b8503e903"
+      }
+    },
+    {
+      "identity" : "zipline-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://git.aurora.aur/genya/zipline-swift.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "4a94f27ec03eaacababbeb0d1a211c0adbda40b3"
+      }
+    }
+  ],
+  "version" : 2
 }

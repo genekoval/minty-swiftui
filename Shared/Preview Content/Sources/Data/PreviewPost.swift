@@ -22,6 +22,7 @@ private final class PreviewData {
             created: "2018-10-27 10:15:36.285-04",
             modified: 60_000,
             objects: ["empty", "sand dune.jpg"],
+            posts: ["sand dune"],
             tags: ["1", "empty"]
         )
 
@@ -54,6 +55,7 @@ private final class PreviewData {
         created: String? = nil,
         modified: TimeInterval? = nil,
         objects: [String] = [],
+        posts: [String] = [],
         tags: [String] = []
     ) {
         var post = Post()
@@ -69,6 +71,7 @@ private final class PreviewData {
             post.dateModified = post.dateCreated
         }
         post.objects = objects.map { ObjectPreview.preview(id: $0) }
+        post.posts = posts.map { previews[$0]! }
         post.tags = tags.map { TagPreview.preview(id: $0) }
 
         setPost(post: post)

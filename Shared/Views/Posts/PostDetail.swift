@@ -114,6 +114,25 @@ struct PostDetail: View {
     }
 
     @ViewBuilder
+    private var posts: some View {
+        if !post.posts.isEmpty {
+            VStack {
+                ForEach($post.posts) { post in
+                    NavigationLink(
+                        destination: PostDetail(id: post.id, preview: post)
+                    ) {
+                        PostRowMinimal(post: post.wrappedValue)
+                    }
+
+                    Divider()
+                }
+                .buttonStyle(.plain)
+            }
+            .padding([.horizontal, .top])
+        }
+    }
+
+    @ViewBuilder
     private var postInfo: some View {
         VStack(alignment: .leading, spacing: 10) {
             title
@@ -122,6 +141,7 @@ struct PostDetail: View {
         .padding()
 
         objects
+        posts
         metadata
     }
 

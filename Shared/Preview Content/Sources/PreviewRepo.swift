@@ -45,6 +45,12 @@ final class PreviewRepo: MintyRepo {
         }
     }
 
+    func addRelatedPost(postId: String, related: String) throws {
+        Post.preview(edit: postId) { post in
+            post.posts.append(PostPreview.preview(id: related))
+        }
+    }
+
     func addTag(name: String) throws -> String {
         Tag.preview(add: name)
     }
@@ -87,6 +93,14 @@ final class PreviewRepo: MintyRepo {
         Post.preview(edit: postId) { post in
             if let index = post.tags.firstIndex(where: { $0.id == tagId }) {
                 post.tags.remove(at: index)
+            }
+        }
+    }
+
+    func deleteRelatedPost(postId: String, related: String) throws {
+        Post.preview(edit: postId) { post in
+            if let index = post.posts.firstIndex(where: { $0.id == related }) {
+                post.posts.remove(at: index)
             }
         }
     }

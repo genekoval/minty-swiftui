@@ -7,6 +7,7 @@ struct PostEditor: View {
 
     @ObservedObject var post: PostViewModel
 
+    @StateObject private var postSearch = PostQueryViewModel()
     @StateObject private var tagSearch = TagQueryViewModel()
 
     var body: some View {
@@ -41,6 +42,21 @@ struct PostEditor: View {
                         }
                     }
 
+                    NavigationLink(destination: RelatedPostsEditor(
+                        post: post,
+                        search: postSearch
+                    )) {
+                        HStack {
+                            Label(
+                                "Related Posts",
+                                systemImage: "doc.text.image"
+                            )
+                            Spacer()
+                            Text("\(post.posts.count)")
+                                .foregroundColor(.secondary)
+                        }
+                    }
+
                     NavigationLink(destination: TagSelector(
                         tags: $post.tags,
                         search: tagSearch,
@@ -64,6 +80,7 @@ struct PostEditor: View {
             }
             .navigationTitle("Edit Post")
             .navigationBarTitleDisplayMode(.inline)
+            .loadEntity(postSearch)
             .loadEntity(tagSearch)
             .onAppear {
                 tagSearch.excluded = post.tags

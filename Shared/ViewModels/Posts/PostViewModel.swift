@@ -11,6 +11,7 @@ final class PostViewModel:
     @Published var draftTitle = ""
     @Published var draftDescription = ""
     @Published var objects: [ObjectPreview] = []
+    @Published var posts: [PostPreview] = []
     @Published var tags: [TagPreview] = []
 
     @Published private(set) var deleted = false
@@ -77,6 +78,14 @@ final class PostViewModel:
         }
     }
 
+    func add(post: PostPreview) throws {
+        try withRepo("add related post") { repo in
+            try repo.addRelatedPost(postId: id, related: post.id)
+        }
+
+        posts.append(post)
+    }
+
     func add(reply: Comment, to parentId: String) throws {
         guard let index = comments.firstIndex(where: { $0.id == parentId })
         else {
@@ -129,6 +138,16 @@ final class PostViewModel:
         }
     }
 
+    func delete(post: PostPreview) throws {
+        try withRepo("delete related post") { repo in
+            try repo.deleteRelatedPost(postId: id, related: post.id)
+        }
+
+        if let index = posts.firstIndex(of: post) {
+            posts.remove(at: index)
+        }
+    }
+
     private func fetchComments() throws {
         try withRepo("fetch comments") { repo in
             comments = try repo.getComments(postId: id)
@@ -147,6 +166,7 @@ final class PostViewModel:
         created = post.dateCreated
         modified = post.dateModified
         objects = post.objects
+        posts = post.posts
         tags = post.tags
     }
 

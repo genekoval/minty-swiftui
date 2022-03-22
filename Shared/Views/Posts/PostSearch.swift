@@ -3,7 +3,7 @@ import SwiftUI
 
 private typealias SortValue = PostQuery.Sort.SortValue
 
-private struct SearchControls: View {
+struct PostSearchControls: View {
     @ObservedObject var search: PostQueryViewModel
 
     @FocusState private var searchFocused: Bool
@@ -85,7 +85,7 @@ struct PostSearch: View {
     var body: some View {
         PaddedScrollView {
             VStack {
-                SearchControls(search: search)
+                PostSearchControls(search: search)
                     .padding(.horizontal)
 
                 PostSearchResults(

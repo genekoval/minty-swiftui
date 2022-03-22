@@ -16,7 +16,10 @@ struct PostSearchResults: View {
                 id: post.id,
                 preview: post
             )) {
-                PostRow(post: post.wrappedValue)
+                VStack {
+                    PostRow(post: post.wrappedValue)
+                    Divider()
+                }
             }
         }
     }
