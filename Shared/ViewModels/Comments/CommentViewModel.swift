@@ -41,8 +41,7 @@ final class CommentViewModel: IdentifiableEntity, ObservableObject {
 
     func reply() throws {
         try withRepo("add reply") { repo in
-            let comment = try repo.addComment(
-                postId: post.id,
+            let comment = try repo.addReply(
                 parentId: id,
                 content: draftReply
             )

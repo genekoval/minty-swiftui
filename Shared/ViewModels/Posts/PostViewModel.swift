@@ -58,12 +58,7 @@ final class PostViewModel:
 
     func add(comment: String) throws {
         try withRepo("add comment") { repo in
-            let result = try repo.addComment(
-                postId: id,
-                parentId: nil,
-                content: comment
-            )
-
+            let result = try repo.addComment(postId: id, content: comment)
             comments.insert(result, at: 0)
         }
     }
@@ -73,7 +68,7 @@ final class PostViewModel:
             modified = try repo.addPostObjects(
                 postId: id,
                 objects: objects,
-                position: UInt32(position)
+                position: Int16(position)
             )
         }
     }

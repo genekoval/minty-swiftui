@@ -25,6 +25,7 @@ struct NewPostButton: View {
 struct NewPostButton_Previews: PreviewProvider {
     static var previews: some View {
         NewPostButton()
+            .withErrorHandling()
             .environmentObject(DataSource.preview)
     }
 }

@@ -2,11 +2,7 @@ import Foundation
 import Minty
 
 final class PreviewRepo: MintyRepo {
-    func addComment(
-        postId: String,
-        parentId: String?,
-        content: String
-    ) throws -> Comment {
+    func addComment(postId: String, content: String) throws -> Comment {
         throw PreviewError.notSupported
     }
 
@@ -28,7 +24,7 @@ final class PreviewRepo: MintyRepo {
     func addPostObjects(
         postId: String,
         objects: [String],
-        position: UInt32
+        position: Int16
     ) throws -> Date {
         let previews = objects.map { ObjectPreview.preview(id: $0) }
 
@@ -49,6 +45,10 @@ final class PreviewRepo: MintyRepo {
         Post.preview(edit: postId) { post in
             post.posts.append(PostPreview.preview(id: related))
         }
+    }
+
+    func addReply(parentId: String, content: String) throws -> Comment {
+        throw PreviewError.notSupported
     }
 
     func addTag(name: String) throws -> String {
