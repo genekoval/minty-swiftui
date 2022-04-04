@@ -39,7 +39,6 @@ struct TagDetail: View {
             posts
         }
         .navigationTitle(tag.name)
-        .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showingEditor) { TagEditor(tag: tag) }
         .toolbar {
             Button("Edit") {
@@ -86,16 +85,6 @@ struct TagDetail: View {
         sources
         created
         postCount
-    }
-
-    @ViewBuilder
-    private var name: some View {
-        HStack {
-            Text(tag.name)
-                .bold()
-                .font(.title)
-            Spacer()
-        }
     }
 
     @ViewBuilder
@@ -150,7 +139,6 @@ struct TagDetail: View {
     @ViewBuilder
     private var tagInfo: some View {
         VStack(alignment: .leading, spacing: 10) {
-            name
             aliases
             description
             metadata
@@ -175,6 +163,7 @@ struct TagDetail_Previews: PreviewProvider {
         NavigationView {
             TagDetail(tag: tag, repo: PreviewRepo())
         }
+        .withErrorHandling()
         .environmentObject(DataSource.preview)
         .environmentObject(ObjectSource.preview)
     }
