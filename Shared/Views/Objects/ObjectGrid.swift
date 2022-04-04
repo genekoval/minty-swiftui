@@ -26,6 +26,7 @@ private struct ObjectGridItem: View {
     @EnvironmentObject var player: MediaPlayer
 
     let object: ObjectPreview
+    let provider: ObjectProvider
 
     @Binding var selection: String?
 
@@ -66,6 +67,7 @@ private struct ObjectGridItem: View {
             player.maximize()
         }
         else if object.isViewable {
+            overlay.load(provider: provider, infoPresented: $selection)
             overlay.show(object: object)
         }
     }
@@ -74,36 +76,30 @@ private struct ObjectGridItem: View {
 struct ObjectGrid: View {
     @EnvironmentObject var overlay: Overlay
 
-    let objects: [ObjectPreview]
+    let provider: ObjectProvider
 
     @State private var selection: String?
 
     var body: some View {
         Grid {
-            ForEach(objects) {
-                ObjectGridItem(object: $0, selection: $selection)
+            ForEach(provider.objects) {
+                ObjectGridItem(
+                    object: $0,
+                    provider: provider,
+                    selection: $selection
+                )
             }
         }
-        .onAppear { prepareOverlay() }
-    }
-
-    private func prepareOverlay() {
-        overlay.load(
-            objects: objects.filter { $0.isViewable },
-            infoPresented: $selection
-        )
+        .onAppear {
+            overlay.load(provider: provider, infoPresented: $selection)
+        }
     }
 }
 
 struct ObjectGrid_Previews: PreviewProvider {
-    private static let objects = [
-        "sand dune.jpg",
-        "empty"
-    ]
-
     static var previews: some View {
         Group {
-            ObjectGrid(objects: objects.map { ObjectPreview.preview(id: $0) })
+            ObjectGrid(provider: Post.preview(id: "test"))
                 .environmentObject(DataSource.preview)
                 .environmentObject(ObjectSource.preview)
                 .environmentObject(Overlay())

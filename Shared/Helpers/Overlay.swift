@@ -2,6 +2,12 @@ import Combine
 import Minty
 import SwiftUI
 
+protocol ObjectProvider {
+    var id: String { get }
+
+    var objects: [ObjectPreview] { get }
+}
+
 final class Overlay: ObservableObject {
     @Published var index: Int = 0
     @Published var opacity: Double = 1.0
@@ -11,6 +17,7 @@ final class Overlay: ObservableObject {
     @Published private(set) var visible = false
 
     private var infoPresented: Binding<String?>?
+    private var providerId: String?
 
     var infoEnabled: Bool {
         infoPresented != nil
@@ -33,10 +40,13 @@ final class Overlay: ObservableObject {
     }
 
     func load(
-        objects: [ObjectPreview],
+        provider: ObjectProvider,
         infoPresented: Binding<String?>? = nil
     ) {
-        self.objects = objects
+        guard providerId != provider.id else { return }
+
+        providerId = provider.id
+        self.objects = provider.objects.filter{ $0.isViewable }
         self.infoPresented = infoPresented
     }
 

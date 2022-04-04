@@ -70,26 +70,19 @@ struct OverlayNavigationBar: View {
 }
 
 struct OverlayNavigationBar_Previews: PreviewProvider {
-    @StateObject private static var overlay: Overlay = {
-        let result = Overlay()
+    private struct Preview: View {
+        private let post = Post.preview(id: "sand dune")
 
-        overlay.load(
-            objects: [
-                "sand dune.jpg",
-                "empty"
-            ].map { ObjectPreview.preview(id: $0) }
-        )
+        @StateObject private var overlay = Overlay()
 
-        return result
-    }()
-
-    static var previews: some View {
-        Group {
-            OverlayNavigationBar()
-                .environmentObject(Overlay())
-
+        var body: some View {
             OverlayNavigationBar()
                 .environmentObject(overlay)
+                .onAppear { overlay.load(provider: post) }
         }
+    }
+
+    static var previews: some View {
+        Preview()
     }
 }

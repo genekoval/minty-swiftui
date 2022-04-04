@@ -100,7 +100,7 @@ struct PostDetail: View {
     @ViewBuilder
     private var objects: some View {
         if !post.objects.isEmpty {
-            ObjectGrid(objects: post.objects)
+            ObjectGrid(provider: post)
         }
     }
 

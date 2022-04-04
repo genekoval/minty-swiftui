@@ -135,6 +135,8 @@ private final class PreviewData {
 
 private let data = PreviewData()
 
+extension Post: ObjectProvider { }
+
 extension Post {
     static func preview(add parts: PostParts) -> String {
         return data.addPost(parts: parts)

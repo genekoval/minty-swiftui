@@ -6,6 +6,7 @@ final class PostViewModel:
     IdentifiableEntity,
     ObjectCollection,
     ObjectEditorSubscriber,
+    ObjectProvider,
     ObservableObject
 {
     @Published var draftTitle = ""
