@@ -32,7 +32,11 @@ struct PostDetail: View {
 
     @ViewBuilder
     private var comments: some View {
-        ForEach(post.comments) { CommentRow(comment: $0, post: post) }
+        VStack(spacing: 0) {
+            ForEach(post.comments) { comment in
+                CommentRow(comment: comment, post: post)
+            }
+        }
     }
 
     @ViewBuilder
