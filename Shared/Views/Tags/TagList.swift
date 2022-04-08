@@ -13,12 +13,11 @@ struct TagList: View {
 
                 ForEach(post.tags) { tag in
                     VStack {
-                        NavigationLink(destination: TagDetail(
-                            tag: tag,
-                            repo: post.repo
-                        )) {
+                        NavigationLink(
+                            destination: TagDetailContainer(tag: tag)
+                        ) {
                             HStack {
-                                TagRow(tag: tag)
+                                TagRowContainer(tag: tag)
                                 Spacer()
                             }
                         }

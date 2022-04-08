@@ -153,7 +153,7 @@ struct PostDetail: View {
             }
         }
         else if let tag = post.tags.first {
-            NavigationLink(destination: TagDetail(tag: tag, repo: post.repo)) {
+            NavigationLink(destination: TagDetailContainer(tag: tag)) {
                 Label(tag.name, systemImage: "tag")
                     .font(.caption)
             }

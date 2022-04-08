@@ -13,7 +13,7 @@ private struct TagSelectRow: View {
             HStack {
                 SelectButton(isSelected: $isSelected.onChange(selectionChanged))
                     .frame(width: 30, height: 30)
-                TagRow(tag: tag)
+                TagRowContainer(tag: tag)
             }
 
             Divider()
@@ -96,7 +96,7 @@ private struct TagSelectorCore: View {
 
                 Section {
                     ForEach(tags) { tag in
-                        TagRow(tag: tag)
+                        TagRowContainer(tag: tag)
                     }
                     .onDelete { offsets in
                         if let index = offsets.first {

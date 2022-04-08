@@ -2,7 +2,7 @@ import Minty
 import SwiftUI
 
 struct TagRow: View {
-    var tag: TagPreview
+    @ObservedObject var tag: TagViewModel
 
     var body: some View {
         HStack {
@@ -12,9 +12,19 @@ struct TagRow: View {
     }
 }
 
+struct TagRowContainer: View {
+    @EnvironmentObject var data: DataSource
+
+    let tag: TagPreview
+
+    var body: some View {
+        TagRow(tag: data.tag(for: tag))
+    }
+}
+
 struct TagRow_Previews: PreviewProvider {
     static var previews: some View {
-        TagRow(tag: TagPreview.preview(id: "1"))
+        TagRow(tag: TagViewModel.preview(id: "1"))
             .padding(.horizontal)
     }
 }

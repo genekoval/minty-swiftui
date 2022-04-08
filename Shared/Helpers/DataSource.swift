@@ -3,6 +3,7 @@ import Foundation
 import Minty
 
 typealias PostState = StateMap<PostViewModel>
+typealias TagState = StateMap<TagViewModel>
 
 final class DataSource: ObservableObject {
     typealias Connect = (Server) -> MintyRepo?
@@ -13,6 +14,7 @@ final class DataSource: ObservableObject {
     private let connect: Connect?
 
     private let posts = PostState()
+    private let tags = TagState()
 
     var count: Int {
         posts.count
@@ -53,5 +55,21 @@ final class DataSource: ObservableObject {
         let post = post(id: preview.id)
         post.load(from: preview)
         return post
+    }
+
+    func tag(id: String) -> TagViewModel {
+        if let tag = tags[id] {
+            return tag
+        }
+
+        let tag = TagViewModel(id: id, storage: tags)
+        tags[id] = tag
+        return tag
+    }
+
+    func tag(for preview: TagPreview) -> TagViewModel {
+        let tag = tag(id: preview.id)
+        tag.load(from: preview)
+        return tag
     }
 }

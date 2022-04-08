@@ -6,7 +6,8 @@ struct TagDetail: View {
 
     @EnvironmentObject var data: DataSource
 
-    @StateObject private var tag: TagViewModel
+    @ObservedObject var tag: TagViewModel
+
     @StateObject private var recentPosts: PostQueryViewModel
     @StateObject private var search: PostQueryViewModel
     @StateObject private var newPosts = NewPostListViewModel()
@@ -152,13 +153,23 @@ struct TagDetail: View {
         .padding()
     }
 
-    init(tag: TagPreview, repo: MintyRepo?) {
-        _tag = StateObject(wrappedValue: TagViewModel(id: tag.id))
+    init(tag: TagViewModel, preview: TagPreview) {
+        self.tag = tag
         _recentPosts = StateObject(wrappedValue: PostQueryViewModel(
-            tag: tag,
+            tag: preview,
             searchNow: true
         ))
-        _search = StateObject(wrappedValue: PostQueryViewModel(tag: tag))
+        _search = StateObject(wrappedValue: PostQueryViewModel(tag: preview))
+    }
+}
+
+struct TagDetailContainer: View {
+    @EnvironmentObject var data: DataSource
+
+    let tag: TagPreview
+
+    var body: some View {
+        TagDetail(tag: data.tag(id: tag.id), preview: tag)
     }
 }
 
@@ -167,7 +178,7 @@ struct TagDetail_Previews: PreviewProvider {
 
     static var previews: some View {
         NavigationView {
-            TagDetail(tag: tag, repo: PreviewRepo())
+            TagDetailContainer(tag: tag)
         }
         .withErrorHandling()
         .environmentObject(DataSource.preview)

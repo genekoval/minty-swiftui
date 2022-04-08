@@ -6,7 +6,7 @@ private struct TagDisplayRow: View {
 
     var body: some View {
         VStack {
-            TagRow(tag: tag)
+            TagRowContainer(tag: tag)
             Divider()
         }
         .padding(.horizontal)
@@ -38,10 +38,7 @@ struct TagHome: View {
 
                         ForEach(query.excluded) { tag in
                             NavigationLink(
-                                destination: TagDetail(
-                                    tag: tag,
-                                    repo: query.repo
-                                ),
+                                destination: TagDetailContainer(tag: tag),
                                 tag: tag.id,
                                 selection: $selection
                             ) {

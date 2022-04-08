@@ -17,6 +17,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
     @Published private(set) var postCount: Int = 0
 
     private var cancellables = Set<AnyCancellable>()
+    private weak var storage: TagState?
 
     var draftAliasValid: Bool {
         !draftAlias.isEmpty
@@ -39,8 +40,10 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
         return tag
     }
 
-    init(id: String) {
+    init(id: String, storage: TagState?) {
         super.init(id: id, identifier: "tag")
+
+        self.storage = storage
 
         Tag.deleted
             .sink { [weak self] in self?.tagDeleted(id: $0) }
@@ -53,6 +56,12 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
         $description
             .sink { [weak self] in self?.draftDescription = $0 ?? "" }
             .store(in: &cancellables)
+    }
+
+    deinit {
+        if let storage = storage {
+            storage.remove(self)
+        }
     }
 
     func addAlias() throws {
@@ -129,6 +138,10 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
         dateCreated = tag.dateCreated
         sources = tag.sources
         postCount = Int(tag.postCount)
+    }
+
+    func load(from preview: TagPreview) {
+        name = preview.name
     }
 
     private func refreshNames(names: TagName) {

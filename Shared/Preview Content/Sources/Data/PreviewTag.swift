@@ -132,6 +132,6 @@ extension TagQueryViewModel {
 
 extension TagViewModel {
     static func preview(id: String) -> TagViewModel {
-        TagViewModel(id: id)
+        TagViewModel(id: id, storage: nil)
     }
 }
