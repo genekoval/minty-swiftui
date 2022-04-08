@@ -41,6 +41,7 @@ struct TagDetail: View {
             posts
         }
         .navigationTitle(tag.name)
+        .navigationBarTitleDisplayMode(.large)
         .sheet(isPresented: $showingEditor) { TagEditor(tag: tag) }
         .toolbar {
             Button("Edit") {
