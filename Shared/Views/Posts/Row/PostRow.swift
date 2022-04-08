@@ -58,7 +58,7 @@ struct PostRowContainer: View {
     let post: PostPreview
 
     var body: some View {
-        PostRow(post: data.post(for: post))
+        PostRow(post: data.state.posts.fetch(for: post))
     }
 }
 

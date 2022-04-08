@@ -30,7 +30,7 @@ struct PostRowMinimalContainer: View {
     let post: PostPreview
 
     var body: some View {
-        PostRowMinimal(post: data.post(for: post))
+        PostRowMinimal(post: data.state.posts.fetch(for: post))
     }
 }
 

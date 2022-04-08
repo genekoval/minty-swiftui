@@ -7,7 +7,8 @@ final class PostViewModel:
     ObjectCollection,
     ObjectEditorSubscriber,
     ObjectProvider,
-    ObservableObject
+    ObservableObject,
+    StorableEntity
 {
     @Published var draftTitle = ""
     @Published var draftDescription = ""
@@ -157,11 +158,11 @@ final class PostViewModel:
 
     private func fetchData() throws {
         try withRepo("fetch data") { repo in
-            load(from: try repo.getPost(postId: id))
+            load(try repo.getPost(postId: id))
         }
     }
 
-    private func load(from post: Post) {
+    private func load(_ post: Post) {
         title = post.title
         description = post.description
         created = post.dateCreated

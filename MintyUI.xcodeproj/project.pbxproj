@@ -17,6 +17,10 @@
 		BE0098612731BBD20021E660 /* TagSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE00985F2731BBD20021E660 /* TagSelectButton.swift */; };
 		BE013B8027FFC8ED004A43CE /* StateMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE013B7F27FFC8ED004A43CE /* StateMap.swift */; };
 		BE013B8127FFC8ED004A43CE /* StateMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE013B7F27FFC8ED004A43CE /* StateMap.swift */; };
+		BE013B8627FFE553004A43CE /* EntityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE013B8527FFE553004A43CE /* EntityStore.swift */; };
+		BE013B8727FFE553004A43CE /* EntityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE013B8527FFE553004A43CE /* EntityStore.swift */; };
+		BE013B8927FFEC19004A43CE /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE013B8827FFEC19004A43CE /* AppState.swift */; };
+		BE013B8A27FFEC19004A43CE /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE013B8827FFEC19004A43CE /* AppState.swift */; };
 		BE06CAB327DFFB97005940FB /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE06CAB227DFFB97005940FB /* Color.swift */; };
 		BE06CAB427DFFB97005940FB /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE06CAB227DFFB97005940FB /* Color.swift */; };
 		BE07661F2787BCFC00AA3AD7 /* CommentMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE07661E2787BCFC00AA3AD7 /* CommentMenu.swift */; };
@@ -223,6 +227,8 @@
 		BE00985C2731B4A00021E660 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
 		BE00985F2731BBD20021E660 /* TagSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelectButton.swift; sourceTree = "<group>"; };
 		BE013B7F27FFC8ED004A43CE /* StateMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMap.swift; sourceTree = "<group>"; };
+		BE013B8527FFE553004A43CE /* EntityStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityStore.swift; sourceTree = "<group>"; };
+		BE013B8827FFEC19004A43CE /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		BE06CAB227DFFB97005940FB /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		BE07661E2787BCFC00AA3AD7 /* CommentMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentMenu.swift; sourceTree = "<group>"; };
 		BE11FDD027615F5D007B58BA /* NewPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewModel.swift; sourceTree = "<group>"; };
@@ -663,6 +669,7 @@
 		BE808C4B271B98C10081F815 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				BE013B8827FFEC19004A43CE /* AppState.swift */,
 				BE844A0D27FC3E8B0087A03C /* Array.swift */,
 				BE00985C2731B4A00021E660 /* Binding.swift */,
 				BEFDF5F527225B9800F9EA09 /* ByteCount.swift */,
@@ -670,6 +677,7 @@
 				BE06CAB227DFFB97005940FB /* Color.swift */,
 				BE80C37B27264D14009616F5 /* DataSource.swift */,
 				BE808C4C271B98CF0081F815 /* Date.swift */,
+				BE013B8527FFE553004A43CE /* EntityStore.swift */,
 				BE158F7027D1905600F152C0 /* ErrorHandler.swift */,
 				BED6EF5327829CB200947F46 /* Events.swift */,
 				BE158F7627D1AA1A00F152C0 /* Logger.swift */,
@@ -976,6 +984,7 @@
 				BE21A5F1276ED306007105BA /* SearchResults.swift in Sources */,
 				BE808C4D271B98CF0081F815 /* Date.swift in Sources */,
 				BE835390278D4B92006E0783 /* Zoomable.swift in Sources */,
+				BE013B8627FFE553004A43CE /* EntityStore.swift in Sources */,
 				BED811512720EC5700929D4C /* ImageObject.swift in Sources */,
 				BEC4265427E9638700118863 /* PostRowMinimal.swift in Sources */,
 				BEA8C56D2785285300FFB7DD /* CommentEditor.swift in Sources */,
@@ -1035,6 +1044,7 @@
 				BEFFEC8727A228740021391B /* MediaPlayerView.swift in Sources */,
 				BE3E16B027399AEE00052660 /* ObjectEditorGrid.swift in Sources */,
 				BE465578270D111B00D3C4FB /* Server.swift in Sources */,
+				BE013B8927FFEC19004A43CE /* AppState.swift in Sources */,
 				BE80C37F2726605A009616F5 /* CacheRow.swift in Sources */,
 				BEE9D5F7270FF1CD0034CF1A /* AboutView.swift in Sources */,
 				BEBFDF8B2741E7EB00A3E2A8 /* Uploadable.swift in Sources */,
@@ -1112,6 +1122,7 @@
 				BE0098612731BBD20021E660 /* TagSelectButton.swift in Sources */,
 				BE80C3802726605A009616F5 /* CacheRow.swift in Sources */,
 				BE465583270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
+				BE013B8727FFE553004A43CE /* EntityStore.swift in Sources */,
 				BED7586227A37D860044562D /* PreviewMediaPlayer.swift in Sources */,
 				BEBFDF8F274214AA00A3E2A8 /* ImagePicker.swift in Sources */,
 				BE013B8127FFC8ED004A43CE /* StateMap.swift in Sources */,
@@ -1140,6 +1151,7 @@
 				BE00985E2731B4A00021E660 /* Binding.swift in Sources */,
 				BE009858273195360021E660 /* TagSelector.swift in Sources */,
 				BE46557D270D118700D3C4FB /* SettingsViewModel.swift in Sources */,
+				BE013B8A27FFEC19004A43CE /* AppState.swift in Sources */,
 				BED8115D2721C29200929D4C /* PreviewObjectSource.swift in Sources */,
 				BE7E0F422727350E00EF758A /* TagEditor.swift in Sources */,
 				BE354F9D27A4D0C200649B68 /* MediaPlayerView.swift in Sources */,

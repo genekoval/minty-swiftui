@@ -18,7 +18,7 @@ struct TagRowContainer: View {
     let tag: TagPreview
 
     var body: some View {
-        TagRow(tag: data.tag(for: tag))
+        TagRow(tag: data.state.tags.fetch(for: tag))
     }
 }
 

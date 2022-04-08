@@ -2,7 +2,7 @@ import Combine
 import Foundation
 import Minty
 
-final class TagViewModel: IdentifiableEntity, ObservableObject {
+final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
     @Published var draftAlias = ""
     @Published var draftDescription = ""
     @Published var draftName = ""
@@ -127,11 +127,11 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
 
     override func refresh() throws {
         try withRepo("fetch data") { repo in
-            load(from: try repo.getTag(tagId: id))
+            load(try repo.getTag(tagId: id))
         }
     }
 
-    private func load(from tag: Tag) {
+    private func load(_ tag: Tag) {
         name = tag.name
         aliases = tag.aliases
         description = tag.description

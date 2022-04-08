@@ -177,7 +177,7 @@ struct PostDetailContainer: View {
     let id: String
 
     var body: some View {
-        PostDetail(post: data.post(id: id))
+        PostDetail(post: data.state.posts.fetch(id: id))
     }
 }
 

@@ -169,7 +169,7 @@ struct TagDetailContainer: View {
     let tag: TagPreview
 
     var body: some View {
-        TagDetail(tag: data.tag(id: tag.id), preview: tag)
+        TagDetail(tag: data.state.tags.fetch(id: tag.id), preview: tag)
     }
 }
 

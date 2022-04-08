@@ -22,12 +22,12 @@ final class NewPostListViewModel: ObservableObject {
     private func didCreate(_ id: String) {
         guard let data = data else { return }
 
-        let post = data.post(id: id)
+        let post = data.state.posts.fetch(id: id)
         posts.append(post)
         selection = id
     }
 
-    private func didDelete(_ postId: String) {
-        posts.remove(id: postId)
+    private func didDelete(_ id: String) {
+        posts.remove(id: id)
     }
 }
