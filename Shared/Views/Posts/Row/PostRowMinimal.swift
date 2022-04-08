@@ -2,7 +2,7 @@ import Minty
 import SwiftUI
 
 struct PostRowMinimal: View {
-    let post: PostPreview
+    @ObservedObject var post: PostViewModel
 
     var body: some View {
         HStack {
@@ -24,9 +24,20 @@ struct PostRowMinimal: View {
     }
 }
 
+struct PostRowMinimalContainer: View {
+    @EnvironmentObject var data: DataSource
+
+    let post: PostPreview
+
+    var body: some View {
+        PostRowMinimal(post: data.post(for: post))
+    }
+}
+
 struct PostRowMinimal_Previews: PreviewProvider {
     static var previews: some View {
-        PostRowMinimal(post: PostPreview.preview(id: "sand dune"))
+        PostRowMinimalContainer(post: PostPreview.preview(id: "sand dune"))
+            .environmentObject(DataSource.preview)
             .environmentObject(ObjectSource.preview)
     }
 }

@@ -8,7 +8,7 @@ struct SearchResults<Element, QueryType, Content>: View where
     let type: String
     let text: String?
     let showResultCount: Bool
-    @ViewBuilder let content: (Binding<Element>) -> Content
+    @ViewBuilder let content: (Element) -> Content
 
     var body: some View {
         LazyVStack {
@@ -16,7 +16,7 @@ struct SearchResults<Element, QueryType, Content>: View where
                 ResultCount(type: type, count: search.total, text: text)
             }
 
-            ForEach($search.hits) { content($0) }
+            ForEach(search.hits) { content($0) }
 
             if search.resultsAvailable {
                 ProgressView()

@@ -15,7 +15,7 @@ private struct PostSelectRow: View {
                     SelectionIndicator(isSelected: selected)
                 }
 
-                PostRow(post: post)
+                PostRowContainer(post: post)
             }
             Divider()
         }
@@ -50,7 +50,7 @@ private struct SelectableResults: View {
             text: nil,
             showResultCount: true
         ) { post in
-            PostSelectRow(post: post.wrappedValue, parent: self.post)
+            PostSelectRow(post: post, parent: self.post)
         }
     }
 }

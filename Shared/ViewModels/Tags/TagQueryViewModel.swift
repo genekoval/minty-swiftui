@@ -20,11 +20,10 @@ final class TagQueryViewModel: Search<TagPreview, TagQuery> {
         super.init(
             type: "tag",
             query: query,
-            deletionPublisher: Events.tagDeleted
+            deletionPublisher: Tag.deleted
         ) { (repo, query) in try repo.getTags(query: query) }
 
-        Events
-            .tagDeleted
+        Tag.deleted
             .sink { [weak self] in self?.remove(id: $0) }
             .store(in: &cancellables)
 
@@ -42,9 +41,7 @@ final class TagQueryViewModel: Search<TagPreview, TagQuery> {
     }
 
     private func remove(id: String) {
-        if let index = excluded.firstIndex(where: { $0.id == id }) {
-            excluded.remove(at: index)
-        }
+        excluded.remove(id: id)
     }
 
     private func search(name: String) {

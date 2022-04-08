@@ -42,8 +42,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
     init(id: String) {
         super.init(id: id, identifier: "tag")
 
-        Events
-            .tagDeleted
+        Tag.deleted
             .sink { [weak self] in self?.tagDeleted(id: $0) }
             .store(in: &cancellables)
 
@@ -97,7 +96,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject {
             try repo.deleteTag(tagId: id)
         }
 
-        Events.tagDeleted.send(id)
+        Tag.deleted.send(id)
     }
 
     func deleteAlias(at index: Int) throws {

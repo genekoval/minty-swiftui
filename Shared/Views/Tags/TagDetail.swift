@@ -4,6 +4,8 @@ import SwiftUI
 struct TagDetail: View {
     @Environment(\.dismiss) var dismiss
 
+    @EnvironmentObject var data: DataSource
+
     @StateObject private var tag: TagViewModel
     @StateObject private var recentPosts: PostQueryViewModel
     @StateObject private var search: PostQueryViewModel
@@ -48,7 +50,10 @@ struct TagDetail: View {
         .loadEntity(tag)
         .prepareSearch(recentPosts)
         .prepareSearch(search)
-        .onAppear { if tag.deleted { dismiss() } }
+        .onAppear {
+            if tag.deleted { dismiss() }
+            newPosts.data = data
+        }
         .onReceive(tag.$deleted) { if $0 { dismiss() } }
     }
 

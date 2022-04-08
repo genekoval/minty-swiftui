@@ -8,9 +8,7 @@ protocol Query {
     var size: UInt32 { get set }
 }
 
-protocol SearchElement : Identifiable, ZiplineCodable {
-    var id: String { get }
-}
+protocol SearchElement : Identifiable, ZiplineCodable { }
 
 protocol SearchObject {
     func prepare(repo: MintyRepo?, errorHandler: ErrorHandler);
@@ -52,7 +50,7 @@ where
     init(
         type: String,
         query: QueryType,
-        deletionPublisher: PassthroughSubject<String, Never>,
+        deletionPublisher: PassthroughSubject<Element.ID, Never>,
         searchNow: Bool = false,
         search: @escaping SearchAction
     ) {
@@ -116,9 +114,8 @@ where
         errorHandler.handle { try load(repo: repo) }
     }
 
-    private func remove(id: String) {
-        if let index = hits.firstIndex(where: { $0.id == id }) {
-            hits.remove(at: index)
+    private func remove(id: Element.ID) {
+        if hits.remove(id: id) != nil {
             total -= 1
         }
     }

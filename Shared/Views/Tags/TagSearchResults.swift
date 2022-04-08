@@ -11,11 +11,11 @@ struct TagSearchResults: View {
             showResultCount: !search.name.isEmpty
         ) { tag in
             NavigationLink(destination: TagDetail(
-                tag: tag.wrappedValue,
+                tag: tag,
                 repo: search.repo
             )) {
                 VStack {
-                    TagRow(tag: tag.wrappedValue)
+                    TagRow(tag: tag)
                     Divider()
                 }
                 .padding(.horizontal)

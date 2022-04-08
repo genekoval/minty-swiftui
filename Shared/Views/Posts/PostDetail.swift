@@ -4,9 +4,7 @@ import SwiftUI
 struct PostDetail: View {
     @Environment(\.dismiss) var dismiss
 
-    @Binding var preview: PostPreview
-
-    @StateObject private var post: PostViewModel
+    @ObservedObject var post: PostViewModel
 
     @State private var showingEditor = false
 
@@ -19,9 +17,6 @@ struct PostDetail: View {
         .navigationTitle("Post")
         .navigationBarTitleDisplayMode(.inline)
         .loadEntity(post)
-        .onReceive(post.$preview) { preview in
-            self.preview = preview
-        }
         .onAppear {
             if post.deleted { dismiss() }
         }
@@ -121,11 +116,11 @@ struct PostDetail: View {
     private var posts: some View {
         if !post.posts.isEmpty {
             VStack {
-                ForEach($post.posts) { post in
+                ForEach(post.posts) { post in
                     NavigationLink(
-                        destination: PostDetail(id: post.id, preview: post)
+                        destination: PostDetailContainer(id: post.id)
                     ) {
-                        PostRowMinimal(post: post.wrappedValue)
+                        PostRowMinimalContainer(post: post)
                     }
 
                     Divider()
@@ -174,13 +169,15 @@ struct PostDetail: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
+}
 
-    init(id: String, preview: Binding<PostPreview>) {
-        _preview = preview
-        _post = StateObject(wrappedValue: PostViewModel(
-            id: id,
-            preview: preview.wrappedValue
-        ))
+struct PostDetailContainer: View {
+    @EnvironmentObject var data: DataSource
+
+    let id: String
+
+    var body: some View {
+        PostDetail(post: data.post(id: id))
     }
 }
 
@@ -195,10 +192,7 @@ struct PostDetail_Previews: PreviewProvider {
         Group {
             ForEach(posts, id: \.self) { post in
                 NavigationView {
-                    PostDetail(
-                        id: post,
-                        preview: .constant(PostPreview.preview(id: post))
-                    )
+                    PostDetailContainer(id: post)
                 }
             }
         }

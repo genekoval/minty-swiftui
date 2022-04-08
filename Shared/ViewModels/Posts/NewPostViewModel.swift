@@ -46,8 +46,8 @@ final class NewPostViewModel: RemoteEntity, ObjectCollection, ObservableObject {
 
     func create() throws {
         try withRepo("create") { repo in
-            let postId = try repo.addPost(parts: parts)
-            Events.postCreated.send(postId)
+            let id = try repo.addPost(parts: parts)
+            Post.created.send(id)
         }
     }
 

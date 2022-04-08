@@ -1,9 +1,11 @@
+import Minty
 import Combine
 
-struct Events {
-    static let postCreated = PassthroughSubject<String, Never>()
+extension Post {
+    static let created = PassthroughSubject<String, Never>()
+    static let deleted = PassthroughSubject<String, Never>()
+}
 
-    static let postDeleted = PassthroughSubject<String, Never>()
-
-    static let tagDeleted = PassthroughSubject<String, Never>()
+extension Tag {
+    static let deleted = PassthroughSubject<String, Never>()
 }

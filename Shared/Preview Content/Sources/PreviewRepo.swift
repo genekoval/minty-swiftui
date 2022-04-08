@@ -73,9 +73,7 @@ final class PreviewRepo: MintyRepo {
     func deletePostObjects(postId: String, objects: [String]) throws -> Date {
         Post.preview(edit: postId) { post in
             for id in objects {
-                if let index = post.objects.firstIndex(where: { $0.id == id }) {
-                    post.objects.remove(at: index)
-                }
+                post.objects.remove(id: id)
             }
         }
 
@@ -91,17 +89,13 @@ final class PreviewRepo: MintyRepo {
 
     func deletePostTag(postId: String, tagId: String) throws {
         Post.preview(edit: postId) { post in
-            if let index = post.tags.firstIndex(where: { $0.id == tagId }) {
-                post.tags.remove(at: index)
-            }
+            post.tags.remove(id: tagId)
         }
     }
 
     func deleteRelatedPost(postId: String, related: String) throws {
         Post.preview(edit: postId) { post in
-            if let index = post.posts.firstIndex(where: { $0.id == related }) {
-                post.posts.remove(at: index)
-            }
+            post.posts.remove(id: related)
         }
     }
 

@@ -2,7 +2,7 @@ import Minty
 import SwiftUI
 
 struct PostRow: View {
-    var post: PostPreview
+    @ObservedObject var post: PostViewModel
 
     var body: some View {
         HStack(alignment: .top) {
@@ -32,7 +32,7 @@ struct PostRow: View {
                         systemImage: "text.bubble"
                     )
                     Label(
-                        "\(post.dateCreated.relative(.short))",
+                        "\(post.created.relative(.short))",
                         systemImage: "clock"
                     )
                 }
@@ -52,6 +52,16 @@ struct PostRow: View {
     }
 }
 
+struct PostRowContainer: View {
+    @EnvironmentObject var data: DataSource
+
+    let post: PostPreview
+
+    var body: some View {
+        PostRow(post: data.post(for: post))
+    }
+}
+
 struct PostRow_Previews: PreviewProvider {
     private static let posts = [
         "untitled",
@@ -63,7 +73,7 @@ struct PostRow_Previews: PreviewProvider {
         ScrollView {
             VStack {
                 ForEach(posts, id: \.self) { post in
-                    PostRow(post: PostPreview.preview(id: post))
+                    PostRow(post: PostViewModel.preview(id: post))
                 }
             }
         }

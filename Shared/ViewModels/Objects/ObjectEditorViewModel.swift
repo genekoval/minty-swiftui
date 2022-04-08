@@ -134,11 +134,7 @@ class ObjectEditorViewModel: ObservableObject {
     private func deleteObjects(_ objects: [ObjectPreview]) throws {
         try subscriber?.delete(objects: objects.map { $0.id })
 
-        for object in objects {
-            if let index = collection.objects.firstIndex(of: object) {
-                collection.objects.remove(at: index)
-            }
-        }
+        collection.objects.remove(all: objects)
 
         if isEmpty {
             state = .adding

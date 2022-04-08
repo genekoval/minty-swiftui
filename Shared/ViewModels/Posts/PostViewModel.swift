@@ -12,7 +12,6 @@ final class PostViewModel:
     @Published var draftTitle = ""
     @Published var draftDescription = ""
     @Published var objects: [ObjectPreview] = []
-    @Published var posts: [PostPreview] = []
     @Published var tags: [TagPreview] = []
 
     @Published private(set) var deleted = false
@@ -20,31 +19,32 @@ final class PostViewModel:
     @Published private(set) var description: String?
     @Published private(set) var created: Date = Date()
     @Published private(set) var modified: Date = Date()
-    @Published private(set) var preview: PostPreview
     @Published private(set) var comments: [Comment] = []
+    @Published private(set) var preview: ObjectPreview?
+    @Published private(set) var commentCount: Int = 0
+    @Published private(set) var objectCount: Int = 0
+    @Published private(set) var posts: [PostPreview] = []
 
     private var cancellables = Set<AnyCancellable>()
+    private weak var storage: PostState?
 
     var objectsPublisher: Published<[ObjectPreview]>.Publisher { $objects }
 
-    init(id: String, preview: PostPreview) {
-        self.preview = preview
-
+    init(id: String, storage: PostState?) {
         super.init(id: id, identifier: "post")
 
-        Events
-            .postDeleted
+        self.storage = storage
+
+        Post.deleted
             .sink { [weak self] in self?.postDeleted(id: $0) }
             .store(in: &cancellables)
 
-        Events
-            .tagDeleted
+        Tag.deleted
             .sink { [weak self] in self?.removeLocalTag(id: $0)}
             .store(in: &cancellables)
 
         $title.sink { [weak self] in
             self?.draftTitle = $0 ?? ""
-            self?.preview.title = $0
         }.store(in: &cancellables)
 
         $description.sink { [weak self] in
@@ -52,9 +52,18 @@ final class PostViewModel:
         }.store(in: &cancellables)
 
         $objects.sink { [weak self] in
-            self?.preview.preview = $0.first
-            self?.preview.objectCount = UInt32($0.count)
+            self?.objectCount = $0.count
         }.store(in: &cancellables)
+
+        $comments.sink { [weak self] in
+            self?.commentCount = $0.count
+        }.store(in: &cancellables)
+    }
+
+    deinit {
+        if let storage = storage {
+            storage.remove(self)
+        }
     }
 
     func add(comment: String) throws {
@@ -124,8 +133,6 @@ final class PostViewModel:
         try withRepo("delete post") { repo in
             try repo.deletePost(postId: id)
         }
-
-        Events.postDeleted.send(id)
     }
 
     func delete(objects: [String]) throws {
@@ -139,9 +146,7 @@ final class PostViewModel:
             try repo.deleteRelatedPost(postId: id, related: post.id)
         }
 
-        if let index = posts.firstIndex(of: post) {
-            posts.remove(at: index)
-        }
+        posts.remove(element: post)
     }
 
     private func fetchComments() throws {
@@ -166,6 +171,14 @@ final class PostViewModel:
         tags = post.tags
     }
 
+    func load(from preview: PostPreview) {
+        title = preview.title
+        self.preview = preview.preview
+        commentCount = Int(preview.commentCount)
+        objectCount = Int(preview.objectCount)
+        created = preview.dateCreated
+    }
+
     func move(objects: [String], to destination: String?) throws {
         try withRepo("move objects") { repo in
             modified = try repo.movePostObjects(
@@ -188,9 +201,7 @@ final class PostViewModel:
     }
 
     private func removeLocalTag(id: String) {
-        if let index = tags.firstIndex(where: { $0.id == id }) {
-            tags.remove(at: index)
-        }
+        tags.remove(id: id)
     }
 
     func removeTag(tag: TagPreview) throws {

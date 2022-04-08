@@ -180,9 +180,6 @@ extension PostQueryViewModel {
 
 extension PostViewModel {
     static func preview(id: String) -> PostViewModel {
-        PostViewModel(
-            id: id,
-            preview: PostPreview.preview(id: id)
-        )
+        PostViewModel(id: id, storage: nil)
     }
 }

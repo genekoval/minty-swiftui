@@ -18,10 +18,7 @@ struct NewPostList: View {
 
                 ForEach($newPosts.posts) { post in
                     NavigationLink(
-                        destination: PostDetail(
-                            id: post.id,
-                            preview: post
-                        ),
+                        destination: PostDetailContainer(id: post.id),
                         tag: post.id,
                         selection: $newPosts.selection
                     ) {

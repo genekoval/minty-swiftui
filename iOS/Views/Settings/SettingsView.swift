@@ -79,6 +79,7 @@ struct SettingsView: View {
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
+            .withErrorHandling()
             .environmentObject(DataSource.preview)
             .environmentObject(ObjectSource.preview)
             .environmentObject(SettingsViewModel())

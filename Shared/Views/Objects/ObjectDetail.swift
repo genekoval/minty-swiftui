@@ -92,12 +92,11 @@ struct ObjectDetail: View {
                 if !vm.object.posts.isEmpty {
                     KeyValue(key: "Posts", value: "\(vm.object.posts.count)")
 
-                    ForEach($vm.object.posts) { post in
-                        NavigationLink(destination: PostDetail(
-                            id: post.id,
-                            preview: post
-                        )) {
-                            PostRow(post: post.wrappedValue)
+                    ForEach(vm.object.posts) { post in
+                        NavigationLink(
+                            destination: PostDetailContainer(id: post.id)
+                        ) {
+                            PostRowContainer(post: post)
                         }
                     }
                     .buttonStyle(.plain)
@@ -120,7 +119,9 @@ struct ObjectDetail_Previews: PreviewProvider {
         NavigationView{
             ObjectDetail(id: "sand dune.jpg", repo: PreviewRepo())
         }
+        .withErrorHandling()
         .environmentObject(DataSource.preview)
         .environmentObject(ObjectSource.preview)
+        .environmentObject(Overlay())
     }
 }
