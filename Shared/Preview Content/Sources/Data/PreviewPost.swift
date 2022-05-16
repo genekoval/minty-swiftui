@@ -1,41 +1,49 @@
 import Foundation
 import Minty
 
+struct PreviewPost {
+    static let sandDune =
+        UUID(uuidString: "ad79e229-1152-43a5-95b8-476c5bd5b84e")!
+    static let test = UUID(uuidString: "fb72901c-9130-48ea-b6b8-e64504f3f7bf")!
+    static let untitled =
+        UUID(uuidString: "515258b4-391a-49e8-aa94-f05e7b1b5aad")!
+}
+
 private final class PreviewData {
-    private(set) var posts: [String: Post] = [:]
-    private(set) var previews: [String: PostPreview] = [:]
+    private(set) var posts: [UUID: Post] = [:]
+    private(set) var previews: [UUID: PostPreview] = [:]
 
     init() {
         addPost(
-            id: "sand dune",
+            id: PreviewPost.sandDune,
             title: "Sand Dune",
             description: "Photo take by Eugene Ga in Merzouga, Morocco.",
             created: "2020-12-29 12:00:00.000-04",
-            objects: ["sand dune.jpg"],
-            tags: ["1"]
+            objects: [PreviewObject.sandDune],
+            tags: [PreviewTag.helloWorld]
         )
 
         addPost(
-            id: "test",
+            id: PreviewPost.test,
             title: "This is a test post. Vivamus sollicitudin leo sed quam bibendum imperdiet. Nulla libero urna, aliquet in nibh et, tristique aliquam ipsum.",
             description: "Vivamus sollicitudin leo sed quam bibendum imperdiet. Nulla libero urna, aliquet in nibh et, tristique aliquam ipsum. Integer sit amet rutrum ex, id bibendum turpis. Proin blandit malesuada nunc in gravida. Etiam finibus aliquet porttitor. Nullam ut fermentum nisi. Proin nec arcu eget libero fringilla fermentum feugiat at lorem. Praesent nulla est, venenatis quis risus eget, auctor porttitor tellus. Proin scelerisque rutrum accumsan.",
             created: "2018-10-27 10:15:36.285-04",
             modified: 60_000,
-            objects: ["empty", "sand dune.jpg"],
-            posts: ["sand dune"],
-            tags: ["1", "empty"]
+            objects: [PreviewObject.empty, PreviewObject.sandDune],
+            posts: [PreviewPost.sandDune],
+            tags: [PreviewTag.helloWorld, PreviewTag.empty]
         )
 
         addPost(
-            id: "untitled",
+            id: PreviewPost.untitled,
             description: "This post has no title.",
-            objects: ["empty"],
-            tags: ["1"]
+            objects: [PreviewObject.empty],
+            tags: [PreviewTag.helloWorld]
         )
     }
 
-    func addPost(parts: PostParts) -> String {
-        let id = UUID().uuidString
+    func addPost(parts: PostParts) -> UUID {
+        let id = UUID()
 
         addPost(
             id: id,
@@ -49,14 +57,14 @@ private final class PreviewData {
     }
 
     private func addPost(
-        id: String,
+        id: UUID,
         title: String? = nil,
         description: String? = nil,
         created: String? = nil,
         modified: TimeInterval? = nil,
-        objects: [String] = [],
-        posts: [String] = [],
-        tags: [String] = []
+        objects: [UUID] = [],
+        posts: [UUID] = [],
+        tags: [UUID] = []
     ) {
         var post = Post()
 
@@ -104,7 +112,8 @@ private final class PreviewData {
             case .title:
                 result = ($0.title ?? "") < ($1.title ?? "")
             case .relevance:
-                result = $0.id < $1.id
+                // Sorting by relevance currently does nothing
+                result = true
             }
 
             return query.sort.order == .ascending ? result : !result
@@ -113,7 +122,7 @@ private final class PreviewData {
         return results.map { previews[$0.id]! }
     }
 
-    func removePost(id: String) {
+    func removePost(id: UUID) {
         previews.removeValue(forKey: id)
         posts.removeValue(forKey: id)
     }
@@ -138,28 +147,28 @@ private let data = PreviewData()
 extension Post: ObjectProvider { }
 
 extension Post {
-    static func preview(add parts: PostParts) -> String {
+    static func preview(add parts: PostParts) -> UUID {
         return data.addPost(parts: parts)
     }
 
-    static func preview(edit id: String, action: (inout Post) -> Void) {
+    static func preview(edit id: UUID, action: (inout Post) -> Void) {
         var post = Post.preview(id: id)
         action(&post)
         data.setPost(post: post)
     }
 
-    static func preview(id: String) -> Post {
+    static func preview(id: UUID) -> Post {
         if let post = data.posts[id] { return post }
         fatalError("Post with ID (\(id)) does not exist")
     }
 
-    static func preview(remove id: String) {
+    static func preview(remove id: UUID) {
         data.removePost(id: id)
     }
 }
 
 extension PostPreview {
-    static func preview(id: String) -> PostPreview {
+    static func preview(id: UUID) -> PostPreview {
         guard let preview = data.previews[id] else {
             fatalError("Post Preview with ID (\(id)) does not exist")
         }
@@ -179,7 +188,7 @@ extension PostQueryViewModel {
 }
 
 extension PostViewModel {
-    static func preview(id: String) -> PostViewModel {
+    static func preview(id: UUID) -> PostViewModel {
         PostViewModel(id: id, storage: nil)
     }
 }

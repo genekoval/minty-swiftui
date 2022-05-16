@@ -58,7 +58,7 @@ struct ObjectDetail: View {
                 }
 
                 InfoField(key: "ID") {
-                    Text(vm.id)
+                    Text(vm.id.uuidString)
                         .font(.caption)
                 }
                 KeyValue(key: "Type", value: vm.object.mimeType)
@@ -109,7 +109,7 @@ struct ObjectDetail: View {
         .loadEntity(vm)
     }
 
-    init(id: String, repo: MintyRepo?) {
+    init(id: UUID, repo: MintyRepo?) {
         _vm = StateObject(wrappedValue: ObjectViewModel(id: id))
     }
 }
@@ -117,7 +117,7 @@ struct ObjectDetail: View {
 struct ObjectDetail_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView{
-            ObjectDetail(id: "sand dune.jpg", repo: PreviewRepo())
+            ObjectDetail(id: PreviewObject.sandDune, repo: PreviewRepo())
         }
         .withErrorHandling()
         .environmentObject(DataSource.preview)

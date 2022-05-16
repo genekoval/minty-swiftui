@@ -33,7 +33,7 @@ struct OverlayView_Previews: PreviewProvider {
     @StateObject private static var overlay: Overlay = {
         let result = Overlay()
 
-        result.load(provider: Post.preview(id: "test"))
+        result.load(provider: Post.preview(id: PreviewPost.test))
 
         return result
     }()

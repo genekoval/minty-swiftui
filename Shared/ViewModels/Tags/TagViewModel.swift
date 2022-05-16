@@ -40,7 +40,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
         return tag
     }
 
-    init(id: String, storage: TagState?) {
+    init(id: UUID, storage: TagState?) {
         super.init(id: id, identifier: "tag")
 
         self.storage = storage
@@ -159,7 +159,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
         try setName(name: alias)
     }
 
-    private func tagDeleted(id: String) {
+    private func tagDeleted(id: UUID) {
         if id == self.id {
             deleted = true
         }

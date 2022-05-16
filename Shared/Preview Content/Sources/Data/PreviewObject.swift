@@ -7,24 +7,33 @@ private let sizeFormatter: ByteCountFormatter = {
     return formatter
 }()
 
+struct PreviewObject {
+    static let empty =
+        UUID(uuidString: "76698f22-6169-4327-a7e4-453f509f6d2e")!
+    static let sandDune =
+        UUID(uuidString: "ada13eae-11c7-4024-9583-83a3560097fc")!
+    static let sandDunePreview =
+        UUID(uuidString: "d7ea2075-ae8c-4c6d-83ea-814a515539e2")!
+}
+
 private final class PreviewData {
-    private var objects: [String: Object] = [:]
-    private var previews: [String: ObjectPreview] = [:]
+    private var objects: [UUID: Object] = [:]
+    private var previews: [UUID: ObjectPreview] = [:]
 
     init() {
         addObject(
-            id: "sand dune.jpg",
+            id: PreviewObject.sandDune,
             hash: "1231a42cd48638c8cf80eff03ee9a3da91ff4a3d7136d8883a35f329c7a2e7c0",
             size: 1_140_573,
             type: "image",
             subtype: "jpeg",
             dateAdded: "2020-12-29 12:00:00.000-04",
-            previewId: "sand dune (preview).png",
+            previewId: PreviewObject.sandDunePreview,
             source: "sand dune"
         )
 
         addObject(
-            id: "empty",
+            id: PreviewObject.empty,
             hash: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
             size: 0,
             type: "inode",
@@ -35,13 +44,13 @@ private final class PreviewData {
     }
 
     private func addObject(
-        id: String,
+        id: UUID,
         hash: String,
         size: UInt64,
         type: String,
         subtype: String,
         dateAdded: String? = nil,
-        previewId: String? = nil,
+        previewId: UUID? = nil,
         source: String? = nil
     ) {
         var dataSize = DataSize()
@@ -70,7 +79,7 @@ private final class PreviewData {
         previews[id] = preview
     }
 
-    func get(object id: String) -> Object {
+    func get(object id: UUID) -> Object {
         guard var object = objects[id] else {
             fatalError("Object with ID (\(id)) does not exist")
         }
@@ -88,7 +97,7 @@ private final class PreviewData {
         return object
     }
 
-    func get(preview id: String) -> ObjectPreview {
+    func get(preview id: UUID) -> ObjectPreview {
         if let preview = data.previews[id] { return preview }
         fatalError("Object Preview with ID (\(id)) does not exist")
     }
@@ -97,13 +106,13 @@ private final class PreviewData {
 private let data = PreviewData()
 
 extension Object {
-    static func preview(id: String) -> Object {
+    static func preview(id: UUID) -> Object {
         data.get(object: id)
     }
 }
 
 extension ObjectPreview {
-    static func preview(id: String) -> ObjectPreview {
+    static func preview(id: UUID) -> ObjectPreview {
         data.get(preview: id)
     }
 }

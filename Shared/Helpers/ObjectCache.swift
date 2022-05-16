@@ -60,8 +60,8 @@ final class ObjectCache: ObjectSource {
         try super.clearCache()
     }
 
-    private func getObjectURL(id: String) -> URL {
-        objectsDirectory.appendingPathComponent(id)
+    private func getObjectURL(id: UUID) -> URL {
+        objectsDirectory.appendingPathComponent(id.uuidString)
     }
 
     override func refresh() throws {
@@ -114,7 +114,7 @@ final class ObjectCache: ObjectSource {
         })
     }
 
-    override func url(for objectId: String) throws -> URL? {
+    override func url(for objectId: UUID) throws -> URL? {
         let url = getObjectURL(id: objectId)
 
         if fileManager.fileExists(atPath: url.path) {

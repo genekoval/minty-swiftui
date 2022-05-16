@@ -40,7 +40,7 @@ final class TagQueryViewModel: Search<TagPreview, TagQuery> {
         modifyQuery { query.exclude = tags.map { $0.id } }
     }
 
-    private func remove(id: String) {
+    private func remove(id: UUID) {
         excluded.remove(id: id)
     }
 

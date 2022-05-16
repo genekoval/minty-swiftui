@@ -103,7 +103,7 @@ struct PostEditor: View {
 }
 
 struct PostEditor_Previews: PreviewProvider {
-    private static let post = PostViewModel.preview(id: "test")
+    private static let post = PostViewModel.preview(id: PreviewPost.test)
 
     static var previews: some View {
         PostEditor(post: post)

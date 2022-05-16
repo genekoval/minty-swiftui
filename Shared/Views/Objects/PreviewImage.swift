@@ -42,7 +42,7 @@ private struct PreviewBadge: View {
 }
 
 struct PreviewImage: View {
-    let previewId: String?
+    let previewId: UUID?
     let type: String
     let subtype: String
 
@@ -57,7 +57,7 @@ struct PreviewImage: View {
         }
     }
 
-    init(previewId: String?, type: String, subtype: String) {
+    init(previewId: UUID?, type: String, subtype: String) {
         self.previewId = previewId
         self.type = type
         self.subtype = subtype
@@ -75,8 +75,10 @@ struct PreviewImage: View {
 struct PreviewImage_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PreviewImage(object: ObjectPreview.preview(id: "sand dune.jpg"))
-            PreviewImage(object: ObjectPreview.preview(id: "empty"))
+            PreviewImage(
+                object: ObjectPreview.preview(id: PreviewObject.sandDune)
+            )
+            PreviewImage(object: ObjectPreview.preview(id: PreviewObject.empty))
         }
         .frame(width: 100)
         .environmentObject(ObjectSource.preview)

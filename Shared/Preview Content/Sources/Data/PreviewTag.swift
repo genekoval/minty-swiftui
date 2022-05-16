@@ -1,13 +1,19 @@
 import Foundation
 import Minty
 
+struct PreviewTag {
+    static let empty = UUID(uuidString: "3bc56fa7-010f-4d2e-be9b-3e1b077ea215")!
+    static let helloWorld =
+        UUID(uuidString: "6b99b219-1016-4a78-9204-a35636ad6b3e")!
+}
+
 private class PreviewData {
-    private(set) var previews: [String: TagPreview] = [:]
-    private(set) var tags: [String: Tag] = [:]
+    private(set) var previews: [UUID: TagPreview] = [:]
+    private(set) var tags: [UUID: Tag] = [:]
 
     init() {
         addTag(
-            id: "1",
+            id: PreviewTag.helloWorld,
             name: "Hello World",
             aliases: ["Foo", "Bar", "Baz"],
             description: "Vivamus sollicitudin leo sed quam bibendum imperdiet. Nulla libero urna, aliquet in nibh et, tristique aliquam ipsum. Integer sit amet rutrum ex, id bibendum turpis. Proin blandit malesuada nunc in gravida. Etiam finibus aliquet porttitor. Nullam ut fermentum nisi. Proin nec arcu eget libero fringilla fermentum feugiat at lorem. Praesent nulla est, venenatis quis risus eget, auctor porttitor tellus. Proin scelerisque rutrum accumsan.",
@@ -16,14 +22,14 @@ private class PreviewData {
         )
 
         addTag(
-            id: "empty",
+            id: PreviewTag.empty,
             name: "Empty Tag",
             dateCreated: "2021-05-12 5:00:00.000-04"
         )
     }
 
     func addTag(
-        id: String,
+        id: UUID,
         name: String,
         aliases: [String] = [],
         description: String? = nil,
@@ -48,7 +54,7 @@ private class PreviewData {
         return [TagPreview](results)
     }
 
-    func removeTag(id: String) {
+    func removeTag(id: UUID) {
         previews.removeValue(forKey: id)
         tags.removeValue(forKey: id)
     }
@@ -67,19 +73,19 @@ private class PreviewData {
 private let data = PreviewData()
 
 extension Tag {
-    static func preview(add name: String) -> String {
-        let id = UUID().uuidString
+    static func preview(add name: String) -> UUID {
+        let id = UUID()
         data.addTag(id: id, name: name)
         return id
     }
 
-    static func preview(edit id: String, action: (inout Tag) -> Void) {
+    static func preview(edit id: UUID, action: (inout Tag) -> Void) {
         var tag = Tag.preview(id: id)
         action(&tag)
         data.setTag(tag: tag)
     }
 
-    static func preview(id: String) -> Tag {
+    static func preview(id: UUID) -> Tag {
         guard var tag = data.tags[id] else {
             fatalError("Tag with ID (\(id)) does not exist")
         }
@@ -93,7 +99,7 @@ extension Tag {
         return tag
     }
 
-    static func preview(namesFor id: String) -> TagName {
+    static func preview(namesFor id: UUID) -> TagName {
         let tag = Tag.preview(id: id)
         var result = TagName()
         result.name = tag.name
@@ -101,7 +107,7 @@ extension Tag {
         return result
     }
 
-    static func preview(remove id: String) {
+    static func preview(remove id: UUID) {
         data.removeTag(id: id)
     }
 
@@ -111,7 +117,7 @@ extension Tag {
 }
 
 extension TagPreview {
-    static func preview(id: String) -> TagPreview {
+    static func preview(id: UUID) -> TagPreview {
         guard let preview = data.previews[id] else {
             fatalError("Tag Preview with ID (\(id)) does not exist")
         }
@@ -131,7 +137,7 @@ extension TagQueryViewModel {
 }
 
 extension TagViewModel {
-    static func preview(id: String) -> TagViewModel {
+    static func preview(id: UUID) -> TagViewModel {
         TagViewModel(id: id, storage: nil)
     }
 }

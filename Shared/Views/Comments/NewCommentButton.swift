@@ -25,7 +25,7 @@ struct NewCommentButton: View {
 
 struct NewCommentButton_Previews: PreviewProvider {
     static var previews: some View {
-        NewCommentButton(post: PostViewModel.preview(id: "test"))
+        NewCommentButton(post: PostViewModel.preview(id: PreviewPost.test))
             .withErrorHandling()
     }
 }

@@ -9,14 +9,12 @@ private final class PreviewData {
         addSource(
             id: "2",
             url: "https://en.wikipedia.org/wiki/%22Hello,_World!%22_program",
-            icon: "wikipedia.png"
+            icon: UUID(uuidString: "8b9f71fd-d344-4098-9f8c-8165b7d3c783")
         )
-
-        // Preview Object Sources
         addSource(
             id: "sand dune",
             url: "https://unsplash.com/photos/aL2jP0vi8nk",
-            icon: "unsplash.png"
+            icon: UUID(uuidString: "fb4c62cf-fc57-415e-8651-1d2f25483221")
         )
     }
 
@@ -24,7 +22,7 @@ private final class PreviewData {
     func addSource(
         id: String,
         url: String,
-        icon: String? = nil
+        icon: UUID? = nil
     ) -> Source {
         var source = Source()
 

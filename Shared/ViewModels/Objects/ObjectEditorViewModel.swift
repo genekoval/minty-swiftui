@@ -11,11 +11,11 @@ enum EditorState {
 
 class Selectable: ObservableObject {
     let object: ObjectPreview
-    private let action: (String) throws -> Void
+    private let action: (UUID) throws -> Void
 
     @Published var selected = false
 
-    init(object: ObjectPreview, action: @escaping (String) throws -> Void) {
+    init(object: ObjectPreview, action: @escaping (UUID) throws -> Void) {
         self.object = object
         self.action = action
     }
@@ -33,7 +33,7 @@ enum EditorItem: Identifiable {
     var id: String {
         switch self {
         case .object(let selectable):
-            return selectable.object.id
+            return selectable.object.id.uuidString
         case .addButton(_, _):
             return "button.add"
         case .placeholder(_):
@@ -49,11 +49,11 @@ protocol ObjectCollection {
 }
 
 protocol ObjectEditorSubscriber {
-    func add(objects: [String], at position: Int) throws
+    func add(objects: [UUID], at position: Int) throws
 
-    func delete(objects: [String]) throws
+    func delete(objects: [UUID]) throws
 
-    func move(objects: [String], to destination: String?) throws
+    func move(objects: [UUID], to destination: UUID?) throws
 }
 
 class ObjectEditorViewModel: ObservableObject {
@@ -168,7 +168,7 @@ class ObjectEditorViewModel: ObservableObject {
 
     private func moveObjects(
         _ objects: [ObjectPreview],
-        to destination: String?
+        to destination: UUID?
     ) throws {
         try subscriber?.move(objects: objects.map { $0.id }, to: destination)
 
@@ -185,7 +185,7 @@ class ObjectEditorViewModel: ObservableObject {
         state = .adding
     }
 
-    private func moveSelected(to destination: String? = nil) throws {
+    private func moveSelected(to destination: UUID? = nil) throws {
         try moveObjects(selected, to: destination)
     }
 
@@ -201,12 +201,12 @@ class ObjectEditorViewModel: ObservableObject {
         })
     }
 
-    private func selectableAction(id: String) throws {
+    private func selectableAction(id: UUID) throws {
         if state == .moving {
             try moveSelected(to: id)
         }
         else if state == .movingInsertionPoint {
-            let index = items.firstIndex(where: { $0.id == id })!
+            let index = items.firstIndex(where: { $0.id == id.uuidString })!
             moveInsertionPoint(to: index)
         }
     }

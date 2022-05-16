@@ -43,7 +43,7 @@ enum Uploadable: Identifiable {
     var id: String {
         switch self {
         case .existingObject(let object):
-            return object.id
+            return object.id.uuidString
         case .file(let url):
             return url.path
         case .image(_, let url):
@@ -81,7 +81,7 @@ enum Uploadable: Identifiable {
         case .existingObject(let object):
             HStack {
                 PreviewImage(object: object)
-                Text(object.id)
+                Text(object.id.uuidString)
             }
         case .file(let url):
             Label(url.lastPathComponent, systemImage: "folder.fill")

@@ -174,7 +174,7 @@ struct PostDetail: View {
 struct PostDetailContainer: View {
     @EnvironmentObject var data: DataSource
 
-    let id: String
+    let id: UUID
 
     var body: some View {
         PostDetail(post: data.state.posts.fetch(id: id))
@@ -183,9 +183,9 @@ struct PostDetailContainer: View {
 
 struct PostDetail_Previews: PreviewProvider {
     private static let posts = [
-        "test",
-        "sand dune",
-        "untitled"
+        PreviewPost.test,
+        PreviewPost.sandDune,
+        PreviewPost.untitled
     ]
 
     static var previews: some View {

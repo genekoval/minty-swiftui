@@ -1,10 +1,11 @@
 import Combine
+import Foundation
 import Minty
 
 final class ObjectViewModel: IdentifiableEntity, ObservableObject {
     @Published var object = Object()
 
-    init(id: String) {
+    init(id: UUID) {
         super.init(id: id, identifier: "object")
     }
 

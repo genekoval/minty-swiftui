@@ -18,7 +18,7 @@ struct TagHome: View {
 
     @ObservedObject var query: TagQueryViewModel
 
-    @Binding var selection: String?
+    @Binding var selection: UUID?
 
     var body: some View {
         PaddedScrollView {
@@ -54,7 +54,7 @@ struct TagHome: View {
 
 struct TagHome_Previews: PreviewProvider {
     @StateObject private static var query = TagQueryViewModel.preview()
-    @State private static var selection: String?
+    @State private static var selection: UUID?
 
     static var previews: some View {
         TagHome(query: query, selection: $selection)

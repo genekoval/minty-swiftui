@@ -1,4 +1,5 @@
 import Minty
+import Foundation
 
 class RemoteEntity {
     var repo: MintyRepo?
@@ -35,9 +36,9 @@ class RemoteEntity {
 }
 
 class IdentifiableEntity: RemoteEntity, Identifiable {
-    let id: String
+    let id: UUID
 
-    init(id: String, identifier: String) {
+    init(id: UUID, identifier: String) {
         self.id = id
         super.init(identifier: "\(identifier) '\(id)'")
     }

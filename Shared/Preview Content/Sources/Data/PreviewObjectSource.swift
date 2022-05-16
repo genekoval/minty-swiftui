@@ -1,6 +1,11 @@
 import Foundation
 import Minty
 
+private let resources = [
+    "fb4c62cf-fc57-415e-8651-1d2f25483221": "unsplash.png",
+    "8b9f71fd-d344-4098-9f8c-8165b7d3c783": "wikipedia.png"
+]
+
 final class PreviewObjectSource: ObjectSource {
      init(objects: [ObjectFile]) {
         super.init()
@@ -8,16 +13,16 @@ final class PreviewObjectSource: ObjectSource {
     }
 
     override func makeUploadable(text: String) -> Uploadable {
-        if text.starts(with: "https://") {
+        guard let id = UUID(uuidString: text) else {
             return .url(text)
         }
-        else {
-            return .existingObject(ObjectPreview.preview(id: text))
-        }
+
+        return .existingObject(ObjectPreview.preview(id: id))
     }
 
-    override func url(for objectId: String) -> URL? {
-        Bundle.main.url(forResource: objectId, withExtension: nil)
+    override func url(for objectId: UUID) -> URL? {
+        let resource = resources[objectId.uuidString]
+        return Bundle.main.url(forResource: resource, withExtension: nil)
     }
 }
 

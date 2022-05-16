@@ -253,7 +253,7 @@ struct ObjectEditorGrid: View {
 }
 
 struct ObjectEditorGrid_Previews: PreviewProvider {
-    @State private static var post = PostViewModel.preview(id: "test")
+    @State private static var post = PostViewModel.preview(id: PreviewPost.test)
 
     static var previews: some View {
         NavigationView {

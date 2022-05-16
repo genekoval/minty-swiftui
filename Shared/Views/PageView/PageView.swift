@@ -16,7 +16,7 @@ struct PageView_Previews: PreviewProvider {
 
     static var previews: some View {
         PageView(
-            pages: Post.preview(id: "sand dune")
+            pages: Post.preview(id: PreviewPost.sandDune)
                 .objects.map { ObjectViewer(object: $0) },
             currentPage: $currentPage
         )

@@ -64,9 +64,9 @@ struct PostRowContainer: View {
 
 struct PostRow_Previews: PreviewProvider {
     private static let posts = [
-        "untitled",
-        "sand dune",
-        "test"
+        PreviewPost.untitled,
+        PreviewPost.sandDune,
+        PreviewPost.test
     ]
 
     static var previews: some View {

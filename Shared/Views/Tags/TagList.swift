@@ -37,7 +37,8 @@ struct TagList: View {
 
 struct TagList_Previews: PreviewProvider {
     private struct Preview: View {
-        @StateObject private var post = PostViewModel.preview(id: "test")
+        @StateObject private var post =
+            PostViewModel.preview(id: PreviewPost.test)
 
         var body: some View {
             NavigationView {

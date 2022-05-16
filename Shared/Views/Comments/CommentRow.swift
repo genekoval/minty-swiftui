@@ -87,8 +87,8 @@ struct CommentRow: View {
 struct CommentRow_Previews: PreviewProvider {
     static var previews: some View {
         CommentRow(
-            comment: Comment.preview(id: "long"),
-            post: PostViewModel.preview(id: "test")
+            comment: Comment.preview(id: PreviewComment.long),
+            post: PostViewModel.preview(id: PreviewPost.test)
         )
     }
 }

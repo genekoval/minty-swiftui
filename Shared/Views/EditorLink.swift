@@ -79,7 +79,8 @@ struct EditorLink_Previews: PreviewProvider {
     private struct Preview: View {
         @EnvironmentObject var errorHandler: ErrorHandler
 
-        @StateObject private var tag = TagViewModel.preview(id: "1")
+        @StateObject private var tag =
+            TagViewModel.preview(id: PreviewTag.helloWorld)
 
         var body: some View {
             NavigationView {

@@ -4,9 +4,9 @@ import SwiftUI
 private struct ObjectDetailLink<Content>: View where Content : View {
     @EnvironmentObject var data: DataSource
 
-    let id: String
+    let id: UUID
 
-    @Binding var selection: String?
+    @Binding var selection: UUID?
 
     @ViewBuilder let content: () -> Content
 
@@ -28,7 +28,7 @@ private struct ObjectGridItem: View {
     let object: ObjectPreview
     let provider: ObjectProvider
 
-    @Binding var selection: String?
+    @Binding var selection: UUID?
 
     var body: some View {
         if object.isMedia || object.isViewable {
@@ -78,7 +78,7 @@ struct ObjectGrid: View {
 
     let provider: ObjectProvider
 
-    @State private var selection: String?
+    @State private var selection: UUID?
 
     var body: some View {
         Grid {
@@ -99,7 +99,7 @@ struct ObjectGrid: View {
 struct ObjectGrid_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ObjectGrid(provider: Post.preview(id: "test"))
+            ObjectGrid(provider: Post.preview(id: PreviewPost.test))
                 .environmentObject(DataSource.preview)
                 .environmentObject(ObjectSource.preview)
                 .environmentObject(Overlay())

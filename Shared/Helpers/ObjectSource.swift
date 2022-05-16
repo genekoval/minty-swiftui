@@ -20,7 +20,7 @@ class ObjectSource: ObservableObject {
     func clearCache() throws { cachedObjects.removeAll() }
 
     func makeUploadable(text: String) throws -> Uploadable {
-        if UUID(uuidString: text) == nil {
+        guard let id = UUID(uuidString: text) else {
             return .url(text)
         }
 
@@ -30,7 +30,7 @@ class ObjectSource: ObservableObject {
             )
         }
 
-        let object = try repo.getObject(objectId: text)
+        let object = try repo.getObject(objectId: id)
 
         var preview = ObjectPreview()
         preview.id = object.id
@@ -51,10 +51,10 @@ class ObjectSource: ObservableObject {
 
     func upload(url: URL) async throws -> ObjectPreview? { nil }
 
-    final func url(for objectId: String?) throws -> URL? {
+    final func url(for objectId: UUID?) throws -> URL? {
         guard let id = objectId else { return nil }
         return try url(for: id)
     }
 
-    func url(for objectId: String) throws -> URL? { nil }
+    func url(for objectId: UUID) throws -> URL? { nil }
 }

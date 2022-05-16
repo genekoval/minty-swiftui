@@ -5,9 +5,9 @@ struct TagSearch: View {
     @StateObject private var query = TagQueryViewModel()
 
     @State private var addingTag = false
-    @State private var newTagId: String?
+    @State private var newTagId: UUID?
     @State private var newTagName = ""
-    @State private var selection: String?
+    @State private var selection: UUID?
 
     var body: some View {
         TagHome(query: query, selection: $selection)

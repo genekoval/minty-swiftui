@@ -7,7 +7,7 @@ struct ImageObject<Content, Placeholder>: View where
     @EnvironmentObject var errorHandler: ErrorHandler
     @EnvironmentObject var objects: ObjectSource
 
-    let id: String?
+    let id: UUID?
 
     let content: (Image) -> Content
     let placeholder: () -> Placeholder
@@ -35,7 +35,7 @@ struct ImageObject<Content, Placeholder>: View where
         return nil
     }
 
-    init(id: String?) where
+    init(id: UUID?) where
         Content == Image,
         Placeholder == ProgressView<EmptyView, EmptyView>
     {
@@ -44,7 +44,7 @@ struct ImageObject<Content, Placeholder>: View where
         placeholder = { ProgressView() }
     }
 
-    init(id: String?, placeholder: @escaping () -> Placeholder) where
+    init(id: UUID?, placeholder: @escaping () -> Placeholder) where
         Content == Image
     {
         self.id = id
@@ -53,7 +53,7 @@ struct ImageObject<Content, Placeholder>: View where
     }
 
     init(
-        id: String?,
+        id: UUID?,
         content: @escaping (Image) -> Content,
         placeholder: @escaping () -> Placeholder
     ) {
@@ -65,7 +65,7 @@ struct ImageObject<Content, Placeholder>: View where
 
 struct ImageObject_Previews: PreviewProvider {
     static var previews: some View {
-        ImageObject(id: "sand dune.jpg")
+        ImageObject(id: PreviewObject.sandDune)
             .withErrorHandling()
             .environmentObject(ObjectSource.preview)
     }

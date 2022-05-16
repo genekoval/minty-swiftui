@@ -45,7 +45,7 @@ struct CommentMenu: View {
 
 struct CommentMenu_Previews: PreviewProvider {
     @ObservedObject private static var comment =
-        CommentViewModel.preview(id: "long")
+        CommentViewModel.preview(id: PreviewComment.long)
 
     static var previews: some View {
         CommentMenu(comment: comment)

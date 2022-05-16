@@ -24,7 +24,7 @@ struct TagRowContainer: View {
 
 struct TagRow_Previews: PreviewProvider {
     static var previews: some View {
-        TagRow(tag: TagViewModel.preview(id: "1"))
+        TagRow(tag: TagViewModel.preview(id: PreviewTag.helloWorld))
             .padding(.horizontal)
     }
 }

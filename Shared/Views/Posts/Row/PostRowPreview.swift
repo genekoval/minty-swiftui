@@ -19,9 +19,13 @@ struct PostRowPreview: View {
 struct PostRowPreview_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PostRowPreview(object: ObjectPreview.preview(id: "sand dune.jpg"))
+            PostRowPreview(
+                object: ObjectPreview.preview(id: PreviewObject.sandDune)
+            )
 
-            PostRowPreview(object: ObjectPreview.preview(id: "empty"))
+            PostRowPreview(
+                object: ObjectPreview.preview(id: PreviewObject.empty)
+            )
 
             PostRowPreview(object: nil)
         }

@@ -153,7 +153,8 @@ struct TagEditor: View {
 }
 
 struct TagEditor_Previews: PreviewProvider {
-    @StateObject private static var tag = TagViewModel.preview(id: "1")
+    @StateObject private static var tag =
+        TagViewModel.preview(id: PreviewTag.helloWorld)
 
     static var previews: some View {
         TagEditor(tag: tag)

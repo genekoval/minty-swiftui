@@ -2,7 +2,7 @@ import Foundation
 import Minty
 
 final class PreviewRepo: MintyRepo {
-    func addComment(postId: String, content: String) throws -> Comment {
+    func addComment(postId: UUID, content: String) throws -> Comment {
         throw PreviewError.notSupported
     }
 
@@ -17,13 +17,13 @@ final class PreviewRepo: MintyRepo {
         throw PreviewError.notSupported
     }
 
-    func addPost(parts: PostParts) throws -> String {
+    func addPost(parts: PostParts) throws -> UUID {
         return Post.preview(add: parts)
     }
 
     func addPostObjects(
-        postId: String,
-        objects: [String],
+        postId: UUID,
+        objects: [UUID],
         position: Int16
     ) throws -> Date {
         let previews = objects.map { ObjectPreview.preview(id: $0) }
@@ -35,42 +35,42 @@ final class PreviewRepo: MintyRepo {
         return Date()
     }
 
-    func addPostTag(postId: String, tagId: String) throws {
+    func addPostTag(postId: UUID, tagId: UUID) throws {
         Post.preview(edit: postId) { post in
             post.tags.append(TagPreview.preview(id: tagId))
         }
     }
 
-    func addRelatedPost(postId: String, related: String) throws {
+    func addRelatedPost(postId: UUID, related: UUID) throws {
         Post.preview(edit: postId) { post in
             post.posts.append(PostPreview.preview(id: related))
         }
     }
 
-    func addReply(parentId: String, content: String) throws -> Comment {
+    func addReply(parentId: UUID, content: String) throws -> Comment {
         throw PreviewError.notSupported
     }
 
-    func addTag(name: String) throws -> String {
+    func addTag(name: String) throws -> UUID {
         Tag.preview(add: name)
     }
 
-    func addTagAlias(tagId: String, alias: String) throws -> TagName {
+    func addTagAlias(tagId: UUID, alias: String) throws -> TagName {
         Tag.preview(edit: tagId) { $0.aliases.append(alias) }
         return Tag.preview(namesFor: tagId)
     }
 
-    func addTagSource(tagId: String, url: String) throws -> Source {
+    func addTagSource(tagId: UUID, url: String) throws -> Source {
         let source = Source.preview(add: url)
         Tag.preview(edit: tagId) { $0.sources.append(source) }
         return source
     }
 
-    func deletePost(postId: String) throws {
+    func deletePost(postId: UUID) throws {
         Post.preview(remove: postId)
     }
 
-    func deletePostObjects(postId: String, objects: [String]) throws -> Date {
+    func deletePostObjects(postId: UUID, objects: [UUID]) throws -> Date {
         Post.preview(edit: postId) { post in
             for id in objects {
                 post.objects.remove(id: id)
@@ -81,29 +81,29 @@ final class PreviewRepo: MintyRepo {
     }
 
     func deletePostObjects(
-        postId: String,
+        postId: UUID,
         ranges: [Range<Int32>]
     ) throws -> Date {
         throw PreviewError.notSupported
     }
 
-    func deletePostTag(postId: String, tagId: String) throws {
+    func deletePostTag(postId: UUID, tagId: UUID) throws {
         Post.preview(edit: postId) { post in
             post.tags.remove(id: tagId)
         }
     }
 
-    func deleteRelatedPost(postId: String, related: String) throws {
+    func deleteRelatedPost(postId: UUID, related: UUID) throws {
         Post.preview(edit: postId) { post in
             post.posts.remove(id: related)
         }
     }
 
-    func deleteTag(tagId: String) throws {
+    func deleteTag(tagId: UUID) throws {
         Tag.preview(remove: tagId)
     }
 
-    func deleteTagAlias(tagId: String, alias: String) throws -> TagName {
+    func deleteTagAlias(tagId: UUID, alias: String) throws -> TagName {
         var tag = Tag.preview(id: tagId)
         tag.aliases.removeAll { $0 == alias }
 
@@ -116,28 +116,32 @@ final class PreviewRepo: MintyRepo {
         return result
     }
 
-    func deleteTagSource(tagId: String, sourceId: String) throws {
+    func deleteTagSource(tagId: UUID, sourceId: String) throws {
         Tag.preview(edit: tagId) { tag in
             tag.sources.removeAll { $0.id == sourceId }
         }
     }
 
-    func getComments(postId: String) throws -> [Comment] {
+    func getComment(commentId: UUID) throws -> CommentDetail {
+        throw PreviewError.notSupported
+    }
+
+    func getComments(postId: UUID) throws -> [Comment] {
         Comment.preview(for: postId)
     }
 
-    func getObject(objectId: String) throws -> Object {
+    func getObject(objectId: UUID) throws -> Object {
         Object.preview(id: objectId)
     }
 
     func getObjectData(
-        objectId: String,
+        objectId: UUID,
         handler: (Data) throws -> Void
     ) throws {
         throw PreviewError.notSupported
     }
 
-    func getPost(postId: String) throws -> Post {
+    func getPost(postId: UUID) throws -> Post {
         Post.preview(id: postId)
     }
 
@@ -155,7 +159,7 @@ final class PreviewRepo: MintyRepo {
         throw PreviewError.notSupported
     }
 
-    func getTag(tagId: String) throws -> Tag {
+    func getTag(tagId: UUID) throws -> Tag {
         Tag.preview(id: tagId)
     }
 
@@ -170,7 +174,7 @@ final class PreviewRepo: MintyRepo {
     }
 
     func movePostObject(
-        postId: String,
+        postId: UUID,
         oldIndex: UInt32,
         newIndex: UInt32
     ) throws {
@@ -183,9 +187,9 @@ final class PreviewRepo: MintyRepo {
     }
 
     func movePostObjects(
-        postId: String,
-        objects: [String],
-        destination: String?
+        postId: UUID,
+        objects: [UUID],
+        destination: UUID?
     ) throws -> Date {
         Post.preview(edit: postId) { post in
             let source = IndexSet(objects.map { object in
@@ -202,14 +206,14 @@ final class PreviewRepo: MintyRepo {
     }
 
     func setCommentContent(
-        commentId: String,
+        commentId: UUID,
         content: String
     ) throws -> String {
         throw PreviewError.notSupported
     }
 
     func setPostDescription(
-        postId: String,
+        postId: UUID,
         description: String
     ) throws -> Modification<String?> {
         let result = Modification<String?>(
@@ -220,7 +224,7 @@ final class PreviewRepo: MintyRepo {
     }
 
     func setPostTitle(
-        postId: String,
+        postId: UUID,
         title: String
     ) throws -> Modification<String?> {
         let result = Modification<String?>(
@@ -231,7 +235,7 @@ final class PreviewRepo: MintyRepo {
     }
 
     func setTagDescription(
-        tagId: String,
+        tagId: UUID,
         description: String
     ) throws -> String? {
         let value = description.isEmpty ? nil : description
@@ -239,7 +243,7 @@ final class PreviewRepo: MintyRepo {
         return value
     }
 
-    func setTagName(tagId: String, newName: String) throws -> TagName {
+    func setTagName(tagId: UUID, newName: String) throws -> TagName {
         var tag = Tag.preview(id: tagId)
         tag.name = newName
 

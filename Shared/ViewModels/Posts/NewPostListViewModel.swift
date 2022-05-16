@@ -1,9 +1,10 @@
 import Combine
+import Foundation
 import Minty
 
 final class NewPostListViewModel: ObservableObject {
     @Published var posts: [PostViewModel] = []
-    @Published var selection: String?
+    @Published var selection: UUID?
 
     var data: DataSource?
 
@@ -19,7 +20,7 @@ final class NewPostListViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
-    private func didCreate(_ id: String) {
+    private func didCreate(_ id: UUID) {
         guard let data = data else { return }
 
         let post = data.state.posts.fetch(id: id)
@@ -27,7 +28,7 @@ final class NewPostListViewModel: ObservableObject {
         selection = id
     }
 
-    private func didDelete(_ id: String) {
+    private func didDelete(_ id: UUID) {
         posts.remove(id: id)
     }
 }

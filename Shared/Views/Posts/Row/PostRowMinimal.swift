@@ -36,7 +36,9 @@ struct PostRowMinimalContainer: View {
 
 struct PostRowMinimal_Previews: PreviewProvider {
     static var previews: some View {
-        PostRowMinimalContainer(post: PostPreview.preview(id: "sand dune"))
+        PostRowMinimalContainer(
+            post: PostPreview.preview(id: PreviewPost.sandDune)
+        )
             .environmentObject(DataSource.preview)
             .environmentObject(ObjectSource.preview)
     }

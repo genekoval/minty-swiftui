@@ -6,7 +6,7 @@ struct NewTag: View {
     @EnvironmentObject var data: DataSource
     @EnvironmentObject var errorHandler: ErrorHandler
 
-    @Binding var id: String?
+    @Binding var id: UUID?
     @Binding var name: String
 
     var body: some View {
@@ -60,7 +60,7 @@ struct NewTag: View {
 
 struct NewTag_Previews: PreviewProvider {
     static var previews: some View {
-        NewTag(id: .constant(""), name: .constant(""))
+        NewTag(id: .constant(nil), name: .constant(""))
             .environmentObject(DataSource.preview)
     }
 }

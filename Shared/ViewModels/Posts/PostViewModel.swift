@@ -31,7 +31,7 @@ final class PostViewModel:
 
     var objectsPublisher: Published<[ObjectPreview]>.Publisher { $objects }
 
-    init(id: String, storage: PostState?) {
+    init(id: UUID, storage: PostState?) {
         super.init(id: id, identifier: "post")
 
         self.storage = storage
@@ -74,7 +74,7 @@ final class PostViewModel:
         }
     }
 
-    func add(objects: [String], at position: Int) throws {
+    func add(objects: [UUID], at position: Int) throws {
         try withRepo("add objects") { repo in
             modified = try repo.addPostObjects(
                 postId: id,
@@ -92,7 +92,7 @@ final class PostViewModel:
         posts.append(post)
     }
 
-    func add(reply: Comment, to parentId: String) throws {
+    func add(reply: Comment, to parentId: UUID) throws {
         guard let index = comments.firstIndex(where: { $0.id == parentId })
         else {
             throw MintyError.unspecified(
@@ -136,7 +136,7 @@ final class PostViewModel:
         }
     }
 
-    func delete(objects: [String]) throws {
+    func delete(objects: [UUID]) throws {
         try withRepo("delete objects") { repo in
             modified = try repo.deletePostObjects(postId: id, objects: objects)
         }
@@ -180,7 +180,7 @@ final class PostViewModel:
         created = preview.dateCreated
     }
 
-    func move(objects: [String], to destination: String?) throws {
+    func move(objects: [UUID], to destination: UUID?) throws {
         try withRepo("move objects") { repo in
             modified = try repo.movePostObjects(
                 postId: id,
@@ -190,7 +190,7 @@ final class PostViewModel:
         }
     }
 
-    private func postDeleted(id: String) {
+    private func postDeleted(id: UUID) {
         if id == self.id {
             deleted = true
         }
@@ -201,7 +201,7 @@ final class PostViewModel:
         try fetchComments()
     }
 
-    private func removeLocalTag(id: String) {
+    private func removeLocalTag(id: UUID) {
         tags.remove(id: id)
     }
 

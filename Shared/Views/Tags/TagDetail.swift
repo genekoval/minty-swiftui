@@ -174,7 +174,7 @@ struct TagDetailContainer: View {
 }
 
 struct TagDetail_Previews: PreviewProvider {
-    private static let tag = TagPreview.preview(id: "1")
+    private static let tag = TagPreview.preview(id: PreviewTag.helloWorld)
 
     static var previews: some View {
         NavigationView {

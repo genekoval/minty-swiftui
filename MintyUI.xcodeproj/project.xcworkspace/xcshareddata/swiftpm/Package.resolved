@@ -6,7 +6,7 @@
       "location" : "https://git.aurora.aur/genya/fstore-swift.git",
       "state" : {
         "branch" : "main",
-        "revision" : "9538f78e7cfa6a2f2c82300d7a8eda0a0029817f"
+        "revision" : "a6f2c285f9fbd1148623abebf69f90e73ac3463a"
       }
     },
     {
@@ -15,7 +15,7 @@
       "location" : "https://git.aurora.aur/genya/minty-swift.git",
       "state" : {
         "branch" : "main",
-        "revision" : "649dba15f234d7518cb4f7827e81346331be2cdb"
+        "revision" : "e151e7c33f4601faca1aefb1780d83bb0d6c5d90"
       }
     },
     {
@@ -24,7 +24,7 @@
       "location" : "https://git.aurora.aur/genya/zipline-swift.git",
       "state" : {
         "branch" : "main",
-        "revision" : "4a94f27ec03eaacababbeb0d1a211c0adbda40b3"
+        "revision" : "dda74b8baba7aad92ab75e040da7fdedfcc802eb"
       }
     }
   ],

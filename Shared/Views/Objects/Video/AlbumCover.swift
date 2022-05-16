@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AlbumCover: View {
-    let id: String?
+    let id: UUID?
 
     var body: some View {
         ImageObject(id: id) {
@@ -18,7 +18,7 @@ struct AlbumCover: View {
 
 struct AlbumCover_Previews: PreviewProvider {
     private struct Preview: View {
-        let id: String?
+        let id: UUID?
 
         var body: some View {
             ZStack {
@@ -33,7 +33,7 @@ struct AlbumCover_Previews: PreviewProvider {
         Group {
             Preview(id: nil)
 
-            Preview(id: "sand dune.jpg")
+            Preview(id: PreviewObject.sandDune)
         }
         .withErrorHandling()
         .environmentObject(ObjectSource.preview)

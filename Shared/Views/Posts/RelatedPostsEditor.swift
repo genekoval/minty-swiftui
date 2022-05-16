@@ -79,7 +79,8 @@ struct RelatedPostsEditor: View {
 
 struct RelatedPostsEditor_Previews: PreviewProvider {
     private struct Preview: View {
-        @StateObject private var post = PostViewModel.preview(id: "test")
+        @StateObject private var post =
+            PostViewModel.preview(id: PreviewPost.test)
         @StateObject private var search = PostQueryViewModel()
 
         var body: some View {

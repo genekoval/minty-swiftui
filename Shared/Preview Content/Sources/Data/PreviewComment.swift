@@ -1,26 +1,35 @@
 import Foundation
 import Minty
 
+struct PreviewComment {
+    static let first = UUID(uuidString: "317517c8-da22-4bdc-8624-5c5633e60dcb")!
+    static let long = UUID(uuidString: "ecf9a2b4-197a-4416-9a79-b51060d9d4d3")!
+}
+
 private final class PreviewData {
-    private(set) var comments: [String: Comment] = [:]
-    private(set) var posts: [String: [String]] = [:]
+    private(set) var comments: [UUID: Comment] = [:]
+    private(set) var posts: [UUID: [UUID]] = [:]
 
     init() {
-        addComment(post: "test", id: "first", content: "First.")
+        addComment(
+            post: PreviewPost.test,
+            id: PreviewComment.first,
+            content: "First."
+        )
 
         addComment(
-            post: "test",
-            id: "long",
+            post: PreviewPost.test,
+            id: PreviewComment.long,
             content: "Vivamus sollicitudin leo sed quam bibendum imperdiet. Nulla libero urna, aliquet in nibh et, tristique aliquam ipsum. Integer sit amet rutrum ex, id bibendum turpis. Proin blandit malesuada nunc in gravida. Etiam finibus aliquet porttitor. Nullam ut fermentum nisi. Proin nec arcu eget libero fringilla fermentum feugiat at lorem. Praesent nulla est, venenatis quis risus eget, auctor porttitor tellus. Proin scelerisque rutrum accumsan.",
             indent: 1
         )
     }
 
     private func addComment(
-        post: String,
-        id: String,
+        post: UUID,
+        id: UUID,
         content: String,
-        indent: UInt32 = 0,
+        indent: Int16 = 0,
         created: String? = nil
     ) {
         var comment = Comment()
@@ -42,7 +51,7 @@ private final class PreviewData {
 private let data = PreviewData()
 
 extension Comment {
-    static func preview(id: String) -> Comment {
+    static func preview(id: UUID) -> Comment {
         guard let comment = data.comments[id] else {
             fatalError("Comment with ID (\(id)) does not exist")
         }
@@ -50,15 +59,15 @@ extension Comment {
         return comment
     }
 
-    static func preview(for postId: String) -> [Comment] {
+    static func preview(for postId: UUID) -> [Comment] {
         guard let comments = data.posts[postId] else { return [] }
         return comments.map { Comment.preview(id: $0) }
     }
 }
 
 extension CommentViewModel {
-    static func preview(id: String) -> CommentViewModel {
-        var postId: String?
+    static func preview(id: UUID) -> CommentViewModel {
+        var postId: UUID?
 
         for post in data.posts {
             for comment in post.value {
