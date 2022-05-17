@@ -2,8 +2,10 @@ import Foundation
 import Minty
 
 private let resources = [
-    "fb4c62cf-fc57-415e-8651-1d2f25483221": "unsplash.png",
-    "8b9f71fd-d344-4098-9f8c-8165b7d3c783": "wikipedia.png"
+    PreviewObject.sandDune: "sand dune.jpg",
+    PreviewObject.sandDunePreview: "sand dune (preview).png",
+    PreviewObject.unsplash: "unsplash.png",
+    PreviewObject.wikipedia: "wikipedia.png"
 ]
 
 final class PreviewObjectSource: ObjectSource {
@@ -21,7 +23,9 @@ final class PreviewObjectSource: ObjectSource {
     }
 
     override func url(for objectId: UUID) -> URL? {
-        let resource = resources[objectId.uuidString]
+        guard let resource = resources[objectId] else {
+            fatalError("no resource with ID: \(objectId)")
+        }
         return Bundle.main.url(forResource: resource, withExtension: nil)
     }
 }

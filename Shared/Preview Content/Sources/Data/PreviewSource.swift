@@ -9,12 +9,12 @@ private final class PreviewData {
         addSource(
             id: "2",
             url: "https://en.wikipedia.org/wiki/%22Hello,_World!%22_program",
-            icon: UUID(uuidString: "8b9f71fd-d344-4098-9f8c-8165b7d3c783")
+            icon: PreviewObject.wikipedia
         )
         addSource(
             id: "sand dune",
             url: "https://unsplash.com/photos/aL2jP0vi8nk",
-            icon: UUID(uuidString: "fb4c62cf-fc57-415e-8651-1d2f25483221")
+            icon: PreviewObject.unsplash
         )
     }
 

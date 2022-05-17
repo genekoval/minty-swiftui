@@ -9,11 +9,19 @@ private let sizeFormatter: ByteCountFormatter = {
 
 struct PreviewObject {
     static let empty =
-        UUID(uuidString: "76698f22-6169-4327-a7e4-453f509f6d2e")!
+        UUID(uuidString: "76698F22-6169-4327-A7E4-453F509F6D2E")!
+
     static let sandDune =
-        UUID(uuidString: "ada13eae-11c7-4024-9583-83a3560097fc")!
+        UUID(uuidString: "ADA13EAE-11C7-4024-9583-83A3560097FC")!
+
     static let sandDunePreview =
-        UUID(uuidString: "d7ea2075-ae8c-4c6d-83ea-814a515539e2")!
+        UUID(uuidString: "D7EA2075-AE8C-4C6D-83EA-814A515539E2")!
+
+    static let unsplash =
+        UUID(uuidString: "FB4C62CF-FC57-415E-8651-1D2F25483221")!
+
+    static let wikipedia =
+        UUID(uuidString: "8B9F71FD-D344-4098-9F8C-8165B7D3C783")!
 }
 
 private final class PreviewData {
