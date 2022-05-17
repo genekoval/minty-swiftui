@@ -134,6 +134,8 @@ final class PostViewModel:
         try withRepo("delete post") { repo in
             try repo.deletePost(postId: id)
         }
+
+        Post.deleted.send(id)
     }
 
     func delete(objects: [UUID]) throws {
