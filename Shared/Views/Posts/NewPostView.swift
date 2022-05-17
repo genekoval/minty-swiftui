@@ -43,9 +43,7 @@ struct NewPostView: View {
     private var descriptionEditor: some View {
         EditorLink(
             title: "Description",
-            onSave: { post.commitDescription() },
-            draft: $post.draftDescription,
-            original: post.description
+            text: $post.description
         )
     }
 
@@ -91,9 +89,7 @@ struct NewPostView: View {
     private var titleEditor: some View {
         EditorLink(
             title: "Title",
-            onSave: { post.commitTitle() },
-            draft: $post.draftTitle,
-            original: post.title
+            text: $post.title
         )
     }
 

@@ -2,73 +2,36 @@ import SwiftUI
 
 private struct EditorView: View {
     let title: String
-    let onSave: () -> Void
-    @Binding var draft: String
-    let original: String?
 
-    @FocusState private var editorIsFocused: Bool
+    @Binding var text: String
 
     var body: some View {
-        TextEditor(text: $draft)
-            .focused($editorIsFocused)
+        TextEditor(text: $text)
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(title)
             .padding()
-            .toolbar {
-                HStack {
-                    if draftChanged {
-                        Button(action: { reset() }) {
-                            Image(systemName: "arrow.uturn.backward.circle")
-                        }
-                    }
-
-                    if draftChanged || editorIsFocused {
-                        Button(action: { done() }) {
-                            Text(draftChanged ? "Save" : "Done")
-                                .bold()
-                        }
-                    }
-                }
-            }
-    }
-
-    private var draftChanged: Bool {
-        draft != (original ?? "")
-    }
-
-    private func done() {
-        if draftChanged { onSave() }
-        editorIsFocused = false
-    }
-
-    private func reset() {
-        draft = original ?? ""
-        editorIsFocused = false
     }
 }
 
 struct EditorLink: View {
     let title: String
-    let onSave: () -> Void
-    @Binding var draft: String
-    let original: String?
+
+    @Binding var text: String
 
     var body: some View {
         Section(header: Text(title)) {
             NavigationLink(destination: EditorView(
                 title: title,
-                onSave: onSave,
-                draft: $draft,
-                original: original
+                text: $text
             )) {
-                if let text = original {
-                    Text(text)
-                        .lineLimit(1)
-                }
-                else {
+                if text.isWhitespace {
                     Text("No \(title.lowercased())")
                         .foregroundColor(.secondary)
                         .italic()
+                }
+                else {
+                    Text(text)
+                        .lineLimit(1)
                 }
             }
         }
@@ -77,24 +40,14 @@ struct EditorLink: View {
 
 struct EditorLink_Previews: PreviewProvider {
     private struct Preview: View {
-        @EnvironmentObject var errorHandler: ErrorHandler
-
-        @StateObject private var tag =
-            TagViewModel.preview(id: PreviewTag.helloWorld)
+        @StateObject private var post = NewPostViewModel()
 
         var body: some View {
             NavigationView {
                 Form {
-                    EditorLink(
-                        title: "Description",
-                        onSave: {
-                            errorHandler.handle { try tag.commitDescription() }
-                        },
-                        draft: $tag.draftDescription,
-                        original: tag.description
-                    )
+                    EditorLink(title: "Title", text: $post.title)
                 }
-                .navigationTitle("Edit Tag")
+                .navigationTitle("New Post")
                 .navigationBarTitleDisplayMode(.inline)
             }
         }
@@ -102,6 +55,5 @@ struct EditorLink_Previews: PreviewProvider {
 
     static var previews: some View {
         Preview()
-            .withErrorHandling()
     }
 }

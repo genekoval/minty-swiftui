@@ -88,13 +88,13 @@ struct TagEditor: View {
                     }
                 }
 
-                EditorLink(
+                DraftEditorLink(
                     title: "Description",
+                    original: tag.description,
                     onSave: {
                         errorHandler.handle { try tag.commitDescription() }
                     },
-                    draft: $tag.draftDescription,
-                    original: tag.description
+                    draft: $tag.draftDescription
                 )
 
                 Section(header: Text("Links")) {

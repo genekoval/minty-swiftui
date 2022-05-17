@@ -13,20 +13,20 @@ struct PostEditor: View {
     var body: some View {
         NavigationView {
             Form {
-                EditorLink(
+                DraftEditorLink(
                     title: "Title",
+                    original: post.title,
                     onSave: { errorHandler.handle { try post.commitTitle() } },
-                    draft: $post.draftTitle,
-                    original: post.title
+                    draft: $post.draftTitle
                 )
 
-                EditorLink(
+                DraftEditorLink(
                     title: "Description",
+                    original: post.description,
                     onSave: {
                         errorHandler.handle{ try post.commitDescription() }
                     },
-                    draft: $post.draftDescription,
-                    original: post.description
+                    draft: $post.draftDescription
                 )
 
                 Section {
