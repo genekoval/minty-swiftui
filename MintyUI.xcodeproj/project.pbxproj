@@ -124,7 +124,6 @@
 		BE8F5C7527E413A10007A8E9 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8F5C7427E413A10007A8E9 /* Object.swift */; };
 		BE8F5C7627E413A10007A8E9 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8F5C7427E413A10007A8E9 /* Object.swift */; };
 		BE91449227E810B900B05AA6 /* RelatedPostsEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE91449127E810B900B05AA6 /* RelatedPostsEditor.swift */; };
-		BE9DE2FB2784CF3F00A1BE29 /* NewPostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9DE2FA2784CF3F00A1BE29 /* NewPostListViewModel.swift */; };
 		BE9DE2FE2784E77B00A1BE29 /* CommentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9DE2FD2784E77B00A1BE29 /* CommentRow.swift */; };
 		BE9DE3012784E7DE00A1BE29 /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9DE3002784E7DE00A1BE29 /* CommentViewModel.swift */; };
 		BE9DE3032784E9C300A1BE29 /* PreviewComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9DE3022784E9C300A1BE29 /* PreviewComment.swift */; };
@@ -193,7 +192,6 @@
 		BED8115C2721C29200929D4C /* PreviewObjectSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED8115B2721C29200929D4C /* PreviewObjectSource.swift */; };
 		BED8115D2721C29200929D4C /* PreviewObjectSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED8115B2721C29200929D4C /* PreviewObjectSource.swift */; };
 		BEDB743627D3655400195E95 /* PrepareSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDB743527D3655400195E95 /* PrepareSearch.swift */; };
-		BEE6DDAE2773E27500344168 /* NewPostList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE6DDAD2773E27500344168 /* NewPostList.swift */; };
 		BEE9D5F7270FF1CD0034CF1A /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE9D5F6270FF1CD0034CF1A /* AboutView.swift */; };
 		BEF8E21527B754A90089317A /* PaddedScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF8E21427B754A90089317A /* PaddedScrollView.swift */; };
 		BEFDF5F0272251B000F9EA09 /* wikipedia.png in Resources */ = {isa = PBXBuildFile; fileRef = BEFDF5EF272251B000F9EA09 /* wikipedia.png */; };
@@ -309,7 +307,6 @@
 		BE8E71C827330F93009A4FE9 /* TagList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagList.swift; sourceTree = "<group>"; };
 		BE8F5C7427E413A10007A8E9 /* Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
 		BE91449127E810B900B05AA6 /* RelatedPostsEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelatedPostsEditor.swift; sourceTree = "<group>"; };
-		BE9DE2FA2784CF3F00A1BE29 /* NewPostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostListViewModel.swift; sourceTree = "<group>"; };
 		BE9DE2FD2784E77B00A1BE29 /* CommentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRow.swift; sourceTree = "<group>"; };
 		BE9DE3002784E7DE00A1BE29 /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
 		BE9DE3022784E9C300A1BE29 /* PreviewComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewComment.swift; sourceTree = "<group>"; };
@@ -355,7 +352,6 @@
 		BED811582721BECE00929D4C /* ObjectSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSource.swift; sourceTree = "<group>"; };
 		BED8115B2721C29200929D4C /* PreviewObjectSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewObjectSource.swift; sourceTree = "<group>"; };
 		BEDB743527D3655400195E95 /* PrepareSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareSearch.swift; sourceTree = "<group>"; };
-		BEE6DDAD2773E27500344168 /* NewPostList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostList.swift; sourceTree = "<group>"; };
 		BEE9D5F6270FF1CD0034CF1A /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		BEF8E21427B754A90089317A /* PaddedScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedScrollView.swift; sourceTree = "<group>"; };
 		BEFDF5EF272251B000F9EA09 /* wikipedia.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wikipedia.png; sourceTree = "<group>"; };
@@ -724,7 +720,6 @@
 			children = (
 				BEC4265027E9601800118863 /* Row */,
 				BE11FDD527616DA5007B58BA /* NewPostButton.swift */,
-				BEE6DDAD2773E27500344168 /* NewPostList.swift */,
 				BE11FDD327616380007B58BA /* NewPostView.swift */,
 				BEB07B8A272B082F004A942C /* PostDetail.swift */,
 				BE3068982735F5C90038972B /* PostEditor.swift */,
@@ -739,7 +734,6 @@
 		BEB07B8C272B0E8C004A942C /* Posts */ = {
 			isa = PBXGroup;
 			children = (
-				BE9DE2FA2784CF3F00A1BE29 /* NewPostListViewModel.swift */,
 				BE11FDD027615F5D007B58BA /* NewPostViewModel.swift */,
 				BEB07B8D272B0EA2004A942C /* PostQueryViewModel.swift */,
 				BE8E71C42732EFAE009A4FE9 /* PostViewModel.swift */,
@@ -994,7 +988,6 @@
 				BEA8C56D2785285300FFB7DD /* CommentEditor.swift in Sources */,
 				BED04C4427153E7000EF00B8 /* AppShell.swift in Sources */,
 				BE06CAB327DFFB97005940FB /* Color.swift in Sources */,
-				BE9DE2FB2784CF3F00A1BE29 /* NewPostListViewModel.swift in Sources */,
 				BE3068992735F5C90038972B /* PostEditor.swift in Sources */,
 				BEBFF686278BC60000E38BBB /* ImageViewer.swift in Sources */,
 				BE3E16BA273A1F0D00052660 /* PreviewImage.swift in Sources */,
@@ -1094,7 +1087,6 @@
 				BEB07B90272B2D38004A942C /* PreviewPost.swift in Sources */,
 				BE465597270F819500D3C4FB /* ServerDetail.swift in Sources */,
 				BED04C48271542BE00EF00B8 /* TagRow.swift in Sources */,
-				BEE6DDAE2773E27500344168 /* NewPostList.swift in Sources */,
 				BEFDF5F627225B9800F9EA09 /* ByteCount.swift in Sources */,
 				BEDB743627D3655400195E95 /* PrepareSearch.swift in Sources */,
 			);

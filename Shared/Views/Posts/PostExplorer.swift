@@ -2,7 +2,6 @@ import Minty
 import SwiftUI
 
 struct PostExplorer: View {
-    @StateObject private var newPosts = NewPostListViewModel()
     @StateObject private var search = PostQueryViewModel()
 
     var body: some View {
@@ -19,8 +18,6 @@ struct PostExplorer: View {
                     .font(.title2)
                 }
                 .padding(.horizontal)
-
-                recentlyAdded
             }
         }
         .navigationTitle("Posts")
@@ -33,11 +30,6 @@ struct PostExplorer: View {
     @ViewBuilder
     private var addButton: some View {
         NewPostButton()
-    }
-
-    @ViewBuilder
-    private var recentlyAdded: some View {
-        NewPostList(newPosts: newPosts)
     }
 }
 

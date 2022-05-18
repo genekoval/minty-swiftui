@@ -7,6 +7,8 @@ struct NewPostView: View {
 
     @EnvironmentObject var errorHandler: ErrorHandler
 
+    let onCreated: (UUID) -> Void
+
     @StateObject private var post: NewPostViewModel
     @StateObject private var tagSearch = TagQueryViewModel()
 
@@ -93,13 +95,15 @@ struct NewPostView: View {
         )
     }
 
-    init(tag: TagPreview? = nil) {
+    init(onCreated: @escaping (UUID) -> Void, tag: TagPreview? = nil) {
+        self.onCreated = onCreated
         _post = StateObject(wrappedValue: NewPostViewModel(tag: tag))
     }
 
     private func create() {
         do {
-            try post.create()
+            let id = try post.create()
+            onCreated(id)
             dismiss()
         }
         catch {
@@ -110,7 +114,7 @@ struct NewPostView: View {
 
 struct NewPostView_Previews: PreviewProvider {
     static var previews: some View {
-        NewPostView()
+        NewPostView(onCreated: { _ in })
             .withErrorHandling()
             .environmentObject(ObjectSource.preview)
     }

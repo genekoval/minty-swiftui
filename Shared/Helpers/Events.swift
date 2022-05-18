@@ -3,7 +3,6 @@ import Foundation
 import Minty
 
 extension Post {
-    static let created = PassthroughSubject<UUID, Never>()
     static let deleted = PassthroughSubject<UUID, Never>()
 }
 

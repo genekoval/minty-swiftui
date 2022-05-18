@@ -4,41 +4,18 @@ import SwiftUI
 struct TagDetail: View {
     @Environment(\.dismiss) var dismiss
 
-    @EnvironmentObject var data: DataSource
-
     @ObservedObject var tag: TagViewModel
 
     @StateObject private var recentPosts: PostQueryViewModel
     @StateObject private var search: PostQueryViewModel
-    @StateObject private var newPosts = NewPostListViewModel()
 
     @State private var showingEditor = false
-
-    @ViewBuilder
-    private var addButton: some View {
-        NewPostButton(tag: tag.preview)
-    }
-
-    @ViewBuilder
-    private var aliases: some View {
-        if !tag.aliases.isEmpty {
-            VStack(alignment: .leading, spacing: 5) {
-                ForEach(tag.aliases, id: \.self) { alias in
-                    Text(alias)
-                        .bold()
-                        .font(.footnote)
-                }
-            }
-            .padding(.leading, 10)
-        }
-    }
 
     var body: some View {
         PaddedScrollView {
             tagInfo
             controls
 
-            recentlyAdded
             posts
         }
         .navigationTitle(tag.name)
@@ -54,9 +31,35 @@ struct TagDetail: View {
         .prepareSearch(search)
         .onAppear {
             if tag.deleted { dismiss() }
-            newPosts.data = data
         }
         .onReceive(tag.$deleted) { if $0 { dismiss() } }
+    }
+
+    @ViewBuilder
+    private var addButton: some View {
+        NewPostButton(tag: tag.preview) {
+            // Refresh the recent posts list to make sure the new post
+            // appears here if it's tagged with this tag.
+            // Refresh after a short delay to avoid a race condition in which
+            // the new post does not appear in the results.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                try? recentPosts.refresh()
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var aliases: some View {
+        if !tag.aliases.isEmpty {
+            VStack(alignment: .leading, spacing: 5) {
+                ForEach(tag.aliases, id: \.self) { alias in
+                    Text(alias)
+                        .bold()
+                        .font(.footnote)
+                }
+            }
+            .padding(.leading, 10)
+        }
     }
 
     @ViewBuilder
@@ -97,19 +100,7 @@ struct TagDetail: View {
     @ViewBuilder
     private var posts: some View {
         if tag.postCount > 0 {
-            if newPosts.posts.isEmpty {
-                Divider()
-            }
-            else {
-                HStack {
-                    Text("Tagged Posts")
-                        .bold()
-                        .font(.title2)
-                        .padding([.horizontal, .top])
-                    Spacer()
-                }
-            }
-
+            Divider()
             PostSearchResults(search: recentPosts, showResultCount: false)
         }
     }
@@ -122,11 +113,6 @@ struct TagDetail: View {
         )
         .font(.caption)
         .foregroundColor(.secondary)
-    }
-
-    @ViewBuilder
-    private var recentlyAdded: some View {
-        NewPostList(newPosts: newPosts)
     }
 
     @ViewBuilder
