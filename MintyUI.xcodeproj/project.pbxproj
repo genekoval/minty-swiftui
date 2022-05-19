@@ -59,6 +59,7 @@
 		BE3E16B6273A0B8100052660 /* ClearableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3E16B5273A0B8100052660 /* ClearableTextField.swift */; };
 		BE3E16B8273A177300052660 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3E16B7273A177300052660 /* Grid.swift */; };
 		BE3E16BA273A1F0D00052660 /* PreviewImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3E16B9273A1F0D00052660 /* PreviewImage.swift */; };
+		BE3FF0FB283641F000B7793F /* OnFirstAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3FF0FA283641F000B7793F /* OnFirstAppearance.swift */; };
 		BE419D0E27B35AA200080EE7 /* TimeJumpOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE419D0D27B35AA200080EE7 /* TimeJumpOverlay.swift */; };
 		BE465506270CFA8E00D3C4FB /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465505270CFA8E00D3C4FB /* Tests_iOS.swift */; };
 		BE465508270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465507270CFA8E00D3C4FB /* Tests_iOSLaunchTests.swift */; };
@@ -256,6 +257,7 @@
 		BE3E16B5273A0B8100052660 /* ClearableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearableTextField.swift; sourceTree = "<group>"; };
 		BE3E16B7273A177300052660 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		BE3E16B9273A1F0D00052660 /* PreviewImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewImage.swift; sourceTree = "<group>"; };
+		BE3FF0FA283641F000B7793F /* OnFirstAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnFirstAppearance.swift; sourceTree = "<group>"; };
 		BE419D0D27B35AA200080EE7 /* TimeJumpOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeJumpOverlay.swift; sourceTree = "<group>"; };
 		BE4654ED270CFA8B00D3C4FB /* MintyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MintyApp.swift; sourceTree = "<group>"; };
 		BE4654EE270CFA8B00D3C4FB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -493,6 +495,7 @@
 				BE3E16B7273A177300052660 /* Grid.swift */,
 				BEBFDF8D274214AA00A3E2A8 /* ImagePicker.swift */,
 				BE158F7927D2200200F152C0 /* LoadEntity.swift */,
+				BE3FF0FA283641F000B7793F /* OnFirstAppearance.swift */,
 				BEF8E21427B754A90089317A /* PaddedScrollView.swift */,
 				BEDB743527D3655400195E95 /* PrepareSearch.swift */,
 				BEC6783A271A53FF009BCE5F /* ResultCount.swift */,
@@ -1029,6 +1032,7 @@
 				BE00985A2731AB0C0021E660 /* SelectButton.swift in Sources */,
 				BE529A3727304D61001DB760 /* PostExplorer.swift in Sources */,
 				BECA71422787F77B007993EB /* ObjectViewModel.swift in Sources */,
+				BE3FF0FB283641F000B7793F /* OnFirstAppearance.swift in Sources */,
 				BE8E71C927330F93009A4FE9 /* TagList.swift in Sources */,
 				BE3E16AE2739968C00052660 /* DeleteButton.swift in Sources */,
 				BEAB78FC27925ECB00CF9AD6 /* Swipe.swift in Sources */,
