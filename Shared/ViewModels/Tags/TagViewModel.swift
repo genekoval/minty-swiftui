@@ -14,7 +14,6 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
     @Published private(set) var description: String?
     @Published private(set) var dateCreated = Date()
     @Published private(set) var sources: [Source] = []
-    @Published private(set) var postCount: Int = 0
 
     private var cancellables = Set<AnyCancellable>()
     private weak var storage: TagState?
@@ -137,7 +136,6 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
         description = tag.description
         dateCreated = tag.dateCreated
         sources = tag.sources
-        postCount = Int(tag.postCount)
     }
 
     func load(from preview: TagPreview) {

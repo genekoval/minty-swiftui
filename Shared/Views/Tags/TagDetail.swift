@@ -99,7 +99,7 @@ struct TagDetail: View {
 
     @ViewBuilder
     private var posts: some View {
-        if tag.postCount > 0 {
+        if recentPosts.total > 0 {
             Divider()
             PostSearchResults(search: recentPosts, showResultCount: false)
         }
@@ -108,7 +108,7 @@ struct TagDetail: View {
     @ViewBuilder
     private var postCount: some View {
         Label(
-            "\(tag.postCount) Post\(tag.postCount == 1 ? "" : "s")",
+            "\(recentPosts.total) Post\(recentPosts.total == 1 ? "" : "s")",
             systemImage: "doc.text.image"
         )
         .font(.caption)
