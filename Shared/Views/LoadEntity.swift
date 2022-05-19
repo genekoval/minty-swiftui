@@ -8,15 +8,24 @@ private struct LoadEntity: ViewModifier {
 
     let entity: RemoteEntity
 
+    @State private var loaded = false
+
     func body(content: Content) -> some View {
         content
             .onAppear {
                 errorHandler.handle {
-                    try entity.load(repo: data.repo)
+                    try load()
                 } dismissAction: {
                     dismiss()
                 }
             }
+    }
+
+    private func load() throws {
+        if !loaded {
+            try entity.load(repo: data.repo)
+            loaded = true
+        }
     }
 }
 

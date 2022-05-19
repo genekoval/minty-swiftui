@@ -6,11 +6,20 @@ private struct PrepareSearch: ViewModifier {
 
     let search: SearchObject
 
+    @State private var prepared = false
+
     func body(content: Content) -> some View {
         content
             .onAppear {
-                search.prepare(repo: data.repo, errorHandler: errorHandler)
+                prepare()
             }
+    }
+
+    private func prepare() {
+        if !prepared {
+            search.prepare(repo: data.repo, errorHandler: errorHandler)
+            prepared = true
+        }
     }
 }
 

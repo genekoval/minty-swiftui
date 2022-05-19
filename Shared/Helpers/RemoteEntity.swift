@@ -5,7 +5,6 @@ class RemoteEntity {
     var repo: MintyRepo?
 
     private let identifier: String
-    private var initialLoad = false
 
     init(identifier: String) {
         self.identifier = identifier
@@ -25,11 +24,7 @@ class RemoteEntity {
 
     final func load(repo: MintyRepo?) throws {
         self.repo = repo
-
-        if !initialLoad {
-            try refresh()
-            initialLoad = true
-        }
+        try refresh()
     }
 
     func refresh() throws { }
