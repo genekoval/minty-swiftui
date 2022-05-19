@@ -54,6 +54,7 @@ final class PostViewModel:
 
         $objects.sink { [weak self] in
             self?.objectCount = $0.count
+            self?.preview = $0.first
         }.store(in: &cancellables)
 
         $comments.sink { [weak self] in
