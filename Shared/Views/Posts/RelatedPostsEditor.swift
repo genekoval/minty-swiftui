@@ -4,7 +4,7 @@ import SwiftUI
 private struct PostSelectRow: View {
     @EnvironmentObject var errorHandler: ErrorHandler
 
-    let post: PostPreview
+    let post: PostViewModel
 
     @ObservedObject var parent: PostViewModel
 
@@ -15,7 +15,7 @@ private struct PostSelectRow: View {
                     SelectionIndicator(isSelected: selected)
                 }
 
-                PostRowContainer(post: post)
+                PostRow(post: post)
             }
             Divider()
         }
@@ -23,7 +23,7 @@ private struct PostSelectRow: View {
     }
 
     private var selected: Bool {
-        parent.posts.contains(post)
+        parent.posts.contains(where: { $0.id == post.id })
     }
 
     private func addPost() {

@@ -8,10 +8,10 @@ protocol Query {
     var size: UInt32 { get set }
 }
 
-protocol SearchElement : Identifiable, ZiplineCodable { }
+protocol SearchElement : Identifiable { }
 
 protocol SearchObject {
-    func prepare(repo: MintyRepo?, errorHandler: ErrorHandler);
+    func prepare(app: DataSource, errorHandler: ErrorHandler);
 }
 
 class Search<Element, QueryType> :
@@ -22,8 +22,9 @@ where
     Element: SearchElement,
     QueryType: Query
 {
-    typealias SearchAction =
-        (MintyRepo, QueryType) throws -> SearchResult<Element>
+    typealias Result = (hits: [Element], total: Int)
+
+    typealias SearchAction = (MintyRepo, AppState, QueryType) throws -> Result
 
     @Published var hits: [Element] = []
     @Published var query: QueryType {
@@ -76,9 +77,9 @@ where
         if searchNow { performSearch() }
     }
 
-    private func load(result: SearchResult<Element>) {
-        total = Int(result.total)
+    private func load(result: Result) {
         hits.append(contentsOf: result.hits)
+        total = result.total
     }
 
     final func modifyQuery(action: () -> Void) {
@@ -100,7 +101,7 @@ where
     private func performSearch() {
         do {
             try withRepo("perform search") { repo in
-                load(result: try search(repo, query))
+                load(result: try search(repo, app!.state, query))
                 initialSearch = true
             }
         }
@@ -109,9 +110,9 @@ where
         }
     }
 
-    func prepare(repo: MintyRepo?, errorHandler: ErrorHandler) {
+    func prepare(app: DataSource, errorHandler: ErrorHandler) {
         self.errorHandler = errorHandler
-        errorHandler.handle { try load(repo: repo) }
+        errorHandler.handle { try load(app: app) }
     }
 
     private func remove(id: Element.ID) {

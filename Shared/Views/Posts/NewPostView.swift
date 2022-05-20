@@ -73,7 +73,7 @@ struct NewPostView: View {
         )
     }
 
-    init(onCreated: @escaping (UUID) -> Void, tag: TagPreview? = nil) {
+    init(onCreated: @escaping (UUID) -> Void, tag: TagViewModel? = nil) {
         self.onCreated = onCreated
         _post = StateObject(wrappedValue: NewPostViewModel(tag: tag))
     }

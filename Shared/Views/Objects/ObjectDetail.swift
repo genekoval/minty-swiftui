@@ -88,15 +88,14 @@ struct ObjectDetail: View {
                     }
                 }
 
+                if !vm.posts.isEmpty {
+                    KeyValue(key: "Posts", value: "\(vm.posts.count)")
 
-                if !vm.object.posts.isEmpty {
-                    KeyValue(key: "Posts", value: "\(vm.object.posts.count)")
-
-                    ForEach(vm.object.posts) { post in
+                    ForEach(vm.posts) { post in
                         NavigationLink(
-                            destination: PostDetailContainer(id: post.id)
+                            destination: PostDetail(post: post)
                         ) {
-                            PostRowContainer(post: post)
+                            PostRow(post: post)
                         }
                     }
                     .buttonStyle(.plain)

@@ -29,12 +29,6 @@ struct TagSearch: View {
     private func newTagDismissed() {
         guard let id = newTagId else { return }
 
-        var tag = TagPreview()
-        tag.id = id
-        tag.name = newTagName
-
-        query.excluded.append(tag)
-
         newTagId = nil
         newTagName = ""
 

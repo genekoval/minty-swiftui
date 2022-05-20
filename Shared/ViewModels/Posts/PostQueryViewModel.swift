@@ -10,15 +10,15 @@ extension Minty.SortOrder {
 
 extension PostQuery: Query { }
 
-extension PostPreview: SearchElement { }
+extension PostViewModel: SearchElement { }
 
-final class PostQueryViewModel: Search<PostPreview, PostQuery> {
+final class PostQueryViewModel: Search<PostViewModel, PostQuery> {
     @Published var text = ""
-    @Published var tags: [TagPreview] = []
+    @Published var tags: [TagViewModel] = []
 
     private var tagsCancellable: AnyCancellable?
 
-    init(tag: TagPreview? = nil, searchNow: Bool = false) {
+    init(tag: TagViewModel? = nil, searchNow: Bool = false) {
         var query = PostQuery()
 
         query.size = 30
@@ -34,7 +34,13 @@ final class PostQueryViewModel: Search<PostPreview, PostQuery> {
             query: query,
             deletionPublisher: Post.deleted,
             searchNow: searchNow
-        ) { (repo, query) in try repo.getPosts(query: query) }
+        ) { (repo, state, query) in
+            let results = try repo.getPosts(query: query)
+            return (
+                hits: results.hits.map { state.posts.fetch(for: $0) },
+                total: Int(results.total)
+            )
+        }
 
         if let tag = tag {
             tags.append(tag)

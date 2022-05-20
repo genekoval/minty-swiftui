@@ -12,7 +12,7 @@ private struct LoadEntity: ViewModifier {
         content
             .onFirstAppearance {
                 errorHandler.handle {
-                    try entity.load(repo: data.repo)
+                    try entity.load(app: data)
                 } dismissAction: {
                     dismiss()
                 }

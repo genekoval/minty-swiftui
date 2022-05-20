@@ -4,11 +4,11 @@ import Minty
 
 extension TagQuery: Query { }
 
-extension TagPreview: SearchElement { }
+extension TagViewModel: SearchElement { }
 
-final class TagQueryViewModel: Search<TagPreview, TagQuery> {
+final class TagQueryViewModel: Search<TagViewModel, TagQuery> {
     @Published var name = ""
-    @Published var excluded: [TagPreview] = []
+    @Published var excluded: [TagViewModel] = []
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -21,7 +21,13 @@ final class TagQueryViewModel: Search<TagPreview, TagQuery> {
             type: "tag",
             query: query,
             deletionPublisher: Tag.deleted
-        ) { (repo, query) in try repo.getTags(query: query) }
+        ) { (repo, state, query) in
+            let results = try repo.getTags(query: query)
+            return (
+                hits: results.hits.map { state.tags.fetch(for: $0) },
+                total: Int(results.total)
+            )
+        }
 
         Tag.deleted
             .sink { [weak self] in self?.remove(id: $0) }
@@ -36,7 +42,7 @@ final class TagQueryViewModel: Search<TagPreview, TagQuery> {
             .store(in: &cancellables)
     }
 
-    private func updateExcluded(_ tags: [TagPreview]) {
+    private func updateExcluded(_ tags: [TagViewModel]) {
         modifyQuery { query.exclude = tags.map { $0.id } }
     }
 

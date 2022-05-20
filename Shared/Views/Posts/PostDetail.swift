@@ -118,9 +118,9 @@ struct PostDetail: View {
             VStack {
                 ForEach(post.posts) { post in
                     NavigationLink(
-                        destination: PostDetailContainer(id: post.id)
+                        destination: PostDetail(post: post)
                     ) {
-                        PostRowMinimalContainer(post: post)
+                        PostRowMinimal(post: post)
                     }
 
                     Divider()
@@ -153,7 +153,7 @@ struct PostDetail: View {
             }
         }
         else if let tag = post.tags.first {
-            NavigationLink(destination: TagDetailContainer(tag: tag)) {
+            NavigationLink(destination: TagDetail(tag: tag)) {
                 Label(tag.name, systemImage: "tag")
                     .font(.caption)
             }
@@ -171,16 +171,6 @@ struct PostDetail: View {
     }
 }
 
-struct PostDetailContainer: View {
-    @EnvironmentObject var data: DataSource
-
-    let id: UUID
-
-    var body: some View {
-        PostDetail(post: data.state.posts.fetch(id: id))
-    }
-}
-
 struct PostDetail_Previews: PreviewProvider {
     private static let posts = [
         PreviewPost.test,
@@ -192,7 +182,7 @@ struct PostDetail_Previews: PreviewProvider {
         Group {
             ForEach(posts, id: \.self) { post in
                 NavigationView {
-                    PostDetailContainer(id: post)
+                    PostDetail(post: PostViewModel.preview(id: post))
                 }
             }
         }

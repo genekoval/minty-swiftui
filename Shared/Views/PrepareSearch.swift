@@ -9,7 +9,7 @@ private struct PrepareSearch: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onFirstAppearance {
-                search.prepare(repo: data.repo, errorHandler: errorHandler)
+                search.prepare(app: data, errorHandler: errorHandler)
             }
     }
 }

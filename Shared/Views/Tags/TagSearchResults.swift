@@ -10,9 +10,9 @@ struct TagSearchResults: View {
             text: search.name,
             showResultCount: !search.name.isEmpty
         ) { tag in
-            NavigationLink(destination: TagDetailContainer(tag: tag)) {
+            NavigationLink(destination: TagDetail(tag: tag)) {
                 VStack {
-                    TagRowContainer(tag: tag)
+                    TagRow(tag: tag)
                     Divider()
                 }
                 .padding(.horizontal)

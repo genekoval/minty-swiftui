@@ -24,21 +24,9 @@ struct PostRowMinimal: View {
     }
 }
 
-struct PostRowMinimalContainer: View {
-    @EnvironmentObject var data: DataSource
-
-    let post: PostPreview
-
-    var body: some View {
-        PostRowMinimal(post: data.state.posts.fetch(for: post))
-    }
-}
-
 struct PostRowMinimal_Previews: PreviewProvider {
     static var previews: some View {
-        PostRowMinimalContainer(
-            post: PostPreview.preview(id: PreviewPost.sandDune)
-        )
+        PostRowMinimal(post: PostViewModel.preview(id: PreviewPost.sandDune))
             .environmentObject(DataSource.preview)
             .environmentObject(ObjectSource.preview)
     }

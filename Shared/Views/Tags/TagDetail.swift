@@ -37,7 +37,7 @@ struct TagDetail: View {
 
     @ViewBuilder
     private var addButton: some View {
-        NewPostButton(tag: tag.preview) {
+        NewPostButton(tag: tag) {
             // Refresh the recent posts list to make sure the new post
             // appears here if it's tagged with this tag.
             // Refresh after a short delay to avoid a race condition in which
@@ -139,32 +139,20 @@ struct TagDetail: View {
         .padding()
     }
 
-    init(tag: TagViewModel, preview: TagPreview) {
+    init(tag: TagViewModel) {
         self.tag = tag
         _recentPosts = StateObject(wrappedValue: PostQueryViewModel(
-            tag: preview,
+            tag: tag,
             searchNow: true
         ))
-        _search = StateObject(wrappedValue: PostQueryViewModel(tag: preview))
-    }
-}
-
-struct TagDetailContainer: View {
-    @EnvironmentObject var data: DataSource
-
-    let tag: TagPreview
-
-    var body: some View {
-        TagDetail(tag: data.state.tags.fetch(id: tag.id), preview: tag)
+        _search = StateObject(wrappedValue: PostQueryViewModel(tag: tag))
     }
 }
 
 struct TagDetail_Previews: PreviewProvider {
-    private static let tag = TagPreview.preview(id: PreviewTag.helloWorld)
-
     static var previews: some View {
         NavigationView {
-            TagDetailContainer(tag: tag)
+            TagDetail(tag: TagViewModel.preview(id: PreviewTag.helloWorld))
         }
         .withErrorHandling()
         .environmentObject(DataSource.preview)

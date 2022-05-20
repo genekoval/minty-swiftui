@@ -6,7 +6,7 @@ final class NewPostViewModel: RemoteEntity, ObjectCollection, ObservableObject {
     @Published var title = ""
     @Published var description = ""
     @Published var objects: [ObjectPreview] = []
-    @Published var tags: [TagPreview] = []
+    @Published var tags: [TagViewModel] = []
 
     var isValid: Bool {
         !title.isWhitespace || !description.isWhitespace || !objects.isEmpty
@@ -25,7 +25,7 @@ final class NewPostViewModel: RemoteEntity, ObjectCollection, ObservableObject {
         return result
     }
 
-    init(tag: TagPreview? = nil) {
+    init(tag: TagViewModel? = nil) {
         super.init(identifier: "new post")
 
         if let tag = tag {

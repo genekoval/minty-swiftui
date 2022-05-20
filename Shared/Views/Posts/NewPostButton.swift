@@ -2,6 +2,8 @@ import Minty
 import SwiftUI
 
 private struct PostDetailLink: View {
+    @EnvironmentObject var data: DataSource
+
     let id: UUID?
 
     @Binding var isActive: Bool
@@ -9,7 +11,7 @@ private struct PostDetailLink: View {
     var body: some View {
         if let id = id {
             NavigationLink(
-                destination: PostDetailContainer(id: id),
+                destination: PostDetail(post: data.state.posts.fetch(id: id)),
                 isActive: $isActive
             ) {
                 EmptyView()
@@ -22,7 +24,7 @@ struct NewPostButton: View {
     @EnvironmentObject var data: DataSource
 
     let onCreated: (() -> Void)?
-    let tag: TagPreview?
+    let tag: TagViewModel?
 
     @State private var newPostId: UUID?
     @State private var showingNewPost = false
@@ -40,7 +42,7 @@ struct NewPostButton: View {
         }
     }
 
-    init(tag: TagPreview? = nil, onCreated: (() -> Void)? = nil) {
+    init(tag: TagViewModel? = nil, onCreated: (() -> Void)? = nil) {
         self.onCreated = onCreated
         self.tag = tag
     }

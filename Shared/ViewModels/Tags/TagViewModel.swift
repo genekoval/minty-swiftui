@@ -30,15 +30,6 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
         URL(string: draftSource) != nil
     }
 
-    var preview: TagPreview {
-        var tag = TagPreview()
-
-        tag.id = id
-        tag.name = name
-
-        return tag
-    }
-
     init(id: UUID, storage: TagState?) {
         super.init(id: id, identifier: "tag")
 

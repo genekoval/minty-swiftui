@@ -69,7 +69,7 @@ extension CommentViewModel {
     static func preview(id: UUID) -> CommentViewModel {
         var postId: UUID?
 
-        for post in data.posts {
+        for post in MintyUI.data.posts {
             for comment in post.value {
                 if comment == id {
                     postId = post.key

@@ -14,10 +14,10 @@ struct TagList: View {
                 ForEach(post.tags) { tag in
                     VStack {
                         NavigationLink(
-                            destination: TagDetailContainer(tag: tag)
+                            destination: TagDetail(tag: tag)
                         ) {
                             HStack {
-                                TagRowContainer(tag: tag)
+                                TagRow(tag: tag)
                                 Spacer()
                             }
                         }

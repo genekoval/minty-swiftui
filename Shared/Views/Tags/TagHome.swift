@@ -2,11 +2,11 @@ import Minty
 import SwiftUI
 
 private struct TagDisplayRow: View {
-    let tag: TagPreview
+    let tag: TagViewModel
 
     var body: some View {
         VStack {
-            TagRowContainer(tag: tag)
+            TagRow(tag: tag)
             Divider()
         }
         .padding(.horizontal)
@@ -38,7 +38,7 @@ struct TagHome: View {
 
                         ForEach(query.excluded) { tag in
                             NavigationLink(
-                                destination: TagDetailContainer(tag: tag),
+                                destination: TagDetail(tag: tag),
                                 tag: tag.id,
                                 selection: $selection
                             ) {

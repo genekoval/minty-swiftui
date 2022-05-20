@@ -21,7 +21,7 @@ final class CommentViewModel: IdentifiableEntity, ObservableObject {
         self.post = post
 
         super.init(id: comment.id, identifier: "comment")
-        self.repo = post.repo
+        self.app = post.app
 
         contentCancellable = $content.sink { [weak self] in
             self?.draftContent = $0

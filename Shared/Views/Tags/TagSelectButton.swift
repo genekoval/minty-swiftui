@@ -2,7 +2,7 @@ import Minty
 import SwiftUI
 
 struct TagSelectButton: View {
-    @Binding var tags: [TagPreview]
+    @Binding var tags: [TagViewModel]
 
     @StateObject private var search = TagQueryViewModel()
     @State private var selectorPresented = false
@@ -26,7 +26,7 @@ struct TagSelectButton: View {
 
 struct TagSelectButton_Previews: PreviewProvider {
     private struct Preview: View {
-        @State private var tags: [TagPreview] = []
+        @State private var tags: [TagViewModel] = []
 
         var body: some View {
             TagSelectButton(tags: $tags)

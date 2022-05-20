@@ -2,7 +2,7 @@ import Minty
 import Foundation
 
 class RemoteEntity {
-    var repo: MintyRepo?
+    var app: DataSource?
 
     private let identifier: String
 
@@ -14,7 +14,7 @@ class RemoteEntity {
         _ description: String,
         action: (MintyRepo) throws -> Void
     ) throws {
-        guard let repo = repo else { return }
+        guard let repo = app?.repo else { return }
 
         let id = "(\(identifier))"
         defaultLog.debug("\(id): \(description)")
@@ -22,8 +22,8 @@ class RemoteEntity {
         try action(repo)
     }
 
-    final func load(repo: MintyRepo?) throws {
-        self.repo = repo
+    final func load(app: DataSource) throws {
+        self.app = app
         try refresh()
     }
 

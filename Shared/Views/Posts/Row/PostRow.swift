@@ -52,16 +52,6 @@ struct PostRow: View {
     }
 }
 
-struct PostRowContainer: View {
-    @EnvironmentObject var data: DataSource
-
-    let post: PostPreview
-
-    var body: some View {
-        PostRow(post: data.state.posts.fetch(for: post))
-    }
-}
-
 struct PostRow_Previews: PreviewProvider {
     private static let posts = [
         PreviewPost.untitled,

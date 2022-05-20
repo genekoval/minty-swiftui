@@ -2,7 +2,7 @@ import Minty
 import SwiftUI
 
 private struct TagSelectRow: View {
-    let tag: TagPreview
+    let tag: TagViewModel
     let onSelect: () -> Void
     let onDeselect: () -> Void
 
@@ -13,7 +13,7 @@ private struct TagSelectRow: View {
             HStack {
                 SelectButton(isSelected: $isSelected.onChange(selectionChanged))
                     .frame(width: 30, height: 30)
-                TagRowContainer(tag: tag)
+                TagRow(tag: tag)
             }
 
             Divider()
@@ -28,7 +28,7 @@ private struct TagSelectRow: View {
 
 private struct SearchView<Content: View>: View {
     @ObservedObject var search: TagQueryViewModel
-    @ViewBuilder let content: (TagPreview) -> Content
+    @ViewBuilder let content: (TagViewModel) -> Content
 
     var body: some View {
         ScrollView {
@@ -58,11 +58,11 @@ private struct SearchView<Content: View>: View {
 private struct TagSelectorCore: View {
     @Environment(\.isSearching) var isSearching
 
-    @Binding var tags: [TagPreview]
+    @Binding var tags: [TagViewModel]
     @ObservedObject var search: TagQueryViewModel
 
-    var onAdd: ((TagPreview) -> Void)?
-    var onRemove: ((TagPreview) -> Void)?
+    var onAdd: ((TagViewModel) -> Void)?
+    var onRemove: ((TagViewModel) -> Void)?
 
     var body: some View {
         if isSearching {
@@ -70,7 +70,7 @@ private struct TagSelectorCore: View {
                 TagSelectRow(tag: tag, onSelect: {
                     add(tag: tag)
                 }, onDeselect: {
-                    if let index = tags.firstIndex(of: tag) {
+                    if let index = tags.firstIndex(where: { tag.id == $0.id }) {
                         remove(index: index)
                     }
                 })
@@ -96,7 +96,7 @@ private struct TagSelectorCore: View {
 
                 Section {
                     ForEach(tags) { tag in
-                        TagRowContainer(tag: tag)
+                        TagRow(tag: tag)
                     }
                     .onDelete { offsets in
                         if let index = offsets.first {
@@ -109,7 +109,7 @@ private struct TagSelectorCore: View {
         }
     }
 
-    private func add(tag: TagPreview) {
+    private func add(tag: TagViewModel) {
         onAdd?(tag)
         tags.append(tag)
     }
@@ -123,11 +123,11 @@ private struct TagSelectorCore: View {
 struct TagSelector: View {
     @Environment(\.dismiss) var dimiss
 
-    @Binding var tags: [TagPreview]
+    @Binding var tags: [TagViewModel]
     @ObservedObject var search: TagQueryViewModel
 
-    private let onAdd: ((TagPreview) -> Void)?
-    private let onRemove: ((TagPreview) -> Void)?
+    private let onAdd: ((TagViewModel) -> Void)?
+    private let onRemove: ((TagViewModel) -> Void)?
 
     var body: some View {
         TagSelectorCore(
@@ -148,10 +148,10 @@ struct TagSelector: View {
     }
 
     init(
-        tags: Binding<[TagPreview]>,
+        tags: Binding<[TagViewModel]>,
         search: TagQueryViewModel,
-        onAdd: ((TagPreview) -> Void)? = nil,
-        onRemove: ((TagPreview) -> Void)? = nil
+        onAdd: ((TagViewModel) -> Void)? = nil,
+        onRemove: ((TagViewModel) -> Void)? = nil
     ) {
         _tags = tags
         self.search = search
@@ -159,7 +159,7 @@ struct TagSelector: View {
         self.onRemove = onRemove
     }
 
-    private func tagsChanged(to value: [TagPreview]) {
+    private func tagsChanged(to value: [TagViewModel]) {
         search.excluded = value
     }
 }
@@ -167,7 +167,7 @@ struct TagSelector: View {
 struct TagSelector_Previews: PreviewProvider {
     private struct Preview: View {
         @StateObject private var search = TagQueryViewModel.preview()
-        @State private var tags: [TagPreview] = []
+        @State private var tags: [TagViewModel] = []
 
         var body: some View {
             NavigationView {

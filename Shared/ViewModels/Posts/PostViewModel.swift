@@ -13,7 +13,7 @@ final class PostViewModel:
     @Published var draftTitle = ""
     @Published var draftDescription = ""
     @Published var objects: [ObjectPreview] = []
-    @Published var tags: [TagPreview] = []
+    @Published var tags: [TagViewModel] = []
 
     @Published private(set) var deleted = false
     @Published private(set) var title: String?
@@ -24,7 +24,7 @@ final class PostViewModel:
     @Published private(set) var preview: ObjectPreview?
     @Published private(set) var commentCount: Int = 0
     @Published private(set) var objectCount: Int = 0
-    @Published private(set) var posts: [PostPreview] = []
+    @Published private(set) var posts: [PostViewModel] = []
 
     private var cancellables = Set<AnyCancellable>()
     private weak var storage: PostState?
@@ -85,7 +85,7 @@ final class PostViewModel:
         }
     }
 
-    func add(post: PostPreview) throws {
+    func add(post: PostViewModel) throws {
         try withRepo("add related post") { repo in
             try repo.addRelatedPost(postId: id, related: post.id)
         }
@@ -104,7 +104,7 @@ final class PostViewModel:
         comments.insert(reply, at: index + 1)
     }
 
-    func addTag(tag: TagPreview) throws {
+    func addTag(tag: TagViewModel) throws {
         try withRepo("add tag") { repo in
             try repo.addPostTag(postId: id, tagId: tag.id)
         }
@@ -145,12 +145,12 @@ final class PostViewModel:
         }
     }
 
-    func delete(post: PostPreview) throws {
+    func delete(post: PostViewModel) throws {
         try withRepo("delete related post") { repo in
             try repo.deleteRelatedPost(postId: id, related: post.id)
         }
 
-        posts.remove(element: post)
+        posts.remove(id: post.id)
     }
 
     private func fetchComments() throws {
@@ -171,8 +171,8 @@ final class PostViewModel:
         created = post.dateCreated
         modified = post.dateModified
         objects = post.objects
-        posts = post.posts
-        tags = post.tags
+        posts = post.posts.map { app!.state.posts.fetch(for: $0) }
+        tags = post.tags.map { app!.state.tags.fetch(for: $0) }
     }
 
     func load(from preview: PostPreview) {
@@ -208,7 +208,7 @@ final class PostViewModel:
         tags.remove(id: id)
     }
 
-    func removeTag(tag: TagPreview) throws {
+    func removeTag(tag: TagViewModel) throws {
         try withRepo("delete tag") { repo in
             try repo.deletePostTag(postId: id, tagId: tag.id)
         }
