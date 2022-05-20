@@ -21,8 +21,6 @@ private struct PostDetailLink: View {
 }
 
 struct NewPostButton: View {
-    @EnvironmentObject var data: DataSource
-
     let onCreated: (() -> Void)?
     let tag: TagViewModel?
 

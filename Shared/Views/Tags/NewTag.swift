@@ -1,66 +1,40 @@
+import Minty
 import SwiftUI
 
 struct NewTag: View {
-    @Environment(\.presentationMode) var presentationMode
-
     @EnvironmentObject var data: DataSource
     @EnvironmentObject var errorHandler: ErrorHandler
 
-    @Binding var id: UUID?
-    @Binding var name: String
+    let onCreated: (Tag.ID) -> Void
+
+    @State private var name = ""
 
     var body: some View {
-        VStack {
-            HStack {
-                Button("Cancel") { dismiss() }
-                Spacer()
+        SheetView(title: "New Tag", done: (
+            label: "Done",
+            action: create,
+            disabled: { name.isWhitespace }
+        )) {
+            Form {
+                HStack(spacing: 20) {
+                    Text("Name")
+                    TextField("Minty", text: $name)
+                }
             }
-
-            Spacer()
-
-            Image(systemName: "tag")
-                .font(.title)
-                .padding()
-            Text("New Tag")
-                .bold()
-                .font(.title)
-
-            Spacer()
-
-            Text("Enter a name for this tag.")
-            TextField("Name", text: $name, onCommit: { create() })
-                .disableAutocorrection(true)
-                .submitLabel(.done)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-
-            Spacer()
-
-            Button("Create") { create() }
-                .buttonBorderShape(.capsule)
-                .buttonStyle(.bordered)
-                .controlSize(.large)
-                .tint(.green)
         }
-        .padding()
     }
 
-    private func create() {
+    private func create() throws {
         guard let repo = data.repo else { return }
 
-        errorHandler.handle {
-            id = try repo.addTag(name: name)
-            dismiss()
-        }
-    }
-
-    private func dismiss() {
-        presentationMode.wrappedValue.dismiss()
+        let id = try repo.addTag(name: name)
+        onCreated(id)
     }
 }
 
 struct NewTag_Previews: PreviewProvider {
     static var previews: some View {
-        NewTag(id: .constant(nil), name: .constant(""))
+        NewTag(onCreated: { _ in })
             .environmentObject(DataSource.preview)
     }
 }
