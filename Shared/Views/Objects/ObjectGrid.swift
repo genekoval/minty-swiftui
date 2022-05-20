@@ -47,6 +47,13 @@ private struct ObjectGridItem: View {
     }
 
     @ViewBuilder
+    private var copyButton: some View {
+        Button(action: copyId) {
+            Label("Copy ID", systemImage: "doc.on.doc")
+        }
+    }
+
+    @ViewBuilder
     private var infoButton: some View {
         Button(action: { selection = object.id }) {
             Label("Get Info", systemImage: "info.circle")
@@ -58,7 +65,12 @@ private struct ObjectGridItem: View {
         PreviewImage(object: object)
             .contextMenu {
                 infoButton
+                copyButton
             }
+    }
+
+    private func copyId() {
+        UIPasteboard.general.string = object.id.uuidString
     }
 
     private func viewObject() {
