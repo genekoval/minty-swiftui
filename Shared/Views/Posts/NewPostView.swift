@@ -3,17 +3,17 @@ import Minty
 import SwiftUI
 
 struct NewPostView: View {
-    @Environment(\.dismiss) var dismiss
-
-    @EnvironmentObject var errorHandler: ErrorHandler
-
     let onCreated: (UUID) -> Void
 
     @StateObject private var post: NewPostViewModel
     @StateObject private var tagSearch = TagQueryViewModel()
 
     var body: some View {
-        NavigationView {
+        SheetView(title: "New Post", done: (
+            label: "Done",
+            action: create,
+            disabled: { !post.isValid }
+        )) {
             Form {
                 titleEditor
                 descriptionEditor
@@ -23,21 +23,8 @@ struct NewPostView: View {
                     tagSelector
                 }
             }
-            .navigationTitle("New Post")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) { doneButton }
-                ToolbarItem(placement: .cancellationAction) { cancelButton }
-            }
             .loadEntity(post)
             .prepareSearch(tagSearch)
-        }
-    }
-
-    @ViewBuilder
-    private var cancelButton: some View {
-        Button("Cancel") {
-            dismiss()
         }
     }
 
@@ -47,15 +34,6 @@ struct NewPostView: View {
             title: "Description",
             text: $post.description
         )
-    }
-
-    @ViewBuilder
-    private var doneButton: some View {
-        Button(action: { create() }) {
-            Text("Done")
-                .bold()
-        }
-        .disabled(!post.isValid)
     }
 
     @ViewBuilder
@@ -100,15 +78,9 @@ struct NewPostView: View {
         _post = StateObject(wrappedValue: NewPostViewModel(tag: tag))
     }
 
-    private func create() {
-        do {
-            let id = try post.create()
-            onCreated(id)
-            dismiss()
-        }
-        catch {
-            errorHandler.handle(error: error)
-        }
+    private func create() throws {
+        let id = try post.create()
+        onCreated(id)
     }
 }
 
@@ -116,6 +88,7 @@ struct NewPostView_Previews: PreviewProvider {
     static var previews: some View {
         NewPostView(onCreated: { _ in })
             .withErrorHandling()
+            .environmentObject(DataSource.preview)
             .environmentObject(ObjectSource.preview)
     }
 }
