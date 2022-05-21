@@ -12,6 +12,7 @@ final class PostViewModel:
 {
     @Published var draftTitle = ""
     @Published var draftDescription = ""
+    @Published var draftComment = ""
     @Published var objects: [ObjectPreview] = []
     @Published var tags: [TagViewModel] = []
 
@@ -68,13 +69,6 @@ final class PostViewModel:
         }
     }
 
-    func add(comment: String) throws {
-        try withRepo("add comment") { repo in
-            let result = try repo.addComment(postId: id, content: comment)
-            comments.insert(result, at: 0)
-        }
-    }
-
     func add(objects: [UUID], at position: Int) throws {
         try withRepo("add objects") { repo in
             modified = try repo.addPostObjects(
@@ -107,6 +101,14 @@ final class PostViewModel:
     func addTag(tag: TagViewModel) throws {
         try withRepo("add tag") { repo in
             try repo.addPostTag(postId: id, tagId: tag.id)
+        }
+    }
+
+    func comment() throws {
+        try withRepo("add comment") { repo in
+            let result = try repo.addComment(postId: id, content: draftComment)
+            comments.insert(result, at: 0)
+            draftComment.removeAll()
         }
     }
 

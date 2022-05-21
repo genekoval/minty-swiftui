@@ -4,9 +4,8 @@ import SwiftUI
 struct NewCommentButton: View {
     @EnvironmentObject var errorHandler: ErrorHandler
 
-    let post: PostViewModel
+    @ObservedObject var post: PostViewModel
 
-    @State private var draft = ""
     @State private var showingEditor = false
 
     var body: some View {
@@ -14,12 +13,12 @@ struct NewCommentButton: View {
             Image(systemName: "plus.bubble")
         }
         .sheet(isPresented: $showingEditor) {
-            CommentEditor(type: "New", draft: $draft, onDone: done)
+            CommentEditor(type: "New", draft: $post.draftComment, onDone: done)
         }
     }
 
     private func done() {
-        errorHandler.handle { try post.add(comment: draft) }
+        errorHandler.handle { try post.comment() }
     }
 }
 
