@@ -1,6 +1,7 @@
 import Minty
 import Foundation
 
+@MainActor
 class RemoteEntity {
     var app: DataSource?
 
@@ -12,22 +13,22 @@ class RemoteEntity {
 
     final func withRepo(
         _ description: String,
-        action: (MintyRepo) throws -> Void
-    ) throws {
+        action: (MintyRepo) async throws -> Void
+    ) async throws {
         guard let repo = app?.repo else { return }
 
         let id = "(\(identifier))"
         defaultLog.debug("\(id): \(description)")
 
-        try action(repo)
+        try await action(repo)
     }
 
-    final func load(app: DataSource) throws {
+    final func load(app: DataSource) async throws {
         self.app = app
-        try refresh()
+        try await refresh()
     }
 
-    func refresh() throws { }
+    func refresh() async throws { }
 }
 
 class IdentifiableEntity: RemoteEntity, Identifiable {

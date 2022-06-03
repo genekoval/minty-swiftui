@@ -29,9 +29,9 @@ private func uploadSecureFile(
 private func uploadURL(
     _ url: String,
     source: ObjectSource
-) throws -> [ObjectPreview] {
+) async throws -> [ObjectPreview] {
     guard let repo = source.repo else { return [] }
-    return try repo.addObjectsUrl(url: url)
+    return try await repo.addObjectsUrl(url: url)
 }
 
 enum Uploadable: Identifiable {
@@ -71,7 +71,9 @@ enum Uploadable: Identifiable {
                 objects.append(object)
             }
         case .url(let urlString):
-            objects.append(contentsOf: try uploadURL(urlString, source: source))
+            objects.append(
+                contentsOf: try await uploadURL(urlString, source: source)
+            )
         }
     }
 

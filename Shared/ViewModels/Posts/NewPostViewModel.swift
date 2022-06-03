@@ -33,11 +33,11 @@ final class NewPostViewModel: RemoteEntity, ObjectCollection, ObservableObject {
         }
     }
 
-    func create() throws -> UUID {
+    func create() async throws -> UUID {
         var id: UUID?
 
-        try withRepo("create") { repo in
-            id = try repo.addPost(parts: parts)
+        try await withRepo("create") { repo in
+            id = try await repo.addPost(parts: parts)
         }
 
         return id!

@@ -12,16 +12,24 @@ struct SearchResults<Element, QueryType, Content>: View where
 
     var body: some View {
         LazyVStack {
-            if showResultCount && search.initialSearch {
+            if showResultCount && search.resultsAvailable {
                 ResultCount(type: type, count: search.total, text: text)
             }
 
             ForEach(search.hits) { content($0) }
 
-            if search.resultsAvailable {
-                ProgressView()
-                    .progressViewStyle(.circular)
-                    .onAppear { search.nextPage() }
+            if !search.complete {
+                HStack {
+                    Spacer()
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .onAppear {
+                            Task {
+                                await search.nextPage()
+                            }
+                        }
+                    Spacer()
+                }
             }
         }
         .buttonStyle(.plain)

@@ -75,7 +75,13 @@ final class MediaPlayer: ObservableObject {
         }
 
         $currentItem
-            .sink { [weak self] in self?.setCurrentItem(to: $0) }
+            .sink { [weak self] item in
+                guard let self = self else { return }
+
+                Task {
+                    await self.setCurrentItem(to: item)
+                }
+            }
             .store(in: &cancellables)
 
         setAudioSessionCategory(to: .playback)
@@ -145,7 +151,7 @@ final class MediaPlayer: ObservableObject {
         }
     }
 
-    private func setCurrentItem(to object: ObjectPreview?) {
+    private func setCurrentItem(to object: ObjectPreview?) async {
         if object == currentItem { return }
 
         guard let object = object else {
@@ -156,7 +162,7 @@ final class MediaPlayer: ObservableObject {
         var url: URL?
 
         do {
-            url = try source?.url(for: object.id)
+            url = try await source?.url(for: object.id)
         }
         catch {
             errorHandler?.handle(error: error)

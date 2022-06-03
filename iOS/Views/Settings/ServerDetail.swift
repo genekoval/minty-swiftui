@@ -2,9 +2,10 @@ import Minty
 import SwiftUI
 
 struct ServerDetail: View {
+    @EnvironmentObject var data: DataSource
+
     let title: String
     let server: Server
-    let info: ServerInfo?
 
     var body: some View {
         List {
@@ -24,12 +25,12 @@ struct ServerDetail: View {
                 }
             }
 
-            if let info = info {
+            if let metadata = data.server {
                 Section {
                     HStack {
                         Text("Server Version")
                         Spacer()
-                        Text(info.version)
+                        Text(metadata.version)
                             .foregroundColor(.secondary)
                     }
                 }
@@ -41,17 +42,11 @@ struct ServerDetail: View {
 }
 
 struct ServerDetail_Previews: PreviewProvider {
-    private static let info: ServerInfo = {
-        var info = ServerInfo()
-        info.version = "0.1.0"
-        return info
-    }()
-
     static var previews: some View {
         ServerDetail(
             title: "Server",
-            server: Server(host: "127.0.0.1", port: 3000),
-            info: info
+            server: Server(host: "127.0.0.1", port: 3000)
         )
+        .environmentObject(DataSource.preview)
     }
 }

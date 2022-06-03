@@ -16,16 +16,14 @@ struct PostEditor: View {
                 DraftEditorLink(
                     title: "Title",
                     original: post.title,
-                    onSave: { errorHandler.handle { try post.commitTitle() } },
+                    onSave: { try await post.commitTitle() },
                     draft: $post.draftTitle
                 )
 
                 DraftEditorLink(
                     title: "Description",
                     original: post.description,
-                    onSave: {
-                        errorHandler.handle{ try post.commitDescription() }
-                    },
+                    onSave: { try await post.commitDescription() },
                     draft: $post.draftDescription
                 )
 
@@ -61,10 +59,10 @@ struct PostEditor: View {
                         tags: $post.tags,
                         search: tagSearch,
                         onAdd: { tag in
-                            errorHandler.handle { try post.addTag(tag: tag) }
+                            try await post.addTag(tag: tag)
                         },
                         onRemove: { tag in
-                            errorHandler.handle { try post.removeTag(tag: tag) }
+                            try await post.removeTag(tag: tag)
                         }
                     )) {
                         HStack {
@@ -96,7 +94,7 @@ struct PostEditor: View {
 
     private func delete() {
         errorHandler.handle {
-            try post.delete()
+            try await post.delete()
             dismiss()
         }
     }

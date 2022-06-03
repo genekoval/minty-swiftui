@@ -1,9 +1,11 @@
 import SwiftUI
 
 private struct DraftEditor: View {
+    @EnvironmentObject var errorHandler: ErrorHandler
+
     let title: String
     let original: String?
-    let onSave: () -> Void
+    let onSave: () async throws -> Void
 
     @Binding var draft: String
 
@@ -38,7 +40,7 @@ private struct DraftEditor: View {
     }
 
     private func done() {
-        if draftChanged { onSave() }
+        save()
         editorIsFocused = false
     }
 
@@ -46,12 +48,20 @@ private struct DraftEditor: View {
         draft = original ?? ""
         editorIsFocused = false
     }
+
+    private func save() {
+        guard draftChanged else { return }
+
+        errorHandler.handle {
+            try await onSave()
+        }
+    }
 }
 
 struct DraftEditorLink: View {
     let title: String
     let original: String?
-    let onSave: () -> Void
+    let onSave: () async throws -> Void
 
     @Binding var draft: String
 
@@ -79,8 +89,6 @@ struct DraftEditorLink: View {
 
 struct DraftEditorLink_Previews: PreviewProvider {
     private struct Preview: View {
-        @EnvironmentObject var errorHandler: ErrorHandler
-
         @StateObject private var tag =
             TagViewModel.preview(id: PreviewTag.helloWorld)
 
@@ -91,7 +99,7 @@ struct DraftEditorLink_Previews: PreviewProvider {
                         title: "Description",
                         original: tag.description,
                         onSave: {
-                            errorHandler.handle { try tag.commitDescription() }
+                            try await tag.commitDescription()
                         },
                         draft: $tag.draftDescription
                     )

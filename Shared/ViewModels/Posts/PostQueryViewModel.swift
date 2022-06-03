@@ -35,7 +35,7 @@ final class PostQueryViewModel: Search<PostViewModel, PostQuery> {
             deletionPublisher: Post.deleted,
             searchNow: searchNow
         ) { (repo, state, query) in
-            let results = try repo.getPosts(query: query)
+            let results = try await repo.getPosts(query: query)
             return (
                 hits: results.hits.map { state.posts.fetch(for: $0) },
                 total: Int(results.total)

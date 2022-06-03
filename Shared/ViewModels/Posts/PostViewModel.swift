@@ -69,9 +69,9 @@ final class PostViewModel:
         }
     }
 
-    func add(objects: [UUID], at position: Int) throws {
-        try withRepo("add objects") { repo in
-            modified = try repo.addPostObjects(
+    func add(objects: [UUID], at position: Int) async throws {
+        try await withRepo("add objects") { repo in
+            modified = try await repo.addPostObjects(
                 postId: id,
                 objects: objects,
                 position: Int16(position)
@@ -79,9 +79,9 @@ final class PostViewModel:
         }
     }
 
-    func add(post: PostViewModel) throws {
-        try withRepo("add related post") { repo in
-            try repo.addRelatedPost(postId: id, related: post.id)
+    func add(post: PostViewModel) async throws {
+        try await withRepo("add related post") { repo in
+            try await repo.addRelatedPost(postId: id, related: post.id)
         }
 
         posts.append(post)
@@ -98,23 +98,27 @@ final class PostViewModel:
         comments.insert(reply, at: index + 1)
     }
 
-    func addTag(tag: TagViewModel) throws {
-        try withRepo("add tag") { repo in
-            try repo.addPostTag(postId: id, tagId: tag.id)
+    func addTag(tag: TagViewModel) async throws {
+        try await withRepo("add tag") { repo in
+            try await repo.addPostTag(postId: id, tagId: tag.id)
         }
     }
 
-    func comment() throws {
-        try withRepo("add comment") { repo in
-            let result = try repo.addComment(postId: id, content: draftComment)
+    func comment() async throws {
+        try await withRepo("add comment") { repo in
+            let result = try await repo.addComment(
+                postId: id,
+                content: draftComment
+            )
+
             comments.insert(result, at: 0)
             draftComment.removeAll()
         }
     }
 
-    func commitDescription() throws {
-        try withRepo("set description") { repo in
-            let update = try repo.setPostDescription(
+    func commitDescription() async throws {
+        try await withRepo("set description") { repo in
+            let update = try await repo.setPostDescription(
                 postId: id,
                 description: draftDescription
             )
@@ -124,46 +128,52 @@ final class PostViewModel:
         }
     }
 
-    func commitTitle() throws {
-        try withRepo("set title") { repo in
-            let update = try repo.setPostTitle(postId: id, title: draftTitle)
+    func commitTitle() async throws {
+        try await withRepo("set title") { repo in
+            let update = try await repo.setPostTitle(
+                postId: id,
+                title: draftTitle
+            )
 
             title = update.newValue
             modified = update.modified
         }
     }
 
-    func delete() throws {
-        try withRepo("delete post") { repo in
-            try repo.deletePost(postId: id)
+    func delete() async throws {
+        try await withRepo("delete post") { repo in
+            try await repo.deletePost(postId: id)
         }
 
         Post.deleted.send(id)
     }
 
-    func delete(objects: [UUID]) throws {
-        try withRepo("delete objects") { repo in
-            modified = try repo.deletePostObjects(postId: id, objects: objects)
+    func delete(objects: [UUID]) async throws {
+        try await withRepo("delete objects") { repo in
+            modified = try await repo.deletePostObjects(
+                postId: id,
+                objects: objects
+            )
         }
     }
 
-    func delete(post: PostViewModel) throws {
-        try withRepo("delete related post") { repo in
-            try repo.deleteRelatedPost(postId: id, related: post.id)
+    func delete(post: PostViewModel) async throws {
+        try await withRepo("delete related post") { repo in
+            try await repo.deleteRelatedPost(postId: id, related: post.id)
         }
 
         posts.remove(id: post.id)
     }
 
-    private func fetchComments() throws {
-        try withRepo("fetch comments") { repo in
-            comments = try repo.getComments(postId: id)
+    private func fetchComments() async throws {
+        try await withRepo("fetch comments") { repo in
+            comments = try await repo.getComments(postId: id)
         }
     }
 
-    private func fetchData() throws {
-        try withRepo("fetch data") { repo in
-            load(try repo.getPost(postId: id))
+    private func fetchData() async throws {
+        try await withRepo("fetch data") { repo in
+            load(try await repo.getPost(postId: id))
         }
     }
 
@@ -185,9 +195,9 @@ final class PostViewModel:
         created = preview.dateCreated
     }
 
-    func move(objects: [UUID], to destination: UUID?) throws {
-        try withRepo("move objects") { repo in
-            modified = try repo.movePostObjects(
+    func move(objects: [UUID], to destination: UUID?) async throws {
+        try await withRepo("move objects") { repo in
+            modified = try await repo.movePostObjects(
                 postId: id,
                 objects: objects,
                 destination: destination
@@ -201,18 +211,18 @@ final class PostViewModel:
         }
     }
 
-    override func refresh() throws {
-        try fetchData()
-        try fetchComments()
+    override func refresh() async throws {
+        try await fetchData()
+        try await fetchComments()
     }
 
     private func removeLocalTag(id: UUID) {
         tags.remove(id: id)
     }
 
-    func removeTag(tag: TagViewModel) throws {
-        try withRepo("delete tag") { repo in
-            try repo.deletePostTag(postId: id, tagId: tag.id)
+    func removeTag(tag: TagViewModel) async throws {
+        try await withRepo("delete tag") { repo in
+            try await repo.deletePostTag(postId: id, tagId: tag.id)
         }
     }
 }

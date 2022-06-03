@@ -43,7 +43,9 @@ struct TagDetail: View {
             // Refresh after a short delay to avoid a race condition in which
             // the new post does not appear in the results.
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                try? recentPosts.refresh()
+                Task {
+                    try? await recentPosts.refresh()
+                }
             }
         }
     }

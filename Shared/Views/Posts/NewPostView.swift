@@ -78,8 +78,8 @@ struct NewPostView: View {
         _post = StateObject(wrappedValue: NewPostViewModel(tag: tag))
     }
 
-    private func create() throws {
-        let id = try post.create()
+    private func create() async throws {
+        let id = try await post.create()
         onCreated(id)
     }
 }

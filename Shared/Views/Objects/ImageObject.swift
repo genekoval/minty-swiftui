@@ -12,6 +12,8 @@ struct ImageObject<Content, Placeholder>: View where
     let content: (Image) -> Content
     let placeholder: () -> Placeholder
 
+    @State private var url: URL?
+
     var body: some View {
         AsyncImage(url: url) { image in
             content(
@@ -22,17 +24,9 @@ struct ImageObject<Content, Placeholder>: View where
         } placeholder: {
             placeholder()
         }
-    }
-
-    private var url: URL? {
-        do {
-            return try objects.url(for: id)
+        .task {
+            await fetchObject()
         }
-        catch {
-            errorHandler.handle(error: error)
-        }
-
-        return nil
     }
 
     init(id: UUID?) where
@@ -60,6 +54,15 @@ struct ImageObject<Content, Placeholder>: View where
         self.id = id
         self.content = content
         self.placeholder = placeholder
+    }
+
+    private func fetchObject() async {
+        do {
+            url = try await objects.url(for: id)
+        }
+        catch {
+            errorHandler.handle(error: error)
+        }
     }
 }
 

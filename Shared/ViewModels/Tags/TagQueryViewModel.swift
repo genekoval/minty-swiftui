@@ -22,7 +22,7 @@ final class TagQueryViewModel: Search<TagViewModel, TagQuery> {
             query: query,
             deletionPublisher: Tag.deleted
         ) { (repo, state, query) in
-            let results = try repo.getTags(query: query)
+            let results = try await repo.getTags(query: query)
             return (
                 hits: results.hits.map { state.tags.fetch(for: $0) },
                 total: Int(results.total)

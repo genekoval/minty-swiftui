@@ -11,24 +11,24 @@ enum EditorState {
 
 class Selectable: ObservableObject {
     let object: ObjectPreview
-    private let action: (UUID) throws -> Void
+    private let action: (UUID) async throws -> Void
 
     @Published var selected = false
 
-    init(object: ObjectPreview, action: @escaping (UUID) throws -> Void) {
+    init(object: ObjectPreview, action: @escaping (UUID) async throws -> Void) {
         self.object = object
         self.action = action
     }
 
-    func performAction() throws {
-        try action(object.id)
+    func performAction() async throws {
+        try await action(object.id)
     }
 }
 
 enum EditorItem: Identifiable {
     case object(Selectable)
-    case addButton(([ObjectPreview]) throws -> Void, () -> Void)
-    case placeholder(() throws -> Void)
+    case addButton(([ObjectPreview]) async throws -> Void, () -> Void)
+    case placeholder(() async throws -> Void)
 
     var id: String {
         switch self {
@@ -49,11 +49,11 @@ protocol ObjectCollection {
 }
 
 protocol ObjectEditorSubscriber {
-    func add(objects: [UUID], at position: Int) throws
+    func add(objects: [UUID], at position: Int) async throws
 
-    func delete(objects: [UUID]) throws
+    func delete(objects: [UUID]) async throws
 
-    func move(objects: [UUID], to destination: UUID?) throws
+    func move(objects: [UUID], to destination: UUID?) async throws
 }
 
 class ObjectEditorViewModel: ObservableObject {
@@ -123,16 +123,19 @@ class ObjectEditorViewModel: ObservableObject {
         enableAddButton()
     }
 
-    private func addObjects(_ objects: [ObjectPreview]) throws {
-        try subscriber?.add(objects: objects.map { $0.id }, at: insertionPoint)
+    private func addObjects(_ objects: [ObjectPreview]) async throws {
+        try await subscriber?.add(
+            objects: objects.map { $0.id },
+            at: insertionPoint
+        )
         collection.objects.insert(contentsOf: objects, at: insertionPoint)
 
         insertionPoint += collection.objects.count
         enableAddButton()
     }
 
-    private func deleteObjects(_ objects: [ObjectPreview]) throws {
-        try subscriber?.delete(objects: objects.map { $0.id })
+    private func deleteObjects(_ objects: [ObjectPreview]) async throws {
+        try await subscriber?.delete(objects: objects.map { $0.id })
 
         collection.objects.remove(all: objects)
 
@@ -141,8 +144,8 @@ class ObjectEditorViewModel: ObservableObject {
         }
     }
 
-    func deleteSelected() throws {
-        try deleteObjects(selected)
+    func deleteSelected() async throws {
+        try await deleteObjects(selected)
     }
 
     func deselectAll() {
@@ -169,8 +172,11 @@ class ObjectEditorViewModel: ObservableObject {
     private func moveObjects(
         _ objects: [ObjectPreview],
         to destination: UUID?
-    ) throws {
-        try subscriber?.move(objects: objects.map { $0.id }, to: destination)
+    ) async throws {
+        try await subscriber?.move(
+            objects: objects.map { $0.id },
+            to: destination
+        )
 
         let source = IndexSet(objects.compactMap { object in
             collection.objects.firstIndex(of: object)
@@ -185,12 +191,12 @@ class ObjectEditorViewModel: ObservableObject {
         state = .adding
     }
 
-    private func moveSelected(to destination: UUID? = nil) throws {
-        try moveObjects(selected, to: destination)
+    private func moveSelected(to destination: UUID? = nil) async throws {
+        try await moveObjects(selected, to: destination)
     }
 
-    private func moveSelectedToEnd() throws {
-        try moveSelected()
+    private func moveSelectedToEnd() async throws {
+        try await moveSelected()
     }
 
     private func rebuildItems(objects: [ObjectPreview]) {
@@ -201,9 +207,9 @@ class ObjectEditorViewModel: ObservableObject {
         })
     }
 
-    private func selectableAction(id: UUID) throws {
+    private func selectableAction(id: UUID) async throws {
         if state == .moving {
-            try moveSelected(to: id)
+            try await moveSelected(to: id)
         }
         else if state == .movingInsertionPoint {
             let index = items.firstIndex(where: { $0.id == id.uuidString })!

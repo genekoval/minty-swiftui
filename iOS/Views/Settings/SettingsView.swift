@@ -15,8 +15,7 @@ struct SettingsView: View {
                     if let server = settings.server {
                         NavigationLink(destination: ServerDetail(
                             title: "Current Server",
-                            server: server,
-                            info: try? data.repo?.getServerInfo()
+                            server: server
                         )) {
                             VStack {
                                 Text("Current Server")

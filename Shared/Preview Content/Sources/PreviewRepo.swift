@@ -2,22 +2,22 @@ import Foundation
 import Minty
 
 final class PreviewRepo: MintyRepo {
-    func addComment(postId: UUID, content: String) throws -> Comment {
+    func addComment(postId: UUID, content: String) async throws -> Comment {
         throw PreviewError.notSupported
     }
 
     func addObjectData(
-        count: Int,
-        data: @escaping (DataWriter) -> Void
-    ) throws -> ObjectPreview {
+        size: Int,
+        writer: @escaping (DataWriter) async throws -> Void
+    ) async throws -> ObjectPreview {
         throw PreviewError.notSupported
     }
 
-    func addObjectsUrl(url: String) throws -> [ObjectPreview] {
+    func addObjectsUrl(url: String) async throws -> [ObjectPreview] {
         throw PreviewError.notSupported
     }
 
-    func addPost(parts: PostParts) throws -> UUID {
+    func addPost(parts: PostParts) async throws -> UUID {
         return Post.preview(add: parts)
     }
 
@@ -25,7 +25,7 @@ final class PreviewRepo: MintyRepo {
         postId: UUID,
         objects: [UUID],
         position: Int16
-    ) throws -> Date {
+    ) async throws -> Date {
         let previews = objects.map { ObjectPreview.preview(id: $0) }
 
         Post.preview(edit: postId) { post in
@@ -35,42 +35,42 @@ final class PreviewRepo: MintyRepo {
         return Date()
     }
 
-    func addPostTag(postId: UUID, tagId: UUID) throws {
+    func addPostTag(postId: UUID, tagId: UUID) async throws {
         Post.preview(edit: postId) { post in
             post.tags.append(TagPreview.preview(id: tagId))
         }
     }
 
-    func addRelatedPost(postId: UUID, related: UUID) throws {
+    func addRelatedPost(postId: UUID, related: UUID) async throws {
         Post.preview(edit: postId) { post in
             post.posts.append(PostPreview.preview(id: related))
         }
     }
 
-    func addReply(parentId: UUID, content: String) throws -> Comment {
+    func addReply(parentId: UUID, content: String) async throws -> Comment {
         throw PreviewError.notSupported
     }
 
-    func addTag(name: String) throws -> UUID {
+    func addTag(name: String) async throws -> UUID {
         Tag.preview(add: name)
     }
 
-    func addTagAlias(tagId: UUID, alias: String) throws -> TagName {
+    func addTagAlias(tagId: UUID, alias: String) async throws -> TagName {
         Tag.preview(edit: tagId) { $0.aliases.append(alias) }
         return Tag.preview(namesFor: tagId)
     }
 
-    func addTagSource(tagId: UUID, url: String) throws -> Source {
+    func addTagSource(tagId: UUID, url: String) async throws -> Source {
         let source = Source.preview(add: url)
         Tag.preview(edit: tagId) { $0.sources.append(source) }
         return source
     }
 
-    func deletePost(postId: UUID) throws {
+    func deletePost(postId: UUID) async throws {
         Post.preview(remove: postId)
     }
 
-    func deletePostObjects(postId: UUID, objects: [UUID]) throws -> Date {
+    func deletePostObjects(postId: UUID, objects: [UUID]) async throws -> Date {
         Post.preview(edit: postId) { post in
             for id in objects {
                 post.objects.remove(id: id)
@@ -83,27 +83,27 @@ final class PreviewRepo: MintyRepo {
     func deletePostObjects(
         postId: UUID,
         ranges: [Range<Int32>]
-    ) throws -> Date {
+    ) async throws -> Date {
         throw PreviewError.notSupported
     }
 
-    func deletePostTag(postId: UUID, tagId: UUID) throws {
+    func deletePostTag(postId: UUID, tagId: UUID) async throws {
         Post.preview(edit: postId) { post in
             post.tags.remove(id: tagId)
         }
     }
 
-    func deleteRelatedPost(postId: UUID, related: UUID) throws {
+    func deleteRelatedPost(postId: UUID, related: UUID) async throws {
         Post.preview(edit: postId) { post in
             post.posts.remove(id: related)
         }
     }
 
-    func deleteTag(tagId: UUID) throws {
+    func deleteTag(tagId: UUID) async throws {
         Tag.preview(remove: tagId)
     }
 
-    func deleteTagAlias(tagId: UUID, alias: String) throws -> TagName {
+    func deleteTagAlias(tagId: UUID, alias: String) async throws -> TagName {
         var tag = Tag.preview(id: tagId)
         tag.aliases.removeAll { $0 == alias }
 
@@ -116,36 +116,36 @@ final class PreviewRepo: MintyRepo {
         return result
     }
 
-    func deleteTagSource(tagId: UUID, sourceId: String) throws {
+    func deleteTagSource(tagId: UUID, sourceId: String) async throws {
         Tag.preview(edit: tagId) { tag in
             tag.sources.removeAll { $0.id == sourceId }
         }
     }
 
-    func getComment(commentId: UUID) throws -> CommentDetail {
+    func getComment(commentId: UUID) async throws -> CommentDetail {
         throw PreviewError.notSupported
     }
 
-    func getComments(postId: UUID) throws -> [Comment] {
+    func getComments(postId: UUID) async throws -> [Comment] {
         Comment.preview(for: postId)
     }
 
-    func getObject(objectId: UUID) throws -> Object {
+    func getObject(objectId: UUID) async throws -> Object {
         Object.preview(id: objectId)
     }
 
     func getObjectData(
         objectId: UUID,
-        handler: (Data) throws -> Void
-    ) throws {
+        handler: (Data) async throws -> Void
+    ) async throws {
         throw PreviewError.notSupported
     }
 
-    func getPost(postId: UUID) throws -> Post {
+    func getPost(postId: UUID) async throws -> Post {
         Post.preview(id: postId)
     }
 
-    func getPosts(query: PostQuery) throws -> SearchResult<PostPreview> {
+    func getPosts(query: PostQuery) async throws -> SearchResult<PostPreview> {
         let posts = PostPreview.preview(query: query)
         var result = SearchResult<PostPreview>()
 
@@ -155,15 +155,15 @@ final class PreviewRepo: MintyRepo {
         return result
     }
 
-    func getServerInfo() throws -> ServerInfo {
+    func getServerInfo() async throws -> ServerInfo {
         throw PreviewError.notSupported
     }
 
-    func getTag(tagId: UUID) throws -> Tag {
+    func getTag(tagId: UUID) async throws -> Tag {
         Tag.preview(id: tagId)
     }
 
-    func getTags(query: TagQuery) throws -> SearchResult<TagPreview> {
+    func getTags(query: TagQuery) async throws -> SearchResult<TagPreview> {
         let tags = TagPreview.preview(query: query.name)
         var result = SearchResult<TagPreview>()
 
@@ -177,7 +177,7 @@ final class PreviewRepo: MintyRepo {
         postId: UUID,
         oldIndex: UInt32,
         newIndex: UInt32
-    ) throws {
+    ) async throws {
         Post.preview(edit: postId) { post in
             let source = IndexSet(integer: Int(oldIndex))
             let destination = Int(newIndex)
@@ -190,7 +190,7 @@ final class PreviewRepo: MintyRepo {
         postId: UUID,
         objects: [UUID],
         destination: UUID?
-    ) throws -> Date {
+    ) async throws -> Date {
         Post.preview(edit: postId) { post in
             let source = IndexSet(objects.map { object in
                 post.objects.firstIndex(where: { $0.id == object })!
@@ -208,14 +208,14 @@ final class PreviewRepo: MintyRepo {
     func setCommentContent(
         commentId: UUID,
         content: String
-    ) throws -> String {
+    ) async throws -> String {
         throw PreviewError.notSupported
     }
 
     func setPostDescription(
         postId: UUID,
         description: String
-    ) throws -> Modification<String?> {
+    ) async throws -> Modification<String?> {
         let result = Modification<String?>(
             newValue: description.isEmpty ? nil : description
         )
@@ -226,7 +226,7 @@ final class PreviewRepo: MintyRepo {
     func setPostTitle(
         postId: UUID,
         title: String
-    ) throws -> Modification<String?> {
+    ) async throws -> Modification<String?> {
         let result = Modification<String?>(
             newValue: title.isEmpty ? nil : title
         )
@@ -237,13 +237,13 @@ final class PreviewRepo: MintyRepo {
     func setTagDescription(
         tagId: UUID,
         description: String
-    ) throws -> String? {
+    ) async throws -> String? {
         let value = description.isEmpty ? nil : description
         Tag.preview(edit: tagId) { $0.description = value }
         return value
     }
 
-    func setTagName(tagId: UUID, newName: String) throws -> TagName {
+    func setTagName(tagId: UUID, newName: String) async throws -> TagName {
         var tag = Tag.preview(id: tagId)
         tag.name = newName
 
@@ -257,9 +257,15 @@ final class PreviewRepo: MintyRepo {
     }
 }
 
+private func connect(
+    server: Server
+) async throws -> (MintyRepo, ServerMetadata) {
+    var metadata = ServerMetadata()
+    metadata.version = "0.0.0"
+
+    return (PreviewRepo(), metadata)
+}
+
 extension DataSource {
-    static let preview = DataSource(
-        connect: { _ in PreviewRepo() },
-        repo: PreviewRepo()
-    )
+    static let preview = DataSource(connect: connect)
 }

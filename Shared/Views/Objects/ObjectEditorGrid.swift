@@ -4,7 +4,7 @@ import SwiftUI
 private let moveSymbol = "arrow.up.and.down.and.arrow.left.and.right"
 
 private struct AddButton: View {
-    let onUpload: ([ObjectPreview]) throws -> Void
+    let onUpload: ([ObjectPreview]) async throws -> Void
     let alternateAction: () -> Void
 
     let state: EditorState
@@ -56,7 +56,7 @@ private struct SelectorItem: View {
                     selectable.selected.toggle()
                 }
                 else if isMoveTarget {
-                    errorHandler.handle { try selectable.performAction() }
+                    errorHandler.handle { try await selectable.performAction() }
                 }
             }
             .overlay {
@@ -86,7 +86,7 @@ private struct SelectorItem: View {
 private struct Placeholder: View {
     @EnvironmentObject var errorHandler: ErrorHandler
 
-    let action: () throws -> Void
+    let action: () async throws -> Void
 
     var body: some View {
         Image(systemName: "square.dashed")
@@ -95,7 +95,7 @@ private struct Placeholder: View {
             .foregroundColor(.secondary)
             .frame(width: 50)
             .onTapGesture {
-                errorHandler.handle { try action() }
+                errorHandler.handle { try await action() }
             }
     }
 }
@@ -155,7 +155,7 @@ struct ObjectEditorGrid: View {
         if editor.state == .selecting {
             Button(action: {
                 errorHandler.handle {
-                    try editor.deleteSelected()
+                    try await editor.deleteSelected()
                 }
             }) {
                 Image(systemName: "trash")

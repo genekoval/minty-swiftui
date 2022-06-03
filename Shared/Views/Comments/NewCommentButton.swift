@@ -18,7 +18,7 @@ struct NewCommentButton: View {
     }
 
     private func done() {
-        errorHandler.handle { try post.comment() }
+        errorHandler.handle { try await post.comment() }
     }
 }
 

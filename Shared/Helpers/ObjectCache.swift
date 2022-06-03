@@ -109,12 +109,12 @@ final class ObjectCache: ObjectSource {
         guard let repo = repo else { return nil }
 
         let (data, _) = try await URLSession.shared.data(from: url)
-        return try repo.addObjectData(count: data.count, data: { writer in
-            writer.write(data: data)
-        })
+        return try await repo.addObjectData(size: data.count) { writer in
+            try await writer.write(data: data)
+        }
     }
 
-    override func url(for objectId: UUID) throws -> URL? {
+    override func url(for objectId: UUID) async throws -> URL? {
         let url = getObjectURL(id: objectId)
 
         if fileManager.fileExists(atPath: url.path) {
@@ -131,7 +131,7 @@ final class ObjectCache: ObjectSource {
         do {
             let handle = try FileHandle(forWritingTo: url)
 
-            try repo.getObjectData(objectId: objectId) { data in
+            try await repo.getObjectData(objectId: objectId) { data in
                 try handle.write(contentsOf: data)
             }
         }
@@ -144,7 +144,9 @@ final class ObjectCache: ObjectSource {
         }
 
         do {
-            try refresh()
+            try await MainActor.run {
+                try refresh()
+            }
         }
         catch {
             let log = "Failed to refresh cache list after download: \(error)"

@@ -27,11 +27,11 @@ private struct PostSelectRow: View {
     }
 
     private func addPost() {
-        errorHandler.handle { try parent.add(post: post) }
+        errorHandler.handle { try await parent.add(post: post) }
     }
 
     private func removePost() {
-        errorHandler.handle { try parent.delete(post: post) }
+        errorHandler.handle { try await parent.delete(post: post) }
     }
 
     private func selectionChanged() {

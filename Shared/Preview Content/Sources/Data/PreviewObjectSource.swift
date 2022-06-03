@@ -14,7 +14,7 @@ final class PreviewObjectSource: ObjectSource {
         cachedObjects = objects
     }
 
-    override func makeUploadable(text: String) -> Uploadable {
+    override func makeUploadable(text: String) async throws -> Uploadable {
         guard let id = UUID(uuidString: text) else {
             return .url(text)
         }
@@ -22,7 +22,7 @@ final class PreviewObjectSource: ObjectSource {
         return .existingObject(ObjectPreview.preview(id: id))
     }
 
-    override func url(for objectId: UUID) -> URL? {
+    override func url(for objectId: UUID) async throws -> URL? {
         guard let resource = resources[objectId] else {
             fatalError("no resource with ID: \(objectId)")
         }

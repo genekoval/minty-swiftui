@@ -15,8 +15,9 @@ struct TagEditor: View {
                     HStack {
                         TextField("Name", text: $tag.draftName)
                             .onSubmit {
-                                errorHandler.handle { try tag.commitName() }
-
+                                errorHandler.handle {
+                                    try await tag.commitName()
+                                }
                             }
                             .submitLabel(.done)
                     }
@@ -32,7 +33,7 @@ struct TagEditor: View {
                         if tag.draftNameValid {
                             Button(action: {
                                 errorHandler.handle {
-                                    try tag.commitName()
+                                    try await tag.commitName()
                                 }
                             }) {
                                 HStack {
@@ -51,7 +52,7 @@ struct TagEditor: View {
                             Spacer()
                             Button(action: {
                                 errorHandler.handle {
-                                    try tag.swap(alias: alias)
+                                    try await tag.swap(alias: alias)
                                 }
                             }) {
                                 Image(systemName: "rectangle.2.swap")
@@ -61,7 +62,7 @@ struct TagEditor: View {
                     .onDelete {
                         if let index = $0.first {
                             errorHandler.handle {
-                                try tag.deleteAlias(at: index)
+                                try await tag.deleteAlias(at: index)
                             }
                         }
                     }
@@ -69,7 +70,7 @@ struct TagEditor: View {
                     HStack {
                         if tag.draftAliasValid {
                             Button(action: {
-                                errorHandler.handle { try tag.addAlias() }
+                                errorHandler.handle { try await tag.addAlias() }
                             }) {
                                 Image(systemName: "plus.circle.fill")
                                     .foregroundColor(.green)
@@ -82,7 +83,7 @@ struct TagEditor: View {
 
                         TextField("Add alias", text: $tag.draftAlias)
                             .onSubmit {
-                                errorHandler.handle { try tag.addAlias() }
+                                errorHandler.handle { try await tag.addAlias() }
                             }
                             .submitLabel(.done)
                     }
@@ -92,7 +93,9 @@ struct TagEditor: View {
                     title: "Description",
                     original: tag.description,
                     onSave: {
-                        errorHandler.handle { try tag.commitDescription() }
+                        errorHandler.handle {
+                            try await tag.commitDescription()
+                        }
                     },
                     draft: $tag.draftDescription
                 )
@@ -102,7 +105,7 @@ struct TagEditor: View {
                         .onDelete {
                             if let index = $0.first {
                                 errorHandler.handle {
-                                    try tag.deleteSource(at: index)
+                                    try await tag.deleteSource(at: index)
                                 }
                             }
                         }
@@ -110,7 +113,10 @@ struct TagEditor: View {
                     HStack {
                         if tag.draftSourceValid {
                             Button(action: {
-                                errorHandler.handle { try tag.addSource() }
+                                errorHandler.handle {
+                                    try await tag.addSource()
+
+                                }
                             }) {
                                 Image(systemName: "plus.circle.fill")
                                     .foregroundColor(.green)
@@ -125,7 +131,9 @@ struct TagEditor: View {
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
                             .onSubmit {
-                                errorHandler.handle { try tag.addSource() }
+                                errorHandler.handle {
+                                    try await tag.addSource()
+                                }
                             }
                             .submitLabel(.done)
                     }
@@ -146,7 +154,7 @@ struct TagEditor: View {
 
     private func delete() {
         errorHandler.handle {
-            try tag.delete()
+            try await tag.delete()
             dismiss()
         }
     }

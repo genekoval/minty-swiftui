@@ -45,9 +45,9 @@ private struct SearchView<Content: View>: View {
                     content(tag)
                 }
 
-                if search.resultsAvailable {
+                if !search.complete {
                     ProgressView()
-                        .onAppear { search.nextPage() }
+                        .onAppear { Task { await search.nextPage() } }
                         .progressViewStyle(.circular)
                 }
             }
@@ -58,11 +58,13 @@ private struct SearchView<Content: View>: View {
 private struct TagSelectorCore: View {
     @Environment(\.isSearching) var isSearching
 
+    @EnvironmentObject var errorHandler: ErrorHandler
+
     @Binding var tags: [TagViewModel]
     @ObservedObject var search: TagQueryViewModel
 
-    var onAdd: ((TagViewModel) -> Void)?
-    var onRemove: ((TagViewModel) -> Void)?
+    var onAdd: (TagViewModel) async throws -> Void
+    var onRemove: (TagViewModel) async throws -> Void
 
     var body: some View {
         if isSearching {
@@ -110,12 +112,14 @@ private struct TagSelectorCore: View {
     }
 
     private func add(tag: TagViewModel) {
-        onAdd?(tag)
+        errorHandler.handle { try await onAdd(tag) }
         tags.append(tag)
     }
 
     private func remove(index: Int) {
-        onRemove?(tags[index])
+        let tag = tags[index]
+
+        errorHandler.handle { try await onRemove(tag) }
         tags.remove(at: index)
     }
 }
@@ -126,8 +130,8 @@ struct TagSelector: View {
     @Binding var tags: [TagViewModel]
     @ObservedObject var search: TagQueryViewModel
 
-    private let onAdd: ((TagViewModel) -> Void)?
-    private let onRemove: ((TagViewModel) -> Void)?
+    private let onAdd: (TagViewModel) async throws -> Void
+    private let onRemove: (TagViewModel) async throws -> Void
 
     var body: some View {
         TagSelectorCore(
@@ -150,8 +154,8 @@ struct TagSelector: View {
     init(
         tags: Binding<[TagViewModel]>,
         search: TagQueryViewModel,
-        onAdd: ((TagViewModel) -> Void)? = nil,
-        onRemove: ((TagViewModel) -> Void)? = nil
+        onAdd: @escaping (TagViewModel) async throws -> Void,
+        onRemove: @escaping (TagViewModel) async throws -> Void
     ) {
         _tags = tags
         self.search = search
@@ -171,7 +175,12 @@ struct TagSelector_Previews: PreviewProvider {
 
         var body: some View {
             NavigationView {
-                TagSelector(tags: $tags, search: search)
+                TagSelector(
+                    tags: $tags,
+                    search: search,
+                    onAdd: { _ in },
+                    onRemove: { _ in }
+                )
             }
         }
     }

@@ -5,8 +5,10 @@ private func info(key: String) -> String? {
     Bundle.main.object(forInfoDictionaryKey: key) as? String
 }
 
-private func connect(server: Server) -> MintyRepo? {
-    try? ZiplineClient(host: server.host, port: server.port)
+private func connect(
+    server: Server
+) async throws -> (MintyRepo, ServerMetadata) {
+    try await ZiplineClient.create(host: server.host, port: server.port)
 }
 
 @main

@@ -1,11 +1,13 @@
 import SwiftUI
 
 struct CommentEditor: View {
+    @EnvironmentObject var errorHandler: ErrorHandler
+
     let type: String
 
     @Binding var draft: String
 
-    let onDone: () -> Void
+    let onDone: () async throws -> Void
 
     var body: some View {
         SheetView(title: "\(type) Comment", done: (

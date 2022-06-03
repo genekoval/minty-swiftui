@@ -1,8 +1,6 @@
 import SwiftUI
 
 struct CommentMenu: View {
-    @EnvironmentObject var errorHandler: ErrorHandler
-
     @ObservedObject var comment: CommentViewModel
 
     @State private var showingEditor = false
@@ -18,12 +16,12 @@ struct CommentMenu: View {
         }
         .sheet(isPresented: $showingEditor) {
             CommentEditor(type: "Edit", draft: $comment.draftContent) {
-                errorHandler.handle { try comment.commitContent() }
+                try await comment.commitContent()
             }
         }
         .sheet(isPresented: $showingReplyEditor) {
             CommentEditor(type: "New", draft: $comment.draftReply) {
-                errorHandler.handle { try comment.reply() }
+                try await comment.reply()
             }
         }
     }

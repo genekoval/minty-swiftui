@@ -18,7 +18,12 @@ struct TagSelectButton: View {
         }
         .sheet(isPresented: $selectorPresented) {
             NavigationView {
-                TagSelector(tags: $tags, search: search)
+                TagSelector(
+                    tags: $tags,
+                    search: search,
+                    onAdd: { _ in },
+                    onRemove: { _ in }
+                )
             }
         }
     }

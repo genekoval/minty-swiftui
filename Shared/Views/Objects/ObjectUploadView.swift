@@ -7,7 +7,7 @@ struct ObjectUploadView: View {
     @EnvironmentObject var errorHandler: ErrorHandler
     @EnvironmentObject var source: ObjectSource
 
-    let onUpload: ([ObjectPreview]) throws -> Void
+    let onUpload: ([ObjectPreview]) async throws -> Void
 
     @State private var imageURL: URL?
     @State private var inputImage: UIImage?
@@ -100,12 +100,9 @@ struct ObjectUploadView: View {
     }
 
     private func textSubmitted() {
-        do {
-            uploads.append(try source.makeUploadable(text: text))
+        errorHandler.handle {
+            uploads.append(try await source.makeUploadable(text: text))
             text.removeAll()
-        }
-        catch {
-            errorHandler.handle(error: error)
         }
     }
 
@@ -125,7 +122,7 @@ struct ObjectUploadView: View {
 
             if !objects.isEmpty {
                 do {
-                    try onUpload(objects)
+                    try await onUpload(objects)
                 }
                 catch {
                     errorHandler.handle(error: error)

@@ -3,7 +3,7 @@ import SwiftUI
 struct SheetView<Content>: View where Content : View {
     typealias Done = (
         label: String,
-        action: () throws -> Void,
+        action: () async throws -> Void,
         disabled: (() -> Bool)?
     )
 
@@ -37,15 +37,15 @@ struct SheetView<Content>: View where Content : View {
     @ViewBuilder
     private var doneButton: some View {
         if let done = done {
-            Button(action: {
+            Button(action: { Task {
                 do {
-                    try done.action()
+                    try await done.action()
                     dismiss()
                 }
                 catch {
                     errorHandler.handle(error: error)
                 }
-            }) {
+            }}) {
                 Text(done.label)
                     .bold()
             }

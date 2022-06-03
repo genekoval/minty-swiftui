@@ -24,10 +24,10 @@ struct NewTag: View {
         }
     }
 
-    private func create() throws {
+    private func create() async throws {
         guard let repo = data.repo else { return }
 
-        let id = try repo.addTag(name: name)
+        let id = try await repo.addTag(name: name)
         onCreated(id)
     }
 }

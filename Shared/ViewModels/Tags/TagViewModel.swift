@@ -54,70 +54,74 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
         }
     }
 
-    func addAlias() throws {
+    func addAlias() async throws {
         guard draftAliasValid else { return }
 
-        try withRepo("add alias") { repo in
-            refreshNames(
-                names: try repo.addTagAlias(tagId: id, alias: draftAlias)
-            )
+        try await withRepo("add alias") { repo in
+            refresh(names: try await repo.addTagAlias(
+                tagId: id,
+                alias: draftAlias
+            ))
         }
 
         draftAlias = ""
     }
 
-    func addSource() throws {
+    func addSource() async  throws {
         guard draftSourceValid else { return }
 
-        try withRepo("add source") { repo in
-            sources.append(try repo.addTagSource(tagId: id, url: draftSource))
+        try await withRepo("add source") { repo in
+            sources.append(
+                try await repo.addTagSource(tagId: id, url: draftSource)
+            )
         }
 
         draftSource = ""
     }
 
-    func commitDescription() throws {
-        try withRepo("set description") { repo in
-            description = try repo.setTagDescription(
+    func commitDescription() async throws {
+        try await withRepo("set description") { repo in
+            description = try await repo.setTagDescription(
                 tagId: id,
                 description: draftDescription
             )
         }
     }
 
-    func commitName() throws {
+    func commitName() async throws {
         guard draftNameValid && draftName != name else { return }
-        try setName(name: draftName)
+        try await setName(name: draftName)
     }
 
-    func delete() throws {
-        try withRepo("delete tag") { repo in
-            try repo.deleteTag(tagId: id)
+    func delete() async throws {
+        try await withRepo("delete tag") { repo in
+            try await repo.deleteTag(tagId: id)
         }
 
         Tag.deleted.send(id)
     }
 
-    func deleteAlias(at index: Int) throws {
-        try withRepo("delete alias") { repo in
+    func deleteAlias(at index: Int) async throws {
+        try await withRepo("delete alias") { repo in
             let alias = aliases.remove(at: index)
-            let result = try repo.deleteTagAlias(tagId: id, alias: alias)
-            refreshNames(names: result)
+            let result = try await repo.deleteTagAlias(tagId: id, alias: alias)
+            refresh(names: result)
         }
     }
 
-    func deleteSource(at index: Int) throws {
-        try withRepo("delete source") { repo in
-            let source = sources[index].id
-            try repo.deleteTagSource(tagId: id, sourceId: source)
+    func deleteSource(at index: Int) async throws {
+        let source = sources[index].id
+
+        try await withRepo("delete source") { repo in
+            try await repo.deleteTagSource(tagId: id, sourceId: source)
         }
 
         sources.remove(at: index)
     }
 
-    override func refresh() throws {
-        try withRepo("fetch data") { repo in
-            load(try repo.getTag(tagId: id))
+    override func refresh() async throws {
+        try await withRepo("fetch data") { repo in
+            load(try await repo.getTag(tagId: id))
         }
     }
 
@@ -133,19 +137,19 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
         name = preview.name
     }
 
-    private func refreshNames(names: TagName) {
+    private func refresh(names: TagName) {
         name = names.name
         aliases = names.aliases
     }
 
-    private func setName(name: String) throws {
-        try withRepo("set name") { repo in
-            refreshNames(names: try repo.setTagName(tagId: id, newName: name))
+    private func setName(name: String) async throws {
+        try await withRepo("set name") { repo in
+            refresh(names: try await repo.setTagName(tagId: id, newName: name))
         }
     }
 
-    func swap(alias: String) throws {
-        try setName(name: alias)
+    func swap(alias: String) async throws {
+        try await setName(name: alias)
     }
 
     private func tagDeleted(id: UUID) {

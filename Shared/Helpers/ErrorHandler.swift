@@ -33,14 +33,16 @@ class ErrorHandler: ObservableObject {
     }
 
     func handle(
-        action: () throws -> Void,
+        action: @escaping () async throws -> Void,
         dismissAction: (() -> Void)? = nil
     ) {
-        do {
-            try action()
-        }
-        catch {
-            handle(error: error, dismissAction: dismissAction)
+        Task {
+            do {
+                try await action()
+            }
+            catch {
+                handle(error: error, dismissAction: dismissAction)
+            }
         }
     }
 }

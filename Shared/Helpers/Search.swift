@@ -11,7 +11,7 @@ protocol Query {
 protocol SearchElement : Identifiable { }
 
 protocol SearchObject {
-    func prepare(app: DataSource, errorHandler: ErrorHandler);
+    func prepare(app: DataSource, errorHandler: ErrorHandler) async
 }
 
 class Search<Element, QueryType> :
@@ -24,18 +24,21 @@ where
 {
     typealias Result = (hits: [Element], total: Int)
 
-    typealias SearchAction = (MintyRepo, AppState, QueryType) throws -> Result
+    typealias SearchAction =
+        (MintyRepo, AppState, QueryType) async throws -> Result
 
     @Published var hits: [Element] = []
     @Published var query: QueryType {
         didSet {
             if !modifyingQuery {
-                newSearch()
+                Task.detached { [weak self] in
+                    await self?.newSearch()
+                }
             }
         }
     }
 
-    @Published private(set) var initialSearch = false
+    @Published private(set) var resultsAvailable = false
     @Published private(set) var total = 0
 
     private var deletionCancellable: AnyCancellable?
@@ -44,8 +47,8 @@ where
     private let search: SearchAction
     private let searchNow: Bool
 
-    final var resultsAvailable: Bool {
-        hits.count < total
+    final var complete: Bool {
+        hits.count == total
     }
 
     init(
@@ -72,9 +75,9 @@ where
         hits.removeAll()
     }
 
-    override func refresh() throws {
+    override func refresh() async throws {
         clear()
-        if searchNow { performSearch() }
+        if searchNow { await performSearch() }
     }
 
     private func load(result: Result) {
@@ -88,21 +91,22 @@ where
         modifyingQuery = false
     }
 
-    private func newSearch() {
+    private func newSearch() async {
+        resultsAvailable = false
         clear()
-        performSearch()
+        await performSearch()
     }
 
-    final func nextPage() {
+    final func nextPage() async {
         modifyQuery { query.from += query.size }
-        performSearch()
+        await performSearch()
     }
 
-    private func performSearch() {
+    private func performSearch() async {
         do {
-            try withRepo("perform search") { repo in
-                load(result: try search(repo, app!.state, query))
-                initialSearch = true
+            try await withRepo("perform search") { repo in
+                load(result: try await search(repo, app!.state, query))
+                resultsAvailable = true
             }
         }
         catch {
@@ -110,9 +114,11 @@ where
         }
     }
 
-    func prepare(app: DataSource, errorHandler: ErrorHandler) {
+    func prepare(app: DataSource, errorHandler: ErrorHandler) async {
         self.errorHandler = errorHandler
-        errorHandler.handle { try load(app: app) }
+        errorHandler.handle { [weak self] in
+            try await self?.load(app: app)
+        }
     }
 
     private func remove(id: Element.ID) {

@@ -28,20 +28,24 @@ final class CommentViewModel: IdentifiableEntity, ObservableObject {
         }
     }
 
-    func commitContent() throws {
+    func commitContent() async throws {
         if draftContent == content { return }
 
-        try withRepo("update content") { repo in
-            content = try repo.setCommentContent(
+        try await withRepo("update content") { repo in
+            content = try await repo.setCommentContent(
                 commentId: id,
                 content: draftContent
             )
         }
     }
 
-    func reply() throws {
-        try withRepo("add reply") { repo in
-            let comment = try repo.addReply(parentId: id, content: draftReply)
+    func reply() async throws {
+        try await withRepo("add reply") { repo in
+            let comment = try await repo.addReply(
+                parentId: id,
+                content: draftReply
+            )
+
             try post.add(reply: comment, to: id)
             draftReply.removeAll()
         }
