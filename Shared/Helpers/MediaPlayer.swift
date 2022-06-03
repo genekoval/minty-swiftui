@@ -77,6 +77,7 @@ final class MediaPlayer: ObservableObject {
         $currentItem
             .sink { [weak self] item in
                 guard let self = self else { return }
+                guard item != self.currentItem else { return }
 
                 Task {
                     await self.setCurrentItem(to: item)
@@ -151,9 +152,8 @@ final class MediaPlayer: ObservableObject {
         }
     }
 
+    @MainActor
     private func setCurrentItem(to object: ObjectPreview?) async {
-        if object == currentItem { return }
-
         guard let object = object else {
             player.replaceCurrentItem(with: nil)
             return
