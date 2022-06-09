@@ -71,7 +71,7 @@ struct OverlayNavigationBar: View {
 
 struct OverlayNavigationBar_Previews: PreviewProvider {
     private struct Preview: View {
-        private let post = Post.preview(id: PreviewPost.sandDune)
+        private let post = PostViewModel.preview(id: PreviewPost.sandDune)
 
         @StateObject private var overlay = Overlay()
 

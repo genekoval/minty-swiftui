@@ -7,6 +7,8 @@ protocol ObjectProvider {
     var id: UUID { get }
 
     var objects: [ObjectPreview] { get }
+
+    var objectsPublisher: Published<[ObjectPreview]>.Publisher { get }
 }
 
 final class Overlay: ObservableObject {
@@ -17,6 +19,7 @@ final class Overlay: ObservableObject {
     @Published private(set) var objects: [ObjectPreview] = []
     @Published private(set) var visible = false
 
+    private var cancellable: AnyCancellable?
     private var infoPresented: Binding<UUID?>?
     private var providerId: UUID?
 
@@ -47,7 +50,11 @@ final class Overlay: ObservableObject {
         guard providerId != provider.id else { return }
 
         providerId = provider.id
-        self.objects = provider.objects.filter{ $0.isViewable }
+        cancellable = provider.objectsPublisher.sink { [weak self] in
+            guard let self = self else { return }
+            self.objects = $0.filter { $0.isViewable }
+        }
+
         self.infoPresented = infoPresented
     }
 
