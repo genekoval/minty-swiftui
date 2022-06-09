@@ -14,6 +14,7 @@ struct Grid<Content>: View where Content : View {
     var body: some View {
         LazyVGrid(columns: columns, spacing: spacing) {
             content
+                .aspectRatio(1, contentMode: .fit)
         }
     }
 
@@ -30,7 +31,8 @@ struct Grid_Previews: PreviewProvider {
                     .font(.system(.title, design: .monospaced))
             }
             .padding()
-            .border(.red)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .border(.black)
         }
     }
 }

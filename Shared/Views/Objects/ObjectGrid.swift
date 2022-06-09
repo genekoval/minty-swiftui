@@ -101,6 +101,7 @@ struct ObjectGrid: View {
                     selection: $selection
                 )
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .onAppear {
             overlay.load(provider: provider, infoPresented: $selection)
