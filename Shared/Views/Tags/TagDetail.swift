@@ -9,8 +9,6 @@ struct TagDetail: View {
     @StateObject private var recentPosts: PostQueryViewModel
     @StateObject private var search: PostQueryViewModel
 
-    @State private var showingEditor = false
-
     var body: some View {
         PaddedScrollView {
             tagInfo
@@ -20,12 +18,7 @@ struct TagDetail: View {
         }
         .navigationTitle(tag.name)
         .navigationBarTitleDisplayMode(.large)
-        .sheet(isPresented: $showingEditor) { TagEditor(tag: tag) }
-        .toolbar {
-            Button("Edit") {
-                showingEditor.toggle()
-            }
-        }
+        .toolbar { TagMenu(tag: tag) }
         .loadEntity(tag)
         .prepareSearch(recentPosts)
         .prepareSearch(search)
