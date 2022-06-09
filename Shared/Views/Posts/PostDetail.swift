@@ -6,8 +6,6 @@ struct PostDetail: View {
 
     @ObservedObject var post: PostViewModel
 
-    @State private var showingEditor = false
-
     var body: some View {
         PaddedScrollView {
             postInfo
@@ -16,13 +14,12 @@ struct PostDetail: View {
         }
         .navigationTitle("Post")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar { PostMenu(post: post) }
         .loadEntity(post)
         .onAppear {
             if post.deleted { dismiss() }
         }
         .onReceive(post.$deleted) { if $0 { dismiss() } }
-        .sheet(isPresented: $showingEditor) { PostEditor(post: post) }
-        .toolbar { Button("Edit") { showingEditor = true } }
     }
 
     @ViewBuilder
