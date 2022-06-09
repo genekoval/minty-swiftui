@@ -10,6 +10,7 @@ struct CommentMenu: View {
         Menu {
             edit
             reply
+            copy
         }
         label: {
             Image(systemName: "ellipsis.circle")
@@ -24,6 +25,11 @@ struct CommentMenu: View {
                 try await comment.reply()
             }
         }
+    }
+
+    @ViewBuilder
+    private var copy: some View {
+        CopyID(entity: comment)
     }
 
     @ViewBuilder
