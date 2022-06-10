@@ -1,18 +1,16 @@
-import Combine
 import Minty
 import SwiftUI
 
 struct ImageViewer: View {
     let object: ObjectPreview
 
-    @State private var scale: CGFloat = 1
-
     var body: some View {
-        ImageObject(id: object.id)
-            .swipeToDismiss(active: scale == 1)
-            .scaledToFit()
-            .zoomable(scale: $scale, minScale: 1)
-            .tapToHide()
+        switch object.subtype {
+        case "gif":
+            GifViewer(object: object)
+        default:
+            DefaultImageViewer(object: object)
+        }
     }
 }
 

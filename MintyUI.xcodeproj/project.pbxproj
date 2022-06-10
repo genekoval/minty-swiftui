@@ -140,6 +140,9 @@
 		BEA8C56D2785285300FFB7DD /* CommentEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA8C56C2785285300FFB7DD /* CommentEditor.swift */; };
 		BEAB78FC27925ECB00CF9AD6 /* Swipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAB78FB27925ECB00CF9AD6 /* Swipe.swift */; };
 		BEAB78FD27925ECB00CF9AD6 /* Swipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAB78FB27925ECB00CF9AD6 /* Swipe.swift */; };
+		BEABFAEC285330ED0062604F /* Gifu in Frameworks */ = {isa = PBXBuildFile; productRef = BEABFAEB285330ED0062604F /* Gifu */; };
+		BEABFAEE285331BF0062604F /* DefaultImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEABFAED285331BF0062604F /* DefaultImageViewer.swift */; };
+		BEABFAF0285333690062604F /* GifViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEABFAEF285333690062604F /* GifViewer.swift */; };
 		BEACEF8F2787F3260083D079 /* ObjectDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEACEF8E2787F3260083D079 /* ObjectDetail.swift */; };
 		BEAF65B3279B94C400FE2E36 /* TapToHide.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAF65B2279B94C400FE2E36 /* TapToHide.swift */; };
 		BEB07B85272B07E3004A942C /* PostRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB07B84272B07E3004A942C /* PostRow.swift */; };
@@ -328,6 +331,8 @@
 		BE9EAB9C28373FC100EDC8A7 /* NewTagButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTagButton.swift; sourceTree = "<group>"; };
 		BEA8C56C2785285300FFB7DD /* CommentEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentEditor.swift; sourceTree = "<group>"; };
 		BEAB78FB27925ECB00CF9AD6 /* Swipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swipe.swift; sourceTree = "<group>"; };
+		BEABFAED285331BF0062604F /* DefaultImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultImageViewer.swift; sourceTree = "<group>"; };
+		BEABFAEF285333690062604F /* GifViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifViewer.swift; sourceTree = "<group>"; };
 		BEACEF8E2787F3260083D079 /* ObjectDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDetail.swift; sourceTree = "<group>"; };
 		BEAF65B2279B94C400FE2E36 /* TapToHide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapToHide.swift; sourceTree = "<group>"; };
 		BEB07B84272B07E3004A942C /* PostRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRow.swift; sourceTree = "<group>"; };
@@ -383,6 +388,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE707F85279FB07A00FBDF61 /* Minty in Frameworks */,
+				BEABFAEC285330ED0062604F /* Gifu in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -661,6 +667,8 @@
 		BE6DECDE273468C400BB868B /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				BEABFAED285331BF0062604F /* DefaultImageViewer.swift */,
+				BEABFAEF285333690062604F /* GifViewer.swift */,
 				BED811502720EC5700929D4C /* ImageObject.swift */,
 				BEBFF685278BC60000E38BBB /* ImageViewer.swift */,
 				BEACEF8E2787F3260083D079 /* ObjectDetail.swift */,
@@ -834,6 +842,7 @@
 			name = "MintyUI (iOS)";
 			packageProductDependencies = (
 				BE707F84279FB07A00FBDF61 /* Minty */,
+				BEABFAEB285330ED0062604F /* Gifu */,
 			);
 			productName = "MintyUI (iOS)";
 			productReference = BE4654F4270CFA8E00D3C4FB /* MintyUI.app */;
@@ -929,6 +938,7 @@
 			mainGroup = BE4654E7270CFA8B00D3C4FB;
 			packageReferences = (
 				BE707F83279FB07A00FBDF61 /* XCRemoteSwiftPackageReference "minty-swift" */,
+				BEABFAEA285330ED0062604F /* XCRemoteSwiftPackageReference "Gifu" */,
 			);
 			productRefGroup = BE4654F5270CFA8E00D3C4FB /* Products */;
 			projectDirPath = "";
@@ -1034,10 +1044,12 @@
 				BEF8E21527B754A90089317A /* PaddedScrollView.swift in Sources */,
 				BE5AC1FF271B405800FCA45A /* TagViewModel.swift in Sources */,
 				BED04C5127179A1700EF00B8 /* TagDetail.swift in Sources */,
+				BEABFAEE285331BF0062604F /* DefaultImageViewer.swift in Sources */,
 				BE354F9F27A4D20900649B68 /* MediaOverlay.swift in Sources */,
 				BE158F7127D1905600F152C0 /* ErrorHandler.swift in Sources */,
 				BE158F7727D1AA1A00F152C0 /* Logger.swift in Sources */,
 				BE6A84FB271F2BB300D4566B /* PreviewSource.swift in Sources */,
+				BEABFAF0285333690062604F /* GifViewer.swift in Sources */,
 				BE11FDD627616DA5007B58BA /* NewPostButton.swift in Sources */,
 				BEBFF684278BC53900E38BBB /* ObjectViewer.swift in Sources */,
 				BE3E16B6273A0B8100052660 /* ClearableTextField.swift in Sources */,
@@ -1611,6 +1623,14 @@
 				kind = branch;
 			};
 		};
+		BEABFAEA285330ED0062604F /* XCRemoteSwiftPackageReference "Gifu" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kaishin/Gifu.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.3.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1618,6 +1638,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BE707F83279FB07A00FBDF61 /* XCRemoteSwiftPackageReference "minty-swift" */;
 			productName = Minty;
+		};
+		BEABFAEB285330ED0062604F /* Gifu */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEABFAEA285330ED0062604F /* XCRemoteSwiftPackageReference "Gifu" */;
+			productName = Gifu;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
