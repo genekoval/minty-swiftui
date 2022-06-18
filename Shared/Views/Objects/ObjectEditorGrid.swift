@@ -140,11 +140,13 @@ struct ObjectEditorGrid: View {
             ToolbarItem(placement: .cancellationAction) { selectAllButton }
             ToolbarItem(placement: .bottomBar) {
                 HStack {
-                    Spacer()
-                    moveButton
-                    Spacer()
-                    deleteButton
-                    Spacer()
+                    if editor.state == .selecting {
+                        Spacer()
+                        moveButton
+                        Spacer()
+                        deleteButton
+                        Spacer()
+                    }
                 }
             }
         }
@@ -152,16 +154,14 @@ struct ObjectEditorGrid: View {
 
     @ViewBuilder
     private var deleteButton: some View {
-        if editor.state == .selecting {
-            Button(action: {
-                errorHandler.handle {
-                    try await editor.deleteSelected()
-                }
-            }) {
-                Image(systemName: "trash")
+        Button(action: {
+            errorHandler.handle {
+                try await editor.deleteSelected()
             }
-            .disabled(editor.selected.isEmpty)
+        }) {
+            Image(systemName: "trash")
         }
+        .disabled(editor.selected.isEmpty)
     }
 
     @ViewBuilder
@@ -176,12 +176,10 @@ struct ObjectEditorGrid: View {
 
     @ViewBuilder
     private var moveButton: some View {
-        if editor.state == .selecting {
-            Button(action: { editor.state = .moving }) {
-                Image(systemName: moveSymbol)
-            }
-            .disabled(editor.selected.isEmpty || editor.allSelected)
+        Button(action: { editor.state = .moving }) {
+            Image(systemName: moveSymbol)
         }
+        .disabled(editor.selected.isEmpty || editor.allSelected)
     }
 
     @ViewBuilder

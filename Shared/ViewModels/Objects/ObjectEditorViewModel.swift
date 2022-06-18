@@ -139,9 +139,7 @@ class ObjectEditorViewModel: ObservableObject {
 
         collection.objects.remove(all: objects)
 
-        if isEmpty {
-            state = .adding
-        }
+        state = .adding
     }
 
     func deleteSelected() async throws {
