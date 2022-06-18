@@ -8,6 +8,7 @@ private struct GIFView: UIViewRepresentable {
     func makeUIView(context: Context) -> GIFImageView {
         let view = GIFImageView()
 
+        view.contentMode = .scaleAspectFit
         view.setShouldResizeFrames(true)
         view.animate(withGIFURL: url)
 
