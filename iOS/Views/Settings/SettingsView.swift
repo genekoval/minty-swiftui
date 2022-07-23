@@ -6,6 +6,8 @@ struct SettingsView: View {
     @EnvironmentObject var errorHandler: ErrorHandler
     @EnvironmentObject var objects: ObjectSource
     @EnvironmentObject var settings: SettingsViewModel
+
+    @State private var refreshing = false
     @State private var showingConnectionModal = false
 
     var body: some View {
@@ -66,7 +68,14 @@ struct SettingsView: View {
     }
 
     private func refreshCache() {
-        errorHandler.handle { try objects.refresh() }
+        if !refreshing && objects.needsRefresh {
+            refreshing = true
+
+            Task {
+                await objects.refresh()
+                await MainActor.run { refreshing = false }
+            }
+        }
     }
 
     private func reset() {

@@ -64,26 +64,13 @@ final class ObjectCache: ObjectSource {
         objectsDirectory.appendingPathComponent(id.uuidString)
     }
 
-    override func refresh() throws {
-        do {
-            cachedObjects = try fileManager
-                .contentsOfDirectory(
-                    at: objectsDirectory,
-                    includingPropertiesForKeys: nil
-                )
-                .map { ObjectFile(
-                    id: $0.lastPathComponent,
-                    size: getFileSize(for: $0)
-                )}
+    override func refresh() async {
+        await super.refresh()
 
-            try super.refresh()
-        }
-        catch {
-            let message = "Failed to get cache directory contents"
-            let log = "\(message): \(error)"
+        let objects = await scanDirectory().sorted(by: { $0.size > $1.size })
 
-            defaultLog.error("\(log)")
-            throw MintyError.unspecified(message: message)
+        await MainActor.run {
+            cachedObjects = objects
         }
     }
 
@@ -103,6 +90,30 @@ final class ObjectCache: ObjectSource {
         }
 
         try super.remove(at: index)
+    }
+
+    private func scanDirectory() async -> [ObjectFile] {
+        return await Task {
+            do {
+                return try fileManager
+                    .contentsOfDirectory(
+                        at: objectsDirectory,
+                        includingPropertiesForKeys: nil
+                    )
+                    .map { ObjectFile(
+                        id: $0.lastPathComponent,
+                        size: getFileSize(for: $0)
+                    )}
+            }
+            catch {
+                let message = "Failed to read cache directory contents"
+                let log = "\(message): \(error)"
+
+                defaultLog.error("\(log)")
+            }
+
+            return []
+        }.value
     }
 
     override func upload(url: URL) async throws -> ObjectPreview? {
@@ -143,15 +154,7 @@ final class ObjectCache: ObjectSource {
             throw MintyError.unspecified(message: message)
         }
 
-        do {
-            try await MainActor.run {
-                try refresh()
-            }
-        }
-        catch {
-            let log = "Failed to refresh cache list after download: \(error)"
-            defaultLog.error("\(log)")
-        }
+        updateModified()
 
         return url
     }

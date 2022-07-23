@@ -40,7 +40,7 @@ struct CacheList: View {
         .navigationBarTitleDisplayMode(.inline)
         .refreshable {
             Task {
-                errorHandler.handle { try objects.refresh() }
+                await objects.refresh()
             }
         }
     }

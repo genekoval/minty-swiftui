@@ -9,12 +9,26 @@ struct ObjectFile: Identifiable {
 class ObjectSource: ObservableObject {
     @Published var cachedObjects: [ObjectFile] = []
 
+    private var modified: Date
+
+    private var refreshed: Date
+
     weak var dataSource: DataSource?
+
+    final var needsRefresh: Bool {
+        modified >= refreshed
+    }
 
     final var repo: MintyRepo? { dataSource?.repo }
 
     final var cacheSize: Int64 {
         cachedObjects.reduce(0) { $0 + $1.size }
+    }
+
+    init() {
+        let now = Date()
+        modified = now
+        refreshed = now
     }
 
     func clearCache() throws { cachedObjects.removeAll() }
@@ -41,12 +55,17 @@ class ObjectSource: ObservableObject {
         return .existingObject(preview)
     }
 
-    func refresh() throws {
-        cachedObjects.sort(by: { $0.size > $1.size })
+    func refresh() async {
+        defaultLog.debug("Refreshing cache list")
+        refreshed = Date()
     }
 
     func remove(at index: Int) throws {
         cachedObjects.remove(at: index)
+    }
+
+    func updateModified() {
+        modified = Date()
     }
 
     func upload(url: URL) async throws -> ObjectPreview? { nil }
