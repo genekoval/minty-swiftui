@@ -5,7 +5,6 @@ import Minty
 enum EditorState {
     case adding
     case moving
-    case movingInsertionPoint
     case selecting
 }
 
@@ -35,7 +34,7 @@ enum EditorItem: Identifiable {
         case .object(let selectable):
             return selectable.object.id.uuidString
         case .addButton(_, _):
-            return "button.add"
+            return "append"
         case .placeholder(_):
             return "placeholder"
         }
@@ -49,7 +48,7 @@ protocol ObjectCollection {
 }
 
 protocol ObjectEditorSubscriber {
-    func add(objects: [UUID], at position: Int) async throws
+    func add(objects: [UUID], before destination: UUID?) async throws
 
     func delete(objects: [UUID]) async throws
 
@@ -57,7 +56,7 @@ protocol ObjectEditorSubscriber {
 }
 
 class ObjectEditorViewModel: ObservableObject {
-    @Published var insertionPoint: Int = Int.max
+    @Published var insertionPoint: UUID?
     @Published var items: [EditorItem] = [] {
         didSet {
             cancellables.removeAll()
@@ -70,7 +69,6 @@ class ObjectEditorViewModel: ObservableObject {
     }
     @Published var state: EditorState = .adding
 
-    private var addButton: EditorItem!
     private var cancellables = Set<AnyCancellable>()
     private var collection: ObjectCollection
     private var objectsCancellable: AnyCancellable?
@@ -108,10 +106,6 @@ class ObjectEditorViewModel: ObservableObject {
         self.collection = collection
         self.subscriber = subscriber
 
-        addButton = .addButton(addObjects, {
-            self.state = .movingInsertionPoint
-        })
-
         objectsCancellable = collection.objectsPublisher.sink { [weak self] in
             self?.rebuildItems(objects: $0)
         }
@@ -119,19 +113,28 @@ class ObjectEditorViewModel: ObservableObject {
         stateCancellable = $state.dropFirst().sink { [weak self] in
             self?.stateChanged(to: $0)
         }
-
-        enableAddButton()
     }
 
-    private func addObjects(_ objects: [ObjectPreview]) async throws {
+    private func addObjects(
+        _ objects: [ObjectPreview],
+        before destination: UUID?
+    ) async throws {
         try await subscriber?.add(
             objects: objects.map { $0.id },
-            at: insertionPoint
+            before: destination
         )
-        collection.objects.insert(contentsOf: objects, at: insertionPoint)
 
-        insertionPoint += collection.objects.count
-        enableAddButton()
+        if let destination = destination {
+            collection.objects.insert(
+                contentsOf: objects,
+                at: collection.objects.firstIndex(
+                    where: { $0.id == destination }
+                )!
+            )
+        }
+        else {
+            collection.objects.append(contentsOf: objects)
+        }
     }
 
     private func deleteObjects(_ objects: [ObjectPreview]) async throws {
@@ -148,23 +151,6 @@ class ObjectEditorViewModel: ObservableObject {
 
     func deselectAll() {
         setSelection(false)
-    }
-
-    private func disableAddButton() {
-        items.remove(at: insertionPoint)
-    }
-
-    private func enableAddButton() {
-        insertionPoint = min(insertionPoint, items.count)
-        items.insert(addButton, at: insertionPoint)
-    }
-
-    private func moveInsertionPoint(to destination: Int) {
-        disableAddButton()
-        insertionPoint = destination
-        enableAddButton()
-
-        state = .adding
     }
 
     private func moveObjects(
@@ -206,12 +192,10 @@ class ObjectEditorViewModel: ObservableObject {
     }
 
     private func selectableAction(id: UUID) async throws {
-        if state == .moving {
-            try await moveSelected(to: id)
+        if state == .adding {
         }
-        else if state == .movingInsertionPoint {
-            let index = items.firstIndex(where: { $0.id == id.uuidString })!
-            moveInsertionPoint(to: index)
+        else if state == .moving {
+            try await moveSelected(to: id)
         }
     }
 

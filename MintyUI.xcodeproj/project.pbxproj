@@ -1629,7 +1629,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://git.aurora.aur/genya/minty-swift.git";
 			requirement = {
-				branch = main;
+				branch = updates;
 				kind = branch;
 			};
 		};

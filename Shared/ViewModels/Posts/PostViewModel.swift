@@ -69,12 +69,12 @@ final class PostViewModel:
         }
     }
 
-    func add(objects: [UUID], at position: Int) async throws {
+    func add(objects: [UUID], before destination: UUID?) async throws {
         try await withRepo("add objects") { repo in
             modified = try await repo.addPostObjects(
                 postId: id,
                 objects: objects,
-                position: Int16(position)
+                destination: destination
             )
         }
     }

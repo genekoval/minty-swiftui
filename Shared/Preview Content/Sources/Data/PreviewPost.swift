@@ -42,24 +42,11 @@ private final class PreviewData {
         )
     }
 
-    func addPost(parts: PostParts) -> UUID {
-        let id = UUID()
-
-        addPost(
-            id: id,
-            title: parts.title,
-            description: parts.description,
-            objects: parts.objects,
-            tags: parts.tags
-        )
-
-        return id
-    }
-
     private func addPost(
         id: UUID,
         title: String? = nil,
         description: String? = nil,
+        visibility: Visibility = .pub,
         created: String? = nil,
         modified: TimeInterval? = nil,
         objects: [UUID] = [],
@@ -71,6 +58,7 @@ private final class PreviewData {
         post.id = id
         post.title = title
         post.description = description
+        post.visibility = visibility
         if let date = created { post.dateCreated = Date(from: date) }
         if let interval = modified {
             post.dateModified = post.dateCreated.addingTimeInterval(interval)
@@ -145,10 +133,6 @@ private final class PreviewData {
 private let data = PreviewData()
 
 extension Post {
-    static func preview(add parts: PostParts) -> UUID {
-        return data.addPost(parts: parts)
-    }
-
     static func preview(edit id: UUID, action: (inout Post) -> Void) {
         var post = Post.preview(id: id)
         action(&post)
