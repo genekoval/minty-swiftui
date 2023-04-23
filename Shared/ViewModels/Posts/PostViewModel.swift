@@ -19,6 +19,7 @@ final class PostViewModel:
     @Published private(set) var deleted = false
     @Published private(set) var title: String?
     @Published private(set) var description: String?
+    @Published private(set) var visibility: Visibility = .invalid
     @Published private(set) var created: Date = Date()
     @Published private(set) var modified: Date = Date()
     @Published private(set) var comments: [Comment] = []
@@ -98,7 +99,7 @@ final class PostViewModel:
         comments.insert(reply, at: index + 1)
     }
 
-    func addTag(tag: TagViewModel) async throws {
+    func add(tag: TagViewModel) async throws {
         try await withRepo("add tag") { repo in
             try await repo.addPostTag(postId: id, tagId: tag.id)
         }
@@ -137,6 +138,12 @@ final class PostViewModel:
 
             title = update.newValue
             modified = update.modified
+        }
+    }
+
+    func createPost() async throws {
+        try await withRepo("create post") { repo in
+            try await repo.createPost(postId: id)
         }
     }
 
@@ -180,6 +187,7 @@ final class PostViewModel:
     private func load(_ post: Post) {
         title = post.title
         description = post.description
+        visibility = post.visibility
         created = post.dateCreated
         modified = post.dateModified
         objects = post.objects

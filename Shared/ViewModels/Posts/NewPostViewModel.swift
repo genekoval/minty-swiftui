@@ -1,45 +1,18 @@
 import Combine
-import Minty
-import SwiftUI
 
-final class NewPostViewModel: RemoteEntity, ObjectCollection, ObservableObject {
-    @Published var title = ""
-    @Published var description = ""
-    @Published var objects: [ObjectPreview] = []
-    @Published var tags: [TagViewModel] = []
+final class NewPostViewModel: RemoteEntity, ObservableObject {
+    @Published var draft: PostViewModel?
 
-    var isValid: Bool {
-        !title.isWhitespace || !description.isWhitespace || !objects.isEmpty
-    }
-
-    var objectsPublisher: Published<[ObjectPreview]>.Publisher { $objects }
-
-    private var parts: PostParts {
-        var result = PostParts()
-
-        result.title = title
-        result.description = description
-        result.objects = objects.map { $0.id }
-        result.tags = tags.map { $0.id }
-
-        return result
-    }
-
-    init(tag: TagViewModel? = nil) {
+    init() {
         super.init(identifier: "new post")
-
-        if let tag = tag {
-            tags.append(tag)
-        }
     }
 
-    func create() async throws -> UUID {
-        var id: UUID?
-
-        try await withRepo("create") { repo in
-            id = try await repo.addPost(parts: parts)
+    func createDraft() async throws -> PostViewModel {
+        try await withRepo("create draft") { repo in
+            let id = try await repo.createPostDraft()
+            draft = app!.state.posts.fetch(id: id)
         }
 
-        return id!
+        return draft!
     }
 }

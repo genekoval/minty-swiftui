@@ -18,7 +18,7 @@ private class PreviewData {
             aliases: ["Foo", "Bar", "Baz"],
             description: "Vivamus sollicitudin leo sed quam bibendum imperdiet. Nulla libero urna, aliquet in nibh et, tristique aliquam ipsum. Integer sit amet rutrum ex, id bibendum turpis. Proin blandit malesuada nunc in gravida. Etiam finibus aliquet porttitor. Nullam ut fermentum nisi. Proin nec arcu eget libero fringilla fermentum feugiat at lorem. Praesent nulla est, venenatis quis risus eget, auctor porttitor tellus. Proin scelerisque rutrum accumsan.",
             dateCreated: "2021-10-16 12:00:36.285634-04",
-            sources: ["1", "2"]
+            sources: [1, 2]
         )
 
         addTag(
@@ -34,7 +34,7 @@ private class PreviewData {
         aliases: [String] = [],
         description: String? = nil,
         dateCreated: String? = nil,
-        sources: [String] = []
+        sources: [Int64] = []
     ) {
         var tag = Tag()
 

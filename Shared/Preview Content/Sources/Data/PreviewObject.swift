@@ -37,7 +37,7 @@ private final class PreviewData {
             subtype: "jpeg",
             dateAdded: "2020-12-29 12:00:00.000-04",
             previewId: PreviewObject.sandDunePreview,
-            source: "sand dune"
+            source: 3
         )
 
         addObject(
@@ -59,7 +59,7 @@ private final class PreviewData {
         subtype: String,
         dateAdded: String? = nil,
         previewId: UUID? = nil,
-        source: String? = nil
+        source: Int64? = nil
     ) {
         var dataSize = DataSize()
         dataSize.bytes = size

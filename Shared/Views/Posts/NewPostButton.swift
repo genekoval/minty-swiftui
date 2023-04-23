@@ -21,42 +21,78 @@ private struct PostDetailLink: View {
 }
 
 struct NewPostButton: View {
+    @EnvironmentObject var errorHandler: ErrorHandler
+
     let onCreated: (() -> Void)?
     let tag: TagViewModel?
 
-    @State private var newPostId: UUID?
+    @ObservedObject var post: NewPostViewModel
+
     @State private var showingNewPost = false
     @State private var showingEditor = false
 
     var body: some View {
-        Button(action: { showingEditor = true }) {
+        Button(action: {
+            if post.draft != nil {
+                showingEditor = true
+            }
+            else {
+                errorHandler.handle {
+                    let draft = try await post.createDraft()
+
+                    if let tag = tag {
+                        try await draft.add(tag: tag)
+                        draft.tags.append(tag)
+                    }
+
+                    showingEditor = true
+                }
+            }
+        }) {
             Image(systemName: "plus")
         }
+        .loadEntity(post)
         .background {
-            PostDetailLink(id: newPostId, isActive: $showingNewPost)
+            PostDetailLink(id: post.draft?.id, isActive: $showingNewPost)
         }
         .sheet(isPresented: $showingEditor) {
-            NewPostView(onCreated: onNewPost, tag: tag)
+            if let draft = post.draft {
+                PostEditor(post: draft)
+                    .onDisappear {
+                        if draft.visibility != .draft {
+                            showingNewPost = true
+                            if let onCreated = onCreated {
+                                onCreated()
+                            }
+                        }
+                    }
+            }
         }
     }
 
-    init(tag: TagViewModel? = nil, onCreated: (() -> Void)? = nil) {
+    init(
+        post: NewPostViewModel,
+        tag: TagViewModel? = nil,
+        onCreated: (() -> Void)? = nil
+    ) {
         self.onCreated = onCreated
         self.tag = tag
-    }
-
-    private func onNewPost(id: UUID) {
-        newPostId = id
-        showingNewPost = true
-
-        if let onCreated = onCreated { onCreated() }
+        self.post = post
     }
 }
 
 struct NewPostButton_Previews: PreviewProvider {
+    private struct Preview: View {
+        @StateObject private var post = NewPostViewModel()
+
+        var body: some View {
+            NewPostButton(post: post)
+                .withErrorHandling()
+                .environmentObject(DataSource.preview)
+        }
+    }
+
     static var previews: some View {
-        NewPostButton()
-            .withErrorHandling()
-            .environmentObject(DataSource.preview)
+        Preview()
     }
 }

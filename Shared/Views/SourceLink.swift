@@ -26,8 +26,8 @@ struct SourceLink: View {
 struct SourceLink_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            SourceLink(source: Source.preview(id: "1"))
-            SourceLink(source: Source.preview(id: "2"))
+            SourceLink(source: Source.preview(id: 1))
+            SourceLink(source: Source.preview(id: 2))
         }
         .environmentObject(ObjectSource.preview)
     }

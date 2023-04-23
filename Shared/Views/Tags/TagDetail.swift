@@ -30,7 +30,7 @@ struct TagDetail: View {
 
     @ViewBuilder
     private var addButton: some View {
-        NewPostButton(tag: tag) {
+        NewPostButton(post: tag.draftPost, tag: tag) {
             // Refresh the recent posts list to make sure the new post
             // appears here if it's tagged with this tag.
             // Refresh after a short delay to avoid a race condition in which

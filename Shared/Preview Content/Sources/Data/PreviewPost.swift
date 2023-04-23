@@ -73,6 +73,12 @@ private final class PreviewData {
         setPost(post: post)
     }
 
+    func addDraft() -> UUID {
+        let id = UUID()
+        addPost(id: id, visibility: .draft)
+        return id
+    }
+
     func getPosts(query: PostQuery) -> [PostPreview] {
         var results = [Post](posts.values)
 
@@ -133,6 +139,10 @@ private final class PreviewData {
 private let data = PreviewData()
 
 extension Post {
+    static func preview() -> UUID {
+        return data.addDraft()
+    }
+
     static func preview(edit id: UUID, action: (inout Post) -> Void) {
         var post = Post.preview(id: id)
         action(&post)

@@ -2,6 +2,8 @@ import Minty
 import SwiftUI
 
 struct PostExplorer: View {
+    @StateObject private var draft = NewPostViewModel()
+
     @StateObject private var search = PostQueryViewModel()
 
     var body: some View {
@@ -29,7 +31,7 @@ struct PostExplorer: View {
 
     @ViewBuilder
     private var addButton: some View {
-        NewPostButton()
+        NewPostButton(post: draft)
     }
 }
 

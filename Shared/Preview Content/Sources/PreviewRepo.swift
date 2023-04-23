@@ -17,8 +17,26 @@ final class PreviewRepo: MintyRepo {
         throw PreviewError.notSupported
     }
 
-    func addPost(parts: PostParts) async throws -> UUID {
-        return Post.preview(add: parts)
+    func addPostObjects(
+        postId: UUID,
+        objects: [UUID],
+        destination: UUID?
+    ) async throws -> Date {
+        let previews = objects.map { ObjectPreview.preview(id: $0) }
+
+        Post.preview(edit: postId) { post in
+            if let destination = destination {
+                let index = post.objects.firstIndex(
+                    where: { $0.id == destination}
+                )!
+                post.objects.insert(contentsOf: previews, at: index)
+            }
+            else {
+                post.objects.append(contentsOf: previews)
+            }
+        }
+
+        return Date()
     }
 
     func addPostObjects(
@@ -64,6 +82,14 @@ final class PreviewRepo: MintyRepo {
         let source = Source.preview(add: url)
         Tag.preview(edit: tagId) { $0.sources.append(source) }
         return source
+    }
+
+    func createPost(postId: UUID) async throws {
+        Post.preview(edit: postId) { post in post.visibility = .pub }
+    }
+
+    func createPostDraft() async throws -> UUID {
+        Post.preview()
     }
 
     func deletePost(postId: UUID) async throws {
@@ -116,7 +142,7 @@ final class PreviewRepo: MintyRepo {
         return result
     }
 
-    func deleteTagSource(tagId: UUID, sourceId: String) async throws {
+    func deleteTagSource(tagId: UUID, sourceId: Int64) async throws {
         Tag.preview(edit: tagId) { tag in
             tag.sources.removeAll { $0.id == sourceId }
         }
@@ -171,19 +197,6 @@ final class PreviewRepo: MintyRepo {
         result.hits = tags
 
         return result
-    }
-
-    func movePostObject(
-        postId: UUID,
-        oldIndex: UInt32,
-        newIndex: UInt32
-    ) async throws {
-        Post.preview(edit: postId) { post in
-            let source = IndexSet(integer: Int(oldIndex))
-            let destination = Int(newIndex)
-
-            post.objects.move(fromOffsets: source, toOffset: destination)
-        }
     }
 
     func movePostObjects(

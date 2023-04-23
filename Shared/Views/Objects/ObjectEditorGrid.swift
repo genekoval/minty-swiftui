@@ -3,44 +3,6 @@ import SwiftUI
 
 private let moveSymbol = "arrow.up.and.down.and.arrow.left.and.right"
 
-private struct AddButton: View {
-    let onUpload: ([ObjectPreview]) async throws -> Void
-    let alternateAction: () -> Void
-
-    let state: EditorState
-
-    @State private var showingUploadView = false
-
-    var body: some View {
-        Button(action: { }) {
-            Image(systemName: "doc.fill.badge.plus")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .opacity(state == .movingInsertionPoint ? 0.5 : 1.0)
-                .frame(width: 50)
-                .overlay {
-                    if state == .movingInsertionPoint {
-                        Image(systemName: moveSymbol)
-                            .font(.title2)
-                            .foregroundColor(.white)
-                            .shadow(color: .black, radius: 1, x: 0, y: 1)
-                    }
-                }
-        }
-        .simultaneousGesture(TapGesture().onEnded {
-            if state == .adding { showingUploadView = true }
-        })
-        .simultaneousGesture(LongPressGesture().onEnded { _ in
-            alternateAction()
-        })
-        .sheet(isPresented: $showingUploadView) {
-            NavigationView {
-                ObjectUploadView(onUpload: onUpload)
-            }
-        }
-    }
-}
-
 private struct SelectorItem: View {
     @EnvironmentObject var errorHandler: ErrorHandler
 
@@ -51,14 +13,27 @@ private struct SelectorItem: View {
     var body: some View {
         PreviewImage(object: selectable.object)
             .opacity(isMoving ? 0.5 : 1.0)
-            .onTapGesture {
-                if state == .selecting {
+            .simultaneousGesture(TapGesture().onEnded {
+                switch state {
+                case .adding:
+                    errorHandler.handle {
+                        try await selectable.performAction()
+                    }
+                case .moving:
+                    if !selectable.selected {
+                        errorHandler.handle {
+                            try await selectable.performAction()
+                        }
+                    }
+                case .selecting:
                     selectable.selected.toggle()
                 }
-                else if isMoveTarget {
-                    errorHandler.handle { try await selectable.performAction() }
+            })
+            .simultaneousGesture(LongPressGesture().onEnded { _ in
+                if state == .adding {
+                    // TODO: Context Menu
                 }
-            }
+            })
             .overlay {
                 if state == .selecting {
                     SelectionIndicator(isSelected: selectable.selected)
@@ -75,11 +50,6 @@ private struct SelectorItem: View {
 
     private var isMoving: Bool {
         state == .moving && selectable.selected
-    }
-
-    private var isMoveTarget: Bool {
-        (state == .moving && !selectable.selected) ||
-        state == .movingInsertionPoint
     }
 }
 
@@ -101,6 +71,8 @@ private struct Placeholder: View {
 }
 
 private struct EditorItemView: View {
+    @Binding var showingUploadView: Bool
+
     let item: EditorItem
 
     let state: EditorState
@@ -108,11 +80,8 @@ private struct EditorItemView: View {
     var body: some View {
         switch item {
         case .object(let selectable):
-            SelectorItem(selectable: selectable, state: state)
-        case .addButton(let didUpload, let alternateAction):
-            AddButton(
-                onUpload: didUpload,
-                alternateAction: alternateAction,
+            SelectorItem(
+                selectable: selectable,
                 state: state
             )
         case .placeholder(let action):
@@ -150,6 +119,11 @@ struct ObjectEditorGrid: View {
                 }
             }
         }
+        .sheet(isPresented: $editor.showingUploadView) {
+            NavigationView {
+                ObjectUploadView(onUpload: editor.addObjects)
+            }
+        }
     }
 
     @ViewBuilder
@@ -168,7 +142,11 @@ struct ObjectEditorGrid: View {
     private var itemGrid: some View {
         Grid {
             ForEach(editor.items) {
-                EditorItemView(item: $0, state: editor.state)
+                EditorItemView(
+                    showingUploadView: $editor.showingUploadView,
+                    item: $0,
+                    state: editor.state
+                )
             }
         }
         .animation(Animation.easeOut(duration: 0.25), value: editor.state)
@@ -191,8 +169,6 @@ struct ObjectEditorGrid: View {
                     editor.state = .selecting
                 case .moving:
                     editor.state = .selecting
-                case .movingInsertionPoint:
-                    editor.state = .adding
                 case .selecting:
                     editor.state = .adding
                 }
@@ -223,19 +199,12 @@ struct ObjectEditorGrid: View {
             return "Objects"
         case .moving:
             let selected = editor.selected.count
-            var text = "Move \(selected) Object"
-            if selected != 1 {
-                text += "s"
-            }
+            let text = "Move \(selected) Object\(selected == 1 ? "" : "s")"
             return text
-        case .movingInsertionPoint:
-            return "Move Insertion Point"
         case .selecting:
             let selected = editor.selected.count
             if selected == 0 { return "Select Objects" }
-
-            let suffix = selected == 1 ? "Object" : "Objects"
-            return "\(selected) \(suffix)"
+            return "\(selected) Object\(selected == 1 ? "" : "s")"
         }
     }
 

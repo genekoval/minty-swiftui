@@ -40,12 +40,12 @@ struct EditorLink: View {
 
 struct EditorLink_Previews: PreviewProvider {
     private struct Preview: View {
-        @StateObject private var post = NewPostViewModel()
+        @State private var text = ""
 
         var body: some View {
             NavigationView {
                 Form {
-                    EditorLink(title: "Title", text: $post.title)
+                    EditorLink(title: "Title", text: $text)
                 }
                 .navigationTitle("New Post")
                 .navigationBarTitleDisplayMode(.inline)

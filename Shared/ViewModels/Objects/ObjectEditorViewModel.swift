@@ -26,15 +26,12 @@ class Selectable: ObservableObject {
 
 enum EditorItem: Identifiable {
     case object(Selectable)
-    case addButton(([ObjectPreview]) async throws -> Void, () -> Void)
     case placeholder(() async throws -> Void)
 
     var id: String {
         switch self {
         case .object(let selectable):
             return selectable.object.id.uuidString
-        case .addButton(_, _):
-            return "append"
         case .placeholder(_):
             return "placeholder"
         }
@@ -56,7 +53,6 @@ protocol ObjectEditorSubscriber {
 }
 
 class ObjectEditorViewModel: ObservableObject {
-    @Published var insertionPoint: UUID?
     @Published var items: [EditorItem] = [] {
         didSet {
             cancellables.removeAll()
@@ -67,10 +63,12 @@ class ObjectEditorViewModel: ObservableObject {
                 .store(in: &cancellables)
         }
     }
+    @Published var showingUploadView = false
     @Published var state: EditorState = .adding
 
     private var cancellables = Set<AnyCancellable>()
     private var collection: ObjectCollection
+    private var insertionPoint: UUID?
     private var objectsCancellable: AnyCancellable?
     private var stateCancellable: AnyCancellable?
     private var subscriber: ObjectEditorSubscriber?
@@ -115,26 +113,28 @@ class ObjectEditorViewModel: ObservableObject {
         }
     }
 
-    private func addObjects(
-        _ objects: [ObjectPreview],
-        before destination: UUID?
-    ) async throws {
+    func addObjects(_ objects: [ObjectPreview]) async throws {
         try await subscriber?.add(
             objects: objects.map { $0.id },
-            before: destination
+            before: insertionPoint
         )
 
-        if let destination = destination {
+        if let insertionPoint = insertionPoint {
             collection.objects.insert(
                 contentsOf: objects,
                 at: collection.objects.firstIndex(
-                    where: { $0.id == destination }
+                    where: { $0.id == insertionPoint }
                 )!
             )
         }
         else {
             collection.objects.append(contentsOf: objects)
         }
+    }
+
+    private func appendObjects() async throws {
+        insertionPoint = nil
+        showingUploadView = true
     }
 
     private func deleteObjects(_ objects: [ObjectPreview]) async throws {
@@ -193,6 +193,8 @@ class ObjectEditorViewModel: ObservableObject {
 
     private func selectableAction(id: UUID) async throws {
         if state == .adding {
+            insertionPoint = id
+            showingUploadView = true
         }
         else if state == .moving {
             try await moveSelected(to: id)
@@ -206,22 +208,18 @@ class ObjectEditorViewModel: ObservableObject {
     private func stateChanged(to state: EditorState) {
         let previous = self.state
 
-        if
-            (previous == .moving || previous == .movingInsertionPoint) &&
-            items.last?.id == "placeholder"
-        {
+        if previous == .adding || previous == .moving {
             items.removeLast()
         }
-
-        if state == .adding && previous != .movingInsertionPoint {
+        else if previous == .selecting {
             deselectAll()
-            enableAddButton()
+        }
+
+        if state == .adding {
+            items.append(.placeholder(appendObjects))
         }
         else if state == .moving {
             items.append(.placeholder(moveSelectedToEnd))
-        }
-        else if state == .selecting && previous == .adding {
-            disableAddButton()
         }
     }
 

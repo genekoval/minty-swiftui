@@ -59,7 +59,7 @@ struct PostEditor: View {
                         tags: $post.tags,
                         search: tagSearch,
                         onAdd: { tag in
-                            try await post.addTag(tag: tag)
+                            try await post.add(tag: tag)
                         },
                         onRemove: { tag in
                             try await post.removeTag(tag: tag)
@@ -84,11 +84,24 @@ struct PostEditor: View {
                 tagSearch.excluded = post.tags
             }
             .toolbar {
-                Button(action: { dismiss() }) {
-                    Text("Done")
+                Button(action: {
+                    if post.visibility == .draft {
+                        create()
+                    }
+                    else {
+                        dismiss()
+                    }
+                }) {
+                    Text(post.visibility == .draft ? "Post" : "Done")
                         .bold()
                 }
             }
+        }
+    }
+
+    private func create() {
+        errorHandler.handle {
+            try await post.createPost()
         }
     }
 
