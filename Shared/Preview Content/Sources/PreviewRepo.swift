@@ -1,7 +1,7 @@
 import Foundation
 import Minty
 
-final class PreviewRepo: MintyRepo {
+final actor PreviewRepo: MintyRepo {
     func addComment(postId: UUID, content: String) async throws -> Comment {
         throw PreviewError.notSupported
     }

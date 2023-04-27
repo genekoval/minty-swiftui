@@ -30,7 +30,7 @@ private func uploadURL(
     _ url: String,
     source: ObjectSource
 ) async throws -> [ObjectPreview] {
-    guard let repo = source.repo else { return [] }
+    guard let repo = source.dataSource?.repo else { return [] }
     return try await repo.addObjectsUrl(url: url)
 }
 

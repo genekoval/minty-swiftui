@@ -71,7 +71,7 @@ final class PostViewModel:
     }
 
     func add(objects: [UUID], before destination: UUID?) async throws {
-        try await withRepo("add objects") { repo in
+        try await withRepo("add objects") { [self] repo in
             modified = try await repo.addPostObjects(
                 postId: id,
                 objects: objects,
@@ -81,7 +81,7 @@ final class PostViewModel:
     }
 
     func add(post: PostViewModel) async throws {
-        try await withRepo("add related post") { repo in
+        try await withRepo("add related post") { [self] repo in
             try await repo.addRelatedPost(postId: id, related: post.id)
         }
 
@@ -100,13 +100,13 @@ final class PostViewModel:
     }
 
     func add(tag: TagViewModel) async throws {
-        try await withRepo("add tag") { repo in
+        try await withRepo("add tag") { [self] repo in
             try await repo.addPostTag(postId: id, tagId: tag.id)
         }
     }
 
     func comment() async throws {
-        try await withRepo("add comment") { repo in
+        try await withRepo("add comment") { [self] repo in
             let result = try await repo.addComment(
                 postId: id,
                 content: draftComment
@@ -118,7 +118,7 @@ final class PostViewModel:
     }
 
     func commitDescription() async throws {
-        try await withRepo("set description") { repo in
+        try await withRepo("set description") { [self] repo in
             let update = try await repo.setPostDescription(
                 postId: id,
                 description: draftDescription
@@ -130,7 +130,7 @@ final class PostViewModel:
     }
 
     func commitTitle() async throws {
-        try await withRepo("set title") { repo in
+        try await withRepo("set title") { [self] repo in
             let update = try await repo.setPostTitle(
                 postId: id,
                 title: draftTitle
@@ -142,13 +142,13 @@ final class PostViewModel:
     }
 
     func createPost() async throws {
-        try await withRepo("create post") { repo in
+        try await withRepo("create post") { [self] repo in
             try await repo.createPost(postId: id)
         }
     }
 
     func delete() async throws {
-        try await withRepo("delete post") { repo in
+        try await withRepo("delete post") { [self] repo in
             try await repo.deletePost(postId: id)
         }
 
@@ -156,7 +156,7 @@ final class PostViewModel:
     }
 
     func delete(objects: [UUID]) async throws {
-        try await withRepo("delete objects") { repo in
+        try await withRepo("delete objects") { [self] repo in
             modified = try await repo.deletePostObjects(
                 postId: id,
                 objects: objects
@@ -165,7 +165,7 @@ final class PostViewModel:
     }
 
     func delete(post: PostViewModel) async throws {
-        try await withRepo("delete related post") { repo in
+        try await withRepo("delete related post") { [self] repo in
             try await repo.deleteRelatedPost(postId: id, related: post.id)
         }
 
@@ -173,13 +173,13 @@ final class PostViewModel:
     }
 
     private func fetchComments() async throws {
-        try await withRepo("fetch comments") { repo in
+        try await withRepo("fetch comments") { [self] repo in
             comments = try await repo.getComments(postId: id)
         }
     }
 
     private func fetchData() async throws {
-        try await withRepo("fetch data") { repo in
+        try await withRepo("fetch data") { [self] repo in
             load(try await repo.getPost(postId: id))
         }
     }
@@ -204,7 +204,7 @@ final class PostViewModel:
     }
 
     func move(objects: [UUID], to destination: UUID?) async throws {
-        try await withRepo("move objects") { repo in
+        try await withRepo("move objects") { [self] repo in
             modified = try await repo.movePostObjects(
                 postId: id,
                 objects: objects,
@@ -229,7 +229,7 @@ final class PostViewModel:
     }
 
     func removeTag(tag: TagViewModel) async throws {
-        try await withRepo("delete tag") { repo in
+        try await withRepo("delete tag") { [self] repo in
             try await repo.deletePostTag(postId: id, tagId: tag.id)
         }
     }

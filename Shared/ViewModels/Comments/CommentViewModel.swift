@@ -31,7 +31,7 @@ final class CommentViewModel: IdentifiableEntity, ObservableObject {
     func commitContent() async throws {
         if draftContent == content { return }
 
-        try await withRepo("update content") { repo in
+        try await withRepo("update content") { [self] repo in
             content = try await repo.setCommentContent(
                 commentId: id,
                 content: draftContent
@@ -40,7 +40,7 @@ final class CommentViewModel: IdentifiableEntity, ObservableObject {
     }
 
     func reply() async throws {
-        try await withRepo("add reply") { repo in
+        try await withRepo("add reply") { [self] repo in
             let comment = try await repo.addReply(
                 parentId: id,
                 content: draftReply

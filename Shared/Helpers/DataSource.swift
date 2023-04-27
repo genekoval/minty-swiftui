@@ -13,6 +13,7 @@ final class DataSource: ObservableObject {
 
     private var cancellable: AnyCancellable?
     private let connectAction: Connect?
+    private let stream = TaskStream()
 
     init(connect: @escaping Connect) {
         connectAction = connect
@@ -47,6 +48,14 @@ final class DataSource: ObservableObject {
             Task {
                 await self.connect(server: server)
             }
+        }
+    }
+
+    func withRepo(
+        _ action: @escaping @Sendable (MintyRepo) async throws -> Void
+    ) async throws {
+        try await stream.enqueueAndWait { [self] in
+            try await action(repo!)
         }
     }
 }

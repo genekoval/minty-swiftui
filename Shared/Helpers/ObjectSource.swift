@@ -19,8 +19,6 @@ class ObjectSource: ObservableObject {
         modified >= refreshed
     }
 
-    final var repo: MintyRepo? { dataSource?.repo }
-
     final var cacheSize: Int64 {
         cachedObjects.reduce(0) { $0 + $1.size }
     }
@@ -38,7 +36,7 @@ class ObjectSource: ObservableObject {
             return .url(text)
         }
 
-        guard let repo = repo else {
+        guard let repo = dataSource?.repo else {
             throw MintyError.unspecified(
                 message: "Cannot get object: repo missing"
             )

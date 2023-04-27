@@ -117,7 +117,7 @@ final class ObjectCache: ObjectSource {
     }
 
     override func upload(url: URL) async throws -> ObjectPreview? {
-        guard let repo = repo else { return nil }
+        guard let repo = dataSource?.repo else { return nil }
 
         let (data, _) = try await URLSession.shared.data(from: url)
         return try await repo.addObjectData(size: data.count) { writer in
@@ -132,7 +132,7 @@ final class ObjectCache: ObjectSource {
             return url
         }
 
-        guard let repo = repo else { return nil }
+        guard let repo = dataSource?.repo else { return nil }
 
         if !fileManager.createFile(atPath: url.path, contents: nil) {
             defaultLog.error("Failed to create file at path: \(url.path)")
