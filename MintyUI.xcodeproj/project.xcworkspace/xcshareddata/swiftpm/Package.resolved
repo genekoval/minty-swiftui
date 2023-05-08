@@ -1,41 +1,16 @@
 {
-  "pins" : [
-    {
-      "identity" : "fstore-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://git.aurora.aur/genya/fstore-swift.git",
-      "state" : {
-        "branch" : "updates",
-        "revision" : "7cac946c4af8113c2a02a75b63766ba2c28ec841"
+  "object": {
+    "pins": [
+      {
+        "package": "Gifu",
+        "repositoryURL": "https://github.com/kaishin/Gifu.git",
+        "state": {
+          "branch": null,
+          "revision": "82da0086dea14ca9afc9801234ad8dc4cd9e2738",
+          "version": "3.4.1"
+        }
       }
-    },
-    {
-      "identity" : "gifu",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kaishin/Gifu.git",
-      "state" : {
-        "revision" : "82da0086dea14ca9afc9801234ad8dc4cd9e2738",
-        "version" : "3.4.1"
-      }
-    },
-    {
-      "identity" : "minty-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://git.aurora.aur/genya/minty-swift.git",
-      "state" : {
-        "branch" : "updates",
-        "revision" : "b2a8de39ee1d5411938f36ffda51de01833df86b"
-      }
-    },
-    {
-      "identity" : "zipline-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://git.aurora.aur/genya/zipline-swift.git",
-      "state" : {
-        "branch" : "updates",
-        "revision" : "335d830ac8d8007add69642f7e13ce9914afb36d"
-      }
-    }
-  ],
-  "version" : 2
+    ]
+  },
+  "version": 1
 }
