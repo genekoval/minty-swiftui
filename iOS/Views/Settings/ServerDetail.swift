@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ServerDetail: View {
     @EnvironmentObject var data: DataSource
+    @EnvironmentObject var settings: SettingsViewModel
 
     let title: String
     let server: Server
@@ -25,13 +26,32 @@ struct ServerDetail: View {
                 }
             }
 
-            if let metadata = data.server {
-                Section {
-                    HStack {
-                        Text("Server Version")
-                        Spacer()
-                        Text(metadata.version)
+            if let info = data.server {
+                switch (info) {
+                case .connected(let metadata):
+                    Section {
+                        HStack {
+                            Text("Server Version")
+                            Spacer()
+                            Text(metadata.version)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                case .error(let message, let detail):
+                    Section {
+                        HStack {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.red)
+                            Text(message)
+                        }
+                        Text(detail)
                             .foregroundColor(.secondary)
+                    }
+
+                    Section {
+                        Button("Retry") {
+                            settings.server = settings.server
+                        }
                     }
                 }
             }
@@ -48,5 +68,6 @@ struct ServerDetail_Previews: PreviewProvider {
             server: Server(host: "127.0.0.1", port: 3000)
         )
         .environmentObject(DataSource.preview)
+        .environmentObject(SettingsViewModel())
     }
 }

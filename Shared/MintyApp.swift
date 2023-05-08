@@ -8,7 +8,8 @@ private func info(key: String) -> String? {
 private func connect(
     server: Server
 ) async throws -> (MintyRepo, ServerMetadata) {
-    try await ZiplineClient.create(host: server.host, port: server.port)
+    let client = try await ZiplineClient(host: server.host, port: server.port)
+    return (client, client.metadata)
 }
 
 @main
