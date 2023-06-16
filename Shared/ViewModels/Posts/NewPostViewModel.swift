@@ -8,7 +8,7 @@ final class NewPostViewModel: RemoteEntity, ObservableObject {
     }
 
     func createDraft() async throws -> PostViewModel {
-        try await withRepo("create draft") { [self] repo in
+        try await withRepo("create draft") { repo in
             let id = try await repo.createPostDraft()
             draft = app!.state.posts.fetch(id: id)
         }

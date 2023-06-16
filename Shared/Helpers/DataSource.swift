@@ -61,10 +61,4 @@ final class DataSource: ObservableObject {
             }
         }
     }
-
-    func withRepo(
-        _ action: (MintyRepo) async throws -> Void
-    ) async throws {
-        try await action(repo!)
-    }
 }

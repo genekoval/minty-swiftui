@@ -11,7 +11,7 @@ final class ObjectViewModel: IdentifiableEntity, ObservableObject {
     }
 
     override func refresh() async throws {
-        try await withRepo("fetch data") { [self] repo in
+        try await withRepo("fetch data") { repo in
             object = try await repo.getObject(objectId: id)
             posts = object.posts.map { app!.state.posts.fetch(for: $0) }
         }

@@ -13,20 +13,20 @@ class RemoteEntity {
 
     final func withRepo(
         _ description: String,
-        action: @escaping (MintyRepo) async throws -> Void
+        action: (MintyRepo) async throws -> Void
     ) async throws {
-        try await app?.withRepo { [self] repo in
-            let id = "(\(identifier)): \(description)"
-            defaultLog.debug("Starting \(id)")
+        guard let repo = app?.repo else { return }
 
-            do {
-                try await action(repo)
-                defaultLog.debug("Success  \(id)")
-            }
-            catch {
-                defaultLog.debug("Failure  \(id)")
-                throw error
-            }
+        let id = "(\(identifier)): \(description)"
+        defaultLog.debug("Starting \(id)")
+
+        do {
+            try await action(repo)
+            defaultLog.debug("Success  \(id)")
+        }
+        catch {
+            defaultLog.debug("Failure  \(id)")
+            throw error
         }
     }
 

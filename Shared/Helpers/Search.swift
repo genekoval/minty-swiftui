@@ -104,7 +104,7 @@ where
 
     private func performSearch() async {
         do {
-            try await withRepo("perform search") { [self] repo in
+            try await withRepo("perform search") { repo in
                 load(result: try await search(repo, app!.state, query))
                 resultsAvailable = true
             }
