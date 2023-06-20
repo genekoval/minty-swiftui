@@ -74,26 +74,37 @@ struct PostEditor: View {
                     }
                 }
 
-                DeleteButton(for: "Post") { delete() }
+                DeleteButton(
+                    for: post.visibility == .draft ? "Draft" : "Post"
+                ) { delete() }
             }
             .navigationTitle("Edit Post")
             .navigationBarTitleDisplayMode(.inline)
+            .loadEntity(post)
             .loadEntity(postSearch)
             .loadEntity(tagSearch)
             .onAppear {
                 tagSearch.excluded = post.tags
             }
             .toolbar {
-                Button(action: {
-                    if post.visibility == .draft {
-                        create()
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: {
+                        if post.visibility == .draft {
+                            create()
+                        }
+                        else {
+                            dismiss()
+                        }
+                    }) {
+                        Text(post.visibility == .draft ? "Post" : "Done")
+                            .bold()
                     }
-                    else {
-                        dismiss()
+                }
+
+                if post.visibility == .draft {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") { dismiss() }
                     }
-                }) {
-                    Text(post.visibility == .draft ? "Post" : "Done")
-                        .bold()
                 }
             }
         }
@@ -102,6 +113,7 @@ struct PostEditor: View {
     private func create() {
         errorHandler.handle {
             try await post.createPost()
+            dismiss()
         }
     }
 

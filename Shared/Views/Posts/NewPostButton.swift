@@ -28,6 +28,7 @@ struct NewPostButton: View {
 
     @ObservedObject var post: NewPostViewModel
 
+    @State private var newPostId: UUID?
     @State private var showingNewPost = false
     @State private var showingEditor = false
 
@@ -53,14 +54,20 @@ struct NewPostButton: View {
         }
         .loadEntity(post)
         .background {
-            PostDetailLink(id: post.draft?.id, isActive: $showingNewPost)
+            if let id = newPostId {
+                PostDetailLink(id: id, isActive: $showingNewPost)
+            }
         }
         .sheet(isPresented: $showingEditor) {
             if let draft = post.draft {
                 PostEditor(post: draft)
                     .onDisappear {
                         if draft.visibility != .draft {
+                            newPostId = draft.id
+                            post.draft = nil
+
                             showingNewPost = true
+
                             if let onCreated = onCreated {
                                 onCreated()
                             }

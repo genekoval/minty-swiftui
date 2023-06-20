@@ -15,11 +15,11 @@ final class PostViewModel:
     @Published var draftComment = ""
     @Published var objects: [ObjectPreview] = []
     @Published var tags: [TagViewModel] = []
+    @Published var visibility: Visibility = .invalid
 
     @Published private(set) var deleted = false
     @Published private(set) var title: String?
     @Published private(set) var description: String?
-    @Published private(set) var visibility: Visibility = .invalid
     @Published private(set) var created: Date = Date()
     @Published private(set) var modified: Date = Date()
     @Published private(set) var comments: [Comment] = []
@@ -144,6 +144,7 @@ final class PostViewModel:
     func createPost() async throws {
         try await withRepo("create post") { repo in
             try await repo.createPost(postId: id)
+            visibility = .pub
         }
     }
 
