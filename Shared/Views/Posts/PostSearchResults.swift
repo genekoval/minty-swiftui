@@ -12,7 +12,7 @@ struct PostSearchResults: View {
             text: nil,
             showResultCount: showResultCount
         ) { post in
-            NavigationLink(destination: PostDetail(post: post)) {
+            NavigationLink(destination: PostHost(post: post)) {
                 VStack {
                     PostRow(post: post)
                     Divider()

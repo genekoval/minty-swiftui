@@ -7,10 +7,8 @@ struct DeleteButton: View {
     @State private var showingConfirmation = false
 
     var body: some View {
-        Section {
-            Button("Delete \(resource)", role: .destructive) {
-                showingConfirmation.toggle()
-            }
+        Button("Delete \(resource)", role: .destructive) {
+            showingConfirmation.toggle()
         }
         .confirmationDialog(
             "Delete this \(resource.lowercased())?",

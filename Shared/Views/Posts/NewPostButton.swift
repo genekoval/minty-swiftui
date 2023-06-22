@@ -1,101 +1,69 @@
 import Minty
 import SwiftUI
 
-private struct PostDetailLink: View {
-    @EnvironmentObject var data: DataSource
-
-    let id: UUID?
-
-    @Binding var isActive: Bool
-
-    var body: some View {
-        if let id = id {
-            NavigationLink(
-                destination: PostDetail(post: data.state.posts.fetch(id: id)),
-                isActive: $isActive
-            ) {
-                EmptyView()
-            }
-        }
-    }
-}
-
 struct NewPostButton: View {
-    @EnvironmentObject var errorHandler: ErrorHandler
+    @EnvironmentObject private var data: DataSource
+    @EnvironmentObject private var errorHandler: ErrorHandler
 
-    let onCreated: (() -> Void)?
+    @Binding var draft: PostViewModel?
+
+    @State private var showingPost = false
+
     let tag: TagViewModel?
 
-    @ObservedObject var post: NewPostViewModel
-
-    @State private var newPostId: UUID?
-    @State private var showingNewPost = false
-    @State private var showingEditor = false
-
     var body: some View {
-        Button(action: {
-            if post.draft != nil {
-                showingEditor = true
+        if let draft = draft, !draft.deleted, draft.visibility == .draft {
+            NavigationLink(destination: PostHost(post: draft)) {
+                Image(systemName: "rectangle.and.pencil.and.ellipsis")
             }
-            else {
-                errorHandler.handle {
-                    let draft = try await post.createDraft()
-
-                    if let tag = tag {
-                        try await draft.add(tag: tag)
-                        draft.tags.append(tag)
-                    }
-
-                    showingEditor = true
+            .navigationDestination(isPresented: $showingPost) {
+                PostHost(post: draft)
+            }
+            .onReceive(draft.$deleted) { if $0 { self.draft = nil }}
+            .onReceive(draft.$visibility) {
+                if $0 != .draft {
+                    self.draft = nil
                 }
             }
-        }) {
-            Image(systemName: "plus")
         }
-        .loadEntity(post)
-        .background {
-            if let id = newPostId {
-                PostDetailLink(id: id, isActive: $showingNewPost)
-            }
-        }
-        .sheet(isPresented: $showingEditor) {
-            if let draft = post.draft {
-                PostEditor(post: draft)
-                    .onDisappear {
-                        if draft.visibility != .draft {
-                            newPostId = draft.id
-                            post.draft = nil
-
-                            showingNewPost = true
-
-                            if let onCreated = onCreated {
-                                onCreated()
-                            }
-                        }
-                    }
+        else {
+            Button(action: createDraft) {
+                Image(systemName: "plus")
             }
         }
     }
 
-    init(
-        post: NewPostViewModel,
-        tag: TagViewModel? = nil,
-        onCreated: (() -> Void)? = nil
-    ) {
-        self.onCreated = onCreated
-        self.tag = tag
-        self.post = post
+    private func createDraft() {
+        errorHandler.handle {
+            guard let repo = data.repo else { return }
+
+            let id = try await repo.createPostDraft()
+            let draft = data.state.posts.fetch(id: id)
+
+            draft.app = data
+            draft.isEditing = true
+            draft.visibility = .draft
+
+            if let tag = tag {
+                try await draft.add(tag: tag)
+            }
+
+            self.draft = draft
+            showingPost = true
+        }
     }
 }
 
 struct NewPostButton_Previews: PreviewProvider {
     private struct Preview: View {
-        @StateObject private var post = NewPostViewModel()
+        @State private var draft: PostViewModel?
 
         var body: some View {
-            NewPostButton(post: post)
-                .withErrorHandling()
-                .environmentObject(DataSource.preview)
+            NavigationStack {
+                NewPostButton(draft: $draft, tag: nil)
+                    .withErrorHandling()
+                    .environmentObject(DataSource.preview)
+            }
         }
     }
 

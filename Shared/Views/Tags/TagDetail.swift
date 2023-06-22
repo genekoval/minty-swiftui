@@ -30,17 +30,7 @@ struct TagDetail: View {
 
     @ViewBuilder
     private var addButton: some View {
-        NewPostButton(post: tag.draftPost, tag: tag) {
-            // Refresh the recent posts list to make sure the new post
-            // appears here if it's tagged with this tag.
-            // Refresh after a short delay to avoid a race condition in which
-            // the new post does not appear in the results.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                Task {
-                    try? await recentPosts.refresh()
-                }
-            }
-        }
+        NewPostButton(draft: $tag.draftPost, tag: tag)
     }
 
     @ViewBuilder
@@ -95,7 +85,6 @@ struct TagDetail: View {
     @ViewBuilder
     private var posts: some View {
         if recentPosts.total > 0 {
-            Divider()
             PostSearchResults(search: recentPosts, showResultCount: false)
         }
     }

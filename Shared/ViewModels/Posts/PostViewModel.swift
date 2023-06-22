@@ -13,6 +13,7 @@ final class PostViewModel:
     @Published var draftTitle = ""
     @Published var draftDescription = ""
     @Published var draftComment = ""
+    @Published var isEditing = false
     @Published var objects: [ObjectPreview] = []
     @Published var tags: [TagViewModel] = []
     @Published var visibility: Visibility = .invalid
@@ -103,6 +104,8 @@ final class PostViewModel:
         try await withRepo("add tag") { repo in
             try await repo.addPostTag(postId: id, tagId: tag.id)
         }
+
+        tags.append(tag)
     }
 
     func comment() async throws {
@@ -144,7 +147,8 @@ final class PostViewModel:
     func createPost() async throws {
         try await withRepo("create post") { repo in
             try await repo.createPost(postId: id)
-            visibility = .pub
+            try await refresh()
+            isEditing = false
         }
     }
 

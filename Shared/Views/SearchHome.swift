@@ -4,7 +4,7 @@ struct SearchHome: View {
     @EnvironmentObject var data: DataSource
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 NavigationLink(destination: TagSearch()) {
                     HStack {

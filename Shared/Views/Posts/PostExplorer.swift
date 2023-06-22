@@ -2,7 +2,7 @@ import Minty
 import SwiftUI
 
 struct PostExplorer: View {
-    @StateObject private var draft = NewPostViewModel()
+    @State private var draft: PostViewModel?
 
     @StateObject private var search = PostQueryViewModel()
 
@@ -23,15 +23,13 @@ struct PostExplorer: View {
             }
         }
         .navigationTitle("Posts")
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) { addButton }
-        }
+        .toolbar { addButton }
         .prepareSearch(search)
     }
 
     @ViewBuilder
     private var addButton: some View {
-        NewPostButton(post: draft)
+        NewPostButton(draft: $draft, tag: nil)
     }
 }
 

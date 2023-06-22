@@ -12,14 +12,8 @@ struct PostDetail: View {
             controls
             comments
         }
-        .navigationTitle("Post")
+        .navigationTitle(post.visibility == .draft ? "Draft" : "Post")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar { PostMenu(post: post) }
-        .loadEntity(post)
-        .onAppear {
-            if post.deleted { dismiss() }
-        }
-        .onReceive(post.$deleted) { if $0 { dismiss() } }
     }
 
     @ViewBuilder
@@ -115,7 +109,7 @@ struct PostDetail: View {
             VStack {
                 ForEach(post.posts) { post in
                     NavigationLink(
-                        destination: PostDetail(post: post)
+                        destination: PostHost(post: post)
                     ) {
                         PostRowMinimal(post: post)
                     }

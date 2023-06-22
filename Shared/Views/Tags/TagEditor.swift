@@ -139,7 +139,9 @@ struct TagEditor: View {
                     }
                 }
 
-                DeleteButton(for: "Tag") { delete() }
+                Section {
+                    DeleteButton(for: "Tag") { delete() }
+                }
             }
             .navigationTitle("Edit Tag")
             .navigationBarTitleDisplayMode(.inline)

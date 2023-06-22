@@ -11,109 +11,90 @@ struct PostEditor: View {
     @StateObject private var tagSearch = TagQueryViewModel()
 
     var body: some View {
-        NavigationView {
-            Form {
-                DraftEditorLink(
-                    title: "Title",
-                    original: post.title,
-                    onSave: { try await post.commitTitle() },
-                    draft: $post.draftTitle
-                )
+        Form {
+            DraftEditorLink(
+                title: "Title",
+                original: post.title,
+                onSave: { try await post.commitTitle() },
+                draft: $post.draftTitle
+            )
 
-                DraftEditorLink(
-                    title: "Description",
-                    original: post.description,
-                    onSave: { try await post.commitDescription() },
-                    draft: $post.draftDescription
-                )
+            DraftEditorLink(
+                title: "Description",
+                original: post.description,
+                onSave: { try await post.commitDescription() },
+                draft: $post.draftDescription
+            )
 
-                Section {
-                    NavigationLink(destination: ObjectEditorGrid(
-                        collection: post,
-                        subscriber: post
-                    )) {
-                        HStack {
-                            Label("Objects", systemImage: "doc")
-                            Spacer()
-                            Text("\(post.objects.count)")
-                                .foregroundColor(.secondary)
-                        }
+            Section {
+                NavigationLink(destination: ObjectEditorGrid(
+                    collection: post,
+                    subscriber: post
+                )) {
+                    HStack {
+                        Label("Objects", systemImage: "doc")
+                        Spacer()
+                        Text("\(post.objects.count)")
+                            .foregroundColor(.secondary)
                     }
+                }
 
-                    NavigationLink(destination: RelatedPostsEditor(
-                        post: post,
-                        search: postSearch
-                    )) {
-                        HStack {
-                            Label(
-                                "Related Posts",
-                                systemImage: "doc.text.image"
-                            )
-                            Spacer()
-                            Text("\(post.posts.count)")
-                                .foregroundColor(.secondary)
-                        }
+                NavigationLink(destination: RelatedPostsEditor(
+                    post: post,
+                    search: postSearch
+                )) {
+                    HStack {
+                        Label(
+                            "Related Posts",
+                            systemImage: "doc.text.image"
+                        )
+                        Spacer()
+                        Text("\(post.posts.count)")
+                            .foregroundColor(.secondary)
                     }
+                }
 
-                    NavigationLink(destination: TagSelector(
-                        tags: $post.tags,
-                        search: tagSearch,
-                        onAdd: { tag in
-                            try await post.add(tag: tag)
-                        },
-                        onRemove: { tag in
-                            try await post.removeTag(tag: tag)
-                        }
-                    )) {
-                        HStack {
-                            Label("Tags", systemImage: "tag")
-                            Spacer()
-                            Text("\(post.tags.count)")
-                                .foregroundColor(.secondary)
-                        }
+                NavigationLink(destination: TagSelector(
+                    tags: $post.tags,
+                    search: tagSearch,
+                    onAdd: { tag in
+                        try await post.add(tag: tag)
+                    },
+                    onRemove: { tag in
+                        try await post.removeTag(tag: tag)
                     }
+                )) {
+                    HStack {
+                        Label("Tags", systemImage: "tag")
+                        Spacer()
+                        Text("\(post.tags.count)")
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+
+            Section {
+                if post.visibility == .draft {
+                    Button("Publish Post") { create() }
                 }
 
                 DeleteButton(
                     for: post.visibility == .draft ? "Draft" : "Post"
                 ) { delete() }
             }
-            .navigationTitle("Edit Post")
-            .navigationBarTitleDisplayMode(.inline)
-            .loadEntity(post)
-            .loadEntity(postSearch)
-            .loadEntity(tagSearch)
-            .onAppear {
-                tagSearch.excluded = post.tags
-            }
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Button(action: {
-                        if post.visibility == .draft {
-                            create()
-                        }
-                        else {
-                            dismiss()
-                        }
-                    }) {
-                        Text(post.visibility == .draft ? "Post" : "Done")
-                            .bold()
-                    }
-                }
-
-                if post.visibility == .draft {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Cancel") { dismiss() }
-                    }
-                }
-            }
+        }
+        .navigationTitle("\(post.visibility == .draft ? "New" : "Edit") Post")
+        .navigationBarTitleDisplayMode(.inline)
+        .loadEntity(postSearch)
+        .loadEntity(tagSearch)
+        .onAppear {
+            tagSearch.excluded = post.tags
         }
     }
 
     private func create() {
         errorHandler.handle {
             try await post.createPost()
-            dismiss()
         }
     }
 
