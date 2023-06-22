@@ -1,13 +1,16 @@
+import Combine
 import Minty
 import SwiftUI
 
 struct TagDetail: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
 
     @ObservedObject var tag: TagViewModel
 
     @StateObject private var recentPosts: PostQueryViewModel
     @StateObject private var search: PostQueryViewModel
+
+    @State private var cancellable: AnyCancellable?
 
     var body: some View {
         PaddedScrollView {
@@ -26,6 +29,20 @@ struct TagDetail: View {
             if tag.deleted { dismiss() }
         }
         .onReceive(tag.$deleted) { if $0 { dismiss() } }
+        .onReceive(tag.$draftPost) {
+            if let draft = $0 {
+                cancellable = draft.$visibility.sink { [weak recentPosts] in
+                    if $0 != .draft {
+                        Task {
+                            await recentPosts?.newSearch()
+                        }
+                    }
+                }
+            }
+            else {
+                cancellable = nil
+            }
+        }
     }
 
     @ViewBuilder

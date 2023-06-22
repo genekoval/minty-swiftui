@@ -91,7 +91,7 @@ where
         modifyingQuery = false
     }
 
-    private func newSearch() async {
+    func newSearch() async {
         resultsAvailable = false
         clear()
         await performSearch()
