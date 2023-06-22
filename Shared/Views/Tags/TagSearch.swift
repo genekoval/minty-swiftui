@@ -8,10 +8,7 @@ struct TagSearch: View {
         TagHome(query: query)
             .buttonStyle(PlainButtonStyle())
             .navigationTitle("Tags")
-            .searchable(text: $query.name)
-            .toolbar {
-                NewTagButton()
-            }
+            .searchable(text: $query.name, prompt: "Find or add a tag")
             .prepareSearch(query)
     }
 }
