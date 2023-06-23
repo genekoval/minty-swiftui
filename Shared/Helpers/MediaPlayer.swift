@@ -185,7 +185,10 @@ final class MediaPlayer: ObservableObject {
             .sink { [weak self] status in
                 switch status {
                 case .readyToPlay:
-                    self?.duration = item.asset.duration.seconds
+                    self?.errorHandler?.handle {
+                        let duration = try await item.asset.load(.duration)
+                        self?.duration = duration.seconds
+                    }
                 case .failed:
                     if let error = item.error {
                         self?.errorHandler?.handle(error: error)
