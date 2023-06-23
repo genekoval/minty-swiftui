@@ -20,12 +20,7 @@ final class Overlay: ObservableObject {
     @Published private(set) var visible = false
 
     private var cancellable: AnyCancellable?
-    private var infoPresented: Binding<UUID?>?
     private var providerId: UUID?
-
-    var infoEnabled: Bool {
-        infoPresented != nil
-    }
 
     var title: String {
         "\(index + 1) of \(objects.count)"
@@ -36,26 +31,13 @@ final class Overlay: ObservableObject {
         uiVisible = true
     }
 
-    func info() {
-        if let selection = infoPresented {
-            selection.wrappedValue = objects[index].id
-            hide()
-        }
-    }
-
-    func load(
-        provider: ObjectProvider,
-        infoPresented: Binding<UUID?>? = nil
-    ) {
+    func load(provider: ObjectProvider) {
         guard providerId != provider.id else { return }
 
         providerId = provider.id
         cancellable = provider.objectsPublisher.sink { [weak self] in
-            guard let self = self else { return }
-            self.objects = $0.filter { $0.isViewable }
+            self?.objects = $0.filter { $0.isViewable }
         }
-
-        self.infoPresented = infoPresented
     }
 
     func show(object: ObjectPreview) {

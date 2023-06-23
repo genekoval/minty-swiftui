@@ -27,14 +27,6 @@ struct OverlayNavigationBar: View {
     }
 
     @ViewBuilder
-    private var infoButton: some View {
-        Button(action: { overlay.info() }) {
-            Image(systemName: "info.circle")
-                .font(.title2)
-        }
-    }
-
-    @ViewBuilder
     private var navigationBar: some View {
         // Use a ZStack here to keep the title centered regardless of the items
         // to the right and left of it.
@@ -44,18 +36,10 @@ struct OverlayNavigationBar: View {
             HStack {
                 cancellationAction
                 Spacer()
-                primaryAction
             }
         }
         .padding()
         .background(.ultraThinMaterial)
-    }
-
-    @ViewBuilder
-    private var primaryAction: some View {
-        if overlay.infoEnabled {
-            infoButton
-        }
     }
 
     @ViewBuilder

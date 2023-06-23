@@ -1,49 +1,20 @@
 import Minty
 import SwiftUI
 
-private struct ObjectDetailLink<Content>: View where Content : View {
-    @EnvironmentObject var data: DataSource
-
-    let id: UUID
-
-    @Binding var selection: UUID?
-
-    @ViewBuilder let content: () -> Content
-
-    var body: some View {
-        NavigationLink(
-            destination: ObjectDetail(id: id, repo: data.repo),
-            tag: id,
-            selection: $selection
-        ) {
-            content()
-        }
-    }
-}
-
-private struct ObjectGridItem: View {
-    @EnvironmentObject var overlay: Overlay
-    @EnvironmentObject var player: MediaPlayer
-
+private struct PreviewItem: View {
     let object: ObjectPreview
-    let provider: ObjectProvider
 
-    @Binding var selection: UUID?
+    @State private var infoPresented = false
 
     var body: some View {
-        if object.isMedia || object.isViewable {
-            Button(action: viewObject) {
-                preview
+        PreviewImage(object: object)
+            .contextMenu {
+                copyButton
+                infoButton
             }
-            .background {
-                ObjectDetailLink(id: object.id, selection: $selection) {
-                    EmptyView()
-                }
+            .navigationDestination(isPresented: $infoPresented) {
+                ObjectDetail(id: object.id)
             }
-        }
-        else {
-            ObjectDetailLink(id: object.id, selection: $selection) { preview }
-        }
     }
 
     @ViewBuilder
@@ -53,28 +24,47 @@ private struct ObjectGridItem: View {
 
     @ViewBuilder
     private var infoButton: some View {
-        Button(action: { selection = object.id }) {
+        Button(action: { infoPresented = true }) {
             Label("Get Info", systemImage: "info.circle")
         }
     }
+}
 
-    @ViewBuilder
-    private var preview: some View {
-        PreviewImage(object: object)
-            .contextMenu {
-                infoButton
-                copyButton
-            }
+private struct ViewableItem: View {
+    @EnvironmentObject private var overlay: Overlay
+
+    let object: ObjectPreview
+
+    var body: some View {
+        Button(action: viewObject) { PreviewItem(object: object) }
     }
 
     private func viewObject() {
-        if object.isMedia {
-            player.currentItem = object
-            player.maximize()
-        }
-        else if object.isViewable {
-            overlay.load(provider: provider, infoPresented: $selection)
-            overlay.show(object: object)
+        overlay.show(object: object)
+    }
+}
+
+private struct MediaItem: View {
+    @EnvironmentObject private var player: MediaPlayer
+
+    let object: ObjectPreview
+
+    var body: some View {
+        Button(action: viewObject) { PreviewItem(object: object) }
+    }
+
+    private func viewObject() {
+        player.currentItem = object
+        player.maximize()
+    }
+}
+
+private struct PlainItem: View {
+    let object: ObjectPreview
+
+    var body: some View {
+        NavigationLink(destination: ObjectDetail(id: object.id)) {
+            PreviewItem(object: object)
         }
     }
 }
@@ -84,21 +74,17 @@ struct ObjectGrid: View {
 
     let provider: ObjectProvider
 
-    @State private var selection: UUID?
-
     var body: some View {
         Grid {
-            ForEach(provider.objects) {
-                ObjectGridItem(
-                    object: $0,
-                    provider: provider,
-                    selection: $selection
-                )
+            ForEach(provider.objects) { object in
+                if object.isMedia { MediaItem(object: object) }
+                else if object.isViewable { ViewableItem(object: object) }
+                else { PlainItem(object: object) }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .onAppear {
-            overlay.load(provider: provider, infoPresented: $selection)
+            overlay.load(provider: provider)
         }
     }
 }

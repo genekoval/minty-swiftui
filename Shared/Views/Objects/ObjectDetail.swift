@@ -108,7 +108,7 @@ struct ObjectDetail: View {
         .loadEntity(vm)
     }
 
-    init(id: UUID, repo: MintyRepo?) {
+    init(id: UUID) {
         _vm = StateObject(wrappedValue: ObjectViewModel(id: id))
     }
 }
@@ -116,7 +116,7 @@ struct ObjectDetail: View {
 struct ObjectDetail_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView{
-            ObjectDetail(id: PreviewObject.sandDune, repo: PreviewRepo())
+            ObjectDetail(id: PreviewObject.sandDune)
         }
         .withErrorHandling()
         .environmentObject(DataSource.preview)
