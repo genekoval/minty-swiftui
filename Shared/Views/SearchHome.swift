@@ -1,28 +1,48 @@
 import SwiftUI
 
-struct SearchHome: View {
-    @EnvironmentObject var data: DataSource
+private struct SearchLabel<Destination>: View where Destination : View {
+    private let name: String
+    private let icon: String
+    private let color: Color
+    private let destination: Destination
 
+    var body: some View {
+        NavigationLink(destination: destination) {
+            Label {
+                Text(name)
+            } icon: {
+                Image(systemName: "\(icon).fill")
+                    .foregroundColor(color)
+            }
+        }
+    }
+
+    init(
+        _ name: String,
+        icon: String,
+        color: Color,
+        @ViewBuilder destination: () -> Destination
+    ) {
+        self.name = name
+        self.icon = icon
+        self.color = color
+        self.destination = destination()
+    }
+}
+
+struct SearchHome: View {
     var body: some View {
         NavigationStack {
             List {
-                NavigationLink(destination: TagSearch()) {
-                    HStack {
-                        Image(systemName: "tag.fill")
-                            .foregroundColor(.green)
-                        Text("Tags")
-                    }
+                SearchLabel("Tags", icon: "tag", color: .green) {
+                    TagSearch()
                 }
 
-                NavigationLink(
-                    destination: PostExplorer()) {
-                    HStack {
-                        Image(systemName: "doc.text.image.fill")
-                            .foregroundColor(.blue)
-                        Text("Posts")
-                    }
+                SearchLabel("Posts", icon: "doc.text.image", color: .blue) {
+                    PostExplorer()
                 }
             }
+            .listStyle(.plain)
             .navigationBarTitle("Search")
         }
     }
