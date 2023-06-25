@@ -110,6 +110,7 @@ struct MediaPlayerView: View {
             }
         }
         .statusBar(hidden: !uiVisible)
+        .persistentSystemOverlays(uiVisible ? .automatic : .hidden)
         .cornerRadius(16)
         .offset(y: offset)
         .gesture(drag)

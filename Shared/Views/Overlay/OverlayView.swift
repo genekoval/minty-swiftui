@@ -21,6 +21,7 @@ struct OverlayView: View {
             }
         }
         .statusBar(hidden: !overlay.uiVisible)
+        .persistentSystemOverlays(overlay.uiVisible ? .automatic : .hidden)
     }
 
     @ViewBuilder
