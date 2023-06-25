@@ -127,6 +127,8 @@ private struct ObjectView: View {
 
     @ObservedObject var selectable: SelectableObject
 
+    let state: EditorState
+
     var body: some View {
         PreviewImage(object: selectable.object)
             .opacity(moving ? 0.5 : 1.0)
@@ -161,10 +163,6 @@ private struct ObjectView: View {
     private var moving: Bool {
         state == .moving && selectable.selected
     }
-
-    private var state: EditorState {
-        selectable.editor.state
-    }
 }
 
 struct ObjectEditorGrid: View {
@@ -177,7 +175,9 @@ struct ObjectEditorGrid: View {
         PaddedScrollView {
             VStack {
                 Grid {
-                    ForEach(editor.objects) { ObjectView(selectable: $0) }
+                    ForEach(editor.objects) {
+                        ObjectView(selectable: $0, state: editor.state)
+                    }
 
                     if state == .adding || (state == .moving && !movingLast) {
                         Button(action: state == .adding ? add : move) {
