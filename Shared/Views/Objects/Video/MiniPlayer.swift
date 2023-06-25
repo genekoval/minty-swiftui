@@ -1,7 +1,5 @@
 import SwiftUI
 
-let miniPlayerHeight: CGFloat = 70
-
 private func albumCoverSpacing(_ geometry: GeometryProxy) -> CGFloat {
     geometry.size.height / 3
 }
@@ -11,6 +9,9 @@ private func albumCoverSize(_ geometry: GeometryProxy) -> CGFloat {
 }
 
 struct MiniPlayer: View {
+    static let background: Material = .ultraThin
+    static let height: CGFloat = 70
+
     @EnvironmentObject var player: MediaPlayer
 
     @ViewBuilder
@@ -45,11 +46,11 @@ struct MiniPlayer: View {
 
             Divider()
         }
-        .frame(height: miniPlayerHeight)
+        .frame(height: MiniPlayer.height)
         .foregroundColor(.white)
         .background {
             Rectangle()
-                .fill(.thinMaterial)
+                .fill(MiniPlayer.background)
         }
     }
 

@@ -58,22 +58,21 @@ struct ObjectUploadView: View {
             }
             .padding()
         }
-        .navigationTitle("Add Objects")
-        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                if !uploads.isEmpty {
-                    Button(action: { upload() }) {
-                        Text("Add")
-                            .bold()
-                    }
+                Button(action: upload) {
+                    Text("Add")
+                        .bold()
                 }
+                .disabled(uploads.isEmpty)
             }
 
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") { dismiss() }
             }
         }
+        .navigationTitle("Select Files")
+        .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showingImagePicker, onDismiss: loadImage) {
             ImagePicker(image: $inputImage, url: $imageURL)
         }

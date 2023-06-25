@@ -6,13 +6,22 @@ private enum Tab {
 }
 
 struct AppShell: View {
+    @EnvironmentObject private var player: MediaPlayer
+
     @State private var playerFrame: CGRect = .zero
     @State private var selection: Tab = .search
 
     var body: some View {
         TabView(selection: $selection) {
-            search
-            settings
+            Group {
+                search
+                settings
+            }
+            .toolbarBackground(MiniPlayer.background, for: .tabBar)
+            .toolbarBackground(
+                player.visible ? .visible : .automatic,
+                for: .tabBar
+            )
         }
         .onPreferenceChange(Size.self) { size in
             playerFrame = size.last ?? .zero

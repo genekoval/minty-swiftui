@@ -12,6 +12,7 @@ final class MediaPlayer: ObservableObject {
     @Published var currentItem: ObjectPreview?
     @Published var currentTime: Double = .zero
     @Published var duration: Double?
+    @Published var visibility: SwiftUI.Visibility = .automatic
 
     @Published private(set) var isMaximized = false
 
@@ -22,6 +23,12 @@ final class MediaPlayer: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private var timeObserver: Any?
     private var wasPlaying = false
+
+    var visible: Bool {
+        visibility == .visible || (
+            visibility == .automatic && currentItem != nil
+        )
+    }
 
     init() {
         $isEditingTime

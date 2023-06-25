@@ -4,8 +4,6 @@ import Minty
 
 final class PostViewModel:
     IdentifiableEntity,
-    ObjectCollection,
-    ObjectEditorSubscriber,
     ObjectProvider,
     ObservableObject,
     StorableEntity
@@ -71,13 +69,28 @@ final class PostViewModel:
         }
     }
 
-    func add(objects: [UUID], before destination: UUID?) async throws {
+    func add(
+        objects: [ObjectPreview],
+        before destination: ObjectPreview? = nil
+    ) async throws {
         try await withRepo("add objects") { repo in
             modified = try await repo.addPostObjects(
                 postId: id,
-                objects: objects,
-                destination: destination
+                objects: objects.map { $0.id },
+                destination: destination?.id
             )
+
+            if
+                let destination = destination?.id,
+                let insertionPoint = self.objects.firstIndex(where: {
+                    $0.id == destination
+                })
+            {
+                self.objects.insert(contentsOf: objects, at: insertionPoint)
+            }
+            else {
+                self.objects.append(contentsOf: objects)
+            }
         }
     }
 
@@ -160,12 +173,14 @@ final class PostViewModel:
         Post.deleted.send(id)
     }
 
-    func delete(objects: [UUID]) async throws {
+    func delete(objects: [ObjectPreview]) async throws {
         try await withRepo("delete objects") { repo in
             modified = try await repo.deletePostObjects(
                 postId: id,
-                objects: objects
+                objects: objects.map { $0.id }
             )
+
+            self.objects.remove(all: objects)
         }
     }
 
@@ -208,13 +223,33 @@ final class PostViewModel:
         created = preview.dateCreated
     }
 
-    func move(objects: [UUID], to destination: UUID?) async throws {
+    func move(
+        objects: [ObjectPreview],
+        to destination: ObjectPreview? = nil
+    ) async throws {
         try await withRepo("move objects") { repo in
             modified = try await repo.movePostObjects(
                 postId: id,
-                objects: objects,
-                destination: destination
+                objects: objects.map { $0.id },
+                destination: destination?.id
             )
+
+            let source = IndexSet(objects.compactMap { object in
+                self.objects.firstIndex(of: object)
+            })
+
+            if
+                let destination,
+                let offset = self.objects.firstIndex(of: destination)
+            {
+                self.objects.move(fromOffsets: source, toOffset: offset)
+            }
+            else {
+                self.objects.move(
+                    fromOffsets: source,
+                    toOffset: self.objects.count
+                )
+            }
         }
     }
 
