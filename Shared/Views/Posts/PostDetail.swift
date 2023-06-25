@@ -43,6 +43,9 @@ struct PostDetail: View {
             Spacer()
             NewCommentButton(post: post)
             Spacer()
+            ShareLink(item: post.id.uuidString)
+                .labelStyle(.iconOnly)
+            Spacer()
         }
         .padding(.vertical, 5)
     }
