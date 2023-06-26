@@ -22,7 +22,7 @@ private struct PreviewBadge: View {
 
     @ViewBuilder
     private var badge: some View {
-        switch (type) {
+        switch type {
         case "audio":
             Image(systemName: "music.note")
         case "video":

@@ -9,8 +9,9 @@ private struct PreviewItem: View {
     var body: some View {
         PreviewImage(object: object)
             .contextMenu {
-                copyButton
-                infoButton
+                copy
+                info
+                share
             }
             .navigationDestination(isPresented: $infoPresented) {
                 ObjectDetail(id: object.id)
@@ -18,15 +19,20 @@ private struct PreviewItem: View {
     }
 
     @ViewBuilder
-    private var copyButton: some View {
+    private var copy: some View {
         CopyID(entity: object)
     }
 
     @ViewBuilder
-    private var infoButton: some View {
+    private var info: some View {
         Button(action: { infoPresented = true }) {
             Label("Get Info", systemImage: "info.circle")
         }
+    }
+
+    @ViewBuilder
+    private var share: some View {
+        ObjectShareLink(object: object)
     }
 }
 
