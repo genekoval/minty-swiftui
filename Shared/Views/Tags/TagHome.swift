@@ -41,14 +41,14 @@ struct TagHome: View {
             if let id = newTag {
                 let tag = data.state.tags.fetch(id: id)
 
-                NavigationLink(destination: TagDetail(tag: tag)) {
+                NavigationLink(destination: TagHost(tag: tag)) {
                     HStack {
                         Image(systemName: "tag")
                         Text(name)
                     }
                 }
                 .navigationDestination(isPresented: $showingTag) {
-                    TagDetail(tag: tag)
+                    TagHost(tag: tag)
                 }
             }
             else {

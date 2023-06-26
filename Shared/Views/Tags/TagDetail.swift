@@ -1,47 +1,17 @@
-import Combine
 import Minty
 import SwiftUI
 
 struct TagDetail: View {
-    @Environment(\.dismiss) private var dismiss
-
     @ObservedObject var tag: TagViewModel
 
-    @StateObject private var recentPosts: PostQueryViewModel
-    @StateObject private var search: PostQueryViewModel
-
-    @State private var cancellable: AnyCancellable?
+    @ObservedObject var recentPosts: PostQueryViewModel
+    @ObservedObject var search: PostQueryViewModel
 
     var body: some View {
         PaddedScrollView {
             tagInfo
             controls
-
             posts
-        }
-        .navigationTitle(tag.name)
-        .navigationBarTitleDisplayMode(.large)
-        .toolbar { TagMenu(tag: tag) }
-        .loadEntity(tag)
-        .prepareSearch(recentPosts)
-        .prepareSearch(search)
-        .onAppear {
-            if tag.deleted { dismiss() }
-        }
-        .onReceive(tag.$deleted) { if $0 { dismiss() } }
-        .onReceive(tag.$draftPost) {
-            if let draft = $0 {
-                cancellable = draft.$visibility.sink { [weak recentPosts] in
-                    if $0 != .draft {
-                        Task {
-                            await recentPosts?.newSearch()
-                        }
-                    }
-                }
-            }
-            else {
-                cancellable = nil
-            }
         }
     }
 
@@ -70,6 +40,9 @@ struct TagDetail: View {
             Spacer()
             searchButton
             Spacer()
+            ShareLink(item: tag.id.uuidString)
+                .labelStyle(.iconOnly)
+            Spacer()
             addButton
             Spacer()
         }
@@ -93,17 +66,8 @@ struct TagDetail: View {
     }
 
     @ViewBuilder
-    private var metadata: some View {
-        sources
-        created
-        postCount
-    }
-
-    @ViewBuilder
     private var posts: some View {
-        if recentPosts.total > 0 {
-            PostSearchResults(search: recentPosts, showResultCount: false)
-        }
+        PostSearchResults(search: recentPosts, showResultCount: false)
     }
 
     @ViewBuilder
@@ -135,28 +99,10 @@ struct TagDetail: View {
         VStack(alignment: .leading, spacing: 10) {
             aliases
             description
-            metadata
+            sources
+            created
+            postCount
         }
         .padding()
-    }
-
-    init(tag: TagViewModel) {
-        self.tag = tag
-        _recentPosts = StateObject(wrappedValue: PostQueryViewModel(
-            tag: tag,
-            searchNow: true
-        ))
-        _search = StateObject(wrappedValue: PostQueryViewModel(tag: tag))
-    }
-}
-
-struct TagDetail_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            TagDetail(tag: TagViewModel.preview(id: PreviewTag.helloWorld))
-        }
-        .withErrorHandling()
-        .environmentObject(DataSource.preview)
-        .environmentObject(ObjectSource.preview)
     }
 }

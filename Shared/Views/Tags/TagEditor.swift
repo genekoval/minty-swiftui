@@ -143,14 +143,7 @@ struct TagEditor: View {
                     DeleteButton(for: "Tag") { delete() }
                 }
             }
-            .navigationTitle("Edit Tag")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                Button(action: { dismiss() }) {
-                    Text("Done")
-                        .bold()
-                }
-            }
+            .playerSpacing()
         }
     }
 

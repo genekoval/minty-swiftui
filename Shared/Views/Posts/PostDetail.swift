@@ -12,8 +12,6 @@ struct PostDetail: View {
             controls
             comments
         }
-        .navigationTitle(post.visibility == .draft ? "Draft" : "Post")
-        .navigationBarTitleDisplayMode(.inline)
     }
 
     @ViewBuilder
@@ -147,7 +145,7 @@ struct PostDetail: View {
             }
         }
         else if let tag = post.tags.first {
-            NavigationLink(destination: TagDetail(tag: tag)) {
+            NavigationLink(destination: TagHost(tag: tag)) {
                 Label(tag.name, systemImage: "tag")
                     .font(.caption)
             }

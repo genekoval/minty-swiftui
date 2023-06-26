@@ -10,12 +10,12 @@ struct PostHost: View {
 
     var body: some View {
         content
-            .toolbar {
-                editButton
-            }
             .loadEntity(post)
-            .onAppear { if post.deleted { dismiss() } }
-            .onReceive(post.$deleted) { if $0 { dismiss() } }
+            .navigationTitle(title)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { edit }
+            .onAppear { if post.deleted { dismiss() }}
+            .onReceive(post.$deleted) { if $0 { dismiss() }}
     }
 
     @ViewBuilder
@@ -29,7 +29,7 @@ struct PostHost: View {
     }
 
     @ViewBuilder
-    private var editButton: some View {
+    private var edit: some View {
         Button(action: {
             post.isEditing.toggle()
         }) {
@@ -41,6 +41,14 @@ struct PostHost: View {
                 Text("Edit")
             }
         }
+    }
+
+    private var title: String {
+        if post.isEditing {
+            return "\(post.visibility == .draft ? "New" : "Edit") Post"
+        }
+
+        return post.visibility == .draft ? "Draft" : "Post"
     }
 }
 

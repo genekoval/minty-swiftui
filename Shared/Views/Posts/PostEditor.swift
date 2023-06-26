@@ -80,8 +80,7 @@ struct PostEditor: View {
                 ) { delete() }
             }
         }
-        .navigationTitle("\(post.visibility == .draft ? "New" : "Edit") Post")
-        .navigationBarTitleDisplayMode(.inline)
+        .playerSpacing()
         .loadEntity(postSearch)
         .loadEntity(tagSearch)
         .onAppear {

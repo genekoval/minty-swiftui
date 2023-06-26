@@ -10,7 +10,7 @@ struct TagSearchResults: View {
             text: search.name,
             showResultCount: !search.name.isEmpty
         ) { tag in
-            NavigationLink(destination: TagDetail(tag: tag)) {
+            NavigationLink(destination: TagHost(tag: tag)) {
                 VStack {
                     TagRow(tag: tag)
                     Divider()
