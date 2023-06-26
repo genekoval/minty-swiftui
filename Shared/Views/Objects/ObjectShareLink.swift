@@ -7,17 +7,22 @@ private protocol Exportable: Transferable {
     var source: ObjectSource { get }
 }
 
-@Sendable
-private func export(
-    _ exportable: some Exportable
-) async throws -> SentTransferredFile {
-    let url = try await exportable.source.url(for: exportable.object.id)
-    return SentTransferredFile(url!)
+private func fileRepresentation<Item: Exportable>(
+    _ type: UTType
+) -> FileRepresentation<Item> {
+    FileRepresentation(
+        exportedContentType: type,
+        shouldAllowToOpenInPlace: true,
+        exporting: { exportable in
+            let url = try await exportable.source.url(for: exportable.object.id)
+            return SentTransferredFile(url!)
+        }
+    )
 }
 
 private struct AudioExport: Exportable {
     static var transferRepresentation: some TransferRepresentation {
-        FileRepresentation(exportedContentType: .audio, exporting: export)
+        fileRepresentation(.audio)
     }
 
     let object: ObjectPreview
@@ -27,7 +32,7 @@ private struct AudioExport: Exportable {
 
 private struct DataExport: Exportable {
     static var transferRepresentation: some TransferRepresentation {
-        FileRepresentation(exportedContentType: .data, exporting: export)
+        fileRepresentation(.data)
     }
 
     let object: ObjectPreview
@@ -36,7 +41,7 @@ private struct DataExport: Exportable {
 
 private struct ImageExport: Exportable {
     static var transferRepresentation: some TransferRepresentation {
-        FileRepresentation(exportedContentType: .image, exporting: export)
+        fileRepresentation(.image)
     }
 
     let object: ObjectPreview
@@ -45,7 +50,7 @@ private struct ImageExport: Exportable {
 
 private struct TextExport: Exportable {
     static var transferRepresentation: some TransferRepresentation {
-        FileRepresentation(exportedContentType: .text, exporting: export)
+        fileRepresentation(.text)
     }
 
     let object: ObjectPreview
@@ -54,7 +59,7 @@ private struct TextExport: Exportable {
 
 private struct VideoExport: Exportable {
     static var transferRepresentation: some TransferRepresentation {
-        FileRepresentation(exportedContentType: .video, exporting: export)
+        fileRepresentation(.video)
     }
 
     let object: ObjectPreview
