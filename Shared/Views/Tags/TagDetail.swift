@@ -2,6 +2,8 @@ import Minty
 import SwiftUI
 
 struct TagDetail: View {
+    @EnvironmentObject private var errorHandler: ErrorHandler
+
     @ObservedObject var tag: TagViewModel
 
     @ObservedObject var recentPosts: PostQueryViewModel
@@ -12,6 +14,16 @@ struct TagDetail: View {
             tagInfo
             controls
             posts
+        }
+        .refreshable {
+            do {
+                try await tag.refresh()
+            }
+            catch {
+                errorHandler.handle(error: error)
+            }
+
+            await recentPosts.newSearch()
         }
     }
 
