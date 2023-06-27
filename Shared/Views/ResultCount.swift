@@ -1,10 +1,11 @@
 import SwiftUI
 
-struct ResultCount: View {
-    let typeSingular: String
-    let typePlural: String
-    let count: Int
-    let text: String?
+struct ResultCount<SideContent>: View where SideContent : View {
+    private let typeSingular: String
+    private let typePlural: String
+    private let count: Int
+    private let text: String?
+    private let sideContent: SideContent
 
     var body: some View {
         if count > 0 {
@@ -12,12 +13,20 @@ struct ResultCount: View {
                 Text(countText)
                     .bold()
                     .font(.headline)
-                    .padding()
+
                 Spacer()
+
+                sideContent
             }
+            .padding()
         }
         else {
             VStack(spacing: 10) {
+                HStack {
+                    Spacer()
+                    sideContent
+                }
+
                 Spacer(minLength: 40)
 
                 Text("No Results")
@@ -58,11 +67,28 @@ struct ResultCount: View {
         typePlural: String? = nil,
         count: Int,
         text: String? = nil
+    ) where SideContent == EmptyView {
+        self.init(
+            type: type,
+            typePlural: typePlural,
+            count: count,
+            text: text,
+            sideContent: { EmptyView() }
+        )
+    }
+
+    init(
+        type: String,
+        typePlural: String? = nil,
+        count: Int,
+        text: String? = nil,
+        @ViewBuilder sideContent: () -> SideContent
     ) {
         typeSingular = type
         self.typePlural = typePlural ?? "\(type)s"
         self.count = count
         self.text = text
+        self.sideContent = sideContent()
     }
 }
 

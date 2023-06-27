@@ -8,6 +8,7 @@ struct ErrorAlert: Identifiable {
     var dismissAction: (() -> Void)?
 }
 
+@MainActor
 class ErrorHandler: ObservableObject {
     @Published var currentAlert: ErrorAlert?
     @Published var didError = false
@@ -17,6 +18,12 @@ class ErrorHandler: ObservableObject {
 
         switch error {
         case MintyError.unspecified(let message):
+            alertMessage = message
+        case MintyError.internalError:
+            alertMessage = "Internal server error."
+        case MintyError.invalidData(let message):
+            alertMessage = message
+        case MintyError.notFound(let message):
             alertMessage = message
         default:
             alertMessage = error.localizedDescription

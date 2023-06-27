@@ -51,6 +51,8 @@ final class TagQueryViewModel: Search<TagViewModel, TagQuery> {
     }
 
     private func search(name: String) {
+        let name = name.trimmingCharacters(in: .whitespaces)
+
         if name.isEmpty {
             clear()
         }

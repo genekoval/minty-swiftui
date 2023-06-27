@@ -1,19 +1,28 @@
 import SwiftUI
 
-struct SearchResults<Element, QueryType, Content>: View where
-    Element: SearchElement, QueryType: Query, Content: View
+struct SearchResults<Element, QueryType, Content, SideContent>: View where
+    Element: SearchElement,
+    QueryType: Query,
+    Content: View,
+    SideContent: View
 {
-    @ObservedObject var search: Search<Element, QueryType>
+    @ObservedObject private var search: Search<Element, QueryType>
 
-    let type: String
-    let text: String?
-    let showResultCount: Bool
-    @ViewBuilder let content: (Element) -> Content
+    private let type: String
+    private let text: String?
+    private let showResultCount: Bool
+    private let content: (Element) -> Content
+    private let sideContent: SideContent
 
     var body: some View {
         LazyVStack {
             if showResultCount && search.resultsAvailable {
-                ResultCount(type: type, count: search.total, text: text)
+                ResultCount<SideContent>(
+                    type: type,
+                    count: search.total,
+                    text: text,
+                    sideContent: { sideContent }
+                )
             }
 
             ForEach(search.hits) { content($0) }
@@ -33,5 +42,38 @@ struct SearchResults<Element, QueryType, Content>: View where
             }
         }
         .buttonStyle(.plain)
+    }
+
+    init(
+        search: Search<Element, QueryType>,
+        type: String,
+        text: String? = nil,
+        showResultCount: Bool = false,
+        content: @escaping (Element) -> Content
+    ) where SideContent == EmptyView {
+        self.init(
+            search: search,
+            type: type,
+            text: text,
+            showResultCount: showResultCount,
+            content: content,
+            sideContent: { EmptyView() }
+        )
+    }
+
+    init(
+        search: Search<Element, QueryType>,
+        type: String,
+        text: String? = nil,
+        showResultCount: Bool = false,
+        content: @escaping (Element) -> Content,
+        @ViewBuilder sideContent: () -> SideContent
+    ) {
+        self.search = search
+        self.type = type
+        self.text = text
+        self.showResultCount = showResultCount
+        self.content = content
+        self.sideContent = sideContent()
     }
 }

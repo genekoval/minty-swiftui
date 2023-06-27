@@ -3,12 +3,14 @@ import SwiftUI
 struct TagSearchResults: View {
     @ObservedObject var search: TagQueryViewModel
 
+    @State private var newTag: TagViewModel?
+
     var body: some View {
         SearchResults(
             search: search,
             type: "Tag",
-            text: search.name,
-            showResultCount: !search.name.isEmpty
+            text: name,
+            showResultCount: !name.isEmpty
         ) { tag in
             NavigationLink(destination: TagHost(tag: tag)) {
                 VStack {
@@ -17,6 +19,13 @@ struct TagSearchResults: View {
                 }
                 .padding(.horizontal)
             }
+        } sideContent: {
+            NewTagButton(name: name, tag: $newTag)
         }
+        .onReceive(search.$name) { _ in newTag = nil }
+    }
+
+    private var name: String {
+        search.name.trimmingCharacters(in: .whitespaces)
     }
 }
