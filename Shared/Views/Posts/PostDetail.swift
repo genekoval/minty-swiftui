@@ -2,7 +2,7 @@ import Minty
 import SwiftUI
 
 struct PostDetail: View {
-    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject private var errorHandler: ErrorHandler
 
     @ObservedObject var post: PostViewModel
 
@@ -11,6 +11,14 @@ struct PostDetail: View {
             postInfo
             controls
             comments
+        }
+        .refreshable {
+            do {
+                try await post.refresh()
+            }
+            catch {
+                errorHandler.handle(error: error)
+            }
         }
     }
 
