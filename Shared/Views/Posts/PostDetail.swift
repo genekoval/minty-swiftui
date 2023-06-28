@@ -51,7 +51,7 @@ struct PostDetail: View {
     @ViewBuilder
     private var created: some View {
         Timestamp(
-            prefix: "Posted",
+            prefix: post.visibility == .draft ? "Created" : "Posted",
             systemImage: "clock",
             date: post.created
         )

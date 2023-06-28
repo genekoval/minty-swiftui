@@ -47,7 +47,6 @@ private struct SelectableResults: View {
         SearchResults(
             search: search,
             type: "Post",
-            text: nil,
             showResultCount: true
         ) { post in
             PostSelectRow(post: post, parent: self.post)

@@ -1,10 +1,60 @@
 import SwiftUI
 
+private struct NoResultsTitle: EnvironmentKey {
+    static let defaultValue = "No Results"
+}
+
+private struct NoResultsText: EnvironmentKey {
+    static let defaultValue = "Try a new search."
+}
+
+extension EnvironmentValues {
+    var noResultsTitle: String {
+        get { self[NoResultsTitle.self] }
+        set { self[NoResultsTitle.self] = newValue }
+    }
+
+    var noResultsText: String {
+        get { self[NoResultsText.self] }
+        set { self[NoResultsText.self] = newValue }
+    }
+}
+
+private struct NoResultsTitleModifier: ViewModifier {
+    let title: String
+
+    func body(content: Content) -> some View {
+        content
+            .environment(\.noResultsTitle, title)
+    }
+}
+
+private struct NoResultsTextModifier: ViewModifier {
+    let text: String
+
+    func body(content: Content) -> some View {
+        content
+            .environment(\.noResultsText, text)
+    }
+}
+
+extension View {
+    func noResultsTitle(_ title: String) -> some View {
+        modifier(NoResultsTitleModifier(title: title))
+    }
+
+    func noResultsText(_ text: String) -> some View {
+        modifier(NoResultsTextModifier(text: text))
+    }
+}
+
 struct ResultCount<SideContent>: View where SideContent : View {
+    @Environment(\.noResultsTitle) private var noResultsTitle
+    @Environment(\.noResultsText) private var noResultsText
+
     private let typeSingular: String
     private let typePlural: String
     private let count: Int
-    private let text: String?
     private let sideContent: SideContent
 
     var body: some View {
@@ -29,7 +79,7 @@ struct ResultCount<SideContent>: View where SideContent : View {
 
                 Spacer(minLength: 40)
 
-                Text("No Results")
+                Text(noResultsTitle)
                     .bold()
                     .font(.title2)
 
@@ -52,27 +102,15 @@ struct ResultCount<SideContent>: View where SideContent : View {
         "\(countFormatted) \(count == 1 ? typeSingular : typePlural)"
     }
 
-    private var noResultsText: String {
-        var message = "Try a new search."
-
-        if let text = text {
-            message = "There were no results for “\(text)”. \(message)"
-        }
-
-        return message
-    }
-
     init(
         type: String,
         typePlural: String? = nil,
-        count: Int,
-        text: String? = nil
+        count: Int
     ) where SideContent == EmptyView {
         self.init(
             type: type,
             typePlural: typePlural,
             count: count,
-            text: text,
             sideContent: { EmptyView() }
         )
     }
@@ -81,49 +119,41 @@ struct ResultCount<SideContent>: View where SideContent : View {
         type: String,
         typePlural: String? = nil,
         count: Int,
-        text: String? = nil,
         @ViewBuilder sideContent: () -> SideContent
     ) {
         typeSingular = type
         self.typePlural = typePlural ?? "\(type)s"
         self.count = count
-        self.text = text
         self.sideContent = sideContent()
     }
 }
 
 struct ResultCount_Previews: PreviewProvider {
-    private static let text = "hello"
     private static let type = "Item"
 
     static var previews: some View {
         Group {
             ResultCount(
                 type: type,
-                count: 0,
-                text: nil
-            )
-            .previewLayout(.fixed(width: 400, height: 200))
-
-            ResultCount(
-                type: type,
-                count: 0,
-                text: text
-            )
-            .previewLayout(.fixed(width: 400, height: 200))
-
-            ResultCount(
-                type: type,
-                count: 1,
-                text: text
+                count: 0
             )
 
             ResultCount(
                 type: type,
-                count: 1_000,
-                text: text
+                count: 0
+            )
+            .noResultsTitle("No Drafts")
+            .noResultsText("Drafts will appear here.")
+
+            ResultCount(
+                type: type,
+                count: 1
+            )
+
+            ResultCount(
+                type: type,
+                count: 1_000
             )
         }
-        .previewLayout(.sizeThatFits)
     }
 }

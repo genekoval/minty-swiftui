@@ -11,7 +11,8 @@ private struct SearchLabel<Destination>: View where Destination : View {
             Label {
                 Text(name)
             } icon: {
-                Image(systemName: "\(icon).fill")
+                Image(systemName: icon)
+                    .symbolVariant(.fill)
                     .foregroundColor(color)
             }
         }

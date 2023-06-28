@@ -36,8 +36,7 @@ private struct SearchView<Content: View>: View {
                 if !search.name.isEmpty {
                     ResultCount(
                         type: "Tag",
-                        count: search.total,
-                        text: search.name
+                        count: search.total
                     )
                 }
 

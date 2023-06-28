@@ -3,6 +3,7 @@ import SwiftUI
 private enum Tab {
     case search
     case settings
+    case user
 }
 
 struct AppShell: View {
@@ -15,6 +16,7 @@ struct AppShell: View {
         TabView(selection: $selection) {
             Group {
                 search
+                user
                 settings
             }
             .toolbarBackground(MiniPlayer.background, for: .tabBar)
@@ -51,6 +53,17 @@ struct AppShell: View {
             Label("Settings", systemImage: "gear")
         }
         .tag(Tab.settings)
+    }
+
+    @ViewBuilder
+    private var user: some View {
+        TabFrame {
+            UserView()
+        }
+        .tabItem {
+            Label("User", systemImage: "person.crop.circle")
+        }
+        .tag(Tab.user)
     }
 }
 

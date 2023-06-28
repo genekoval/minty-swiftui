@@ -9,7 +9,6 @@ struct TagSearchResults: View {
         SearchResults(
             search: search,
             type: "Tag",
-            text: name,
             showResultCount: !name.isEmpty
         ) { tag in
             NavigationLink(destination: TagHost(tag: tag)) {
@@ -22,6 +21,7 @@ struct TagSearchResults: View {
         } sideContent: {
             NewTagButton(name: name, tag: $newTag)
         }
+        .noResultsText("There were no results for “\(name)”. Try a new search.")
         .onReceive(search.$name) { _ in newTag = nil }
     }
 

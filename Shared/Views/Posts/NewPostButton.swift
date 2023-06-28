@@ -1,6 +1,8 @@
 import Minty
 import SwiftUI
 
+private let icon = "square.and.pencil"
+
 struct NewPostButton: View {
     @EnvironmentObject private var data: DataSource
     @EnvironmentObject private var errorHandler: ErrorHandler
@@ -14,7 +16,7 @@ struct NewPostButton: View {
     var body: some View {
         if let draft = draft, !draft.deleted, draft.visibility == .draft {
             NavigationLink(destination: PostHost(post: draft)) {
-                Image(systemName: "rectangle.and.pencil.and.ellipsis")
+                Image(systemName: icon)
             }
             .navigationDestination(isPresented: $showingPost) {
                 PostHost(post: draft)
@@ -28,7 +30,7 @@ struct NewPostButton: View {
         }
         else {
             Button(action: createDraft) {
-                Image(systemName: "plus")
+                Image(systemName: icon)
             }
         }
     }

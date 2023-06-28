@@ -15,15 +15,21 @@ extension PostViewModel: SearchElement { }
 final class PostQueryViewModel: Search<PostViewModel, PostQuery> {
     @Published var text = ""
     @Published var tags: [TagViewModel] = []
+    @Published var visibility: Visibility = .pub
 
-    private var tagsCancellable: AnyCancellable?
+    private var cancellables = Set<AnyCancellable>()
 
-    init(tag: TagViewModel? = nil, searchNow: Bool = false) {
+    init(
+        tag: TagViewModel? = nil,
+        visibility: Visibility = .pub,
+        searchNow: Bool = false
+    ) {
         var query = PostQuery()
 
         query.size = 30
         query.sort.order = .descending
         query.sort.value = .dateCreated
+        query.visibility = visibility
 
         if let tag = tag {
             query.tags.append(tag.id)
@@ -46,8 +52,20 @@ final class PostQueryViewModel: Search<PostViewModel, PostQuery> {
             tags.append(tag)
         }
 
-        tagsCancellable = $tags.dropFirst().sink { [weak self] tags in
-            self?.query.tags = tags.map { $0.id }
-        }
+        $tags
+            .dropFirst()
+            .sink { [weak self] tags in
+                self?.query.tags = tags.map { $0.id }
+            }
+            .store(in: &cancellables)
+
+        self.visibility = visibility
+
+        $visibility
+            .dropFirst()
+            .sink { [weak self] visibility in
+                self?.query.visibility = visibility
+            }
+            .store(in: &cancellables)
     }
 }

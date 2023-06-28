@@ -9,7 +9,6 @@ struct SearchResults<Element, QueryType, Content, SideContent>: View where
     @ObservedObject private var search: Search<Element, QueryType>
 
     private let type: String
-    private let text: String?
     private let showResultCount: Bool
     private let content: (Element) -> Content
     private let sideContent: SideContent
@@ -20,7 +19,6 @@ struct SearchResults<Element, QueryType, Content, SideContent>: View where
                 ResultCount<SideContent>(
                     type: type,
                     count: search.total,
-                    text: text,
                     sideContent: { sideContent }
                 )
             }
@@ -47,14 +45,12 @@ struct SearchResults<Element, QueryType, Content, SideContent>: View where
     init(
         search: Search<Element, QueryType>,
         type: String,
-        text: String? = nil,
         showResultCount: Bool = false,
         content: @escaping (Element) -> Content
     ) where SideContent == EmptyView {
         self.init(
             search: search,
             type: type,
-            text: text,
             showResultCount: showResultCount,
             content: content,
             sideContent: { EmptyView() }
@@ -64,14 +60,12 @@ struct SearchResults<Element, QueryType, Content, SideContent>: View where
     init(
         search: Search<Element, QueryType>,
         type: String,
-        text: String? = nil,
         showResultCount: Bool = false,
         content: @escaping (Element) -> Content,
         @ViewBuilder sideContent: () -> SideContent
     ) {
         self.search = search
         self.type = type
-        self.text = text
         self.showResultCount = showResultCount
         self.content = content
         self.sideContent = sideContent()

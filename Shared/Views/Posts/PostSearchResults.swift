@@ -9,7 +9,6 @@ struct PostSearchResults: View {
         SearchResults(
             search: search,
             type: "Post",
-            text: nil,
             showResultCount: showResultCount
         ) { post in
             NavigationLink(destination: PostHost(post: post)) {
