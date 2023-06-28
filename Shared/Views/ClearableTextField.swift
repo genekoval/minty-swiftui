@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct ClearableTextField: View {
-    let titleKey: LocalizedStringKey
-    let icon: String?
+    private let titleKey: LocalizedStringKey
+    private let icon: String?
 
-    @Binding var text: String
+    @Binding private var text: String
 
     var body: some View {
         HStack {
