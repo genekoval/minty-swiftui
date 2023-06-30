@@ -11,11 +11,9 @@ struct MediaOverlay: View {
                 .ignoresSafeArea()
                 .transition(.move(edge: .bottom))
         }
-        else if
-            player.visibility == .visible ||
-            (player.visibility == .automatic && player.currentItem != nil)
-        {
+        else if player.visible {
             miniPlayer
+                .transition(.move(edge: .bottom))
         }
     }
 

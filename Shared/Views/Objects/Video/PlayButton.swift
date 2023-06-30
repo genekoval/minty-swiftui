@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PlayButton: View {
-    @ObservedObject var player: MediaPlayer
+    @EnvironmentObject private var player: MediaPlayer
 
     let size: CGFloat
 
@@ -19,6 +19,7 @@ struct PlayButton: View {
 
 struct PlayButton_Previews: PreviewProvider {
     static var previews: some View {
-        PlayButton(player: MediaPlayer.preview, size: 50)
+        PlayButton(size: 50)
+            .environmentObject(MediaPlayer.preview)
     }
 }

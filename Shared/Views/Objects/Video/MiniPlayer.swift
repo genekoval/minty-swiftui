@@ -9,10 +9,12 @@ private func albumCoverSize(_ geometry: GeometryProxy) -> CGFloat {
 }
 
 struct MiniPlayer: View {
+    private static let buttonSize: CGFloat = 20
+
     static let background: Material = .ultraThin
     static let height: CGFloat = 70
 
-    @EnvironmentObject var player: MediaPlayer
+    @EnvironmentObject private var player: MediaPlayer
 
     @ViewBuilder
     private var albumCover: some View {
@@ -31,20 +33,19 @@ struct MiniPlayer: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                ZStack {
-                    playerFrame
-                    albumCover
-                }
-
-                Spacer()
-
-                PlayButton(player: player, size: 20)
-                    .padding(.trailing)
+        HStack {
+            ZStack {
+                playerFrame
+                albumCover
             }
 
-            Divider()
+            Spacer()
+
+            PlayButton(size: MiniPlayer.buttonSize)
+                .padding(.trailing)
+
+            CloseButton(size: MiniPlayer.buttonSize)
+                .padding(.trailing)
         }
         .frame(height: MiniPlayer.height)
         .foregroundColor(.white)

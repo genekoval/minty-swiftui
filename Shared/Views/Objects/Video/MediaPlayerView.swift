@@ -76,7 +76,7 @@ struct CustomVideoPlayer: UIViewRepresentable {
 }
 
 struct MediaPlayerView: View {
-    @EnvironmentObject var player: MediaPlayer
+    @EnvironmentObject private var player: MediaPlayer
 
     @State private var offset: CGFloat = 0
     @State private var uiVisible = true
@@ -118,7 +118,7 @@ struct MediaPlayerView: View {
 
     @ViewBuilder
     private var controls: some View {
-        PlayerControls(player: player)
+        PlayerControls()
             .padding()
     }
 

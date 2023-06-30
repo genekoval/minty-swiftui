@@ -26,7 +26,7 @@ private let hoursFormatter: DateComponentsFormatter = {
 }()
 
 struct PlayerControls: View {
-    @ObservedObject var player: MediaPlayer
+    @EnvironmentObject private var player: MediaPlayer
 
     @ViewBuilder
     private var background: some View {
@@ -51,7 +51,7 @@ struct PlayerControls: View {
 
     @ViewBuilder
     private var playButton: some View {
-        PlayButton(player: player, size: 30)
+        PlayButton(size: 30)
             .padding()
             .foregroundColor(.primary)
     }
@@ -92,6 +92,7 @@ struct PlayerControls: View {
 
 struct PlayerControls_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerControls(player: MediaPlayer.preview)
+        PlayerControls()
+            .environmentObject(MediaPlayer.preview)
     }
 }
