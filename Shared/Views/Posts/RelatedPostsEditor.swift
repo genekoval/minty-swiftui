@@ -71,30 +71,38 @@ struct RelatedPostsEditor: View {
                 SelectableResults(post: post, search: search)
             }
         }
-        .navigationTitle("Related Posts")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
-struct RelatedPostsEditor_Previews: PreviewProvider {
-    private struct Preview: View {
-        @StateObject private var post =
-            PostViewModel.preview(id: PreviewPost.test)
-        @StateObject private var search = PostQueryViewModel()
+struct RelatedPostsEditorButton: View {
+    @ObservedObject var post: PostViewModel
 
-        var body: some View {
-            NavigationView {
+    @State private var isPresented = false
+
+    @StateObject private var search = PostQueryViewModel()
+
+    var body: some View {
+        Button(action: { isPresented = true }) {
+            Label("Related Posts", systemImage: "doc.text.image")
+        }
+        .prepareSearch(search)
+        .badge(post.posts.count)
+        .sheet(isPresented: $isPresented) {
+            NavigationStack {
                 RelatedPostsEditor(post: post, search: search)
+                    .navigationTitle(title)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            DismissButton()
+                        }
+                    }
             }
-            .loadEntity(post)
-            .loadEntity(search)
         }
     }
 
-    static var previews: some View {
-        Preview()
-            .withErrorHandling()
-            .environmentObject(DataSource.preview)
-            .environmentObject(ObjectSource.preview)
+    private var title: String {
+        let count = post.posts.count
+        return "\(count) Post\(count == 1 ? "" : "s")"
     }
 }

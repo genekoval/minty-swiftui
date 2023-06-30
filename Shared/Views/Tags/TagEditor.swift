@@ -84,16 +84,15 @@ struct TagEditor: View {
                 }
             }
 
-            DraftEditorLink(
-                title: "Description",
+            DraftEditor(
+                draft: $tag.draftDescription,
                 original: tag.description,
-                onSave: {
-                    errorHandler.handle {
-                        try await tag.commitDescription()
-                    }
-                },
-                draft: $tag.draftDescription
-            )
+                title: "Description"
+            ) {
+                errorHandler.handle {
+                    try await tag.commitDescription()
+                }
+            }
 
             Section(header: Text("Links")) {
                 ForEach(tag.sources) { SourceLink(source: $0) }

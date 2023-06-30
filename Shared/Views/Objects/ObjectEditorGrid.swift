@@ -166,13 +166,14 @@ private struct ObjectView: View {
 }
 
 struct ObjectEditorGrid: View {
+    @Environment(\.dismiss) private var dismiss
+
     @EnvironmentObject private var errorHandler: ErrorHandler
-    @EnvironmentObject private var player: MediaPlayer
 
     @StateObject private var editor: Editor
 
     var body: some View {
-        PaddedScrollView {
+        ScrollView {
             VStack {
                 Grid {
                     ForEach(editor.objects) {
@@ -207,8 +208,11 @@ struct ObjectEditorGrid: View {
                     }
                 }
 
-                if state == .selecting {
-                    ToolbarItem(placement: .cancellationAction) {
+                ToolbarItem(placement: .cancellationAction) {
+                    if state == .adding {
+                        Button("Cancel") { dismiss() }
+                    }
+                    else if state == .selecting {
                         Button(
                             "\(editor.allSelected ? "Deselect" : "Select") All"
                         ) {
@@ -246,9 +250,6 @@ struct ObjectEditorGrid: View {
                     try await editor.add(objects: $0)
                 }
             }
-        }
-        .onReceive(editor.$state) { state in
-            player.visibility = state == .adding ? .automatic : .hidden
         }
     }
 

@@ -6,7 +6,7 @@ struct SelectionIndicator: View {
     var body: some View {
         if isSelected {
             Image(systemName: "checkmark.circle.fill")
-                .foregroundColor(.blue)
+                .foregroundColor(.accentColor)
                 .background {
                     Circle()
                         .foregroundColor(.white)

@@ -184,6 +184,22 @@ final class PostViewModel:
         }
     }
 
+    func delete(tag: TagViewModel) async throws {
+        try await withRepo("delete tag") { repo in
+            try await repo.deletePostTag(postId: id, tagId: tag.id)
+            tags.remove(element: tag)
+        }
+    }
+
+    func delete(tags: IndexSet) async throws {
+        for index in tags {
+            let tag = self.tags[index]
+            try await removeTag(tag: tag)
+        }
+
+        self.tags.remove(atOffsets: tags)
+    }
+
     func delete(post: PostViewModel) async throws {
         try await withRepo("delete related post") { repo in
             try await repo.deleteRelatedPost(postId: id, related: post.id)

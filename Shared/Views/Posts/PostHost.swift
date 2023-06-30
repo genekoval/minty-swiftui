@@ -11,7 +11,7 @@ struct PostHost: View {
     var body: some View {
         content
             .loadEntity(post)
-            .navigationTitle(title)
+            .navigationTitle(post.visibility == .draft ? "Draft" : "Post")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { edit }
             .onAppear { if post.deleted { dismiss() }}
@@ -41,14 +41,6 @@ struct PostHost: View {
                 Text("Edit")
             }
         }
-    }
-
-    private var title: String {
-        if post.isEditing {
-            return "\(post.visibility == .draft ? "New" : "Edit") Post"
-        }
-
-        return post.visibility == .draft ? "Draft" : "Post"
     }
 }
 

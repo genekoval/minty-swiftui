@@ -1,8 +1,6 @@
 import SwiftUI
 
 struct PostEditor: View {
-    @Environment(\.dismiss) var dismiss
-
     @EnvironmentObject var errorHandler: ErrorHandler
 
     @ObservedObject var post: PostViewModel
@@ -12,72 +10,35 @@ struct PostEditor: View {
 
     var body: some View {
         Form {
-            DraftEditorLink(
-                title: "Title",
+            DraftEditor(
+                draft: $post.draftTitle,
                 original: post.title,
-                onSave: { try await post.commitTitle() },
-                draft: $post.draftTitle
-            )
+                title: "Title"
+            ) { try await post.commitTitle() }
 
-            DraftEditorLink(
-                title: "Description",
+            DraftEditor(
+                draft: $post.draftDescription,
                 original: post.description,
-                onSave: { try await post.commitDescription() },
-                draft: $post.draftDescription
-            )
+                title: "Description"
+            ) { try await post.commitDescription() }
 
             Section {
-                NavigationLink(destination: ObjectEditorGrid(post: post)) {
-                    HStack {
-                        Label("Objects", systemImage: "doc")
-                        Spacer()
-                        Text("\(post.objects.count)")
-                            .foregroundColor(.secondary)
-                    }
-                }
-
-                NavigationLink(destination: RelatedPostsEditor(
-                    post: post,
-                    search: postSearch
-                )) {
-                    HStack {
-                        Label(
-                            "Related Posts",
-                            systemImage: "doc.text.image"
-                        )
-                        Spacer()
-                        Text("\(post.posts.count)")
-                            .foregroundColor(.secondary)
-                    }
-                }
-
-                NavigationLink(destination: TagSelector(
-                    tags: $post.tags,
-                    search: tagSearch,
-                    onAdd: { tag in
-                        try await post.add(tag: tag)
-                    },
-                    onRemove: { tag in
-                        try await post.removeTag(tag: tag)
-                    }
-                )) {
-                    HStack {
-                        Label("Tags", systemImage: "tag")
-                        Spacer()
-                        Text("\(post.tags.count)")
-                            .foregroundColor(.secondary)
-                    }
-                }
+                ObjectEditorButton(post: post)
+                RelatedPostsEditorButton(post: post)
+                TagListEditorButton(post: post)
             }
 
             Section {
                 if post.visibility == .draft {
-                    Button("Publish Post") { create() }
+                    Button(action: create) {
+                        Label("Publish Post", systemImage: "plus.circle")
+                    }
                 }
 
                 DeleteButton(
-                    for: post.visibility == .draft ? "Draft" : "Post"
-                ) { delete() }
+                    for: post.visibility == .draft ? "Draft" : "Post",
+                    action: delete
+                )
             }
         }
         .playerSpacing()
@@ -97,7 +58,6 @@ struct PostEditor: View {
     private func delete() {
         errorHandler.handle {
             try await post.delete()
-            dismiss()
         }
     }
 }

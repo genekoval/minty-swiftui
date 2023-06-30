@@ -38,11 +38,19 @@ class RemoteEntity {
     func refresh() async throws { }
 }
 
-class IdentifiableEntity: RemoteEntity, Identifiable {
+class IdentifiableEntity: RemoteEntity, Identifiable, Hashable {
+    static func == (lhs: IdentifiableEntity, rhs: IdentifiableEntity) -> Bool {
+        lhs.id == rhs.id
+    }
+
     let id: UUID
 
     init(id: UUID, identifier: String) {
         self.id = id
         super.init(identifier: "\(identifier) '\(id)'")
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

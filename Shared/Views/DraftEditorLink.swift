@@ -1,36 +1,50 @@
 import SwiftUI
 
-private struct DraftEditor: View {
-    @EnvironmentObject var errorHandler: ErrorHandler
+private struct DraftEditorView: View {
+    @Environment(\.dismiss) private var dismiss
 
-    let title: String
-    let original: String?
-    let onSave: () async throws -> Void
+    @EnvironmentObject private var errorHandler: ErrorHandler
 
     @Binding var draft: String
+
+    let original: String?
+    let onSave: () async throws -> Void
 
     @FocusState private var editorIsFocused: Bool
 
     var body: some View {
         TextEditor(text: $draft)
             .focused($editorIsFocused)
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(title)
-            .padding()
+            .padding(.horizontal)
             .toolbar {
-                HStack {
+                ToolbarItem(placement: .primaryAction) {
                     if draftChanged {
-                        Button(action: { reset() }) {
-                            Image(systemName: "arrow.uturn.backward.circle")
-                        }
-                    }
-
-                    if draftChanged || editorIsFocused {
-                        Button(action: { done() }) {
-                            Text(draftChanged ? "Save" : "Done")
+                        Button(action: save) {
+                            Text("Save")
                                 .bold()
                         }
                     }
+                    else if editorIsFocused {
+                        Button(action: { editorIsFocused = false }) {
+                            Text("Done")
+                                .bold()
+                        }
+                    }
+                }
+
+                ToolbarItem(placement: .cancellationAction) {
+                    if draftChanged {
+                        Button("Reset", action: reset)
+                    }
+                    else {
+                        DismissButton()
+                    }
+                }
+
+                ToolbarItem(placement: .bottomBar) {
+                    Text("\(draft.count)")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                 }
             }
     }
@@ -39,42 +53,33 @@ private struct DraftEditor: View {
         draft != (original ?? "")
     }
 
-    private func done() {
-        save()
-        editorIsFocused = false
-    }
-
     private func reset() {
         draft = original ?? ""
         editorIsFocused = false
     }
 
     private func save() {
-        guard draftChanged else { return }
-
         errorHandler.handle {
             try await onSave()
+            dismiss()
         }
     }
 }
 
-struct DraftEditorLink: View {
-    let title: String
-    let original: String?
-    let onSave: () async throws -> Void
-
+struct DraftEditor: View {
     @Binding var draft: String
 
+    let original: String?
+    let title: String
+    let onSave: () async throws -> Void
+
+    @State private var isPresented = false
+
     var body: some View {
-        Section(header: Text(title)) {
-            NavigationLink(destination: DraftEditor(
-                title: title,
-                original: original,
-                onSave: onSave,
-                draft: $draft
-            )) {
-                if let text = original {
-                    Text(text)
+        Section(content: {
+            Button(action: { isPresented = true }) {
+                if let original {
+                    Text(original)
                         .lineLimit(1)
                 }
                 else {
@@ -82,6 +87,28 @@ struct DraftEditorLink: View {
                         .foregroundColor(.secondary)
                         .italic()
                 }
+            }
+        }, header: {
+            HStack {
+                Text(title)
+
+                if let original {
+                    Spacer()
+                    Text("\(original.count)")
+                }
+            }
+            .foregroundColor(.secondary)
+        })
+        .foregroundColor(.primary)
+        .sheet(isPresented: $isPresented) {
+            NavigationStack {
+                DraftEditorView(
+                    draft: $draft,
+                    original: original,
+                    onSave: onSave
+                )
+                .navigationTitle(title)
+                .navigationBarTitleDisplayMode(.inline)
             }
         }
     }
@@ -93,15 +120,15 @@ struct DraftEditorLink_Previews: PreviewProvider {
             TagViewModel.preview(id: PreviewTag.helloWorld)
 
         var body: some View {
-            NavigationView {
+            NavigationStack {
                 Form {
-                    DraftEditorLink(
-                        title: "Description",
+                    DraftEditor(
+                        draft: $tag.draftDescription,
                         original: tag.description,
+                        title: "Description",
                         onSave: {
                             try await tag.commitDescription()
-                        },
-                        draft: $tag.draftDescription
+                        }
                     )
                 }
                 .navigationTitle("Edit Tag")
