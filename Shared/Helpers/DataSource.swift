@@ -15,6 +15,7 @@ final class DataSource: ObservableObject {
     var onFailedConnection: ((Error) -> Void)?
 
     @Published var repo: MintyRepo?
+    @Published private(set) var connecting = false
     @Published private(set) var server: ServerStatus?
 
     private var cancellable: AnyCancellable?
@@ -28,8 +29,11 @@ final class DataSource: ObservableObject {
     private func connect(server: Server) async {
         guard let connect = connectAction else { return }
 
+        connecting = true
+
         do {
             let (repo, metadata) = try await connect(server)
+
             self.repo = repo
             self.server = .connected(metadata: metadata)
         }
@@ -42,6 +46,8 @@ final class DataSource: ObservableObject {
                 message: "Couldn't connect to the server."
             ))
         }
+
+        connecting = false
     }
 
     func observe(server: Published<Server?>.Publisher) {

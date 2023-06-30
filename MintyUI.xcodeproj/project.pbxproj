@@ -87,8 +87,6 @@
 		BE465579270D111B00D3C4FB /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465577270D111B00D3C4FB /* Server.swift */; };
 		BE46557C270D118700D3C4FB /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557B270D118700D3C4FB /* SettingsViewModel.swift */; };
 		BE46557D270D118700D3C4FB /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557B270D118700D3C4FB /* SettingsViewModel.swift */; };
-		BE465580270D11CB00D3C4FB /* ConnectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557E270D11CB00D3C4FB /* ConnectionModal.swift */; };
-		BE465581270D11CB00D3C4FB /* ConnectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557E270D11CB00D3C4FB /* ConnectionModal.swift */; };
 		BE465582270D11CB00D3C4FB /* ServerEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557F270D11CB00D3C4FB /* ServerEditor.swift */; };
 		BE465583270D11CB00D3C4FB /* ServerEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557F270D11CB00D3C4FB /* ServerEditor.swift */; };
 		BE465595270F7E1100D3C4FB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465594270F7E1100D3C4FB /* SettingsView.swift */; };
@@ -218,6 +216,9 @@
 		BEDBDF532A466FB300B5B3A8 /* ObjectEditorGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDBDF522A466FB300B5B3A8 /* ObjectEditorGrid.swift */; };
 		BEE57B632A4E649300734055 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE57B622A4E649300734055 /* Home.swift */; };
 		BEE57B652A4E6CD900734055 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE57B642A4E6CD800734055 /* CloseButton.swift */; };
+		BEE57B6B2A4E9CE100734055 /* ServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE57B6A2A4E9CE100734055 /* ServerView.swift */; };
+		BEE57B6D2A4EAB5600734055 /* StatusIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE57B6C2A4EAB5600734055 /* StatusIcon.swift */; };
+		BEE57B6F2A4EBC7F00734055 /* ConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE57B6E2A4EBC7F00734055 /* ConnectionView.swift */; };
 		BEE9D5F7270FF1CD0034CF1A /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE9D5F6270FF1CD0034CF1A /* AboutView.swift */; };
 		BEF8E21527B754A90089317A /* PaddedScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF8E21427B754A90089317A /* PaddedScrollView.swift */; };
 		BEFDF5F0272251B000F9EA09 /* wikipedia.png in Resources */ = {isa = PBXBuildFile; fileRef = BEFDF5EF272251B000F9EA09 /* wikipedia.png */; };
@@ -304,7 +305,6 @@
 		BE465513270CFA8E00D3C4FB /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
 		BE465577270D111B00D3C4FB /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		BE46557B270D118700D3C4FB /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
-		BE46557E270D11CB00D3C4FB /* ConnectionModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionModal.swift; sourceTree = "<group>"; };
 		BE46557F270D11CB00D3C4FB /* ServerEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerEditor.swift; sourceTree = "<group>"; };
 		BE465594270F7E1100D3C4FB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BE465596270F819500D3C4FB /* ServerDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDetail.swift; sourceTree = "<group>"; };
@@ -398,6 +398,9 @@
 		BEDBDF522A466FB300B5B3A8 /* ObjectEditorGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectEditorGrid.swift; sourceTree = "<group>"; };
 		BEE57B622A4E649300734055 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		BEE57B642A4E6CD800734055 /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
+		BEE57B6A2A4E9CE100734055 /* ServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerView.swift; sourceTree = "<group>"; };
+		BEE57B6C2A4EAB5600734055 /* StatusIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIcon.swift; sourceTree = "<group>"; };
+		BEE57B6E2A4EBC7F00734055 /* ConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionView.swift; sourceTree = "<group>"; };
 		BEE9D5F6270FF1CD0034CF1A /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		BEF8E21427B754A90089317A /* PaddedScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedScrollView.swift; sourceTree = "<group>"; };
 		BEFDF5EF272251B000F9EA09 /* wikipedia.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wikipedia.png; sourceTree = "<group>"; };
@@ -559,6 +562,7 @@
 				BE0098592731AB0C0021E660 /* SelectButton.swift */,
 				BE9EAB9828370EDA00EDC8A7 /* SheetView.swift */,
 				BE808C51271C8CB90081F815 /* SourceLink.swift */,
+				BEE57B6C2A4EAB5600734055 /* StatusIcon.swift */,
 				BE354FA627A4DE7F00649B68 /* TabFrame.swift */,
 				BE808C4F271C82800081F815 /* Timestamp.swift */,
 				BE83538F278D4B92006E0783 /* Zoomable.swift */,
@@ -597,7 +601,6 @@
 		BE46558A270F7C9000D3C4FB /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				BE46557E270D11CB00D3C4FB /* ConnectionModal.swift */,
 				BED04C40271026E900EF00B8 /* ResetButton.swift */,
 				BE46557F270D11CB00D3C4FB /* ServerEditor.swift */,
 			);
@@ -642,7 +645,9 @@
 				BEE9D5F6270FF1CD0034CF1A /* AboutView.swift */,
 				BEFDF5F22722524600F9EA09 /* CacheList.swift */,
 				BE80C37E2726605A009616F5 /* CacheRow.swift */,
+				BEE57B6E2A4EBC7F00734055 /* ConnectionView.swift */,
 				BE465596270F819500D3C4FB /* ServerDetail.swift */,
+				BEE57B6A2A4E9CE100734055 /* ServerView.swift */,
 				BE465594270F7E1100D3C4FB /* SettingsView.swift */,
 			);
 			path = Settings;
@@ -1067,6 +1072,8 @@
 				BED04C4427153E7000EF00B8 /* AppShell.swift in Sources */,
 				BE06CAB327DFFB97005940FB /* Color.swift in Sources */,
 				BE3068992735F5C90038972B /* PostEditor.swift in Sources */,
+				BEE57B6F2A4EBC7F00734055 /* ConnectionView.swift in Sources */,
+				BEE57B6B2A4E9CE100734055 /* ServerView.swift in Sources */,
 				BEBFF686278BC60000E38BBB /* ImageViewer.swift in Sources */,
 				BE3E16BA273A1F0D00052660 /* PreviewImage.swift in Sources */,
 				BE9DE3032784E9C300A1BE29 /* PreviewComment.swift in Sources */,
@@ -1106,7 +1113,6 @@
 				BE4043732A4D2A3900027340 /* TagLink.swift in Sources */,
 				BED37B952A458F690075DCA5 /* GridPlaceholder.swift in Sources */,
 				BE465517270CFA8E00D3C4FB /* ContentView.swift in Sources */,
-				BE465580270D11CB00D3C4FB /* ConnectionModal.swift in Sources */,
 				BEB07B87272B07F8004A942C /* PostSearch.swift in Sources */,
 				BE8F5C7527E413A10007A8E9 /* Object.swift in Sources */,
 				BE808C52271C8CB90081F815 /* SourceLink.swift in Sources */,
@@ -1124,6 +1130,7 @@
 				BE8E71C927330F93009A4FE9 /* TagList.swift in Sources */,
 				BE3E16AE2739968C00052660 /* DeleteButton.swift in Sources */,
 				BE99B6432A4AAD4800C33F4E /* UserView.swift in Sources */,
+				BEE57B6D2A4EAB5600734055 /* StatusIcon.swift in Sources */,
 				BEAB78FC27925ECB00CF9AD6 /* Swipe.swift in Sources */,
 				BED7585E27A37A7B0044562D /* MediaPlayer.swift in Sources */,
 				BED7586127A37D860044562D /* PreviewMediaPlayer.swift in Sources */,
@@ -1194,7 +1201,6 @@
 				BE158F7B27D2200200F152C0 /* LoadEntity.swift in Sources */,
 				BED04C552717A13E00EF00B8 /* SearchHome.swift in Sources */,
 				BE465518270CFA8E00D3C4FB /* ContentView.swift in Sources */,
-				BE465581270D11CB00D3C4FB /* ConnectionModal.swift in Sources */,
 				BED04C4527153E7000EF00B8 /* AppShell.swift in Sources */,
 				BE4043832A4D502200027340 /* DismissButton.swift in Sources */,
 				BE5AC200271B405800FCA45A /* TagViewModel.swift in Sources */,

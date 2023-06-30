@@ -7,17 +7,11 @@ struct ContentView: View {
     @EnvironmentObject var player: MediaPlayer
     @EnvironmentObject var settings: SettingsViewModel
 
-    @State private var showingConnectionModal = false
-
     var body: some View {
         AppShell()
-            .fullScreenCover(isPresented: $showingConnectionModal) {
-                ConnectionModal(closable: false)
-            }
             .viewerOverlay()
             .onAppear {
                 setUpEnvironment()
-                showingConnectionModal = settings.server == nil
             }
     }
 

@@ -9,9 +9,17 @@ private let portFormatter: NumberFormatter = {
     return formatter
 }()
 
-struct Server: Codable {
-    var host: String
-    var port: UInt16
+struct Server: Codable, Identifiable, Equatable {
+    var host = ""
+    var port: UInt16 = 0
+
+    var description: String {
+        "\(host):\(portString)"
+    }
+
+    var id: String {
+        description
+    }
 
     var portString: String {
         get {

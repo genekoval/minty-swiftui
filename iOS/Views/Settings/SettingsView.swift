@@ -1,34 +1,42 @@
 import Minty
 import SwiftUI
 
-struct SettingsView: View {
-    @EnvironmentObject var data: DataSource
-    @EnvironmentObject var errorHandler: ErrorHandler
-    @EnvironmentObject var objects: ObjectSource
-    @EnvironmentObject var settings: SettingsViewModel
-
-    @State private var refreshing = false
-    @State private var showingConnectionModal = false
+private struct IconLabel: View {
+    let title: String
+    let icon: String
+    let color: Color
 
     var body: some View {
-        NavigationView {
-            List {
-                Section(header: Text("Server")) {
-                    if let server = settings.server {
-                        NavigationLink(destination: ServerDetail(
-                            title: "Current Server",
-                            server: server
-                        )) {
-                            VStack {
-                                Text("Current Server")
-                                Text("\(server.host):\(server.portString)")
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                    }
+        Label {
+            Text(title)
+        } icon: {
+            Circle()
+                .fill(color)
+                .overlay {
+                    Image(systemName: icon)
+                        .foregroundColor(.white)
+                }
+        }
+    }
+}
 
-                    Button("New Server") { showingConnectionModal.toggle() }
+struct SettingsView: View {
+    @EnvironmentObject private var errorHandler: ErrorHandler
+    @EnvironmentObject private var objects: ObjectSource
+    @EnvironmentObject private var settings: SettingsViewModel
+
+    @State private var refreshing = false
+
+    var body: some View {
+        NavigationStack {
+            List {
+                NavigationLink(destination: ServerView()) {
+                    IconLabel(
+                        title: "Server",
+                        icon: "network",
+                        color: .blue
+                    )
+                    .badge(settings.server?.description)
                 }
 
                 Section(header: Text("Cache")) {
@@ -56,9 +64,6 @@ struct SettingsView: View {
             }
             .playerSpacing()
             .navigationTitle("Settings")
-            .sheet(isPresented: $showingConnectionModal) {
-                ConnectionModal(closable: true)
-            }
             .onAppear { refreshCache() }
         }
     }

@@ -1,10 +1,26 @@
+import os
 import Combine
 import Foundation
 
-private var cancellables: [String: AnyCancellable] = [:]
+private var cancellables = Set<AnyCancellable>()
 
 final class SettingsViewModel: ObservableObject {
     @Published(key: "server") var server: Server? = nil
+    @Published(key: "serverList") var serverList: [Server] = []
+
+    func connect(to server: Server) {
+        if server != self.server {
+            serverList.remove(element: server)
+
+            if let server = self.server {
+                if !serverList.contains(server) {
+                    serverList.insert(server, at: 0)
+                }
+            }
+        }
+
+        self.server = server
+    }
 
     func reset() {
         if let bundleId = Bundle.main.bundleIdentifier {
@@ -17,7 +33,9 @@ extension Published where Value: Codable {
     init(wrappedValue defaultValue: Value, key: String) {
         let value = load(key) ?? defaultValue
         self.init(initialValue: value)
-        cancellables[key] = projectedValue.sink { save(key, $0) }
+        projectedValue
+            .sink { save(key, $0) }
+            .store(in: &cancellables)
     }
 }
 
@@ -35,8 +53,10 @@ private func load<T: Decodable>(
         return try decoder.decode(T.self, from: saved)
     }
     catch {
-        fatalError("Could not parse `\(key)` as \(T.self):\n\(error)")
+        Logger.settings.fault("Could not parse '\(key)' as \(T.self): \(error)")
     }
+
+    return nil
 }
 
 private func save<T: Encodable>(
@@ -51,7 +71,8 @@ private func save<T: Encodable>(
         data = try encoder.encode(item)
     }
     catch {
-        fatalError("Could not encode item for key: \(key):\n\(error)")
+        Logger.settings.fault("Could not encode item for key: \(key): \(error)")
+        return
     }
 
     defaults.set(data, forKey: key)

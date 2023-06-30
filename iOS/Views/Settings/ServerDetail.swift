@@ -26,31 +26,33 @@ struct ServerDetail: View {
                 }
             }
 
-            if let info = data.server {
-                switch (info) {
-                case .connected(let metadata):
+            if server == settings.server {
+                if data.connecting {
                     Section {
-                        HStack {
-                            Text("Server Version")
-                            Spacer()
-                            Text(metadata.version)
-                                .foregroundColor(.secondary)
+                        Label {
+                            Text("Connecting...")
+                        } icon: {
+                            ProgressView()
                         }
                     }
-                case .error(let message, let detail):
-                    Section {
-                        HStack {
-                            Image(systemName: "xmark.circle.fill")
-                                .foregroundColor(.red)
-                            Text(message)
+                }
+                else if let info = data.server {
+                    switch info {
+                    case .connected(let metadata):
+                        Section {
+                            Label("Connected", status: .ok)
                         }
-                        Text(detail)
-                            .foregroundColor(.secondary)
-                    }
 
-                    Section {
-                        Button("Retry") {
-                            settings.server = settings.server
+                        Section {
+                            Text("Server Version")
+                                .badge(metadata.version)
+                        }
+                    case .error(let message, let detail):
+                        Section {
+                            Label(message, status: .error)
+
+                            Text(detail)
+                                .foregroundColor(.secondary)
                         }
                     }
                 }
@@ -58,6 +60,29 @@ struct ServerDetail: View {
         }
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if server != settings.server || connectionError {
+                Button(action: connect) {
+                    Text("Connect")
+                        .bold()
+                }
+            }
+        }
+    }
+
+    private var connectionError: Bool {
+        guard let info = data.server else { return false }
+
+        switch info {
+        case .error:
+            return true
+        default:
+            return false
+        }
+    }
+
+    private func connect() {
+        settings.connect(to: server)
     }
 }
 
