@@ -42,6 +42,11 @@ struct PostRow: View {
 
             Spacer()
         }
+        .background {
+            Color.clear
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .contentShape(Rectangle())
+        }
         .padding([.horizontal, .top], 5)
     }
 

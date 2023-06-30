@@ -9,6 +9,11 @@ struct TagRow: View {
             Text(tag.name)
             Spacer()
         }
+        .background {
+            Color.clear
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .contentShape(Rectangle())
+        }
     }
 }
 
