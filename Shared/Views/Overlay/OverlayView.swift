@@ -2,9 +2,9 @@ import Minty
 import SwiftUI
 
 struct OverlayView: View {
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) private var colorScheme
 
-    @EnvironmentObject var overlay: Overlay
+    @EnvironmentObject private var overlay: Overlay
 
     var body: some View {
         ZStack {

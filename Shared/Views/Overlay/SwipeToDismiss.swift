@@ -5,29 +5,26 @@ private struct SwipeToDismiss: ViewModifier {
 
     let active: Bool
 
-    @State private var previousOffset: CGSize = .zero
-
-    @GestureState(resetTransaction: Transaction(animation: .easeOut))
-    private var offset: CGSize = .zero
+    @State private var offset: CGSize = .zero
 
     private var drag: some Gesture {
         DragGesture(minimumDistance: 25, coordinateSpace: .local)
-            .updating($offset) { (value, state, transaction) in
-                state = value.translation
+            .onChanged { value in
+                offset = value.translation
 
-                let height = state.height / 1000
+                let height = offset.height / 1000
                 overlay.opacity = clamp(1.0 - height, 0.0, 1.0)
             }
-            .onChanged { value in
-                previousOffset = value.translation
-            }
             .onEnded { value in
-                overlay.opacity = 1.0
-
                 let direction = SwipeDirection(
-                    start: previousOffset,
+                    start: offset,
                     end: value.translation
                 )
+
+                withAnimation(.easeOut) {
+                    offset = .zero
+                    overlay.opacity = 1.0
+                }
 
                 if value.translation.height > 0 && direction != .up {
                     overlay.hide()
