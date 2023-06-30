@@ -1,6 +1,7 @@
 import SwiftUI
 
 private enum Tab {
+    case home
     case search
     case settings
     case user
@@ -10,11 +11,12 @@ struct AppShell: View {
     @EnvironmentObject private var player: MediaPlayer
 
     @State private var playerFrame: CGRect = .zero
-    @State private var selection: Tab = .search
+    @State private var selection: Tab = .home
 
     var body: some View {
         TabView(selection: $selection) {
             Group {
+                home
                 search
                 user
                 settings
@@ -31,6 +33,17 @@ struct AppShell: View {
         .overlay(alignment: .bottom) {
             MediaOverlay(frame: playerFrame)
         }
+    }
+
+    @ViewBuilder
+    private var home: some View {
+        TabFrame {
+            Home()
+        }
+        .tabItem {
+            Label("Home", systemImage: "house")
+        }
+        .tag(Tab.home)
     }
 
     @ViewBuilder
