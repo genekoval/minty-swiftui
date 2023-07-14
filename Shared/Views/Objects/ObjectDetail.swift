@@ -93,7 +93,7 @@ struct ObjectDetail: View {
 
                     ForEach(vm.posts) { post in
                         NavigationLink(
-                            destination: PostDetail(post: post)
+                            destination: PostHost(post: post)
                         ) {
                             PostRow(post: post)
                         }
