@@ -99,6 +99,7 @@
 		BE584A902783EDA700CD33F3 /* TagSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE584A8E2783EDA700CD33F3 /* TagSearchResults.swift */; };
 		BE5AC1FF271B405800FCA45A /* TagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC1FE271B405800FCA45A /* TagViewModel.swift */; };
 		BE5AC200271B405800FCA45A /* TagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC1FE271B405800FCA45A /* TagViewModel.swift */; };
+		BE66BC9D2A6218670013B119 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE66BC9C2A6218670013B119 /* DeleteConfirmation.swift */; };
 		BE6A63E0272855FE00365D24 /* DraftEditorLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6A63DF272855FE00365D24 /* DraftEditorLink.swift */; };
 		BE6A63E227289B2700365D24 /* RemoteEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6A63E127289B2700365D24 /* RemoteEntity.swift */; };
 		BE6A63E327289B2700365D24 /* RemoteEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6A63E127289B2700365D24 /* RemoteEntity.swift */; };
@@ -313,6 +314,7 @@
 		BE57DBB22787A9E200597FF2 /* NewCommentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCommentButton.swift; sourceTree = "<group>"; };
 		BE584A8E2783EDA700CD33F3 /* TagSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSearchResults.swift; sourceTree = "<group>"; };
 		BE5AC1FE271B405800FCA45A /* TagViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewModel.swift; sourceTree = "<group>"; };
+		BE66BC9C2A6218670013B119 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
 		BE6A63DF272855FE00365D24 /* DraftEditorLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftEditorLink.swift; sourceTree = "<group>"; };
 		BE6A63E127289B2700365D24 /* RemoteEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteEntity.swift; sourceTree = "<group>"; };
 		BE6A84F1271F259F00D4566B /* PreviewDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDate.swift; sourceTree = "<group>"; };
@@ -543,6 +545,7 @@
 				BE4654EE270CFA8B00D3C4FB /* ContentView.swift */,
 				BE2E49E42851E8E500793947 /* CopyID.swift */,
 				BE3E16AD2739968C00052660 /* DeleteButton.swift */,
+				BE66BC9C2A6218670013B119 /* DeleteConfirmation.swift */,
 				BE4043812A4D502200027340 /* DismissButton.swift */,
 				BE6A63DF272855FE00365D24 /* DraftEditorLink.swift */,
 				BE2368B828330BE40050E29E /* EditorLink.swift */,
@@ -1066,6 +1069,7 @@
 				BE808C4D271B98CF0081F815 /* Date.swift in Sources */,
 				BE835390278D4B92006E0783 /* Zoomable.swift in Sources */,
 				BE013B8627FFE553004A43CE /* EntityStore.swift in Sources */,
+				BE66BC9D2A6218670013B119 /* DeleteConfirmation.swift in Sources */,
 				BED811512720EC5700929D4C /* ImageObject.swift in Sources */,
 				BEC4265427E9638700118863 /* PostRowMinimal.swift in Sources */,
 				BEA8C56D2785285300FFB7DD /* CommentEditor.swift in Sources */,

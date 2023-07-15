@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 import Minty
+import SwiftUI
 
 final class PostViewModel:
     IdentifiableEntity,
@@ -14,7 +15,7 @@ final class PostViewModel:
     @Published var isEditing = false
     @Published var objects: [ObjectPreview] = []
     @Published var tags: [TagViewModel] = []
-    @Published var visibility: Visibility = .invalid
+    @Published var visibility: Minty.Visibility = .invalid
 
     @Published private(set) var deleted = false
     @Published private(set) var title: String?
@@ -170,7 +171,9 @@ final class PostViewModel:
             try await repo.deletePost(postId: id)
         }
 
-        Post.deleted.send(id)
+        withAnimation {
+            Post.deleted.send(id)
+        }
     }
 
     func delete(objects: [ObjectPreview]) async throws {

@@ -10,8 +10,6 @@ extension Minty.SortOrder {
 
 extension PostQuery: Query { }
 
-extension PostViewModel: SearchElement { }
-
 final class PostQueryViewModel: Search<PostViewModel, PostQuery> {
     @Published var text = ""
     @Published var tags: [TagViewModel] = []

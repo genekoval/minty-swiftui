@@ -70,5 +70,6 @@ struct PostEditor_Previews: PreviewProvider {
             .withErrorHandling()
             .environmentObject(DataSource.preview)
             .environmentObject(ObjectSource.preview)
+            .environmentObject(MediaPlayer.preview)
     }
 }

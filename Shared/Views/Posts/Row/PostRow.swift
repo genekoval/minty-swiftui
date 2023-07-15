@@ -2,7 +2,11 @@ import Minty
 import SwiftUI
 
 struct PostRow: View {
+    @EnvironmentObject private var errorHandler: ErrorHandler
+
     @ObservedObject var post: PostViewModel
+
+    @State private var deletePresented = false
 
     var body: some View {
         HStack(alignment: .top) {
@@ -47,7 +51,19 @@ struct PostRow: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .contentShape(Rectangle())
         }
-        .padding([.horizontal, .top], 5)
+        .padding([.horizontal, .vertical], 5)
+        .contextMenu {
+            ShareLink(item: post.id.uuidString)
+            Divider()
+            Button(role: .destructive, action: { deletePresented = true} ) {
+                Label("Delete", systemImage: "trash")
+            }
+        }
+        .deleteConfirmation("this post", isPresented: $deletePresented ) {
+            errorHandler.handle {
+                try await post.delete()
+            }
+        }
     }
 
     @ViewBuilder
@@ -68,10 +84,15 @@ struct PostRow_Previews: PreviewProvider {
         ScrollView {
             VStack {
                 ForEach(posts, id: \.self) { post in
-                    PostRow(post: PostViewModel.preview(id: post))
+                    VStack {
+                        PostRow(post: PostViewModel.preview(id: post))
+                        Divider()
+                    }
                 }
             }
         }
+        .withErrorHandling()
+        .environmentObject(DataSource.preview)
         .environmentObject(ObjectSource.preview)
     }
 }

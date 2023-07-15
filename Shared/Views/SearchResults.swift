@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SearchResults<Element, QueryType, Content, SideContent>: View where
-    Element: SearchElement,
+    Element: IdentifiableEntity,
     QueryType: Query,
     Content: View,
     SideContent: View

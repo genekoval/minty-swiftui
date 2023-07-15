@@ -8,8 +8,6 @@ protocol Query {
     var size: UInt32 { get set }
 }
 
-protocol SearchElement : Identifiable { }
-
 protocol SearchObject {
     func prepare(app: DataSource, errorHandler: ErrorHandler) async
 }
@@ -19,7 +17,7 @@ class Search<Element, QueryType> :
     ObservableObject,
     SearchObject
 where
-    Element: SearchElement,
+    Element: IdentifiableEntity,
     QueryType: Query
 {
     typealias Result = (hits: [Element], total: Int)
@@ -81,6 +79,7 @@ where
     }
 
     private func load(result: Result) {
+        result.hits.forEach { $0.app = app }
         hits.append(contentsOf: result.hits)
         total = result.total
     }

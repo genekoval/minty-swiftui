@@ -4,8 +4,6 @@ import Minty
 
 extension TagQuery: Query { }
 
-extension TagViewModel: SearchElement { }
-
 final class TagQueryViewModel: Search<TagViewModel, TagQuery> {
     @Published var name = ""
     @Published var excluded: [TagViewModel] = []
