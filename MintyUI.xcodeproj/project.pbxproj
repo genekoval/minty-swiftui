@@ -377,9 +377,6 @@
 		BEC4265327E9638700118863 /* PostRowMinimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRowMinimal.swift; sourceTree = "<group>"; };
 		BEC67836271A50EA009BCE5F /* TagHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagHome.swift; sourceTree = "<group>"; };
 		BEC6783A271A53FF009BCE5F /* ResultCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCount.swift; sourceTree = "<group>"; };
-		BEC893872A08E3A50040C5D4 /* zipline-swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "zipline-swift"; path = "../zipline-swift"; sourceTree = "<group>"; };
-		BEC893882A08E3AB0040C5D4 /* fstore-swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "fstore-swift"; path = "../fstore-swift"; sourceTree = "<group>"; };
-		BEC8938A2A08E4180040C5D4 /* minty-swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "minty-swift"; path = "../minty-swift"; sourceTree = "<group>"; };
 		BECA71412787F77B007993EB /* ObjectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectViewModel.swift; sourceTree = "<group>"; };
 		BED04C40271026E900EF00B8 /* ResetButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetButton.swift; sourceTree = "<group>"; };
 		BED04C4327153E7000EF00B8 /* AppShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppShell.swift; sourceTree = "<group>"; };
@@ -471,9 +468,6 @@
 		BE4654E7270CFA8B00D3C4FB = {
 			isa = PBXGroup;
 			children = (
-				BEC893882A08E3AB0040C5D4 /* fstore-swift */,
-				BEC8938A2A08E4180040C5D4 /* minty-swift */,
-				BEC893872A08E3A50040C5D4 /* zipline-swift */,
 				BEFFEC8227A2161F0021391B /* MintyUI--iOS--Info.plist */,
 				BE465591270F7D5B00D3C4FB /* iOS */,
 				BE4654FB270CFA8E00D3C4FB /* macOS */,
@@ -1697,7 +1691,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://git.aurora.aur/genya/minty-swift.git";
 			requirement = {
-				branch = updates;
+				branch = main;
 				kind = branch;
 			};
 		};
