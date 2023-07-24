@@ -1,68 +1,85 @@
-import Combine
 import SwiftUI
 
-struct NewTagButton: View {
+private struct NewTag: View {
     @EnvironmentObject private var data: DataSource
     @EnvironmentObject private var errorHandler: ErrorHandler
 
-    let name: String
-
+    @Binding var name: String
     @Binding var tag: TagViewModel?
 
-    @State private var cancellable: AnyCancellable?
+    let onCreated: (TagViewModel) -> Void
+
     @State private var creating = false
-    @State private var showingTag = false
 
     var body: some View {
-        HStack {
-            if let tag {
-                NavigationLink(destination: TagHost(tag: tag)) {
-                    Label(name, systemImage: "tag")
-                }
-                .navigationDestination(isPresented: $showingTag) {
-                    TagHost(tag: tag)
-                }
+        Form {
+            TextField("Name", text: $name)
+                .onSubmit(createTag)
+                .submitLabel(.done)
+        }
+        .navigationTitle("New Tag")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if creating {
+                ProgressView()
             }
             else {
                 Button(action: createTag) {
-                    Label {
-                        Text("Create Tag")
-                    } icon: {
-                        if creating {
-                            ProgressView()
-                        }
-                        else {
-                            Image(systemName: "plus")
-                        }
-                    }
+                    Text("Add")
+                        .bold()
                 }
-                .disabled(creating)
+                .disabled(name.trimmed == nil)
             }
         }
-        .buttonStyle(.automatic)
     }
 
     private func createTag() {
-        guard let repo = data.repo else { return }
-
-        creating = true
+        guard let name = name.trimmed else { return }
 
         errorHandler.handle {
-            let id = try await repo.addTag(name: name)
+            creating = true
+            defer { creating = false }
 
-            let tag = data.state.tags.fetch(id: id)
+            let tag = try await data.addTag(name: name)
 
-            cancellable = tag.$deleted.sink { deleted in
-                if deleted {
-                    self.tag = nil
-                }
-            }
-
+            self.name.removeAll()
             self.tag = tag
-            creating = false
-            showingTag = true
-        } dismissAction: {
-            creating = false
+
+            onCreated(tag)
         }
+    }
+}
+
+private struct NewTagHost: View {
+    @Binding var name: String
+    @Binding var tag: TagViewModel?
+
+    let onCreated: (TagViewModel) -> Void
+
+    var body: some View {
+        if let tag {
+            TagHost(tag: tag)
+        }
+        else {
+            NewTag(name: $name, tag: $tag, onCreated: onCreated)
+        }
+    }
+}
+
+struct NewTagButton: View {
+    @State private var name = ""
+    @State private var tag: TagViewModel?
+
+    let onCreated: (TagViewModel) -> Void
+
+    var body: some View {
+        NavigationLink(destination: NewTagHost(
+            name: $name,
+            tag: $tag,
+            onCreated: onCreated
+        )) {
+            Image(systemName: "plus")
+        }
+        .onAppear { tag = nil }
     }
 }

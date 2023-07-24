@@ -5,14 +5,17 @@ struct TagRow: View {
     @ObservedObject var tag: TagViewModel
 
     var body: some View {
-        HStack {
-            Text(tag.name)
-            Spacer()
+        NavigationLink(destination: TagHost(tag: tag)) {
+            HStack {
+                Text(tag.name)
+                Spacer()
+            }
+            .background {
+                Color.clear
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .contentShape(Rectangle())
+            }
         }
-        .background {
-            Color.clear
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .contentShape(Rectangle())
-        }
+        .buttonStyle(PlainButtonStyle())
     }
 }

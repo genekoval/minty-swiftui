@@ -24,6 +24,13 @@ final class DataSource: ObservableObject {
         connectAction = connect
     }
 
+    func addTag(name: String) async throws -> TagViewModel {
+        guard let repo else { preconditionFailure("Missing repo") }
+
+        let id = try await repo.addTag(name: name)
+        return state.tags.fetch(id: id)
+    }
+
     @MainActor
     private func connect(server: Server) async {
         guard let connect = connectAction else { return }

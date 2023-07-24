@@ -1,34 +1,23 @@
+import Minty
 import SwiftUI
 
 struct TagList: View {
-    @ObservedObject var post: PostViewModel
+    @Binding var tags: [TagViewModel]
 
     var body: some View {
-        PaddedScrollView {
-            VStack(alignment: .leading) {
-                Text(post.tags.countOf(type: "Tag"))
-                    .bold()
-                    .font(.headline)
-                    .padding(.bottom)
-
-                ForEach(post.tags) { tag in
-                    VStack {
-                        NavigationLink(destination: TagHost(tag: tag)) {
-                            HStack {
-                                TagRow(tag: tag)
-                                Spacer()
-                            }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-
-                        Divider()
-                    }
-                }
-            }
-            .padding()
-
+        ForEach(tags) {
+            TagRow(tag: $0)
+            Divider()
         }
-        .navigationTitle("Tags")
-        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            withAnimation {
+                tags.removeAll(where: { $0.deleted })
+            }
+        }
+        .onReceive(Tag.deleted) { id in
+            withAnimation {
+                _ = tags.remove(id: id)
+            }
+        }
     }
 }

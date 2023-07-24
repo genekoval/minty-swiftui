@@ -147,7 +147,7 @@ struct PostDetail: View {
     @ViewBuilder
     private var tags: some View {
         if post.tags.count > 1 {
-            NavigationLink(destination: TagList(post: post)) {
+            NavigationLink(destination: PostTagList(post: post)) {
                 Label(post.tags.countOf(type: "Tag"), systemImage: "tag")
                     .font(.caption)
             }

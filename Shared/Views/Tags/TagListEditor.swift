@@ -11,7 +11,7 @@ private struct TagSelectRow: View {
             onSelected: onSelected,
             onDeselected: onDeselected
         ) {
-            TagLink(tag: tag)
+            TagRow(tag: tag)
         }
         .padding(.horizontal)
     }
@@ -42,7 +42,7 @@ private struct EditorRow: View {
                     Checkmark(isChecked: true)
                 }
 
-                TagLink(tag: tag)
+                TagRow(tag: tag)
             }
         }
         .padding(.horizontal)
@@ -58,6 +58,8 @@ private struct EditorRow: View {
 struct TagListEditor: View {
     @Environment(\.isSearching) private var isSearching
 
+    @EnvironmentObject private var errorHandler: ErrorHandler
+
     @ObservedObject var post: PostViewModel
     @ObservedObject var search: TagQueryViewModel
 
@@ -70,6 +72,13 @@ struct TagListEditor: View {
                     }
                 }
                 .padding(.vertical)
+            }
+            .toolbar {
+                NewTagButton { tag in
+                    errorHandler.handle {
+                        try await post.add(tag: tag)
+                    }
+                }
             }
 
             searchOverlay

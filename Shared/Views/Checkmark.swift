@@ -4,14 +4,8 @@ struct Checkmark: View {
     let isChecked: Bool
 
     var body: some View {
-        if isChecked {
-            Image(systemName: "checkmark.circle.fill")
-                .foregroundColor(.accentColor)
-        }
-        else {
-            Image(systemName: "circle")
-                .foregroundColor(.secondary)
-        }
+        Image(systemName: isChecked ? "checkmark.circle.fill" : "circle")
+            .foregroundColor(isChecked ? .accentColor : .secondary)
     }
 }
 
