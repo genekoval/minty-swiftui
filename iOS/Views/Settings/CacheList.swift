@@ -45,11 +45,3 @@ struct CacheList: View {
         }
     }
 }
-
-struct CacheList_Previews: PreviewProvider {
-    static var previews: some View {
-        CacheList()
-            .withErrorHandling()
-            .environmentObject(ObjectSource.preview)
-    }
-}

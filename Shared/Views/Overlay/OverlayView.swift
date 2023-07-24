@@ -29,19 +29,3 @@ struct OverlayView: View {
         colorScheme == .light && overlay.uiVisible ? Color.white : Color.black
     }
 }
-
-struct OverlayView_Previews: PreviewProvider {
-    @StateObject private static var overlay: Overlay = {
-        let result = Overlay()
-
-        result.load(provider: PostViewModel.preview(id: PreviewPost.test))
-
-        return result
-    }()
-
-    static var previews: some View {
-        OverlayView()
-            .environmentObject(ObjectSource.preview)
-            .environmentObject(overlay)
-    }
-}

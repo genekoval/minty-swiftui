@@ -61,15 +61,3 @@ struct PostEditor: View {
         }
     }
 }
-
-struct PostEditor_Previews: PreviewProvider {
-    private static let post = PostViewModel.preview(id: PreviewPost.test)
-
-    static var previews: some View {
-        PostEditor(post: post)
-            .withErrorHandling()
-            .environmentObject(DataSource.preview)
-            .environmentObject(ObjectSource.preview)
-            .environmentObject(MediaPlayer.preview)
-    }
-}

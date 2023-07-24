@@ -29,19 +29,3 @@ struct MediaOverlay: View {
             )
     }
 }
-
-struct MediaOverlay_Previews: PreviewProvider {
-    private struct Preview: View {
-        var body: some View {
-            GeometryReader { geometry in
-                MediaOverlay(frame: geometry.frame(in: .local))
-            }
-        }
-    }
-
-    static var previews: some View {
-        Preview()
-            .environmentObject(MediaPlayer.preview)
-            .environmentObject(ObjectSource.preview)
-    }
-}

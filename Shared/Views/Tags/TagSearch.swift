@@ -12,14 +12,3 @@ struct TagSearch: View {
             .prepareSearch(query)
     }
 }
-
-struct TagSearch_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            TagSearch()
-                .withErrorHandling()
-                .environmentObject(DataSource.preview)
-                .environmentObject(ObjectSource.preview)
-        }
-    }
-}

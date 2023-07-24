@@ -21,10 +21,3 @@ struct NewCommentButton: View {
         errorHandler.handle { try await post.comment() }
     }
 }
-
-struct NewCommentButton_Previews: PreviewProvider {
-    static var previews: some View {
-        NewCommentButton(post: PostViewModel.preview(id: PreviewPost.test))
-            .withErrorHandling()
-    }
-}

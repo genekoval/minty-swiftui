@@ -20,28 +20,3 @@ struct PostSearchResults: View {
         }
     }
 }
-
-struct PostSearchResults_Previews: PreviewProvider {
-    private struct Preview: View {
-        @StateObject private var search =
-            PostQueryViewModel.preview(searchNow: true)
-
-        var body: some View {
-            NavigationView {
-                ScrollView {
-                    PostSearchResults(
-                        search: search,
-                        showResultCount: true
-                    )
-                }
-                .navigationTitle("Search")
-                .navigationBarTitleDisplayMode(.inline)
-            }
-        }
-    }
-
-    static var previews: some View {
-        Preview()
-            .environmentObject(ObjectSource.preview)
-    }
-}

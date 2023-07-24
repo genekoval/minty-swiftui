@@ -170,25 +170,3 @@ struct PostDetail: View {
         }
     }
 }
-
-struct PostDetail_Previews: PreviewProvider {
-    private static let posts = [
-        PreviewPost.test,
-        PreviewPost.sandDune,
-        PreviewPost.untitled
-    ]
-
-    static var previews: some View {
-        Group {
-            ForEach(posts, id: \.self) { post in
-                NavigationView {
-                    PostDetail(post: PostViewModel.preview(id: post))
-                }
-            }
-        }
-        .withErrorHandling()
-        .environmentObject(DataSource.preview)
-        .environmentObject(ObjectSource.preview)
-        .environmentObject(Overlay())
-    }
-}

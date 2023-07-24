@@ -20,9 +20,3 @@ struct CacheRow: View {
         }
     }
 }
-
-struct CacheRow_Previews: PreviewProvider {
-    static var previews: some View {
-        CacheRow(object: ObjectSource.preview.cachedObjects.first!)
-    }
-}

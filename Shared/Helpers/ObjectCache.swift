@@ -118,11 +118,7 @@ final class ObjectCache: ObjectSource {
 
     override func upload(url: URL) async throws -> ObjectPreview? {
         guard let repo = dataSource?.repo else { return nil }
-
-        let (data, _) = try await URLSession.shared.data(from: url)
-        return try await repo.addObjectData(size: data.count) { writer in
-            try await writer.write(data: data)
-        }
+        return try await repo.addObject(file: url)
     }
 
     override func url(for objectId: UUID) async throws -> URL? {
@@ -133,26 +129,7 @@ final class ObjectCache: ObjectSource {
         }
 
         guard let repo = dataSource?.repo else { return nil }
-
-        if !fileManager.createFile(atPath: url.path, contents: nil) {
-            defaultLog.error("Failed to create file at path: \(url.path)")
-            throw MintyError.unspecified(message: "Failed to create cache file")
-        }
-
-        do {
-            let handle = try FileHandle(forWritingTo: url)
-
-            try await repo.getObjectData(objectId: objectId) { data in
-                try handle.write(contentsOf: data)
-            }
-        }
-        catch {
-            let message = "Failed to download object"
-            let log = "\(message): \(error)"
-
-            defaultLog.error("\(log)")
-            throw MintyError.unspecified(message: message)
-        }
+        try await repo.download(object: objectId, destination: url)
 
         updateModified()
 

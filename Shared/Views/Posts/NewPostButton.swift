@@ -55,21 +55,3 @@ struct NewPostButton: View {
         }
     }
 }
-
-struct NewPostButton_Previews: PreviewProvider {
-    private struct Preview: View {
-        @State private var draft: PostViewModel?
-
-        var body: some View {
-            NavigationStack {
-                NewPostButton(draft: $draft, tag: nil)
-                    .withErrorHandling()
-                    .environmentObject(DataSource.preview)
-            }
-        }
-    }
-
-    static var previews: some View {
-        Preview()
-    }
-}

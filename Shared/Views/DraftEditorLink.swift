@@ -113,32 +113,3 @@ struct DraftEditor: View {
         }
     }
 }
-
-struct DraftEditorLink_Previews: PreviewProvider {
-    private struct Preview: View {
-        @StateObject private var tag =
-            TagViewModel.preview(id: PreviewTag.helloWorld)
-
-        var body: some View {
-            NavigationStack {
-                Form {
-                    DraftEditor(
-                        draft: $tag.draftDescription,
-                        original: tag.description,
-                        title: "Description",
-                        onSave: {
-                            try await tag.commitDescription()
-                        }
-                    )
-                }
-                .navigationTitle("Edit Tag")
-                .navigationBarTitleDisplayMode(.inline)
-            }
-        }
-    }
-
-    static var previews: some View {
-        Preview()
-            .withErrorHandling()
-    }
-}

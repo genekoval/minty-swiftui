@@ -13,11 +13,3 @@ struct ImageViewer: View {
         }
     }
 }
-
-struct ImageViewer_Previews: PreviewProvider {
-    static var previews: some View {
-        ImageViewer(object: ObjectPreview.preview(id: PreviewObject.sandDune))
-            .environmentObject(ObjectSource.preview)
-            .environmentObject(Overlay())
-    }
-}

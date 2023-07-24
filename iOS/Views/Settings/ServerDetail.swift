@@ -38,14 +38,14 @@ struct ServerDetail: View {
                 }
                 else if let info = data.server {
                     switch info {
-                    case .connected(let metadata):
+                    case .connected(let version):
                         Section {
                             Label("Connected", status: .ok)
                         }
 
                         Section {
                             Text("Server Version")
-                                .badge(metadata.version)
+                                .badge(version)
                         }
                     case .error(let message, let detail):
                         Section {
@@ -83,16 +83,5 @@ struct ServerDetail: View {
 
     private func connect() {
         settings.connect(to: server)
-    }
-}
-
-struct ServerDetail_Previews: PreviewProvider {
-    static var previews: some View {
-        ServerDetail(
-            title: "Server",
-            server: Server(host: "127.0.0.1", port: 3000)
-        )
-        .environmentObject(DataSource.preview)
-        .environmentObject(SettingsViewModel())
     }
 }

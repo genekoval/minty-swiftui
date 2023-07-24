@@ -42,15 +42,8 @@ class ObjectSource: ObservableObject {
             )
         }
 
-        let object = try await repo.getObject(objectId: id)
-
-        var preview = ObjectPreview()
-        preview.id = object.id
-        preview.previewId = object.previewId
-        preview.type = object.type
-        preview.subtype = object.subtype
-
-        return .existingObject(preview)
+        let object = try await repo.get(object: id)
+        return .existingObject(object.preview)
     }
 
     func refresh() async {

@@ -17,11 +17,3 @@ struct TagHome: View {
         }
     }
 }
-
-struct TagHome_Previews: PreviewProvider {
-    @StateObject private static var query = TagQueryViewModel.preview()
-
-    static var previews: some View {
-        TagHome(query: query)
-    }
-}

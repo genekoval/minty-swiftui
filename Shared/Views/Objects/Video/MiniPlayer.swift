@@ -62,12 +62,3 @@ struct MiniPlayer: View {
             .padding(.leading)
     }
 }
-
-struct MiniPlayer_Previews: PreviewProvider {
-    static var previews: some View {
-        MiniPlayer()
-            .withErrorHandling()
-            .environmentObject(MediaPlayer.preview)
-            .environmentObject(ObjectSource.preview)
-    }
-}

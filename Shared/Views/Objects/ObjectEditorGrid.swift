@@ -86,7 +86,12 @@ private class Editor: ObservableObject {
     }
 
     func add(objects: [ObjectPreview]) async throws {
-        try await post.add(objects: objects, before: destination)
+        if let destination {
+            try await post.insert(objects: objects, before: destination)
+        }
+        else {
+            try await post.add(objects: objects)
+        }
     }
 
     func add(to destination: ObjectPreview? = nil) {
@@ -103,7 +108,13 @@ private class Editor: ObservableObject {
     }
 
     func move(to destination: ObjectPreview? = nil) async throws {
-        try await post.move(objects: selectedObjects, to: destination)
+        if let destination {
+            try await post.insert(objects: selectedObjects, before: destination)
+        }
+        else {
+            try await post.add(objects: selectedObjects)
+        }
+
         state = .adding
     }
 

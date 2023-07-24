@@ -31,7 +31,7 @@ private func uploadURL(
     source: ObjectSource
 ) async throws -> [ObjectPreview] {
     guard let repo = source.dataSource?.repo else { return [] }
-    return try await repo.addObjectsUrl(url: url)
+    return try await repo.addObjects(url: url)
 }
 
 enum Uploadable: Identifiable {

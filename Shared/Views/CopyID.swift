@@ -13,9 +13,3 @@ struct CopyID<Entity>: View where Entity : Identifiable, Entity.ID == UUID {
         UIPasteboard.general.string = entity.id.uuidString
     }
 }
-
-struct CopyID_Previews: PreviewProvider {
-    static var previews: some View {
-        CopyID(entity: TagViewModel.preview(id: PreviewTag.helloWorld))
-    }
-}

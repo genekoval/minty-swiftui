@@ -133,12 +133,3 @@ struct ObjectUploadView: View {
         }
     }
 }
-
-struct ObjectUploadView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            ObjectUploadView(onUpload: { objects in })
-        }
-        .environmentObject(ObjectSource.preview)
-    }
-}

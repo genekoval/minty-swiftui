@@ -70,11 +70,3 @@ struct TimeJumpOverlay: View {
         }
     }
 }
-
-struct TimeJumpOverlay_Previews: PreviewProvider {
-    static var previews: some View {
-        TimeJumpOverlay()
-            .background(.black)
-            .environmentObject(MediaPlayer.preview)
-    }
-}

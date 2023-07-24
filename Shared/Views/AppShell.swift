@@ -79,13 +79,3 @@ struct AppShell: View {
         .tag(Tab.user)
     }
 }
-
-struct AppShell_Previews: PreviewProvider {
-    static var previews: some View {
-        AppShell()
-            .environmentObject(DataSource.preview)
-            .environmentObject(MediaPlayer.preview)
-            .environmentObject(ObjectSource.preview)
-            .environmentObject(SettingsViewModel())
-    }
-}

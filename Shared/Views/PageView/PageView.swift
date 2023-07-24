@@ -10,17 +10,3 @@ struct PageView<Page: View>: View {
         PageViewController(pages: pages, currentPage: $currentPage)
     }
 }
-
-struct PageView_Previews: PreviewProvider {
-    @State private static var currentPage = 0
-
-    static var previews: some View {
-        PageView(
-            pages: Post.preview(id: PreviewPost.sandDune)
-                .objects.map { ObjectViewer(object: $0) },
-            currentPage: $currentPage
-        )
-        .environmentObject(ObjectSource.preview)
-        .environmentObject(Overlay())
-    }
-}

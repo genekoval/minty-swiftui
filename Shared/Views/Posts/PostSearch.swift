@@ -98,17 +98,3 @@ struct PostSearch: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
-
-struct PostSearch_Previews: PreviewProvider {
-    @StateObject private static var search = PostQueryViewModel.preview()
-
-    static var previews: some View {
-        NavigationView {
-            PostSearch(search: search)
-        }
-        .padding(.horizontal)
-        .withErrorHandling()
-        .environmentObject(DataSource.preview)
-        .environmentObject(ObjectSource.preview)
-    }
-}

@@ -72,27 +72,3 @@ struct PostRow: View {
             .frame(width: 100, height: 100)
     }
 }
-
-struct PostRow_Previews: PreviewProvider {
-    private static let posts = [
-        PreviewPost.untitled,
-        PreviewPost.sandDune,
-        PreviewPost.test
-    ]
-
-    static var previews: some View {
-        ScrollView {
-            VStack {
-                ForEach(posts, id: \.self) { post in
-                    VStack {
-                        PostRow(post: PostViewModel.preview(id: post))
-                        Divider()
-                    }
-                }
-            }
-        }
-        .withErrorHandling()
-        .environmentObject(DataSource.preview)
-        .environmentObject(ObjectSource.preview)
-    }
-}

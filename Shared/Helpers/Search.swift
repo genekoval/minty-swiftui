@@ -1,11 +1,10 @@
 import Combine
 import Minty
-import Zipline
 
 protocol Query {
-    var from: UInt32 { get set }
+    var from: Int { get set }
 
-    var size: UInt32 { get set }
+    var size: Int { get set }
 }
 
 protocol SearchObject {

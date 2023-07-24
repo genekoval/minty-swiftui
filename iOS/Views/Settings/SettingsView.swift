@@ -88,13 +88,3 @@ struct SettingsView: View {
         settings.reset()
     }
 }
-
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView()
-            .withErrorHandling()
-            .environmentObject(DataSource.preview)
-            .environmentObject(ObjectSource.preview)
-            .environmentObject(SettingsViewModel())
-    }
-}

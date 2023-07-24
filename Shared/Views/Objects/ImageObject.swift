@@ -65,11 +65,3 @@ struct ImageObject<Content, Placeholder>: View where
         }
     }
 }
-
-struct ImageObject_Previews: PreviewProvider {
-    static var previews: some View {
-        ImageObject(id: PreviewObject.sandDune)
-            .withErrorHandling()
-            .environmentObject(ObjectSource.preview)
-    }
-}

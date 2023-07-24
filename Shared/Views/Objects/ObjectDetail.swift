@@ -45,46 +45,48 @@ struct ObjectDetail: View {
     var body: some View {
         PaddedScrollView {
             VStack(alignment: .leading) {
-                HStack {
-                    Spacer()
-                    PreviewImage(
-                        previewId: vm.object.previewId,
-                        type: vm.object.type,
-                        subtype: vm.object.subtype
-                    )
-                    .frame(width: 150)
-                    .padding(.bottom)
-                    Spacer()
-                }
-
-                InfoField(key: "ID") {
-                    Text(vm.id.uuidString)
-                        .font(.caption)
-                }
-                KeyValue(key: "Type", value: vm.object.mimeType)
-                InfoField(key: "Size") {
-                    VStack(alignment: .trailing) {
-                        Text(vm.object.size.formatted)
-                        Text("\(vm.object.size.bytes) bytes")
-                            .font(.caption)
-                    }
-                }
-                InfoField(key: "Imported") {
-                    VStack(alignment: .trailing) {
-                        Text(vm.object.dateAdded.relative(.full))
+                if let object = vm.object {
+                    HStack {
                         Spacer()
-                        Text(vm.object.dateAdded.string)
+                        PreviewImage(
+                            previewId: object.previewId,
+                            type: object.type,
+                            subtype: object.subtype
+                        )
+                        .frame(width: 150)
+                        .padding(.bottom)
+                        Spacer()
+                    }
+
+                    InfoField(key: "ID") {
+                        Text(vm.id.uuidString)
                             .font(.caption)
                     }
-                }
-                InfoField(key: "SHA 256") {
-                    Text(vm.object.hash)
-                        .font(.caption)
-                }
+                    KeyValue(key: "Type", value: object.mimeType)
+                    InfoField(key: "Size") {
+                        VStack(alignment: .trailing) {
+                            Text(object.size.formatted)
+                            Text("\(object.size.bytes) bytes")
+                                .font(.caption)
+                        }
+                    }
+                    InfoField(key: "Imported") {
+                        VStack(alignment: .trailing) {
+                            Text(object.dateAdded.relative(.full))
+                            Spacer()
+                            Text(object.dateAdded.string)
+                                .font(.caption)
+                        }
+                    }
+                    InfoField(key: "SHA 256") {
+                        Text(object.hash)
+                            .font(.caption)
+                    }
 
-                if let source = vm.object.source {
-                    InfoField(key: "Source") {
-                        SourceLink(source: source)
+                    if let source = object.source {
+                        InfoField(key: "Source") {
+                            SourceLink(source: source)
+                        }
                     }
                 }
 
@@ -110,17 +112,5 @@ struct ObjectDetail: View {
 
     init(id: UUID) {
         _vm = StateObject(wrappedValue: ObjectViewModel(id: id))
-    }
-}
-
-struct ObjectDetail_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView{
-            ObjectDetail(id: PreviewObject.sandDune)
-        }
-        .withErrorHandling()
-        .environmentObject(DataSource.preview)
-        .environmentObject(ObjectSource.preview)
-        .environmentObject(Overlay())
     }
 }

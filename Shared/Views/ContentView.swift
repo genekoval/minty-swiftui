@@ -27,15 +27,3 @@ struct ContentView: View {
         data.observe(server: settings.$server)
     }
 }
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-            .withErrorHandling()
-            .environmentObject(DataSource.preview)
-            .environmentObject(MediaPlayer.preview)
-            .environmentObject(ObjectSource.preview)
-            .environmentObject(Overlay())
-            .environmentObject(SettingsViewModel())
-    }
-}

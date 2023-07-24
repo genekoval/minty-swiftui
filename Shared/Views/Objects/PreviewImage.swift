@@ -71,17 +71,3 @@ struct PreviewImage: View {
         )
     }
 }
-
-struct PreviewImage_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            PreviewImage(
-                object: ObjectPreview.preview(id: PreviewObject.sandDune)
-            )
-            PreviewImage(object: ObjectPreview.preview(id: PreviewObject.empty))
-        }
-        .frame(width: 100)
-        .environmentObject(ObjectSource.preview)
-        .previewLayout(.sizeThatFits)
-    }
-}

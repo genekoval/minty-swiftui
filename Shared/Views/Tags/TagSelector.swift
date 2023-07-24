@@ -166,25 +166,3 @@ struct TagSelector: View {
         search.excluded = value
     }
 }
-
-struct TagSelector_Previews: PreviewProvider {
-    private struct Preview: View {
-        @StateObject private var search = TagQueryViewModel.preview()
-        @State private var tags: [TagViewModel] = []
-
-        var body: some View {
-            NavigationView {
-                TagSelector(
-                    tags: $tags,
-                    search: search,
-                    onAdd: { _ in },
-                    onRemove: { _ in }
-                )
-            }
-        }
-    }
-
-    static var previews: some View {
-        Preview()
-    }
-}

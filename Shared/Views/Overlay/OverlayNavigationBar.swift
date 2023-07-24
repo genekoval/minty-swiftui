@@ -52,21 +52,3 @@ struct OverlayNavigationBar: View {
         overlay.hide()
     }
 }
-
-struct OverlayNavigationBar_Previews: PreviewProvider {
-    private struct Preview: View {
-        private let post = PostViewModel.preview(id: PreviewPost.sandDune)
-
-        @StateObject private var overlay = Overlay()
-
-        var body: some View {
-            OverlayNavigationBar()
-                .environmentObject(overlay)
-                .onAppear { overlay.load(provider: post) }
-        }
-    }
-
-    static var previews: some View {
-        Preview()
-    }
-}

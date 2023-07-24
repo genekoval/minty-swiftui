@@ -14,13 +14,3 @@ struct DefaultImageViewer: View {
             .tapToHide()
     }
 }
-
-struct DefaultImageViewer_Previews: PreviewProvider {
-    static var previews: some View {
-        DefaultImageViewer(
-            object: ObjectPreview.preview(id: PreviewObject.sandDune)
-        )
-        .environmentObject(ObjectSource.preview)
-        .environmentObject(Overlay())
-    }
-}

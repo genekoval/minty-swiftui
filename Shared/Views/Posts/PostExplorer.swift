@@ -32,13 +32,3 @@ struct PostExplorer: View {
         NewPostButton(draft: $draft, tag: nil)
     }
 }
-
-struct PostExplorer_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            PostExplorer()
-        }
-        .environmentObject(DataSource.preview)
-        .environmentObject(ObjectSource.preview)
-    }
-}

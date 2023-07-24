@@ -23,11 +23,3 @@ struct PostRowMinimal: View {
         }
     }
 }
-
-struct PostRowMinimal_Previews: PreviewProvider {
-    static var previews: some View {
-        PostRowMinimal(post: PostViewModel.preview(id: PreviewPost.sandDune))
-            .environmentObject(DataSource.preview)
-            .environmentObject(ObjectSource.preview)
-    }
-}

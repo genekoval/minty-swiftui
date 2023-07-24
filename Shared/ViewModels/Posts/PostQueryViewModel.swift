@@ -22,12 +22,7 @@ final class PostQueryViewModel: Search<PostViewModel, PostQuery> {
         visibility: Visibility = .pub,
         searchNow: Bool = false
     ) {
-        var query = PostQuery()
-
-        query.size = 30
-        query.sort.order = .descending
-        query.sort.value = .dateCreated
-        query.visibility = visibility
+        var query = PostQuery(size: 30, visibility: visibility)
 
         if let tag = tag {
             query.tags.append(tag.id)

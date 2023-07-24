@@ -48,12 +48,3 @@ struct SearchHome: View {
         }
     }
 }
-
-struct SearchHome_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchHome()
-            .withErrorHandling()
-            .environmentObject(DataSource.preview)
-            .environmentObject(ObjectSource.preview)
-    }
-}

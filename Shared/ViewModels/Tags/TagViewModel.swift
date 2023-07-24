@@ -61,7 +61,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
 
         try await withRepo("add alias") { repo in
             refresh(names: try await repo.addTagAlias(
-                tagId: id,
+                tag: id,
                 alias: draftAlias
             ))
         }
@@ -74,7 +74,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
 
         try await withRepo("add source") { repo in
             sources.append(
-                try await repo.addTagSource(tagId: id, url: draftSource)
+                try await repo.addTagSource(tag: id, url: draftSource)
             )
         }
 
@@ -83,8 +83,8 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
 
     func commitDescription() async throws {
         try await withRepo("set description") { repo in
-            description = try await repo.setTagDescription(
-                tagId: id,
+            description = try await repo.set(
+                tag: id,
                 description: draftDescription
             )
         }
@@ -97,7 +97,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
 
     func delete() async throws {
         try await withRepo("delete tag") { repo in
-            try await repo.deleteTag(tagId: id)
+            try await repo.delete(tag: id)
         }
 
         Tag.deleted.send(id)
@@ -106,7 +106,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
     func deleteAlias(at index: Int) async throws {
         try await withRepo("delete alias") { repo in
             let alias = aliases.remove(at: index)
-            let result = try await repo.deleteTagAlias(tagId: id, alias: alias)
+            let result = try await repo.delete(tag: id, alias: alias)
             refresh(names: result)
         }
     }
@@ -115,7 +115,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
         let source = sources[index].id
 
         try await withRepo("delete source") { repo in
-            try await repo.deleteTagSource(tagId: id, sourceId: source)
+            try await repo.delete(tag: id, source: source)
         }
 
         sources.remove(at: index)
@@ -123,7 +123,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
 
     override func refresh() async throws {
         try await withRepo("fetch data") { repo in
-            load(try await repo.getTag(tagId: id))
+            load(try await repo.get(tag: id))
         }
     }
 
@@ -146,7 +146,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
 
     private func setName(name: String) async throws {
         try await withRepo("set name") { repo in
-            refresh(names: try await repo.setTagName(tagId: id, newName: name))
+            refresh(names: try await repo.set(tag: id, name: name))
         }
     }
 

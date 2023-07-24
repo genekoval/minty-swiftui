@@ -5,11 +5,13 @@ private func info(key: String) -> String? {
     Bundle.main.object(forInfoDictionaryKey: key) as? String
 }
 
-private func connect(
-    server: Server
-) async throws -> (MintyRepo, ServerMetadata) {
-    let client = try await ZiplineClient(host: server.host, port: server.port)
-    return (client, client.metadata)
+private func connect(server: Server) async throws -> MintyRepo {
+    var components = URLComponents()
+    components.scheme = "https"
+    components.host = server.host
+    components.port = Int(server.port)
+
+    return try await HTTPClient(baseURL: components.url!)
 }
 
 @main

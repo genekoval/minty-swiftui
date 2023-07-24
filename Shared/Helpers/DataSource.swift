@@ -1,15 +1,14 @@
 import Combine
 import Foundation
 import Minty
-import Zipline
 
 enum ServerStatus {
-    case connected(metadata: ServerMetadata)
+    case connected(version: String)
     case error(message: String, detail: String)
 }
 
 final class DataSource: ObservableObject {
-    typealias Connect = (Server) async throws -> (MintyRepo, ServerMetadata)
+    typealias Connect = (Server) async throws -> MintyRepo
 
     let state = AppState()
     var onFailedConnection: ((Error) -> Void)?
@@ -32,10 +31,10 @@ final class DataSource: ObservableObject {
         connecting = true
 
         do {
-            let (repo, metadata) = try await connect(server)
+            let repo = try await connect(server)
 
             self.repo = repo
-            self.server = .connected(metadata: metadata)
+            self.server = .connected(version: repo.version)
         }
         catch {
             self.server = .error(

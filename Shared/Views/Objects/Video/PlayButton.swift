@@ -16,10 +16,3 @@ struct PlayButton: View {
         }
     }
 }
-
-struct PlayButton_Previews: PreviewProvider {
-    static var previews: some View {
-        PlayButton(size: 50)
-            .environmentObject(MediaPlayer.preview)
-    }
-}

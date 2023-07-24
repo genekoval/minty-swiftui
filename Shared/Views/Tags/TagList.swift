@@ -32,22 +32,3 @@ struct TagList: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
-
-struct TagList_Previews: PreviewProvider {
-    private struct Preview: View {
-        @StateObject private var post =
-            PostViewModel.preview(id: PreviewPost.test)
-
-        var body: some View {
-            NavigationView {
-                TagList(post: post)
-            }
-        }
-    }
-
-    static var previews: some View {
-        Preview()
-            .environmentObject(DataSource.preview)
-            .environmentObject(ObjectSource.preview)
-    }
-}

@@ -89,10 +89,3 @@ struct PlayerControls: View {
         return formatter.string(from: TimeInterval(seconds))!
     }
 }
-
-struct PlayerControls_Previews: PreviewProvider {
-    static var previews: some View {
-        PlayerControls()
-            .environmentObject(MediaPlayer.preview)
-    }
-}

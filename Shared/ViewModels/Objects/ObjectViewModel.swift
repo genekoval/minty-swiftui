@@ -3,7 +3,7 @@ import Foundation
 import Minty
 
 final class ObjectViewModel: IdentifiableEntity, ObservableObject {
-    @Published var object = Object()
+    @Published var object: Object?
     @Published var posts: [PostViewModel] = []
 
     init(id: UUID) {
@@ -12,8 +12,9 @@ final class ObjectViewModel: IdentifiableEntity, ObservableObject {
 
     override func refresh() async throws {
         try await withRepo("fetch data") { repo in
-            object = try await repo.getObject(objectId: id)
+            let object = try await repo.get(object: id)
             posts = object.posts.map { app!.state.posts.fetch(for: $0) }
+            self.object = object
         }
     }
 }

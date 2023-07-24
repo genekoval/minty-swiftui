@@ -94,15 +94,3 @@ struct ObjectGrid: View {
         }
     }
 }
-
-struct ObjectGrid_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            ObjectGrid(provider: PostViewModel.preview(id: PreviewPost.test))
-                .environmentObject(DataSource.preview)
-                .environmentObject(ObjectSource.preview)
-                .environmentObject(Overlay())
-                .environmentObject(MediaPlayer.preview)
-        }
-    }
-}

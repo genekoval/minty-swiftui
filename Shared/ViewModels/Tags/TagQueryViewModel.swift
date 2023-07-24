@@ -11,9 +11,7 @@ final class TagQueryViewModel: Search<TagViewModel, TagQuery> {
     private var cancellables = Set<AnyCancellable>()
 
     init() {
-        var query = TagQuery()
-
-        query.size = 50
+        let query = TagQuery(size: 50)
 
         super.init(
             type: "tag",
