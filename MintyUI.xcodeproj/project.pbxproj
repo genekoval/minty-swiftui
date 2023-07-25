@@ -60,8 +60,6 @@
 		BE3FF0FB283641F000B7793F /* OnFirstAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3FF0FA283641F000B7793F /* OnFirstAppearance.swift */; };
 		BE4043762A4D2AEF00027340 /* SelectableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4043752A4D2AEF00027340 /* SelectableRow.swift */; };
 		BE4043772A4D2AEF00027340 /* SelectableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4043752A4D2AEF00027340 /* SelectableRow.swift */; };
-		BE4043792A4D2E8100027340 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4043782A4D2E8100027340 /* Row.swift */; };
-		BE40437A2A4D2E8100027340 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4043782A4D2E8100027340 /* Row.swift */; };
 		BE40437C2A4D30E000027340 /* Checkmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE40437B2A4D30E000027340 /* Checkmark.swift */; };
 		BE40437D2A4D30E000027340 /* Checkmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE40437B2A4D30E000027340 /* Checkmark.swift */; };
 		BE40437F2A4D4FB500027340 /* CancelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE40437E2A4D4FB500027340 /* CancelButton.swift */; };
@@ -160,6 +158,10 @@
 		BEB07B9B272C81A9004A942C /* sand dune (preview).png in Resources */ = {isa = PBXBuildFile; fileRef = BEB07B99272C81A9004A942C /* sand dune (preview).png */; };
 		BEB546AA2A6E30F30055C46F /* TagList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB546A92A6E30F30055C46F /* TagList.swift */; };
 		BEB546AB2A6E30F30055C46F /* TagList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB546A92A6E30F30055C46F /* TagList.swift */; };
+		BEB546AD2A6E546C0055C46F /* TagSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB546AC2A6E546C0055C46F /* TagSearch.swift */; };
+		BEB546AE2A6E546C0055C46F /* TagSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB546AC2A6E546C0055C46F /* TagSearch.swift */; };
+		BEB546B02A6E58D70055C46F /* NoResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB546AF2A6E58D70055C46F /* NoResults.swift */; };
+		BEB546B12A6E58D70055C46F /* NoResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB546AF2A6E58D70055C46F /* NoResults.swift */; };
 		BEB96D3727DB54E6007F6821 /* AlbumCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB96D3627DB54E6007F6821 /* AlbumCover.swift */; };
 		BEB96D3827DB54E6007F6821 /* AlbumCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB96D3627DB54E6007F6821 /* AlbumCover.swift */; };
 		BEBFDF8B2741E7EB00A3E2A8 /* Uploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBFDF8A2741E7EB00A3E2A8 /* Uploadable.swift */; };
@@ -186,8 +188,6 @@
 		BED04C49271542BE00EF00B8 /* TagRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C47271542BE00EF00B8 /* TagRow.swift */; };
 		BED04C4B2715465600EF00B8 /* TagQueryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C4A2715465600EF00B8 /* TagQueryViewModel.swift */; };
 		BED04C4C2715465600EF00B8 /* TagQueryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C4A2715465600EF00B8 /* TagQueryViewModel.swift */; };
-		BED04C4E27178A4C00EF00B8 /* TagSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C4D27178A4C00EF00B8 /* TagSearch.swift */; };
-		BED04C4F27178A4C00EF00B8 /* TagSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C4D27178A4C00EF00B8 /* TagSearch.swift */; };
 		BED04C5127179A1700EF00B8 /* TagDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C5027179A1700EF00B8 /* TagDetail.swift */; };
 		BED04C5227179A1700EF00B8 /* TagDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C5027179A1700EF00B8 /* TagDetail.swift */; };
 		BED04C542717A13E00EF00B8 /* SearchHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED04C532717A13E00EF00B8 /* SearchHome.swift */; };
@@ -273,7 +273,6 @@
 		BE3E16B9273A1F0D00052660 /* PreviewImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewImage.swift; sourceTree = "<group>"; };
 		BE3FF0FA283641F000B7793F /* OnFirstAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnFirstAppearance.swift; sourceTree = "<group>"; };
 		BE4043752A4D2AEF00027340 /* SelectableRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableRow.swift; sourceTree = "<group>"; };
-		BE4043782A4D2E8100027340 /* Row.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Row.swift; sourceTree = "<group>"; };
 		BE40437B2A4D30E000027340 /* Checkmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkmark.swift; sourceTree = "<group>"; };
 		BE40437E2A4D4FB500027340 /* CancelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelButton.swift; sourceTree = "<group>"; };
 		BE4043812A4D502200027340 /* DismissButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
@@ -347,6 +346,8 @@
 		BEB07B96272C5BA6004A942C /* sand dune.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sand dune.jpg"; sourceTree = "<group>"; };
 		BEB07B99272C81A9004A942C /* sand dune (preview).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sand dune (preview).png"; sourceTree = "<group>"; };
 		BEB546A92A6E30F30055C46F /* TagList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagList.swift; sourceTree = "<group>"; };
+		BEB546AC2A6E546C0055C46F /* TagSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSearch.swift; sourceTree = "<group>"; };
+		BEB546AF2A6E58D70055C46F /* NoResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoResults.swift; sourceTree = "<group>"; };
 		BEB96D3627DB54E6007F6821 /* AlbumCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCover.swift; sourceTree = "<group>"; };
 		BEBFDF8A2741E7EB00A3E2A8 /* Uploadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uploadable.swift; sourceTree = "<group>"; };
 		BEBFDF8D274214AA00A3E2A8 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -364,7 +365,6 @@
 		BED04C4327153E7000EF00B8 /* AppShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppShell.swift; sourceTree = "<group>"; };
 		BED04C47271542BE00EF00B8 /* TagRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagRow.swift; sourceTree = "<group>"; };
 		BED04C4A2715465600EF00B8 /* TagQueryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagQueryViewModel.swift; sourceTree = "<group>"; };
-		BED04C4D27178A4C00EF00B8 /* TagSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSearch.swift; sourceTree = "<group>"; };
 		BED04C5027179A1700EF00B8 /* TagDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDetail.swift; sourceTree = "<group>"; };
 		BED04C532717A13E00EF00B8 /* SearchHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHome.swift; sourceTree = "<group>"; };
 		BED37B942A458F690075DCA5 /* GridPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridPlaceholder.swift; sourceTree = "<group>"; };
@@ -528,11 +528,11 @@
 				BEE57B622A4E649300734055 /* Home.swift */,
 				BEBFDF8D274214AA00A3E2A8 /* ImagePicker.swift */,
 				BE158F7927D2200200F152C0 /* LoadEntity.swift */,
+				BEB546AF2A6E58D70055C46F /* NoResults.swift */,
 				BE3FF0FA283641F000B7793F /* OnFirstAppearance.swift */,
 				BEF8E21427B754A90089317A /* PaddedScrollView.swift */,
 				BEDB743527D3655400195E95 /* PrepareSearch.swift */,
 				BEC6783A271A53FF009BCE5F /* ResultCount.swift */,
-				BE4043782A4D2E8100027340 /* Row.swift */,
 				BED04C532717A13E00EF00B8 /* SearchHome.swift */,
 				BE21A5F0276ED306007105BA /* SearchResults.swift */,
 				BE4043752A4D2AEF00027340 /* SelectableRow.swift */,
@@ -783,7 +783,7 @@
 				BEB546A92A6E30F30055C46F /* TagList.swift */,
 				BE7EBBD52A4C1B3A00EE683B /* TagListEditor.swift */,
 				BED04C47271542BE00EF00B8 /* TagRow.swift */,
-				BED04C4D27178A4C00EF00B8 /* TagSearch.swift */,
+				BEB546AC2A6E546C0055C46F /* TagSearch.swift */,
 				BE584A8E2783EDA700CD33F3 /* TagSearchResults.swift */,
 				BE00985F2731BBD20021E660 /* TagSelectButton.swift */,
 				BE009856273195360021E660 /* TagSelector.swift */,
@@ -1009,6 +1009,7 @@
 				BE21A5F1276ED306007105BA /* SearchResults.swift in Sources */,
 				BE808C4D271B98CF0081F815 /* Date.swift in Sources */,
 				BE835390278D4B92006E0783 /* Zoomable.swift in Sources */,
+				BEB546B02A6E58D70055C46F /* NoResults.swift in Sources */,
 				BE013B8627FFE553004A43CE /* EntityStore.swift in Sources */,
 				BE66BC9D2A6218670013B119 /* DeleteConfirmation.swift in Sources */,
 				BED811512720EC5700929D4C /* ImageObject.swift in Sources */,
@@ -1017,6 +1018,7 @@
 				BED04C4427153E7000EF00B8 /* AppShell.swift in Sources */,
 				BE06CAB327DFFB97005940FB /* Color.swift in Sources */,
 				BE3068992735F5C90038972B /* PostEditor.swift in Sources */,
+				BEB546AD2A6E546C0055C46F /* TagSearch.swift in Sources */,
 				BEE57B6F2A4EBC7F00734055 /* ConnectionView.swift in Sources */,
 				BEE57B6B2A4E9CE100734055 /* ServerView.swift in Sources */,
 				BEBFF686278BC60000E38BBB /* ImageViewer.swift in Sources */,
@@ -1065,7 +1067,6 @@
 				BE9EAB9928370EDA00EDC8A7 /* SheetView.swift in Sources */,
 				BECA71422787F77B007993EB /* ObjectViewModel.swift in Sources */,
 				BE4043762A4D2AEF00027340 /* SelectableRow.swift in Sources */,
-				BE4043792A4D2E8100027340 /* Row.swift in Sources */,
 				BE3FF0FB283641F000B7793F /* OnFirstAppearance.swift in Sources */,
 				BE285ED22A418900003732F1 /* PostHost.swift in Sources */,
 				BE8E71C927330F93009A4FE9 /* PostTagList.swift in Sources */,
@@ -1114,7 +1115,6 @@
 				BED04C542717A13E00EF00B8 /* SearchHome.swift in Sources */,
 				BE465515270CFA8E00D3C4FB /* MintyApp.swift in Sources */,
 				BEBFF682278BBB6C00E38BBB /* ObjectPreview.swift in Sources */,
-				BED04C4E27178A4C00EF00B8 /* TagSearch.swift in Sources */,
 				BE80C37C27264D14009616F5 /* DataSource.swift in Sources */,
 				BE013B8027FFC8ED004A43CE /* StateMap.swift in Sources */,
 				BEE57B652A4E6CD900734055 /* CloseButton.swift in Sources */,
@@ -1138,6 +1138,7 @@
 				BED04C552717A13E00EF00B8 /* SearchHome.swift in Sources */,
 				BE465518270CFA8E00D3C4FB /* ContentView.swift in Sources */,
 				BED04C4527153E7000EF00B8 /* AppShell.swift in Sources */,
+				BEB546AE2A6E546C0055C46F /* TagSearch.swift in Sources */,
 				BE4043832A4D502200027340 /* DismissButton.swift in Sources */,
 				BE5AC200271B405800FCA45A /* TagViewModel.swift in Sources */,
 				BE158F7827D1AA1A00F152C0 /* Logger.swift in Sources */,
@@ -1146,14 +1147,12 @@
 				BE8F5C7627E413A10007A8E9 /* Object.swift in Sources */,
 				BEAB78FD27925ECB00CF9AD6 /* Swipe.swift in Sources */,
 				BE80C37D27264D14009616F5 /* DataSource.swift in Sources */,
-				BED04C4F27178A4C00EF00B8 /* TagSearch.swift in Sources */,
 				BE21A5EF276EB84E007105BA /* Search.swift in Sources */,
 				BED7586527A39F410044562D /* PlayerControls.swift in Sources */,
 				BE21A5F5276EDD69007105BA /* PostSearchResults.swift in Sources */,
 				BE158F7527D191FF00F152C0 /* ErrorHandling.swift in Sources */,
 				BEB546AB2A6E30F30055C46F /* TagList.swift in Sources */,
 				BE0098612731BBD20021E660 /* TagSelectButton.swift in Sources */,
-				BE40437A2A4D2E8100027340 /* Row.swift in Sources */,
 				BE80C3802726605A009616F5 /* CacheRow.swift in Sources */,
 				BE465583270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
 				BE013B8727FFE553004A43CE /* EntityStore.swift in Sources */,
@@ -1187,6 +1186,7 @@
 				BE21A5F2276ED306007105BA /* SearchResults.swift in Sources */,
 				BED04C4C2715465600EF00B8 /* TagQueryViewModel.swift in Sources */,
 				BE6A63E327289B2700365D24 /* RemoteEntity.swift in Sources */,
+				BEB546B12A6E58D70055C46F /* NoResults.swift in Sources */,
 				BE00985E2731B4A00021E660 /* Binding.swift in Sources */,
 				BE009858273195360021E660 /* TagSelector.swift in Sources */,
 				BE46557D270D118700D3C4FB /* SettingsViewModel.swift in Sources */,

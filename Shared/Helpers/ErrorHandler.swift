@@ -1,3 +1,4 @@
+import os
 import Combine
 import Foundation
 import Minty
@@ -14,6 +15,11 @@ class ErrorHandler: ObservableObject {
     @Published var didError = false
 
     func handle(error: Error, dismissAction: (() -> Void)? = nil) {
+        guard !Task.isCancelled else {
+            Logger.handler.debug("Task cancelled")
+            return
+        }
+
         var alertMessage: String
 
         switch error {
@@ -29,7 +35,7 @@ class ErrorHandler: ObservableObject {
             alertMessage = error.localizedDescription
         }
 
-        defaultLog.error("\(alertMessage)")
+        Logger.handler.error("\(error)")
 
         currentAlert = ErrorAlert(
             message: alertMessage,

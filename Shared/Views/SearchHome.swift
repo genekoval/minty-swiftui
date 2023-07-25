@@ -36,7 +36,7 @@ struct SearchHome: View {
         NavigationStack {
             List {
                 SearchLabel("Tags", icon: "tag", color: .green) {
-                    TagSearch()
+                    TagHome()
                 }
 
                 SearchLabel("Posts", icon: "doc.text.image", color: .blue) {

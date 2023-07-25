@@ -9,27 +9,28 @@ struct SelectableRow<Content>: View where Content : View {
     @State private var isSelected = false
 
     var body: some View {
-        Row {
-            HStack {
-                Button(action: toggle) {
-                    Checkmark(isChecked: isSelected)
-                }
-
-                content()
+        HStack {
+            Button(action: toggle) {
+                Checkmark(isChecked: isSelected)
             }
+
+            content()
+        }
+        .onChange(of: isSelected, perform: selectionChanged)
+    }
+
+    private func selectionChanged(_ selected: Bool) {
+        if selected {
+            onSelected()
+        }
+        else {
+            onDeselected()
         }
     }
 
     private func toggle() {
         withAnimation {
             isSelected.toggle()
-        }
-
-        if isSelected {
-            onSelected()
-        }
-        else {
-            onDeselected()
         }
     }
 }

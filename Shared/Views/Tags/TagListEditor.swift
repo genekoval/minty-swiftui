@@ -13,7 +13,6 @@ private struct TagSelectRow: View {
         ) {
             TagRow(tag: tag)
         }
-        .padding(.horizontal)
     }
 
     private func onDeselected() {
@@ -36,7 +35,7 @@ private struct EditorRow: View {
     let post: PostViewModel
 
     var body: some View {
-        Row {
+        VStack {
             HStack {
                 Button(action: deleteTag) {
                     Checkmark(isChecked: true)
@@ -44,6 +43,8 @@ private struct EditorRow: View {
 
                 TagRow(tag: tag)
             }
+
+            Divider()
         }
         .padding(.horizontal)
     }
@@ -56,49 +57,28 @@ private struct EditorRow: View {
 }
 
 struct TagListEditor: View {
-    @Environment(\.isSearching) private var isSearching
-
     @EnvironmentObject private var errorHandler: ErrorHandler
 
     @ObservedObject var post: PostViewModel
-    @ObservedObject var search: TagQueryViewModel
 
     var body: some View {
-        ZStack {
-            ScrollView {
-                VStack {
-                    ForEach(post.tags) {
-                        EditorRow(tag: $0, post: post)
-                    }
-                }
-                .padding(.vertical)
-            }
-            .toolbar {
-                NewTagButton { tag in
-                    errorHandler.handle {
-                        try await post.add(tag: tag)
-                    }
+        ScrollView {
+            VStack {
+                ForEach(post.tags) {
+                    EditorRow(tag: $0, post: post)
                 }
             }
-
-            searchOverlay
+            .padding(.vertical)
         }
-    }
-
-    @ViewBuilder
-    private var searchOverlay: some View {
-        if isSearching {
-            ScrollView {
-                LazyVStack {
-                    TagSearchBase(search: search) {
-                        TagSelectRow(tag: $0, post: post)
-                    }
+        .toolbar {
+            NewTagButton { tag in
+                errorHandler.handle {
+                    try await post.add(tag: tag)
                 }
             }
-            .background {
-                Rectangle()
-                    .fill(.background)
-            }
+        }
+        .tagSearch(exclude: post.tags) {
+            TagSelectRow(tag: $0, post: post)
         }
     }
 }
@@ -108,32 +88,22 @@ struct TagListEditorButton: View {
 
     @State private var isPresented = false
 
-    @StateObject private var search = TagQueryViewModel()
-
     var body: some View {
         Button(action: { isPresented = true }) {
             Label("Tags", systemImage: "tag")
         }
-        .prepareSearch(search)
         .badge(post.tags.count)
         .sheet(isPresented: $isPresented) {
             NavigationStack {
-                TagListEditor(post: post, search: search)
-                    .searchable(text: $search.name, prompt: "Find tags")
-                    .navigationTitle(title)
+                TagListEditor(post: post)
+                    .navigationTitle(post.tags.countOf(type: "Tag"))
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
                             DismissButton()
                         }
                     }
-                    .onReceive(post.$tags) { search.excluded = $0 }
             }
         }
-    }
-
-    private var title: String {
-        let count = post.tags.count
-        return "\(count) Tag\(count == 1 ? "" : "s")"
     }
 }

@@ -56,6 +56,35 @@ final class DataSource: ObservableObject {
         connecting = false
     }
 
+    @MainActor
+    private func fetchTag(for preview: TagPreview) -> TagViewModel {
+        let tag = state.tags.fetch(for: preview)
+        tag.app = self
+        return tag
+    }
+
+    @MainActor
+    func findTags(
+        _ name: String,
+        exclude: [TagViewModel],
+        from: Int = 0,
+        size: Int
+    ) async throws -> (hits: [TagViewModel], total: Int) {
+        guard let repo else { preconditionFailure("Missing repo") }
+
+        let results = try await repo.getTags(query: TagQuery(
+            from: from,
+            size: size,
+            name: name,
+            exclude: exclude.map { $0.id }
+        ))
+
+        return (
+            hits: results.hits.map { fetchTag(for: $0) },
+            total: results.total
+        )
+    }
+
     func observe(server: Published<Server?>.Publisher) {
         cancellable = server.sink { [weak self] in
             guard
