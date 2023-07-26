@@ -122,6 +122,7 @@ private struct TagSearch<TagView>: ViewModifier where TagView : View {
         .searchable(text: $name)
         .onChange(of: name, perform: search)
         .onReceive(Tag.deleted, perform: removeTag)
+        .onSubmit(of: .search, search)
     }
 
     @discardableResult
@@ -154,6 +155,10 @@ private struct TagSearch<TagView>: ViewModifier where TagView : View {
         }
 
         state = .none
+    }
+
+    private func search() {
+        search(for: name)
     }
 
     private func search(for name: String) {
