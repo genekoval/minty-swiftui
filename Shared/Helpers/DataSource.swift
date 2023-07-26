@@ -57,10 +57,43 @@ final class DataSource: ObservableObject {
     }
 
     @MainActor
+    private func fetchPost(for preview: PostPreview) -> PostViewModel {
+        let post = state.posts.fetch(for: preview)
+        post.app = self
+        return post
+    }
+
+    @MainActor
     private func fetchTag(for preview: TagPreview) -> TagViewModel {
         let tag = state.tags.fetch(for: preview)
         tag.app = self
         return tag
+    }
+
+    @MainActor
+    func findPosts(
+        text: String? = nil,
+        tags: [TagViewModel] = [],
+        visibility: Minty.Visibility = .pub,
+        sort: PostQuery.Sort = .created,
+        from: Int = 0,
+        size: Int
+    ) async throws -> (hits: [PostViewModel], total: Int) {
+        guard let repo else { return (hits: [], total: 0) }
+
+        let results = try await repo.getPosts(query: PostQuery(
+            from: from,
+            size: size,
+            text: text,
+            tags: tags.map { $0.id },
+            visibility: visibility,
+            sort: sort
+        ))
+
+        return (
+            hits: results.hits.map { fetchPost(for: $0) },
+            total: results.total
+        )
     }
 
     @MainActor
@@ -70,7 +103,7 @@ final class DataSource: ObservableObject {
         from: Int = 0,
         size: Int
     ) async throws -> (hits: [TagViewModel], total: Int) {
-        guard let repo else { preconditionFailure("Missing repo") }
+        guard let repo else { return (hits: [], total: 0) }
 
         let results = try await repo.getTags(query: TagQuery(
             from: from,

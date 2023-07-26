@@ -9,6 +9,15 @@ final class PostViewModel:
     ObservableObject,
     StorableEntity
 {
+    static let placeholder: PostViewModel = {
+        let id = UUID()
+        let post = PostViewModel(id: id, storage: nil)
+
+        post.title = .placeholder(count: 100)
+
+        return post
+    }()
+
     @Published var draftTitle = ""
     @Published var draftDescription = ""
     @Published var draftComment = ""

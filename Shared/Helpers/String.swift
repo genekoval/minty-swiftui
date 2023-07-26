@@ -1,4 +1,8 @@
 extension String {
+    static func placeholder(count: Int) -> String {
+        String(Array(repeating: "X", count: count))
+    }
+
     var isWhitespace: Bool {
         self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
