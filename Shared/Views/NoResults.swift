@@ -16,7 +16,6 @@ struct NoResults: View {
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
         }
-        .padding()
     }
 
     init(

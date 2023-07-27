@@ -58,12 +58,14 @@ struct DraftsView: View {
                         heading: "Couldn't Load Drafts",
                         subheading: error
                     )
+                    .padding()
                 }
                 else if user.drafts.isEmpty {
                     NoResults(
                         heading: "No Drafts",
                         subheading: "Post drafts you create can be found here."
                     )
+                    .padding()
                 }
                 else {
                     InfiniteScroll(
@@ -72,6 +74,7 @@ struct DraftsView: View {
                         more: loadMore
                     ) {
                         PostLink(post: $0)
+                        Divider()
                     }
                 }
             }

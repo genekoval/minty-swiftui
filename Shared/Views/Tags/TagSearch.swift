@@ -29,25 +29,26 @@ private struct TagSearchOverlay<Content>: View where Content : View {
                     .fill(.background)
 
                 PaddedScrollView {
-                    switch state {
-                    case .none:
-                        // Maybe show search history here
-                        EmptyView()
-                    case .done:
-                        results
-                    case .searching:
-                        ProgressView { Text("Searching") }
-                            .padding()
-                    case .error(let message):
-                        NoResults(heading: "Search Failed", subheading: message)
+                    LazyVStack {
+                        switch state {
+                        case .none:
+                            // Maybe show search history here
+                            EmptyView()
+                        case .done:
+                            results
+                        case .searching:
+                            ProgressView { Text("Searching") }
+                        case .error(let message):
+                            NoResults(
+                                heading: "Search Failed",
+                                subheading: message
+                            )
+                        }
                     }
+                    .padding()
                 }
             }
         }
-    }
-
-    private var complete: Bool {
-        tags.count == total
     }
 
     private var noResultsText: String {
@@ -60,38 +61,28 @@ private struct TagSearchOverlay<Content>: View where Content : View {
             NoResults(subheading: noResultsText)
         }
         else {
-            LazyVStack {
-                ForEach(tags) {
-                    content($0)
-                    Divider()
-                }
-
-                if !complete {
-                    ProgressView()
-                        .padding()
-                        .task(loadMore)
-                }
+            InfiniteScroll(
+                tags,
+                stopIf: tags.count == total,
+                more: loadMore
+            ) {
+                content($0)
+                Divider()
             }
-            .padding()
         }
     }
 
     @Sendable
-    private func loadMore() async {
-        do {
-            let result = try await data.findTags(
-                name.trimmingCharacters(in: .whitespaces),
-                exclude: exclude,
-                from: tags.count,
-                size: 100
-            )
+    private func loadMore() async throws {
+        let result = try await data.findTags(
+            name.trimmingCharacters(in: .whitespaces),
+            exclude: exclude,
+            from: tags.count,
+            size: 100
+        )
 
-            tags.append(contentsOf: result.hits)
-            total = result.total
-        }
-        catch {
-            errorHandler.handle(error: error)
-        }
+        tags.append(contentsOf: result.hits)
+        total = result.total
     }
 }
 

@@ -29,12 +29,14 @@ struct Home: View {
                             more: loadMore
                         ) {
                             PostLink(post: $0)
+                            Divider()
                         }
                     case .error(let message):
                         NoResults(
                             heading: "Couldn't Load Posts",
                             subheading: message
                         )
+                        .padding()
                     }
                 }
             }
@@ -61,9 +63,10 @@ struct Home: View {
     private var loading: some View {
         ForEach(1...50, id: \.self) { _ in
             PostRow(post: .placeholder)
-                .redacted(reason: .placeholder)
-                .shimmering()
+            Divider()
         }
+        .redacted(reason: .placeholder)
+        .shimmering()
     }
 
     @Sendable
