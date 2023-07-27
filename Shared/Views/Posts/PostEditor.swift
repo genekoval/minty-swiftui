@@ -5,9 +5,6 @@ struct PostEditor: View {
 
     @ObservedObject var post: PostViewModel
 
-    @StateObject private var postSearch = PostQueryViewModel()
-    @StateObject private var tagSearch = TagQueryViewModel()
-
     var body: some View {
         Form {
             DraftEditor(
@@ -42,11 +39,6 @@ struct PostEditor: View {
             }
         }
         .playerSpacing()
-        .loadEntity(postSearch)
-        .loadEntity(tagSearch)
-        .onAppear {
-            tagSearch.excluded = post.tags
-        }
     }
 
     private func create() {

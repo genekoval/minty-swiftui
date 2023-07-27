@@ -23,12 +23,7 @@ struct PostExplorer: View {
             }
         }
         .navigationTitle("Posts")
-        .toolbar { addButton }
+        .toolbar { NewPostButton() }
         .prepareSearch(search)
-    }
-
-    @ViewBuilder
-    private var addButton: some View {
-        NewPostButton(draft: $draft, tag: nil)
     }
 }

@@ -29,7 +29,7 @@ struct TagDetail: View {
 
     @ViewBuilder
     private var addButton: some View {
-        NewPostButton(draft: $tag.draftPost, tag: tag)
+        NewPostButton(tag: tag) { draft in tag.draftPost = draft }
     }
 
     @ViewBuilder

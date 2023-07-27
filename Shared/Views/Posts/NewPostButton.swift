@@ -1,57 +1,47 @@
 import Minty
 import SwiftUI
 
-private let icon = "square.and.pencil"
-
 struct NewPostButton: View {
     @EnvironmentObject private var data: DataSource
     @EnvironmentObject private var errorHandler: ErrorHandler
+    @EnvironmentObject private var user: CurrentUser
 
-    @Binding var draft: PostViewModel?
+    private let tag: TagViewModel?
+    private let onCreated: ((PostViewModel) -> Void)?
 
-    @State private var showingPost = false
-
-    let tag: TagViewModel?
+    @State private var draft: PostViewModel?
+    @State private var draftPresented = false
 
     var body: some View {
-        if let draft = draft, !draft.deleted, draft.visibility == .draft {
-            NavigationLink(destination: PostHost(post: draft)) {
-                Image(systemName: icon)
-            }
-            .navigationDestination(isPresented: $showingPost) {
-                PostHost(post: draft)
-            }
-            .onReceive(draft.$deleted) { if $0 { self.draft = nil }}
-            .onReceive(draft.$visibility) {
-                if $0 != .draft {
-                    self.draft = nil
-                }
-            }
+        Button(action: createDraft) {
+            Image(systemName: "square.and.pencil")
         }
-        else {
-            Button(action: createDraft) {
-                Image(systemName: icon)
+        .navigationDestination(isPresented: $draftPresented) {
+            if let draft {
+                PostHost(post: draft)
             }
         }
     }
 
+    init(
+        tag: TagViewModel? = nil,
+        onCreated: ((PostViewModel) -> Void)? = nil
+    ) {
+        self.tag = tag
+        self.onCreated = onCreated
+    }
+
     private func createDraft() {
         errorHandler.handle {
-            guard let repo = data.repo else { return }
+            let draft = try await data.postDraft(tag: tag)
 
-            let id = try await repo.createPostDraft()
-            let draft = data.state.posts.fetch(id: id)
+            user.drafts.insert(draft, at: 0)
+            user.totalDrafts += 1
 
-            draft.app = data
-            draft.isEditing = true
-            draft.visibility = .draft
-
-            if let tag = tag {
-                try await draft.add(tag: tag)
-            }
+            onCreated?(draft)
 
             self.draft = draft
-            showingPost = true
+            draftPresented = true
         }
     }
 }

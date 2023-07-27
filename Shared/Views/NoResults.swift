@@ -30,6 +30,8 @@ struct NoResults: View {
 
 struct NoResults_Previews: PreviewProvider {
     static var previews: some View {
-        NoResults()
+        ScrollView {
+            NoResults()
+        }
     }
 }

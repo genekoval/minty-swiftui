@@ -10,13 +10,27 @@ final class PostViewModel:
     StorableEntity
 {
     static let placeholder: PostViewModel = {
-        let id = UUID()
-        let post = PostViewModel(id: id, storage: nil)
+        let post = PostViewModel(id: UUID(), storage: nil)
 
         post.title = .placeholder(count: 100)
 
         return post
     }()
+
+    #if DEBUG
+    fileprivate static func generate(count: Int) -> [PostViewModel] {
+        var result: [PostViewModel] = []
+        result.reserveCapacity(count)
+
+        for i in 1...count {
+            let post = PostViewModel(id: UUID(), storage: nil)
+            post.title = "Post #\(i)"
+            result.append(post)
+        }
+
+        return result
+    }
+    #endif
 
     @Published var draftTitle = ""
     @Published var draftDescription = ""
@@ -290,3 +304,12 @@ final class PostViewModel:
         }
     }
 }
+
+#if DEBUG
+extension Array where Element == PostViewModel {
+    @MainActor
+    static func generate(count: Int) -> Self {
+        return PostViewModel.generate(count: count)
+    }
+}
+#endif

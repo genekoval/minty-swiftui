@@ -103,20 +103,8 @@ struct Home: View {
         }
     }
 
-    private func reset() {
-        if !posts.isEmpty {
-            posts.removeAll()
-            total = 0
-        }
-
-        state = .searching
-        trailingError = nil
-    }
-
     @Sendable
     private func search() async {
-        reset()
-
         do {
             let results = try await data.findPosts(size: 25)
 
@@ -124,6 +112,7 @@ struct Home: View {
                 state = .done
                 posts = results.hits
                 total = results.total
+                trailingError = nil
             }
         }
         catch {

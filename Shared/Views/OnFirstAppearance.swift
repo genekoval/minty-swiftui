@@ -1,7 +1,7 @@
 import SwiftUI
 
 private struct OnFirstAppearance: ViewModifier {
-    let action: () -> Void
+    let perform: () -> Void
 
     @State private var done = false
 
@@ -9,7 +9,7 @@ private struct OnFirstAppearance: ViewModifier {
         content
             .onAppear {
                 if !done {
-                    action()
+                    perform()
                     done = true
                 }
             }
@@ -17,7 +17,7 @@ private struct OnFirstAppearance: ViewModifier {
 }
 
 extension View {
-    func onFirstAppearance(action: @escaping () -> Void) -> some View {
-        modifier(OnFirstAppearance(action: action))
+    func onFirstAppearance(perform: @escaping () -> Void) -> some View {
+        modifier(OnFirstAppearance(perform: perform))
     }
 }

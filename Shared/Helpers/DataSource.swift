@@ -135,4 +135,22 @@ final class DataSource: ObservableObject {
             }
         }
     }
+
+    @MainActor
+    func postDraft(tag: TagViewModel? = nil) async throws -> PostViewModel {
+        guard let repo else { preconditionFailure("Missing repo") }
+
+        let id = try await repo.createPostDraft()
+        let draft = state.posts.fetch(id: id)
+
+        draft.app = self
+        draft.isEditing = true
+        draft.visibility = .draft
+
+        if let tag {
+            try await draft.add(tag: tag)
+        }
+
+        return draft
+    }
 }
