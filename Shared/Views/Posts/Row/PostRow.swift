@@ -2,11 +2,7 @@ import Minty
 import SwiftUI
 
 struct PostRow: View {
-    @EnvironmentObject private var errorHandler: ErrorHandler
-
     @ObservedObject var post: PostViewModel
-
-    @State private var deletePresented = false
 
     var body: some View {
         HStack(alignment: .top) {
@@ -14,34 +10,9 @@ struct PostRow: View {
 
             VStack(alignment: .leading) {
                 Spacer(minLength: 1)
-
-                if let title = post.title {
-                    Text(title)
-                }
-                else {
-                    Text("Untitled")
-                        .foregroundColor(.secondary)
-                        .italic()
-                }
-
+                title
                 Spacer()
-
-                HStack(spacing: 20) {
-                    Label(
-                        "\(post.objectCount)",
-                        systemImage: "doc"
-                    )
-                    Label(
-                        "\(post.commentCount)",
-                        systemImage: "text.bubble"
-                    )
-                    Label(
-                        "\(post.created.relative(.short))",
-                        systemImage: "clock"
-                    )
-                }
-                .font(.caption)
-                .foregroundColor(.secondary)
+                badges
             }
 
             Spacer()
@@ -52,23 +23,43 @@ struct PostRow: View {
                 .contentShape(Rectangle())
         }
         .padding([.horizontal, .vertical], 5)
-        .contextMenu {
-            ShareLink(item: post.id.uuidString)
-            Divider()
-            Button(role: .destructive, action: { deletePresented = true} ) {
-                Label("Delete", systemImage: "trash")
-            }
+    }
+
+    @ViewBuilder
+    private var badges: some View {
+        HStack(spacing: 20) {
+            Label(
+                "\(post.objectCount)",
+                systemImage: "doc"
+            )
+            Label(
+                "\(post.commentCount)",
+                systemImage: "text.bubble"
+            )
+            Label(
+                "\(post.created.relative(.short))",
+                systemImage: "clock"
+            )
         }
-        .deleteConfirmation("this post", isPresented: $deletePresented ) {
-            errorHandler.handle {
-                try await post.delete()
-            }
-        }
+        .font(.caption)
+        .foregroundColor(.secondary)
     }
 
     @ViewBuilder
     private var preview: some View {
         PostRowPreview(object: post.preview)
             .frame(width: 100, height: 100)
+    }
+
+    @ViewBuilder
+    private var title: some View {
+        if let title = post.title {
+            Text(title)
+        }
+        else {
+            Text("Untitled")
+                .italic()
+                .foregroundColor(.secondary)
+        }
     }
 }

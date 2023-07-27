@@ -14,21 +14,28 @@ struct Home: View {
     @State private var posts: [PostViewModel] = []
     @State private var total = 0
     @State private var state: SearchState = .searching
-    @State private var trailingError: String?
 
     var body: some View {
         NavigationStack {
             PaddedScrollView {
-                switch state {
-                case .searching:
-                    loading
-                case .done:
-                    results
-                case .error(let message):
-                    NoResults(
-                        heading: "Couldn't Load Posts",
-                        subheading: message
-                    )
+                LazyVStack {
+                    switch state {
+                    case .searching:
+                        loading
+                    case .done:
+                        InfiniteScroll(
+                            posts,
+                            stopIf: posts.count == total,
+                            more: loadMore
+                        ) {
+                            PostLink(post: $0)
+                        }
+                    case .error(let message):
+                        NoResults(
+                            heading: "Couldn't Load Posts",
+                            subheading: message
+                        )
+                    }
                 }
             }
             .navigationTitle("Home")
@@ -52,55 +59,19 @@ struct Home: View {
 
     @ViewBuilder
     private var loading: some View {
-        ForEach(0..<50, id: \.self) { _ in
+        ForEach(1...50, id: \.self) { _ in
             PostRow(post: .placeholder)
                 .redacted(reason: .placeholder)
                 .shimmering()
         }
     }
 
-    @ViewBuilder
-    private var results: some View {
-        LazyVStack {
-            ForEach(posts) { post in
-                NavigationLink(destination: PostHost(post: post)) {
-                    PostRow(post: post)
-                }
-                .buttonStyle(.plain)
-
-                Divider()
-            }
-
-            if let trailingError {
-                Text("Could't Load Posts")
-                    .bold()
-                    .font(.headline)
-
-                Text(trailingError)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-            }
-            else if posts.count < total {
-                ProgressView()
-                    .padding()
-                    .task(loadMore)
-            }
-        }
-    }
-
     @Sendable
-    private func loadMore() async {
-        do {
-            let results = try await data.findPosts(from: posts.count, size: 100)
+    private func loadMore() async throws {
+        let results = try await data.findPosts(from: posts.count, size: 100)
 
-            posts.append(contentsOf: results.hits)
-            total = results.total
-        }
-        catch {
-            if !Task.isCancelled {
-                trailingError = error.localizedDescription
-            }
-        }
+        posts.append(contentsOf: results.hits)
+        total = results.total
     }
 
     @Sendable
@@ -112,7 +83,6 @@ struct Home: View {
                 state = .done
                 posts = results.hits
                 total = results.total
-                trailingError = nil
             }
         }
         catch {

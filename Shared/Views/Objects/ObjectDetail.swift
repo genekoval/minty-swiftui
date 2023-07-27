@@ -93,15 +93,7 @@ struct ObjectDetail: View {
                 if !vm.posts.isEmpty {
                     KeyValue(key: "Posts", value: "\(vm.posts.count)")
 
-                    ForEach(vm.posts) { post in
-                        NavigationLink(
-                            destination: PostHost(post: post)
-                        ) {
-                            PostRow(post: post)
-                        }
-                    }
-                    .buttonStyle(.plain)
-                    .padding(.horizontal)
+                    ForEach(vm.posts) { PostLink(post: $0) }
                 }
             }
         }

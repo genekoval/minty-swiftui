@@ -6,6 +6,7 @@ struct PostLink: View {
     var body: some View {
         NavigationLink(destination: PostHost(post: post)) {
             PostRow(post: post)
+                .contextMenu(for: post)
         }
         .buttonStyle(.plain)
     }
