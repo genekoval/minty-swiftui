@@ -1,12 +1,9 @@
 import SwiftUI
 
 struct SelectableRow<Content>: View where Content : View {
-    let onSelected: () -> Void
-    let onDeselected: () -> Void
+    @Binding var isSelected: Bool
 
     @ViewBuilder let content: () -> Content
-
-    @State private var isSelected = false
 
     var body: some View {
         HStack {
@@ -15,16 +12,6 @@ struct SelectableRow<Content>: View where Content : View {
             }
 
             content()
-        }
-        .onChange(of: isSelected, perform: selectionChanged)
-    }
-
-    private func selectionChanged(_ selected: Bool) {
-        if selected {
-            onSelected()
-        }
-        else {
-            onDeselected()
         }
     }
 

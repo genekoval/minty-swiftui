@@ -22,7 +22,7 @@ struct PostEditor: View {
             Section {
                 ObjectEditorButton(post: post)
                 RelatedPostsEditorButton(post: post)
-                TagListEditorButton(post: post)
+                PostTagEditorButton(post: post)
             }
 
             Section {

@@ -12,7 +12,6 @@ private struct TagSearchOverlay<Content>: View where Content : View {
     @Environment(\.isSearching) private var isSearching
 
     @EnvironmentObject private var data: DataSource
-    @EnvironmentObject private var errorHandler: ErrorHandler
 
     @Binding var tags: [TagViewModel]
     @Binding var total: Int
@@ -72,7 +71,6 @@ private struct TagSearchOverlay<Content>: View where Content : View {
         }
     }
 
-    @Sendable
     private func loadMore() async throws {
         let result = try await data.findTags(
             name.trimmingCharacters(in: .whitespaces),
@@ -116,23 +114,6 @@ private struct TagSearch<TagView>: ViewModifier where TagView : View {
         .onSubmit(of: .search, search)
     }
 
-    @discardableResult
-    private func after(
-        _ delay: ContinuousClock.Instant.Duration,
-        perform: @escaping () -> Void
-    ) -> Task<Void, Never> {
-        Task {
-            do {
-                try await Task.sleep(for: delay)
-            }
-            catch {
-                return
-            }
-
-            perform()
-        }
-    }
-
     private func removeTag(id: Tag.ID) {
         if tags.remove(id: id) != nil {
             total -= 1
@@ -161,7 +142,7 @@ private struct TagSearch<TagView>: ViewModifier where TagView : View {
         }
 
         task = Task {
-            let progress = after(.milliseconds(50)) { state = .searching }
+            let progress = Task.after(.milliseconds(50)) { state = .searching }
             defer { progress.cancel() }
 
             do {

@@ -1,35 +1,18 @@
+import os
 import Minty
 import SwiftUI
 
-struct TagDetail: View {
-    @EnvironmentObject private var errorHandler: ErrorHandler
-
+private struct TagInfo: View {
     @ObservedObject var tag: TagViewModel
 
-    @ObservedObject var recentPosts: PostQueryViewModel
-    @ObservedObject var search: PostQueryViewModel
-
     var body: some View {
-        PaddedScrollView {
-            tagInfo
-            controls
-            posts
+        VStack(alignment: .leading, spacing: 10) {
+            aliases
+            description
+            sources
+            created
         }
-        .refreshable {
-            do {
-                try await tag.refresh()
-            }
-            catch {
-                errorHandler.handle(error: error)
-            }
-
-            await recentPosts.newSearch()
-        }
-    }
-
-    @ViewBuilder
-    private var addButton: some View {
-        NewPostButton(tag: tag) { draft in tag.draftPost = draft }
+        .padding()
     }
 
     @ViewBuilder
@@ -44,21 +27,6 @@ struct TagDetail: View {
             }
             .padding(.leading, 10)
         }
-    }
-
-    @ViewBuilder
-    private var controls: some View {
-        HStack {
-            Spacer()
-            searchButton
-            Spacer()
-            ShareLink(item: tag.id.uuidString)
-                .labelStyle(.iconOnly)
-            Spacer()
-            addButton
-            Spacer()
-        }
-        .padding(.vertical, 5)
     }
 
     @ViewBuilder
@@ -78,43 +46,210 @@ struct TagDetail: View {
     }
 
     @ViewBuilder
-    private var posts: some View {
-        PostSearchResults(search: recentPosts, showResultCount: false)
-    }
-
-    @ViewBuilder
-    private var postCount: some View {
-        Label(
-            "\(recentPosts.total) Post\(recentPosts.total == 1 ? "" : "s")",
-            systemImage: "doc.text.image"
-        )
-        .font(.caption)
-        .foregroundColor(.secondary)
-    }
-
-    @ViewBuilder
-    private var searchButton: some View {
-        NavigationLink(destination: PostSearch(search: search)) {
-            Image(systemName: "magnifyingglass")
-        }
-    }
-
-    @ViewBuilder
     private var sources: some View {
         if !tag.sources.isEmpty {
             ForEach(tag.sources) { SourceLink(source: $0) }
         }
     }
+}
+
+private struct TagControls: View {
+    @ObservedObject var tag: TagViewModel
+
+    @Binding var sort: PostQuery.Sort
+
+    var body: some View {
+        HStack {
+            Spacer()
+            changeSort
+            Spacer()
+            share
+            Spacer()
+            newPost
+            Spacer()
+        }
+        .padding(.top, 5)
+    }
 
     @ViewBuilder
-    private var tagInfo: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            aliases
-            description
-            sources
-            created
-            postCount
+    private var changeSort: some View {
+        SortPicker(sort: $sort)
+            .labelStyle(.iconOnly)
+    }
+
+    @ViewBuilder
+    private var newPost: some View {
+        NewPostButton(tag: tag)
+    }
+
+    @ViewBuilder
+    private var share: some View {
+        ShareLink(item: tag.id.uuidString)
+            .labelStyle(.iconOnly)
+    }
+}
+
+private struct TagHeader: View {
+    @Environment(\.isSearching) private var isSearching
+
+    @ObservedObject var tag: TagViewModel
+
+    @Binding var sort: PostQuery.Sort
+
+    var body: some View {
+        if !isSearching {
+            TagInfo(tag: tag)
+            TagControls(tag: tag, sort: $sort)
         }
-        .padding()
+    }
+}
+
+private struct TagPostSearch: View {
+    @Environment(\.isSearching) private var isSearching
+
+    @EnvironmentObject private var data: DataSource
+
+    @Binding var posts: [PostViewModel]
+    @Binding var total: Int
+
+    let tag: TagViewModel
+    let query: String
+    let sort: PostQuery.Sort
+    let error: String?
+
+    var body: some View {
+        LazyVStack {
+            if let error {
+                NoResults(heading: "Failed to load posts", subheading: error)
+            }
+            else if isSearching && posts.isEmpty {
+                NoResults()
+            }
+            else {
+                InfiniteScroll(
+                    posts,
+                    stopIf: posts.count == total,
+                    more: loadMore
+                ) {
+                    PostLink(post: $0)
+                    Divider()
+                }
+            }
+        }
+    }
+
+    private func loadMore() async throws {
+        let results = try await data.findPosts(
+            text: query.trimmed,
+            tags: [tag],
+            sort: sort,
+            from: posts.count,
+            size: 100
+        )
+
+        posts.append(contentsOf: results.hits)
+        total = results.total
+    }
+}
+
+struct TagDetail: View {
+    @EnvironmentObject private var data: DataSource
+    @EnvironmentObject private var errorHandler: ErrorHandler
+
+    @ObservedObject var tag: TagViewModel
+
+    @State private var query = ""
+    @State private var sort: PostQuery.Sort = .created
+
+    @State private var posts: [PostViewModel] = []
+    @State private var total = 0
+    @State private var error: String?
+    @State private var task: Task<Void, Never>?
+    @State private var showProgress = false
+
+    var body: some View {
+        PaddedScrollView {
+            TagHeader(tag: tag, sort: $sort)
+
+            ProgressView()
+                .opacity(showProgress ? 1 : 0)
+
+            TagPostSearch(
+                posts: $posts,
+                total: $total,
+                tag: tag,
+                query: query,
+                sort: sort,
+                error: error
+            )
+        }
+        .onFirstAppearance(perform: search)
+        .onDisappear { task?.cancel() }
+        .onReceive(Post.deleted) { id in
+            if posts.remove(id: id) != nil {
+                total -= 1
+            }
+        }
+        .refreshable {
+            do {
+                try await tag.refresh()
+                search()
+            }
+            catch {
+                errorHandler.handle(error: error)
+            }
+        }
+        .searchable(text: $query)
+        .onSubmit(of: .search, search)
+        .onChange(of: query) {
+            if $0.isEmpty {
+                search(text: $0, sort: sort)
+            }
+        }
+        .onChange(of: sort) { search(text: query, sort: $0) }
+    }
+
+    private func search(text: String, sort: PostQuery.Sort) {
+        task?.cancel()
+
+        task = Task {
+            let progress = Task.after(.milliseconds(100)) {
+                withAnimation { showProgress = true }
+            }
+
+            defer { progress.cancel() }
+            defer { task = nil }
+
+            do {
+                let results = try await data.findPosts(
+                    text: text.trimmed,
+                    tags: [tag],
+                    sort: sort,
+                    size: 25
+                )
+
+                withAnimation {
+                    showProgress = false
+                    error = nil
+                    posts = results.hits
+                    total = results.total
+                }
+            }
+            catch {
+                if Task.isCancelled {
+                    Logger.ui.debug("Post search cancelled")
+                }
+                else {
+                    posts.removeAll()
+                    total = 0
+                    showProgress = false
+                    self.error = error.localizedDescription
+                }
+            }
+        }
+    }
+
+    private func search() {
+        search(text: query, sort: sort)
     }
 }

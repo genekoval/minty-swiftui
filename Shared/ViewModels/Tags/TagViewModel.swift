@@ -7,7 +7,6 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
     @Published var draftDescription = ""
     @Published var draftName = ""
     @Published var draftSource = ""
-    @Published var draftPost: PostViewModel?
     @Published var isEditing = false
 
     @Published private(set) var deleted = false

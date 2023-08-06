@@ -1,100 +1,189 @@
+import os
 import Minty
 import SwiftUI
 
-private typealias SortValue = PostQuery.Sort.SortValue
+private struct PostResults<Content>: View where Content : View {
+    @EnvironmentObject private var data: DataSource
 
-struct PostSearchControls: View {
-    @ObservedObject var search: PostQueryViewModel
+    let content: (PostViewModel) -> Content
 
-    @FocusState private var searchFocused: Bool
+    @Binding var query: String
+    @Binding var tags: [TagViewModel]
 
-    var body: some View {
-        VStack(spacing: 10) {
-            HStack {
-                HStack {
-                    Image(systemName: "magnifyingglass")
-
-                    TextField(
-                        "Search",
-                        text: $search.text,
-                        onCommit: {
-                            search.query.text =
-                                search.text.isEmpty ? nil : search.text
-                        }
-                    )
-                    .focused($searchFocused)
-                    .foregroundColor(.primary)
-
-                    Button(action: {
-                        search.text = ""
-                        searchFocused = true
-                    }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .opacity(search.text.isEmpty ? 0 : 1)
-                    }
-                }
-                .padding(EdgeInsets(
-                    top: 8,
-                    leading: 6,
-                    bottom: 8,
-                    trailing: 6
-                ))
-                .foregroundColor(.secondary)
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(10.0)
-
-                if searchFocused {
-                    Button(action: { searchFocused.toggle() }) {
-                        Text("Cancel")
-                            .foregroundColor(.accentColor)
-                    }
-                }
-            }
-
-            HStack {
-                Button(action: { search.query.sort.order.toggle() }) {
-                    Image(systemName:
-                        "chevron.\(sortDirection).circle.fill"
-                    )
-                }
-
-                .foregroundColor(.accentColor)
-
-                Picker("Sort Value",  selection: $search.query.sort.value) {
-                    Text("Date Created").tag(SortValue.dateCreated)
-                    Text("Date Modified").tag(SortValue.dateModified)
-                    Text("Relevance").tag(SortValue.relevance)
-                    Text("Title").tag(SortValue.title)
-                }
-
-                Spacer()
-
-                TagSelectButton(tags: $search.tags)
-            }
-        }
-    }
-
-    private var sortDirection: String {
-        search.query.sort.order == .ascending ? "up" : "down"
-    }
-}
-
-struct PostSearch: View {
-    @ObservedObject var search: PostQueryViewModel
+    @State private var lastQuery = ""
+    @State private var sort: PostQuery.Sort = .created
+    @State private var posts: [PostViewModel] = []
+    @State private var total = 0
+    @State private var task: Task<Void, Never>?
+    @State private var showProgress = false
+    @State private var showTags = false
+    @State private var error: String?
 
     var body: some View {
         PaddedScrollView {
-            VStack {
-                PostSearchControls(search: search)
-                    .padding(.horizontal)
-
-                PostSearchResults(
-                    search: search,
-                    showResultCount: true
-                )
+            LazyVStack {
+                if let error {
+                    NoResults(
+                        heading: "Failed to find posts",
+                        subheading: error
+                    )
+                }
+                else if task == nil && posts.isEmpty {
+                    NoResults()
+                }
+                else {
+                    InfiniteScroll(
+                        posts,
+                        stopIf: posts.count == total,
+                        more: loadMore
+                    ) { post in
+                        content(post)
+                        Divider()
+                    }
+                }
             }
         }
-        .navigationTitle("Search")
+        .navigationTitle("Results")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                HStack {
+                    TextField("Search", text: $query)
+                        .submitLabel(.search)
+                        .onSubmit(search)
+
+                    Button(action: { query.removeAll() }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.secondary)
+                            .opacity(query.isEmpty ? 0 : 1)
+                    }
+                    .font(.caption)
+                }
+            }
+
+            ToolbarItemGroup(placement: .primaryAction) {
+                ProgressView()
+                    .opacity(showProgress ? 1 : 0)
+
+                Menu {
+                    SortPicker(sort: $sort)
+
+                    Button(action: { showTags = true }) {
+                        Label("Tags", systemImage: "tag")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
+            }
+        }
+        .tagListEditor(
+            isPresented: $showTags,
+            tags: tags,
+            add: { tags.append($0) },
+            remove: { tags.remove(element: $0) }
+        )
+        .onFirstAppearance(perform: search)
+        .onDisappear { task?.cancel() }
+        .onReceive(Post.deleted) { id in
+            if posts.remove(id: id) != nil {
+                total -= 1
+            }
+        }
+        .onChange(of: query) {
+            if $0.isEmpty {
+                search(query: $0, tags: tags, sort: sort)
+            }
+        }
+        .onChange(of: tags) { search(query: query, tags: $0, sort: sort) }
+        .onChange(of: sort) { search(query: query, tags: tags, sort: $0) }
+    }
+
+    private func loadMore() async throws {
+        let results = try await data.findPosts(
+            text: query.trimmed,
+            tags: tags,
+            sort: sort,
+            from: posts.count,
+            size: 100
+        )
+
+        posts.append(contentsOf: results.hits)
+        total = results.total
+    }
+
+    private func search() {
+        search(query: query, tags: tags, sort: sort)
+    }
+
+    private func search(
+        query: String,
+        tags: [TagViewModel],
+        sort: PostQuery.Sort
+    ) {
+        task?.cancel()
+
+        task = Task {
+            let progress = Task.after(.milliseconds(100)) {
+                withAnimation { showProgress = true }
+            }
+
+            defer { progress.cancel() }
+            defer { task = nil }
+
+            do {
+                let results = try await data.findPosts(
+                    text: query.trimmed,
+                    tags: tags,
+                    sort: sort,
+                    size: 25
+                )
+
+                withAnimation {
+                    showProgress = false
+                    error = nil
+                    posts = results.hits
+                    total = results.total
+                }
+            }
+            catch {
+                if Task.isCancelled {
+                    Logger.ui.debug("Post search cancelled")
+                }
+                else {
+                    posts.removeAll()
+                    total = 0
+                    showProgress = false
+                    self.error = error.localizedDescription
+                }
+            }
+        }
+    }
+}
+
+struct PostSearch<Content>: View where Content : View {
+    @ViewBuilder let content: (PostViewModel) -> Content
+
+    @State private var query = ""
+    @State private var tags: [TagViewModel] = []
+    @State private var resultsPresented = false
+
+    @FocusState private var focused: Bool
+
+    var body: some View {
+        VStack {
+            SearchField(text: $query)
+                .onSubmit { resultsPresented = true }
+
+            TagListEditorButton(tags: $tags) {
+                Label("\(tags.count)", systemImage: "tag")
+            } onDismiss: {
+                if !tags.isEmpty {
+                    resultsPresented = true
+                }
+            }
+        }
+        .navigationDestination(isPresented: $resultsPresented) {
+            PostResults(content: content, query: $query, tags: $tags)
+        }
     }
 }

@@ -40,7 +40,7 @@ struct SearchHome: View {
                 }
 
                 SearchLabel("Posts", icon: "doc.text.image", color: .blue) {
-                    PostExplorer()
+                    PostHome()
                 }
             }
             .listStyle(.plain)
