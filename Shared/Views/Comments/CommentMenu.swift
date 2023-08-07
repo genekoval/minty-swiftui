@@ -17,7 +17,8 @@ struct CommentMenu: View {
             copy
         }
         label: {
-            Image(systemName: "ellipsis.circle")
+            Image(systemName: "ellipsis.circle.fill")
+                .symbolRenderingMode(.hierarchical)
         }
         .sheet(isPresented: $showingEditor) {
             CommentEditor(type: "Edit", draft: $comment.draftContent) {
