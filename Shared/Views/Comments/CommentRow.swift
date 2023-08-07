@@ -23,6 +23,8 @@ private struct Indent: View {
 struct CommentRow: View {
     @StateObject private var comment: CommentViewModel
 
+    @State private var showingTimestamp = false
+
     var body: some View {
         HStack {
             indent
@@ -50,9 +52,17 @@ struct CommentRow: View {
 
     @ViewBuilder
     private var created: some View {
-        Label(comment.created.relative(.short), systemImage: "clock")
-            .font(.caption)
-            .foregroundColor(.secondary)
+        Button(action: { showingTimestamp = true }) {
+            Text(comment.created.relative(.short))
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+        .popover(isPresented: $showingTimestamp) {
+            Text(comment.created.formatted(date: .abbreviated, time: .standard))
+                .font(.callout)
+                .padding()
+                .presentationCompactAdaptation(.popover)
+        }
     }
 
     @ViewBuilder
@@ -74,6 +84,7 @@ struct CommentRow: View {
     @ViewBuilder
     private var menu: some View {
         CommentMenu(comment: comment)
+            .disabled(showingTimestamp)
     }
 
     init(comment: Comment, post: PostViewModel) {

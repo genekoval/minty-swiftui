@@ -8,10 +8,6 @@ struct CommentMenu: View {
 
     var body: some View {
         Menu {
-            timestamp
-
-            Divider()
-
             edit
             reply
             copy
@@ -20,6 +16,7 @@ struct CommentMenu: View {
             Image(systemName: "ellipsis.circle.fill")
                 .symbolRenderingMode(.hierarchical)
         }
+        .menuOrder(.priority)
         .sheet(isPresented: $showingEditor) {
             CommentEditor(type: "Edit", draft: $comment.draftContent) {
                 try await comment.commitContent()
@@ -49,10 +46,5 @@ struct CommentMenu: View {
         Button(action: { showingReplyEditor = true }) {
             Label("Reply", systemImage: "arrowshape.turn.up.left")
         }
-    }
-
-    @ViewBuilder
-    private var timestamp: some View {
-        Text(comment.created.formatted(date: .abbreviated, time: .standard))
     }
 }
