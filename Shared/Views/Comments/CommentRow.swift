@@ -23,6 +23,8 @@ private struct Indent: View {
 struct CommentRow: View {
     @StateObject private var comment: CommentViewModel
 
+    private let onReply: (Comment) -> Void
+
     @State private var showingTimestamp = false
 
     var body: some View {
@@ -83,14 +85,19 @@ struct CommentRow: View {
 
     @ViewBuilder
     private var menu: some View {
-        CommentMenu(comment: comment)
+        CommentMenu(comment: comment, onReply: onReply)
             .disabled(showingTimestamp)
     }
 
-    init(comment: Comment, post: PostViewModel) {
+    init(
+        comment: Comment,
+        post: PostViewModel,
+        onReply: @escaping (Comment) -> Void
+    ) {
         _comment = StateObject(wrappedValue: CommentViewModel(
             comment: comment,
             post: post
         ))
+        self.onReply = onReply
     }
 }

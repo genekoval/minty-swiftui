@@ -1,20 +1,49 @@
+import os
 import Minty
 import SwiftUI
 
 struct PostDetail: View {
+    @EnvironmentObject private var data: DataSource
     @EnvironmentObject private var errorHandler: ErrorHandler
 
     @ObservedObject var post: PostViewModel
+
+    @State private var comments: [Comment] = []
+    @State private var error: String?
+    @State private var task: Task<Void, Never>?
+    @State private var showProgress = false
 
     var body: some View {
         PaddedScrollView {
             postInfo
             controls
-            comments
+
+            ProgressView()
+                .opacity(showProgress ? 1 : 0)
+
+            if let error {
+                NoResults(
+                    heading: "Failed to fetch comments",
+                    subheading: error
+                )
+            }
+            else {
+                commentList
+            }
+        }
+        .onAppear {
+            if comments.count != post.commentCount {
+                fetchComments()
+            }
+        }
+        .onDisappear { task?.cancel() }
+        .onChange(of: comments) {
+            post.commentCount = $0.count
         }
         .refreshable {
             do {
                 try await post.refresh()
+                fetchComments()
             }
             catch {
                 errorHandler.handle(error: error)
@@ -23,19 +52,35 @@ struct PostDetail: View {
     }
 
     @ViewBuilder
-    private var comments: some View {
+    private var commentList: some View {
         VStack(spacing: 0) {
-            ForEach(post.comments) { comment in
-                CommentRow(comment: comment, post: post)
+            ForEach(comments) { comment in
+                CommentRow(comment: comment, post: post) { reply in
+                    guard let index = comments.firstIndex(of: comment) else {
+                        Logger.ui.fault(
+                            "Missing parent comment \(comment.id)"
+                        )
+
+                        errorHandler.handle(error: MintyError.unspecified(
+                            message: "The parent comment does not exist."
+                        ))
+
+                        return
+                    }
+
+                    withAnimation {
+                        comments.insert(reply, at: index + 1)
+                    }
+                }
             }
         }
     }
 
     @ViewBuilder
     private var commentCount: some View {
-        if !post.comments.isEmpty {
+        if post.commentCount > 0 {
             Label(
-                post.comments.countOf(type: "Comment"),
+                post.commentCount.asCountOf("Comment"),
                 systemImage: "text.bubble"
             )
             .font(.caption)
@@ -47,7 +92,11 @@ struct PostDetail: View {
     private var controls: some View {
         HStack {
             Spacer()
-            NewCommentButton(post: post)
+            NewCommentButton(post: post) { comment in
+                withAnimation {
+                    comments.insert(comment, at: 0)
+                }
+            }
             Spacer()
             ShareLink(item: post.id.uuidString)
                 .labelStyle(.iconOnly)
@@ -167,6 +216,52 @@ struct PostDetail: View {
                 .bold()
                 .font(.title2)
                 .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private func fetchComments() {
+        guard post.commentCount > 0 else { return }
+
+        guard let repo = data.repo else {
+            error = "Missing repo"
+            return
+        }
+
+        task?.cancel()
+
+        task = Task {
+            Logger.ui.debug("Fetching comments for post \(post.id)")
+
+            let progress = Task.after(.milliseconds(100)) {
+                withAnimation { showProgress = true }
+            }
+
+            defer {
+                progress.cancel()
+                task = nil
+            }
+
+            do {
+                let comments = try await repo.getComments(for: post.id)
+
+                withAnimation {
+                    error = nil
+                    showProgress = false
+                    self.comments = comments
+                }
+            }
+            catch {
+                if Task.isCancelled {
+                    Logger.ui.debug("Fetching comments cancelled")
+                }
+                else {
+                    showProgress = false
+
+                    if comments.isEmpty {
+                        self.error = error.localizedDescription
+                    }
+                }
+            }
         }
     }
 }

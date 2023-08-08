@@ -2,10 +2,13 @@ import Minty
 import SwiftUI
 
 struct NewCommentButton: View {
-    @EnvironmentObject var errorHandler: ErrorHandler
+    @EnvironmentObject private var data: DataSource
+    @EnvironmentObject private var errorHandler: ErrorHandler
 
-    @ObservedObject var post: PostViewModel
+    let post: PostViewModel
+    let onCreated: (Comment) -> Void
 
+    @State private var draft = ""
     @State private var showingEditor = false
 
     var body: some View {
@@ -13,11 +16,24 @@ struct NewCommentButton: View {
             Image(systemName: "plus.bubble")
         }
         .sheet(isPresented: $showingEditor) {
-            CommentEditor(type: "New", draft: $post.draftComment, onDone: done)
+            CommentEditor(type: "New", draft: $draft, onDone: done)
         }
     }
 
     private func done() {
-        errorHandler.handle { try await post.comment() }
+        errorHandler.handle {
+            guard let repo = data.repo else {
+                throw MintyError.unspecified(message: "Missing repo")
+            }
+
+            let result = try await repo.addComment(
+                post: post.id,
+                content: draft
+            )
+
+            draft.removeAll()
+
+            onCreated(result)
+        }
     }
 }

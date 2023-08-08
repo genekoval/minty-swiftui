@@ -32,9 +32,9 @@ final class PostViewModel:
     }
     #endif
 
+    @Published var commentCount: Int = 0
     @Published var draftTitle = ""
     @Published var draftDescription = ""
-    @Published var draftComment = ""
     @Published var isEditing = false
     @Published var objects: [ObjectPreview] = []
     @Published var tags: [TagViewModel] = []
@@ -45,9 +45,7 @@ final class PostViewModel:
     @Published private(set) var description: String?
     @Published private(set) var created: Date = Date()
     @Published private(set) var modified: Date = Date()
-    @Published private(set) var comments: [Comment] = []
     @Published private(set) var preview: ObjectPreview?
-    @Published private(set) var commentCount: Int = 0
     @Published private(set) var objectCount: Int = 0
     @Published private(set) var posts: [PostViewModel] = []
 
@@ -80,10 +78,6 @@ final class PostViewModel:
         $objects.sink { [weak self] in
             self?.objectCount = $0.count
             self?.preview = $0.first
-        }.store(in: &cancellables)
-
-        $comments.sink { [weak self] in
-            self?.commentCount = $0.count
         }.store(in: &cancellables)
     }
 
@@ -144,35 +138,12 @@ final class PostViewModel:
         posts.append(post)
     }
 
-    func add(reply: Comment, to parentId: UUID) throws {
-        guard let index = comments.firstIndex(where: { $0.id == parentId })
-        else {
-            throw MintyError.unspecified(
-                message: "Parent comment does not exist"
-            )
-        }
-
-        comments.insert(reply, at: index + 1)
-    }
-
     func add(tag: TagViewModel) async throws {
         try await withRepo("add tag") { repo in
             try await repo.addPostTag(post: id, tag: tag.id)
         }
 
         tags.append(tag)
-    }
-
-    func comment() async throws {
-        try await withRepo("add comment") { repo in
-            let result = try await repo.addComment(
-                post: id,
-                content: draftComment
-            )
-
-            comments.insert(result, at: 0)
-            draftComment.removeAll()
-        }
     }
 
     func commitDescription() async throws {
@@ -252,18 +223,6 @@ final class PostViewModel:
         posts.remove(id: post.id)
     }
 
-    private func fetchComments() async throws {
-        try await withRepo("fetch comments") { repo in
-            comments = try await repo.getComments(for: id)
-        }
-    }
-
-    private func fetchData() async throws {
-        try await withRepo("fetch data") { repo in
-            load(try await repo.get(post: id))
-        }
-    }
-
     private func load(_ post: Post) {
         title = post.title
         description = post.description
@@ -290,8 +249,9 @@ final class PostViewModel:
     }
 
     override func refresh() async throws {
-        try await fetchData()
-        try await fetchComments()
+        try await withRepo("fetch data") { repo in
+            load(try await repo.get(post: id))
+        }
     }
 
     private func removeLocalTag(id: UUID) {
