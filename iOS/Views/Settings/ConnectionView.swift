@@ -5,20 +5,16 @@ private struct ConnectionView: View {
 
     @EnvironmentObject private var settings: SettingsViewModel
 
-    @State private var server = Server()
+    @State private var server = ""
 
     var body: some View {
         NavigationStack {
             Form {
-                HStack(spacing: 20) {
-                    Text("Host")
-                    TextField("example.com", text: $server.host)
-                }
-
-                HStack(spacing: 20) {
-                    Text("Port")
-                    TextField("443", text: $server.portString)
-                }
+                TextField(
+                    "Server URL",
+                    text: $server,
+                    prompt: Text(verbatim: "https://example.com")
+                )
             }
             .autocorrectionDisabled()
             .autocapitalization(.none)
@@ -29,10 +25,7 @@ private struct ConnectionView: View {
                     Button(action: connect) {
                         Text("Connect")
                             .bold()
-                            .disabled(
-                                server.host.isEmpty ||
-                                server.port == 0
-                            )
+                            .disabled(server.isEmpty)
                     }
                 }
 
@@ -44,7 +37,9 @@ private struct ConnectionView: View {
     }
 
     private func connect() {
-        settings.connect(to: server)
+        guard let url = URL(string: server) else { return }
+
+        settings.connect(to: url)
         dismiss()
     }
 }

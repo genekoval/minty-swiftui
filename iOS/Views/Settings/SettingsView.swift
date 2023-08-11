@@ -36,7 +36,7 @@ struct SettingsView: View {
                         icon: "network",
                         color: .blue
                     )
-                    .badge(settings.server?.description)
+                    .badge(settings.server?.host)
                 }
 
                 Section(header: Text("Cache")) {

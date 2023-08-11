@@ -3,10 +3,10 @@
     {
       "identity" : "fstore-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://git.aurora.aur/genya/fstore-swift.git",
+      "location" : "https://git.aurora.aur/genya/fstore-swift",
       "state" : {
         "branch" : "main",
-        "revision" : "cba4c8c0143f012aa43579a070f6d137061eb5eb"
+        "revision" : "0c58df8ab73c5d8c41e76492309f30bf3596102e"
       }
     },
     {
@@ -24,7 +24,16 @@
       "location" : "https://git.aurora.aur/genya/minty-swift.git",
       "state" : {
         "branch" : "main",
-        "revision" : "9cdf25cc60e789994d0bab9330cc8f3e75a3c7f7"
+        "revision" : "cf389d2ff28a91d7e62e25aae1757d2c8ff63e85"
+      }
+    },
+    {
+      "identity" : "swift-http",
+      "kind" : "remoteSourceControl",
+      "location" : "https://git.aurora.aur/genya/swift-http",
+      "state" : {
+        "branch" : "main",
+        "revision" : "4e88a055510964f1a2b63b0d84716f49a7022c8f"
       }
     },
     {

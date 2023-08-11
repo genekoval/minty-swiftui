@@ -6,29 +6,16 @@ struct ServerDetail: View {
     @EnvironmentObject var settings: SettingsViewModel
 
     let title: String
-    let server: Server
+    let server: URL
 
     var body: some View {
         List {
-            Section {
-                HStack {
-                    Text("Host")
-                    Spacer()
-                    Text(server.host)
-                        .foregroundColor(.secondary)
-                }
-
-                HStack {
-                    Text("Port")
-                    Spacer()
-                    Text(server.portString)
-                        .foregroundColor(.secondary)
-                }
-            }
+            Text(server.absoluteString)
+                .textSelection(.enabled)
 
             if server == settings.server {
                 if data.connecting {
-                    Section {
+                    Section(header: Text("Status")) {
                         Label {
                             Text("Connecting...")
                         } icon: {
@@ -39,7 +26,7 @@ struct ServerDetail: View {
                 else if let info = data.server {
                     switch info {
                     case .connected(let version):
-                        Section {
+                        Section(header: Text("Status")) {
                             Label("Connected", status: .ok)
                         }
 
@@ -48,7 +35,7 @@ struct ServerDetail: View {
                                 .badge(version)
                         }
                     case .error(let message, let detail):
-                        Section {
+                        Section(header: Text("Status")) {
                             Label(message, status: .error)
 
                             Text(detail)

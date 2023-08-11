@@ -5,10 +5,10 @@ import Foundation
 private var cancellables = Set<AnyCancellable>()
 
 final class SettingsViewModel: ObservableObject {
-    @Published(key: "server") var server: Server? = nil
-    @Published(key: "serverList") var serverList: [Server] = []
+    @Published(key: "server") var server: URL? = nil
+    @Published(key: "serverList") var serverList: [URL] = []
 
-    func connect(to server: Server) {
+    func connect(to server: URL) {
         if server != self.server {
             serverList.remove(element: server)
 

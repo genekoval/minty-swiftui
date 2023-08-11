@@ -5,13 +5,12 @@ private func info(key: String) -> String? {
     Bundle.main.object(forInfoDictionaryKey: key) as? String
 }
 
-private func connect(server: Server) async throws -> MintyRepo {
-    var components = URLComponents()
-    components.scheme = "https"
-    components.host = server.host
-    components.port = Int(server.port)
+private func connect(to server: URL) async throws -> MintyRepo {
+    guard let client = try await HTTPClient(baseURL: server) else {
+        throw DisplayError("The server URL (\(server)) is invalid.")
+    }
 
-    return try await HTTPClient(baseURL: components.url!)
+    return client
 }
 
 @main

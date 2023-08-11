@@ -70,12 +70,8 @@
 		BE465518270CFA8E00D3C4FB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4654EE270CFA8B00D3C4FB /* ContentView.swift */; };
 		BE465519270CFA8E00D3C4FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */; };
 		BE46551A270CFA8E00D3C4FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE4654EF270CFA8E00D3C4FB /* Assets.xcassets */; };
-		BE465578270D111B00D3C4FB /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465577270D111B00D3C4FB /* Server.swift */; };
-		BE465579270D111B00D3C4FB /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465577270D111B00D3C4FB /* Server.swift */; };
 		BE46557C270D118700D3C4FB /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557B270D118700D3C4FB /* SettingsViewModel.swift */; };
 		BE46557D270D118700D3C4FB /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557B270D118700D3C4FB /* SettingsViewModel.swift */; };
-		BE465582270D11CB00D3C4FB /* ServerEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557F270D11CB00D3C4FB /* ServerEditor.swift */; };
-		BE465583270D11CB00D3C4FB /* ServerEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46557F270D11CB00D3C4FB /* ServerEditor.swift */; };
 		BE465595270F7E1100D3C4FB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465594270F7E1100D3C4FB /* SettingsView.swift */; };
 		BE465597270F819500D3C4FB /* ServerDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE465596270F819500D3C4FB /* ServerDetail.swift */; };
 		BE529A3727304D61001DB760 /* PostHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE529A3627304D61001DB760 /* PostHome.swift */; };
@@ -280,9 +276,7 @@
 		BE46550D270CFA8E00D3C4FB /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE465511270CFA8E00D3C4FB /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		BE465513270CFA8E00D3C4FB /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
-		BE465577270D111B00D3C4FB /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		BE46557B270D118700D3C4FB /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
-		BE46557F270D11CB00D3C4FB /* ServerEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerEditor.swift; sourceTree = "<group>"; };
 		BE465594270F7E1100D3C4FB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BE465596270F819500D3C4FB /* ServerDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDetail.swift; sourceTree = "<group>"; };
 		BE529A3627304D61001DB760 /* PostHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHome.swift; sourceTree = "<group>"; };
@@ -455,7 +449,6 @@
 			children = (
 				BE808C4B271B98C10081F815 /* Helpers */,
 				BE808C48271B92570081F815 /* Preview Content */,
-				BE465576270D111B00D3C4FB /* Models */,
 				BE46557A270D118700D3C4FB /* ViewModels */,
 				BE465571270D0C1C00D3C4FB /* Views */,
 				BE4654ED270CFA8B00D3C4FB /* MintyApp.swift */,
@@ -546,14 +539,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		BE465576270D111B00D3C4FB /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				BE46558D270F7CC400D3C4FB /* Settings */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		BE46557A270D118700D3C4FB /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -571,7 +556,6 @@
 			isa = PBXGroup;
 			children = (
 				BED04C40271026E900EF00B8 /* ResetButton.swift */,
-				BE46557F270D11CB00D3C4FB /* ServerEditor.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -580,14 +564,6 @@
 			isa = PBXGroup;
 			children = (
 				BE46557B270D118700D3C4FB /* SettingsViewModel.swift */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		BE46558D270F7CC400D3C4FB /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				BE465577270D111B00D3C4FB /* Server.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1078,7 +1054,6 @@
 				BE3E16B42739F61900052660 /* ObjectUploadView.swift in Sources */,
 				BE6905152A72256300DC4975 /* Int.swift in Sources */,
 				BEFFEC8727A228740021391B /* MediaPlayerView.swift in Sources */,
-				BE465578270D111B00D3C4FB /* Server.swift in Sources */,
 				BE013B8927FFEC19004A43CE /* AppState.swift in Sources */,
 				BE80C37F2726605A009616F5 /* CacheRow.swift in Sources */,
 				BE6905132A72016300DC4975 /* Error.swift in Sources */,
@@ -1099,7 +1074,6 @@
 				BEB546AA2A6E30F30055C46F /* TagList.swift in Sources */,
 				BE6A63E0272855FE00365D24 /* DraftEditorLink.swift in Sources */,
 				BE7E0F412727350E00EF758A /* TagEditor.swift in Sources */,
-				BE465582270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
 				BEB96D3727DB54E6007F6821 /* AlbumCover.swift in Sources */,
 				BE19ED33279A1C6E00B041DD /* PageViewController.swift in Sources */,
 				BEC67837271A50EA009BCE5F /* TagHome.swift in Sources */,
@@ -1141,7 +1115,6 @@
 				BE5AC200271B405800FCA45A /* TagViewModel.swift in Sources */,
 				BE158F7827D1AA1A00F152C0 /* Logger.swift in Sources */,
 				BE844A0F27FC3E8B0087A03C /* Array.swift in Sources */,
-				BE465579270D111B00D3C4FB /* Server.swift in Sources */,
 				BE739F4C2A74B5D00062D11A /* SortPicker.swift in Sources */,
 				BE8F5C7627E413A10007A8E9 /* Object.swift in Sources */,
 				BEAB78FD27925ECB00CF9AD6 /* Swipe.swift in Sources */,
@@ -1150,7 +1123,6 @@
 				BE158F7527D191FF00F152C0 /* ErrorHandling.swift in Sources */,
 				BEB546AB2A6E30F30055C46F /* TagList.swift in Sources */,
 				BE80C3802726605A009616F5 /* CacheRow.swift in Sources */,
-				BE465583270D11CB00D3C4FB /* ServerEditor.swift in Sources */,
 				BE013B8727FFE553004A43CE /* EntityStore.swift in Sources */,
 				BE40437D2A4D30E000027340 /* Checkmark.swift in Sources */,
 				BE99B6442A4AAD4800C33F4E /* UserView.swift in Sources */,

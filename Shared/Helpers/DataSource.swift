@@ -8,7 +8,7 @@ enum ServerStatus {
 }
 
 final class DataSource: ObservableObject {
-    typealias Connect = (Server) async throws -> MintyRepo
+    typealias Connect = (URL) async throws -> MintyRepo
 
     let state = AppState()
     var onFailedConnection: ((Error) -> Void)?
@@ -18,7 +18,7 @@ final class DataSource: ObservableObject {
     @Published private(set) var server: ServerStatus?
 
     private var cancellable: AnyCancellable?
-    private let connectAction: Connect?
+    private let connectAction: Connect
 
     init(connect: @escaping Connect) {
         connectAction = connect
@@ -32,13 +32,12 @@ final class DataSource: ObservableObject {
     }
 
     @MainActor
-    private func connect(server: Server) async {
-        guard let connect = connectAction else { return }
-
+    private func connect(to server: URL) async {
         connecting = true
+        defer { connecting = false }
 
         do {
-            let repo = try await connect(server)
+            let repo = try await connectAction(server)
 
             self.repo = repo
             self.server = .connected(version: repo.version)
@@ -52,8 +51,6 @@ final class DataSource: ObservableObject {
                 message: "Couldn't connect to the server."
             ))
         }
-
-        connecting = false
     }
 
     @MainActor
@@ -118,7 +115,7 @@ final class DataSource: ObservableObject {
         )
     }
 
-    func observe(server: Published<Server?>.Publisher) {
+    func observe(server: Published<URL?>.Publisher) {
         cancellable = server.sink { [weak self] in
             guard
                 let self = self,
@@ -131,7 +128,7 @@ final class DataSource: ObservableObject {
             }
 
             Task {
-                await self.connect(server: server)
+                await self.connect(to: server)
             }
         }
     }

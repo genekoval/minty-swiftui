@@ -39,7 +39,7 @@ struct ServerView: View {
 
             if !settings.serverList.isEmpty {
                 Section(header: Text("Recent Servers")) {
-                    ForEach(settings.serverList) { server in
+                    ForEach(settings.serverList, id: \.self) { server in
                         NavigationLink(destination: ServerDetail(
                             title: "Recent Server",
                             server: server
