@@ -100,7 +100,9 @@ final class PostViewModel:
                 }
             }
 
-            self.objects.append(contentsOf: objects)
+            withAnimation {
+                self.objects.append(contentsOf: objects)
+            }
         }
     }
 
@@ -115,17 +117,19 @@ final class PostViewModel:
                 before: destination.id
             )
 
-            for object in objects {
-                if let index = self.objects.firstIndex(of: object) {
-                    self.objects.remove(at: index)
+            withAnimation {
+                for object in objects {
+                    if let index = self.objects.firstIndex(of: object) {
+                        self.objects.remove(at: index)
+                    }
                 }
-            }
 
-            if let index = self.objects.firstIndex(of: destination) {
-                self.objects.insert(contentsOf: objects, at: index)
-            }
-            else {
-                self.objects.append(contentsOf: objects)
+                if let index = self.objects.firstIndex(of: destination) {
+                    self.objects.insert(contentsOf: objects, at: index)
+                }
+                else {
+                    self.objects.append(contentsOf: objects)
+                }
             }
         }
     }
