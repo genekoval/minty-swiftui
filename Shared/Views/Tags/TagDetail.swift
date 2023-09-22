@@ -202,14 +202,14 @@ struct TagDetail: View {
         .searchable(text: $query)
         .onSubmit(of: .search, search)
         .onChange(of: query) {
-            if $0.isEmpty {
-                search(text: $0, sort: sort)
+            if query.isEmpty {
+                search()
             }
         }
-        .onChange(of: sort) { search(text: query, sort: $0) }
+        .onChange(of: sort, search)
     }
 
-    private func search(text: String, sort: PostQuery.Sort) {
+    private func search() {
         task?.cancel()
 
         task = Task {
@@ -222,7 +222,7 @@ struct TagDetail: View {
 
             do {
                 let results = try await data.findPosts(
-                    text: text.trimmed,
+                    text: query.trimmed,
                     tags: [tag],
                     sort: sort,
                     size: 25
@@ -247,9 +247,5 @@ struct TagDetail: View {
                 }
             }
         }
-    }
-
-    private func search() {
-        search(text: query, sort: sort)
     }
 }

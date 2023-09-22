@@ -90,12 +90,12 @@ private struct PostResults<Content>: View where Content : View {
             }
         }
         .onChange(of: query) {
-            if $0.isEmpty {
-                search(query: $0, tags: tags, sort: sort)
+            if query.isEmpty {
+                search()
             }
         }
-        .onChange(of: tags) { search(query: query, tags: $0, sort: sort) }
-        .onChange(of: sort) { search(query: query, tags: tags, sort: $0) }
+        .onChange(of: tags, search)
+        .onChange(of: sort, search)
     }
 
     private func loadMore() async throws {
@@ -112,14 +112,6 @@ private struct PostResults<Content>: View where Content : View {
     }
 
     private func search() {
-        search(query: query, tags: tags, sort: sort)
-    }
-
-    private func search(
-        query: String,
-        tags: [TagViewModel],
-        sort: PostQuery.Sort
-    ) {
         task?.cancel()
 
         task = Task {

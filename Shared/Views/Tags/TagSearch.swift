@@ -109,7 +109,7 @@ private struct TagSearch<TagView>: ViewModifier where TagView : View {
             )
         }
         .searchable(text: $name)
-        .onChange(of: name, perform: search)
+        .onChange(of: name, search)
         .onReceive(Tag.deleted, perform: removeTag)
         .onSubmit(of: .search, search)
     }
@@ -130,10 +130,6 @@ private struct TagSearch<TagView>: ViewModifier where TagView : View {
     }
 
     private func search() {
-        search(for: name)
-    }
-
-    private func search(for name: String) {
         task?.cancel()
 
         guard let name = name.trimmed else {

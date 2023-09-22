@@ -15,7 +15,14 @@ private struct PostSelectRow: View {
             }
             .buttonStyle(.plain)
         }
-        .onChange(of: isSelected, perform: selectionChanged)
+        .onChange(of: isSelected) {
+            if isSelected {
+                add(post)
+            }
+            else {
+                remove(post)
+            }
+        }
     }
 
     init(
@@ -28,15 +35,6 @@ private struct PostSelectRow: View {
         self.add = add
         self.remove = remove
         self.isSelected = isSelected
-    }
-
-    private func selectionChanged(to selected: Bool) {
-        if selected {
-            add(post)
-        }
-        else {
-            remove(post)
-        }
     }
 }
 

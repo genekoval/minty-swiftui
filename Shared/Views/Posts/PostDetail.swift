@@ -38,7 +38,7 @@ struct PostDetail: View {
         }
         .onDisappear { task?.cancel() }
         .onChange(of: comments) {
-            post.commentCount = $0.count
+            post.commentCount = comments.count
         }
         .refreshable {
             do {

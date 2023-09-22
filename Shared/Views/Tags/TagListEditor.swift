@@ -12,7 +12,14 @@ private struct TagSelectRow: View {
         SelectableRow(isSelected: $isSelected) {
             TagRow(tag: tag)
         }
-        .onChange(of: isSelected, perform: selectionChanged)
+        .onChange(of: isSelected) {
+            if isSelected {
+                add(tag)
+            }
+            else {
+                remove(tag)
+            }
+        }
     }
 
     init(
