@@ -17,8 +17,6 @@
 		BE013B8727FFE553004A43CE /* EntityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE013B8527FFE553004A43CE /* EntityStore.swift */; };
 		BE013B8927FFEC19004A43CE /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE013B8827FFEC19004A43CE /* AppState.swift */; };
 		BE013B8A27FFEC19004A43CE /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE013B8827FFEC19004A43CE /* AppState.swift */; };
-		BE06CAB327DFFB97005940FB /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE06CAB227DFFB97005940FB /* Color.swift */; };
-		BE06CAB427DFFB97005940FB /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE06CAB227DFFB97005940FB /* Color.swift */; };
 		BE07661F2787BCFC00AA3AD7 /* CommentMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE07661E2787BCFC00AA3AD7 /* CommentMenu.swift */; };
 		BE11FDD627616DA5007B58BA /* NewPostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE11FDD527616DA5007B58BA /* NewPostButton.swift */; };
 		BE158F7127D1905600F152C0 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE158F7027D1905600F152C0 /* ErrorHandler.swift */; };
@@ -232,7 +230,6 @@
 		BE013B7F27FFC8ED004A43CE /* StateMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMap.swift; sourceTree = "<group>"; };
 		BE013B8527FFE553004A43CE /* EntityStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityStore.swift; sourceTree = "<group>"; };
 		BE013B8827FFEC19004A43CE /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		BE06CAB227DFFB97005940FB /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		BE07661E2787BCFC00AA3AD7 /* CommentMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentMenu.swift; sourceTree = "<group>"; };
 		BE11FDD527616DA5007B58BA /* NewPostButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostButton.swift; sourceTree = "<group>"; };
 		BE158F7027D1905600F152C0 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
@@ -660,7 +657,6 @@
 				BE00985C2731B4A00021E660 /* Binding.swift */,
 				BEFDF5F527225B9800F9EA09 /* ByteCount.swift */,
 				BE8E71C62732FA99009A4FE9 /* Collection.swift */,
-				BE06CAB227DFFB97005940FB /* Color.swift */,
 				BE80C37B27264D14009616F5 /* DataSource.swift */,
 				BE808C4C271B98CF0081F815 /* Date.swift */,
 				BE013B8527FFE553004A43CE /* EntityStore.swift */,
@@ -878,7 +874,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1420;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					BE4654F3270CFA8E00D3C4FB = {
 						CreatedOnToolsVersion = 13.0;
@@ -992,7 +988,6 @@
 				BEA8C56D2785285300FFB7DD /* CommentEditor.swift in Sources */,
 				BEBC583F2A7F5F250006EA78 /* PostListEditor.swift in Sources */,
 				BED04C4427153E7000EF00B8 /* AppShell.swift in Sources */,
-				BE06CAB327DFFB97005940FB /* Color.swift in Sources */,
 				BE3068992735F5C90038972B /* PostEditor.swift in Sources */,
 				BEB546AD2A6E546C0055C46F /* TagSearch.swift in Sources */,
 				BEE57B6F2A4EBC7F00734055 /* ConnectionView.swift in Sources */,
@@ -1146,7 +1141,6 @@
 				BED04C5227179A1700EF00B8 /* TagDetail.swift in Sources */,
 				BE158F7227D1905600F152C0 /* ErrorHandler.swift in Sources */,
 				BEB96D3827DB54E6007F6821 /* AlbumCover.swift in Sources */,
-				BE06CAB427DFFB97005940FB /* Color.swift in Sources */,
 				BE4043772A4D2AEF00027340 /* SelectableRow.swift in Sources */,
 				BEBFDF8C2741E7EB00A3E2A8 /* Uploadable.swift in Sources */,
 				BEC67838271A50EA009BCE5F /* TagHome.swift in Sources */,
@@ -1199,6 +1193,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -1233,6 +1228,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1259,6 +1255,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -1293,6 +1290,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
