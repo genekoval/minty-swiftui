@@ -10,12 +10,7 @@ struct Timestamp: View {
             Image(systemName: systemImage)
 
             VStack(alignment: .leading) {
-                HStack {
-                    Text(prefix)
-                    Text(date.relative(.full))
-                        .bold()
-                }
-
+                Text("\(prefix) **\(date.relative(.full))**")
                 Text(date.string)
             }
 
@@ -42,7 +37,7 @@ struct Timestamp_Previews: PreviewProvider {
             )
 
             Timestamp(
-                prefix: "Last edit",
+                prefix: "Last updated",
                 systemImage: "pencil",
                 date: Date()
             )
