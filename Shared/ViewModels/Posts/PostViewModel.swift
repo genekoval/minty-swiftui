@@ -254,7 +254,13 @@ final class PostViewModel:
 
     override func refresh() async throws {
         try await withRepo("fetch data") { repo in
-            load(try await repo.get(post: id))
+            guard let post = try await repo.get(post: id) else {
+                deleted = true
+                Post.deleted.send(id)
+                return
+            }
+
+            load(post)
         }
     }
 

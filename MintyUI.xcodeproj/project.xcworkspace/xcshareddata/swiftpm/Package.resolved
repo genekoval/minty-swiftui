@@ -6,7 +6,7 @@
       "location" : "https://git.aurora.aur/genya/fstore-swift",
       "state" : {
         "branch" : "main",
-        "revision" : "24b2273c0d53a722c7b8f9fd8aab04548830380e"
+        "revision" : "640e10194264e51e062c3653f2ed8dbf3459f03b"
       }
     },
     {
@@ -24,7 +24,7 @@
       "location" : "https://git.aurora.aur/genya/minty-swift.git",
       "state" : {
         "branch" : "main",
-        "revision" : "806d57d7b3c9dacfe587c279c3b28b9f53c51348"
+        "revision" : "ef39e690d0782d6323a5ab0ada54a7441c623284"
       }
     },
     {
@@ -33,7 +33,7 @@
       "location" : "https://git.aurora.aur/genya/swift-http",
       "state" : {
         "branch" : "main",
-        "revision" : "e5ed4fefedc20b85ba168e414a0de61069fdffad"
+        "revision" : "fde1ccf2f3635994a22fb5b9f12d157def661048"
       }
     },
     {
