@@ -236,13 +236,14 @@ final class PostViewModel:
         objects = post.objects
         posts = post.posts.map { app!.state.posts.fetch(for: $0) }
         tags = post.tags.map { app!.state.tags.fetch(for: $0) }
+        commentCount = post.commentCount
     }
 
     func load(from preview: PostPreview) {
         title = preview.title
         self.preview = preview.preview
-        commentCount = Int(preview.commentCount)
-        objectCount = Int(preview.objectCount)
+        commentCount = preview.commentCount
+        objectCount = preview.objectCount
         created = preview.dateCreated
     }
 

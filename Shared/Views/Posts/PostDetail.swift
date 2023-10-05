@@ -37,9 +37,6 @@ struct PostDetail: View {
             }
         }
         .onDisappear { task?.cancel() }
-        .onChange(of: comments) {
-            post.commentCount = comments.count
-        }
         .refreshable {
             do {
                 try await post.refresh()
@@ -220,7 +217,10 @@ struct PostDetail: View {
     }
 
     private func fetchComments() {
-        guard post.commentCount > 0 else { return }
+        guard post.commentCount > 0 else {
+            comments.removeAll()
+            return
+        }
 
         guard let repo = data.repo else {
             error = "Missing repo"
