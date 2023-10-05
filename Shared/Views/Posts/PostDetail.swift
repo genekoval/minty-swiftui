@@ -244,11 +244,10 @@ struct PostDetail: View {
             do {
                 let comments = try await repo.getComments(for: post.id)
 
-                withAnimation {
-                    error = nil
-                    showProgress = false
-                    self.comments = comments
-                }
+                withAnimation { showProgress = false }
+
+                error = nil
+                self.comments = comments
             }
             catch {
                 if Task.isCancelled {

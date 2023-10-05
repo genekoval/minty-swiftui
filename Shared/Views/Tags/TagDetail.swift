@@ -245,12 +245,11 @@ struct TagDetail: View {
                     size: 25
                 )
 
-                withAnimation {
-                    showProgress = false
-                    error = nil
-                    posts = results.hits
-                    total = results.total
-                }
+                withAnimation { showProgress = false }
+
+                error = nil
+                posts = results.hits
+                total = results.total
             }
             catch {
                 if Task.isCancelled {
