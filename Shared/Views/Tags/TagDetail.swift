@@ -11,6 +11,7 @@ private struct TagInfo: View {
             description
             sources
             created
+            postCount
         }
         .padding()
     }
@@ -49,6 +50,18 @@ private struct TagInfo: View {
     private var sources: some View {
         if !tag.sources.isEmpty {
             ForEach(tag.sources) { SourceLink(source: $0) }
+        }
+    }
+
+    @ViewBuilder
+    private var postCount: some View {
+        if tag.postCount > 0 {
+            Label(
+                tag.postCount.asCountOf("Post"),
+                systemImage: "doc.text.image"
+            )
+            .font(.caption)
+            .foregroundStyle(.secondary)
         }
     }
 }
@@ -183,8 +196,12 @@ struct TagDetail: View {
                 error: error
             )
         }
-        .onFirstAppearance(perform: search)
         .onDisappear { task?.cancel() }
+        .onReceive(tag.$postCount) { postCount in
+            if postCount > 0 {
+                if task == nil && posts.isEmpty { search() }
+            }
+        }
         .onReceive(Post.deleted) { id in
             if posts.remove(id: id) != nil {
                 total -= 1
@@ -193,7 +210,7 @@ struct TagDetail: View {
         .refreshable {
             do {
                 try await tag.refresh()
-                search()
+                if task == nil { search() }
             }
             catch {
                 errorHandler.handle(error: error)

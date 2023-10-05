@@ -8,6 +8,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
     @Published var draftName = ""
     @Published var draftSource = ""
     @Published var isEditing = false
+    @Published var postCount = 0
 
     @Published private(set) var deleted = false
     @Published private(set) var name = ""
@@ -138,6 +139,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
         description = tag.description
         dateCreated = tag.dateCreated
         sources = tag.sources
+        postCount = tag.postCount
     }
 
     func load(from preview: TagPreview) {

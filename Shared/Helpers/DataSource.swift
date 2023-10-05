@@ -87,8 +87,14 @@ final class DataSource: ObservableObject {
             sort: sort
         ))
 
+        let posts = results.hits.map { fetchPost(for: $0) }
+
+        for post in posts {
+            post.tags.appendUnique(contentsOf: tags)
+        }
+
         return (
-            hits: results.hits.map { fetchPost(for: $0) },
+            hits: posts,
             total: results.total
         )
     }

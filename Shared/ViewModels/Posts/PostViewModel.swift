@@ -187,6 +187,10 @@ final class PostViewModel:
             try await repo.delete(post: id)
         }
 
+        for tag in tags {
+            withAnimation { tag.postCount -= 1 }
+        }
+
         withAnimation {
             Post.deleted.send(id)
         }

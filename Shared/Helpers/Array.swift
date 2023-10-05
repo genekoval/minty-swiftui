@@ -25,3 +25,14 @@ extension Array where Element: Identifiable {
         return nil
     }
 }
+
+extension RangeReplaceableCollection where Element : Equatable {
+    mutating func appendUnique(_ newElement: Element) {
+        if !contains(newElement) { append(newElement) }
+    }
+
+    mutating func appendUnique<S>(contentsOf newElements: S)
+    where S : Sequence, Self.Element == S.Element {
+        for element in newElements { appendUnique(element) }
+    }
+}
