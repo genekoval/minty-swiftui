@@ -1,21 +1,30 @@
+import os
 import Minty
 import SwiftUI
 
 struct CommentMenu: View {
     @EnvironmentObject private var data: DataSource
+    @EnvironmentObject private var errorHandler: ErrorHandler
 
     @ObservedObject var comment: CommentViewModel
 
-    let onReply: (Comment) -> Void
+    let onReply: (CommentViewModel) -> Void
 
+    @State private var showingDelete = false
+    @State private var showingDeleteTree = false
     @State private var showingEditor = false
     @State private var showingReplyEditor = false
 
     var body: some View {
         Menu {
-            edit
+            if !deleted { edit }
             reply
             copy
+
+            Divider()
+
+            if !deleted { delete }
+            deleteTree
         }
         label: {
             Image(systemName: "ellipsis.circle.fill")
@@ -32,11 +41,38 @@ struct CommentMenu: View {
                 try await addReply()
             }
         }
+        .deleteConfirmation("this comment", isPresented: $showingDelete) {
+            delete(recursive: false)
+        }
+        .deleteConfirmation(
+            "this comment and all replies to it",
+            isPresented: $showingDeleteTree
+        ) {
+            delete(recursive: true)
+        }
     }
 
     @ViewBuilder
     private var copy: some View {
         CopyID(entity: comment)
+    }
+
+    @ViewBuilder
+    private var delete: some View {
+        Button(role: .destructive, action: { showingDelete = true }) {
+            Label("Delete", systemImage: "trash")
+        }
+    }
+
+    private var deleted: Bool {
+        comment.content.isEmpty
+    }
+
+    @ViewBuilder
+    private var deleteTree: some View {
+        Button(role: .destructive, action: { showingDeleteTree = true }) {
+            Label("Delete All", systemImage: "trash.circle")
+        }
     }
 
     @ViewBuilder
@@ -54,18 +90,31 @@ struct CommentMenu: View {
     }
 
     private func addReply() async throws {
-        guard let repo = data.repo else {
-            throw MintyError.unspecified(message: "Missing repo")
+        onReply(try await data.reply(to: comment))
+    }
+
+    private func delete(recursive: Bool) {
+        errorHandler.handle {
+            guard let repo = data.repo else {
+                throw MintyError.unspecified(message: "Missing repo")
+            }
+
+            let deleted = try await repo.delete(
+                comment: comment.id,
+                recursive: recursive
+            )
+
+            if !deleted {
+                Logger.data.info("Comment \(comment.id) does not exist")
+            }
+
+            if recursive {
+                CommentViewModel.deleted.send(comment.id)
+            }
+            else {
+                withAnimation { comment.delete() }
+            }
         }
-
-        let comment = try await repo.reply(
-            to: comment.id,
-            content: comment.draftReply
-        )
-
-        self.comment.draftReply.removeAll()
-
-        onReply(comment)
     }
 
     private func saveChanges() async throws {

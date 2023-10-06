@@ -2,26 +2,47 @@ import Combine
 import Foundation
 import Minty
 
-final class CommentViewModel: IdentifiableEntity, ObservableObject {
+final class CommentViewModel: 
+    IdentifiableEntity, 
+    ObservableObject,
+    StorableEntity
+{
+    static let deleted = PassthroughSubject<CommentDetail.ID, Never>()
+
     @Published var content = ""
     @Published var draftContent = ""
     @Published var draftReply = ""
 
-    let indent: Int
-    let created: Date
+    var post: PostViewModel?
+
+    private(set) var indent = 0
+    private(set) var created = Date()
 
     private var contentCancellable: AnyCancellable?
+    private weak var storage: CommentState?
 
-    init(comment: Comment, post: PostViewModel) {
-        self.content = comment.content
-        self.indent = Int(comment.indent)
-        self.created = comment.dateCreated
+    init(id: Comment.ID, storage: CommentState?) {
+        super.init(id: id, identifier: "comment")
 
-        super.init(id: comment.id, identifier: "comment")
-        self.app = post.app
+        self.storage = storage
 
         contentCancellable = $content.sink { [weak self] in
             self?.draftContent = $0
         }
+    }
+
+    deinit {
+        storage?.remove(self)
+    }
+
+    func delete() {
+        content.removeAll()
+        post?.commentCount -= 1
+    }
+
+    func load(from comment: Comment) {
+        content = comment.content
+        indent = comment.indent
+        created = comment.dateCreated
     }
 }

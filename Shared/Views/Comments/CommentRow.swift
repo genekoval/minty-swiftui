@@ -21,9 +21,9 @@ private struct Indent: View {
 }
 
 struct CommentRow: View {
-    @StateObject private var comment: CommentViewModel
+    @ObservedObject var comment: CommentViewModel
 
-    private let onReply: (Comment) -> Void
+    let onReply: (CommentViewModel) -> Void
 
     @State private var showingTimestamp = false
 
@@ -47,9 +47,17 @@ struct CommentRow: View {
 
     @ViewBuilder
     private var content: some View {
-        Text(comment.content)
-            .font(.callout)
-            .textSelection(.enabled)
+        if comment.content.isEmpty {
+            Label("Deleted", systemImage: "trash")
+                .italic()
+                .foregroundStyle(.secondary)
+                .font(.caption)
+        }
+        else {
+            Text(comment.content)
+                .font(.callout)
+                .textSelection(.enabled)
+        }
     }
 
     @ViewBuilder
@@ -87,17 +95,5 @@ struct CommentRow: View {
     private var menu: some View {
         CommentMenu(comment: comment, onReply: onReply)
             .disabled(showingTimestamp)
-    }
-
-    init(
-        comment: Comment,
-        post: PostViewModel,
-        onReply: @escaping (Comment) -> Void
-    ) {
-        _comment = StateObject(wrappedValue: CommentViewModel(
-            comment: comment,
-            post: post
-        ))
-        self.onReply = onReply
     }
 }

@@ -8,7 +8,7 @@ struct PostDetail: View {
 
     @ObservedObject var post: PostViewModel
 
-    @State private var comments: [Comment] = []
+    @State private var comments: [CommentViewModel] = []
     @State private var error: String?
     @State private var task: Task<Void, Never>?
     @State private var showProgress = false
@@ -46,13 +46,14 @@ struct PostDetail: View {
                 errorHandler.handle(error: error)
             }
         }
+        .onReceive(CommentViewModel.deleted, perform: commentDeleted)
     }
 
     @ViewBuilder
     private var commentList: some View {
         VStack(spacing: 0) {
             ForEach(comments) { comment in
-                CommentRow(comment: comment, post: post) { reply in
+                CommentRow(comment: comment) { reply in
                     guard let index = comments.firstIndex(of: comment) else {
                         Logger.ui.fault(
                             "Missing parent comment \(comment.id)"
@@ -67,6 +68,7 @@ struct PostDetail: View {
 
                     withAnimation {
                         comments.insert(reply, at: index + 1)
+                        post.commentCount += 1
                     }
                 }
             }
@@ -92,6 +94,7 @@ struct PostDetail: View {
             NewCommentButton(post: post) { comment in
                 withAnimation {
                     comments.insert(comment, at: 0)
+                    post.commentCount += 1
                 }
             }
             Spacer()
@@ -216,14 +219,33 @@ struct PostDetail: View {
         }
     }
 
-    private func fetchComments() {
-        guard post.commentCount > 0 else {
-            comments.removeAll()
+    private func commentDeleted(id: CommentViewModel.ID) {
+        guard var start = comments.firstIndex(where: { $0.id == id }) else {
             return
         }
 
-        guard let repo = data.repo else {
-            error = "Missing repo"
+        let rootIndent = comments[start].indent
+        let end = comments[(start + 1)...]
+            .firstIndex(where: { $0.indent <= rootIndent }) ?? comments.count
+
+        let deleted = comments[start..<end]
+            .reduce(into: 0, { deleted, comment in
+                if !comment.content.isEmpty { deleted += 1 }
+            })
+
+        start = comments[0..<start].reversed().firstIndex(where: {
+            !$0.content.isEmpty
+        })?.base ?? 0
+
+        withAnimation {
+            comments.removeSubrange(start..<end)
+            post.commentCount -= deleted
+        }
+    }
+
+    private func fetchComments() {
+        guard post.commentCount > 0 else {
+            comments.removeAll()
             return
         }
 
@@ -242,7 +264,7 @@ struct PostDetail: View {
             }
 
             do {
-                let comments = try await repo.getComments(for: post.id)
+                let comments = try await data.getComments(for: post)
 
                 withAnimation { showProgress = false }
 

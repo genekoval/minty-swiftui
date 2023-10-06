@@ -24,6 +24,16 @@ final class DataSource: ObservableObject {
         connectAction = connect
     }
 
+    func addComment(
+        to post: PostViewModel,
+        content: String
+    ) async throws -> CommentViewModel {
+        guard let repo else { preconditionFailure("Missing repo") }
+
+        let comment = try await repo.addComment(post: post.id, content: content)
+        return state.comments.fetch(for: comment)
+    }
+
     func addTag(name: String) async throws -> TagViewModel {
         guard let repo else { preconditionFailure("Missing repo") }
 
@@ -51,6 +61,25 @@ final class DataSource: ObservableObject {
                 message: "Couldn't connect to the server."
             ))
         }
+    }
+
+    @MainActor
+    func getComments(
+        for post: PostViewModel
+    ) async throws -> [CommentViewModel] {
+        guard let repo else { return [] }
+
+        let results = try await repo.getComments(for: post.id)
+
+        let comments = fetchComments(for: results)
+        comments.forEach { $0.post = post }
+
+        return comments
+    }
+
+    @MainActor
+    private func fetchComments(for comments: [Comment]) -> [CommentViewModel] {
+        return comments.map { state.comments.fetch(for: $0) }
     }
 
     @MainActor
@@ -155,5 +184,20 @@ final class DataSource: ObservableObject {
         }
 
         return draft
+    }
+
+
+    @MainActor
+    func reply(to comment: CommentViewModel) async throws -> CommentViewModel {
+        guard let repo else { preconditionFailure("Missing repo") }
+
+        let result = try await repo.reply(
+            to: comment.id,
+            content: comment.draftReply
+        )
+
+        comment.draftReply.removeAll()
+
+        return state.comments.fetch(for: result)
     }
 }

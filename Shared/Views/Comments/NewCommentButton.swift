@@ -6,7 +6,7 @@ struct NewCommentButton: View {
     @EnvironmentObject private var errorHandler: ErrorHandler
 
     let post: PostViewModel
-    let onCreated: (Comment) -> Void
+    let onCreated: (CommentViewModel) -> Void
 
     @State private var draft = ""
     @State private var showingEditor = false
@@ -22,18 +22,10 @@ struct NewCommentButton: View {
 
     private func done() {
         errorHandler.handle {
-            guard let repo = data.repo else {
-                throw MintyError.unspecified(message: "Missing repo")
-            }
-
-            let result = try await repo.addComment(
-                post: post.id,
-                content: draft
-            )
+            let comment = try await data.addComment(to: post, content: draft)
 
             draft.removeAll()
-
-            onCreated(result)
+            onCreated(comment)
         }
     }
 }
