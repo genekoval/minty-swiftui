@@ -123,13 +123,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
 
     override func refresh() async throws {
         try await withRepo("fetch data") { repo in
-            guard let tag = try await repo.get(tag: id) else {
-                deleted = true
-                Tag.deleted.send(id)
-                return
-            }
-
-            load(tag)
+            load(try await repo.get(tag: id))
         }
     }
 

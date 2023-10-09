@@ -12,10 +12,7 @@ final class ObjectViewModel: IdentifiableEntity, ObservableObject {
 
     override func refresh() async throws {
         try await withRepo("fetch data") { repo in
-            guard let object = try await repo.get(object: id) else {
-                throw MintyError.notFound(message: "Object '\(id)' not found")
-            }
-
+            let object = try await repo.get(object: id)
             posts = object.posts.map { app!.state.posts.fetch(for: $0) }
             self.object = object
         }

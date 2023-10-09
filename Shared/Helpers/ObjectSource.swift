@@ -42,10 +42,7 @@ class ObjectSource: ObservableObject {
             )
         }
 
-        guard let object = try await repo.get(object: id) else {
-            throw MintyError.notFound(message: "No object with that ID exists.")
-        }
-
+        let object = try await repo.get(object: id)
         return .existingObject(object.preview)
     }
 
