@@ -41,8 +41,8 @@ private struct TagInfo: View {
 
     @ViewBuilder
     private var description: some View {
-        if let description = tag.description {
-            Text(description)
+        if !tag.description.isEmpty {
+            Text(tag.description)
         }
     }
 

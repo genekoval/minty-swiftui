@@ -9,14 +9,14 @@ struct PostRowMinimal: View {
             PostRowPreview(object: post.preview)
                 .frame(width: 50, height: 50)
 
-            if let title = post.title {
-                Text(title)
-                    .lineLimit(1)
-            }
-            else {
+            if post.title.isEmpty {
                 Text("Untitled")
                     .italic()
                     .foregroundColor(.secondary)
+            }
+            else {
+                Text(post.title)
+                    .lineLimit(1)
             }
 
             Spacer()

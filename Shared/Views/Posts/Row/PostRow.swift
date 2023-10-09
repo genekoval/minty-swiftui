@@ -49,13 +49,13 @@ struct PostRow: View {
 
     @ViewBuilder
     private var title: some View {
-        if let title = post.title {
-            Text(title)
-        }
-        else {
+        if post.title.isEmpty {
             Text("Untitled")
                 .italic()
                 .foregroundColor(.secondary)
+        }
+        else {
+            Text(post.title)
         }
     }
 }

@@ -41,8 +41,8 @@ final class PostViewModel:
     @Published var visibility: Minty.Visibility = .invalid
 
     @Published private(set) var deleted = false
-    @Published private(set) var title: String?
-    @Published private(set) var description: String?
+    @Published private(set) var title = ""
+    @Published private(set) var description = ""
     @Published private(set) var created: Date = Date()
     @Published private(set) var modified: Date = Date()
     @Published private(set) var preview: ObjectPreview?
@@ -67,13 +67,13 @@ final class PostViewModel:
             .sink { [weak self] in self?.removeLocalTag(id: $0)}
             .store(in: &cancellables)
 
-        $title.sink { [weak self] in
-            self?.draftTitle = $0 ?? ""
-        }.store(in: &cancellables)
+        $title
+            .sink { [weak self] in self?.draftTitle = $0 }
+            .store(in: &cancellables)
 
-        $description.sink { [weak self] in
-            self?.draftDescription = $0 ?? ""
-        }.store(in: &cancellables)
+        $description
+            .sink { [weak self] in self?.draftDescription = $0 }
+            .store(in: &cancellables)
 
         $objects.sink { [weak self] in
             self?.objectCount = $0.count

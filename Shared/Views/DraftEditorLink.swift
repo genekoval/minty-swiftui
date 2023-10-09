@@ -69,7 +69,7 @@ private struct DraftEditorView: View {
 struct DraftEditor: View {
     @Binding var draft: String
 
-    let original: String?
+    let original: String
     let title: String
     let onSave: () async throws -> Void
 
@@ -78,21 +78,21 @@ struct DraftEditor: View {
     var body: some View {
         Section(content: {
             Button(action: { isPresented = true }) {
-                if let original {
-                    Text(original)
-                        .lineLimit(1)
-                }
-                else {
+                if original.isEmpty {
                     Text("No \(title.lowercased())")
                         .foregroundColor(.secondary)
                         .italic()
+                }
+                else {
+                    Text(original)
+                        .lineLimit(1)
                 }
             }
         }, header: {
             HStack {
                 Text(title)
 
-                if let original {
+                if !original.isEmpty {
                     Spacer()
                     Text("\(original.count)")
                 }

@@ -1,4 +1,3 @@
-import os
 import Minty
 import SwiftUI
 
@@ -99,14 +98,7 @@ struct CommentMenu: View {
                 throw MintyError.unspecified(message: "Missing repo")
             }
 
-            let deleted = try await repo.delete(
-                comment: comment.id,
-                recursive: recursive
-            )
-
-            if !deleted {
-                Logger.data.info("Comment \(comment.id) does not exist")
-            }
+            try await repo.delete(comment: comment.id, recursive: recursive)
 
             if recursive {
                 CommentViewModel.deleted.send(comment.id)

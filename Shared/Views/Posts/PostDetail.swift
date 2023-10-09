@@ -116,8 +116,8 @@ struct PostDetail: View {
 
     @ViewBuilder
     private var description: some View {
-        if let description = post.description {
-            Text(description)
+        if !post.description.isEmpty {
+            Text(post.description)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
@@ -211,8 +211,8 @@ struct PostDetail: View {
 
     @ViewBuilder
     private var title: some View {
-        if let title = post.title {
-            Text(title)
+        if !post.title.isEmpty {
+            Text(post.title)
                 .bold()
                 .font(.title2)
                 .frame(maxWidth: .infinity, alignment: .leading)

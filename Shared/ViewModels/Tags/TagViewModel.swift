@@ -13,7 +13,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
     @Published private(set) var deleted = false
     @Published private(set) var name = ""
     @Published private(set) var aliases: [String] = []
-    @Published private(set) var description: String?
+    @Published private(set) var description = ""
     @Published private(set) var dateCreated = Date()
     @Published private(set) var sources: [Source] = []
 
@@ -46,7 +46,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
             .store(in: &cancellables)
 
         $description
-            .sink { [weak self] in self?.draftDescription = $0 ?? "" }
+            .sink { [weak self] in self?.draftDescription = $0 }
             .store(in: &cancellables)
     }
 
