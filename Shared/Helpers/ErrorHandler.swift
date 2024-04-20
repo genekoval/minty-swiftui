@@ -23,14 +23,15 @@ class ErrorHandler: ObservableObject {
         var alertMessage: String
 
         switch error {
-        case MintyError.unspecified(let message):
+        case MintyError.other(let message):
             alertMessage = message
-        case MintyError.internalError:
+        case MintyError.serverError:
             alertMessage = "Internal server error."
         case MintyError.invalidData(let message):
             alertMessage = message
-        case MintyError.notFound(let message):
-            alertMessage = message
+        case MintyError.notFound(let entity, let id):
+            alertMessage =
+                "\(entity.capitalized) with ID '\(id)' does not exist."
         default:
             alertMessage = error.localizedDescription
         }

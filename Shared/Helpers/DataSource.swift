@@ -3,7 +3,7 @@ import Foundation
 import Minty
 
 enum ServerStatus {
-    case connected(version: String)
+    case connected(about: About)
     case error(message: String, detail: String)
 }
 
@@ -48,16 +48,17 @@ final class DataSource: ObservableObject {
 
         do {
             let repo = try await connectAction(server)
+            let about = try await repo.about()
 
             self.repo = repo
-            self.server = .connected(version: repo.version)
+            self.server = .connected(about: about)
         }
         catch {
             self.server = .error(
                 message: "Connection Failure",
                 detail: error.localizedDescription
             )
-            onFailedConnection?(MintyError.unspecified(
+            onFailedConnection?(MintyError.other(
                 message: "Couldn't connect to the server."
             ))
         }
@@ -78,7 +79,9 @@ final class DataSource: ObservableObject {
     }
 
     @MainActor
-    private func fetchComments(for comments: [Comment]) -> [CommentViewModel] {
+    private func fetchComments(
+        for comments: [CommentData]
+    ) -> [CommentViewModel] {
         return comments.map { state.comments.fetch(for: $0) }
     }
 
@@ -110,7 +113,7 @@ final class DataSource: ObservableObject {
         let results = try await repo.getPosts(query: PostQuery(
             from: from,
             size: size,
-            text: text,
+            text: text ?? "",
             tags: tags.map { $0.id },
             visibility: visibility,
             sort: sort
@@ -172,16 +175,20 @@ final class DataSource: ObservableObject {
     func postDraft(tag: TagViewModel? = nil) async throws -> PostViewModel {
         guard let repo else { preconditionFailure("Missing repo") }
 
-        let id = try await repo.createPostDraft()
+        var tags: [UUID]? = nil
+        if let tag {
+            tags = [tag.id]
+        }
+
+        let id = try await repo.createPost(parts: .init(
+            visibility: .draft,
+            tags: tags
+        ))
         let draft = state.posts.fetch(id: id)
 
         draft.app = self
         draft.isEditing = true
         draft.visibility = .draft
-
-        if let tag {
-            try await draft.add(tag: tag)
-        }
 
         return draft
     }

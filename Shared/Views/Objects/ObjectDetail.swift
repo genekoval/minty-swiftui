@@ -65,28 +65,26 @@ struct ObjectDetail: View {
                     KeyValue(key: "Type", value: object.mimeType)
                     InfoField(key: "Size") {
                         VStack(alignment: .trailing) {
-                            Text(object.size.formatted)
-                            Text("\(object.size.bytes) bytes")
-                                .font(.caption)
+                            Text(object.size.asByteCount)
+                            if object.size >= 1_000 {
+                                Text("\(object.size) bytes")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
                         }
                     }
                     InfoField(key: "Imported") {
                         VStack(alignment: .trailing) {
-                            Text(object.dateAdded.relative(.full))
+                            Text(object.added.relative(.full))
                             Spacer()
-                            Text(object.dateAdded.string)
+                            Text(object.added.string)
                                 .font(.caption)
+                                .foregroundStyle(.secondary)
                         }
                     }
                     InfoField(key: "SHA 256") {
                         Text(object.hash)
                             .font(.caption)
-                    }
-
-                    if let source = object.source {
-                        InfoField(key: "Source") {
-                            SourceLink(source: source)
-                        }
                     }
                 }
 

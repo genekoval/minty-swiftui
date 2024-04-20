@@ -59,7 +59,7 @@ struct PostDetail: View {
                             "Missing parent comment \(comment.id)"
                         )
 
-                        errorHandler.handle(error: MintyError.unspecified(
+                        errorHandler.handle(error: MintyError.other(
                             message: "The parent comment does not exist."
                         ))
 
@@ -224,9 +224,9 @@ struct PostDetail: View {
             return
         }
 
-        let rootIndent = comments[start].indent
+        let rootIndent = comments[start].level
         let end = comments[(start + 1)...]
-            .firstIndex(where: { $0.indent <= rootIndent }) ?? comments.count
+            .firstIndex(where: { $0.level <= rootIndent }) ?? comments.count
 
         let deleted = comments[start..<end]
             .reduce(into: 0, { deleted, comment in

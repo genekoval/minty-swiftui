@@ -7,7 +7,7 @@ final class CommentViewModel:
     ObservableObject,
     StorableEntity
 {
-    static let deleted = PassthroughSubject<CommentDetail.ID, Never>()
+    static let deleted = PassthroughSubject<Comment.ID, Never>()
 
     @Published var content = ""
     @Published var draftContent = ""
@@ -15,7 +15,7 @@ final class CommentViewModel:
 
     var post: PostViewModel?
 
-    private(set) var indent = 0
+    private(set) var level = 0
     private(set) var created = Date()
 
     private var contentCancellable: AnyCancellable?
@@ -40,9 +40,9 @@ final class CommentViewModel:
         post?.commentCount -= 1
     }
 
-    func load(from comment: Comment) {
+    func load(from comment: CommentData) {
         content = comment.content
-        indent = comment.indent
-        created = comment.dateCreated
+        level = comment.level
+        created = comment.created
     }
 }

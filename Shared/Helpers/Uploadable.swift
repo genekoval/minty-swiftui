@@ -1,6 +1,13 @@
+import os
 import Foundation
 import Minty
 import SwiftUI
+
+enum UploadError: Error {
+    case badURL
+    case badResponse(statusCode: Int)
+    case unsupportedRequest(scheme: String?)
+}
 
 private func uploadFile(
     src url: URL,
@@ -14,7 +21,7 @@ private func uploadSecureFile(
     source: ObjectSource
 ) async throws -> ObjectPreview? {
     guard url.startAccessingSecurityScopedResource() else {
-        throw MintyError.unspecified(
+        throw MintyError.other(
             message: "Failed to obtain access to resource: \(url)"
         )
     }
@@ -29,9 +36,36 @@ private func uploadSecureFile(
 private func uploadURL(
     _ url: String,
     source: ObjectSource
-) async throws -> [ObjectPreview] {
-    guard let repo = source.dataSource?.repo else { return [] }
-    return try await repo.addObjects(url: url)
+) async throws -> ObjectPreview {
+    guard let repo = source.dataSource?.repo else {
+        preconditionFailure("Missing repo")
+    }
+    guard let url = URL(string: url) else { throw UploadError.badURL }
+
+    let request = URLRequest(url: url)
+    let (location, response) =
+        try await URLSession.shared.download(for: request)
+
+    defer {
+        do {
+            try FileManager.default.removeItem(at: location)
+        }
+        catch {
+            Logger.ui.error("Failed to remove file at \"\(location)\"")
+        }
+    }
+
+    guard let response = response as? HTTPURLResponse else {
+        throw UploadError.unsupportedRequest(scheme: url.scheme)
+    }
+
+    let status = response.statusCode
+    Logger.ui.debug("\(status) GET \(url)")
+    guard (200...299).contains(status) else {
+        throw UploadError.badResponse(statusCode: status)
+    }
+
+    return try await repo.addObject(file: location)
 }
 
 enum Uploadable: Identifiable {
@@ -71,9 +105,7 @@ enum Uploadable: Identifiable {
                 objects.append(object)
             }
         case .url(let urlString):
-            objects.append(
-                contentsOf: try await uploadURL(urlString, source: source)
-            )
+            objects.append(try await uploadURL(urlString, source: source))
         }
     }
 

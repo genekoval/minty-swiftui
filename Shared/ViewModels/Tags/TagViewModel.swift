@@ -70,12 +70,11 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
     }
 
     func addSource() async  throws {
-        guard draftSourceValid else { return }
+        guard let url = URL(string: draftSource) else { return }
 
         try await withRepo("add source") { repo in
-            sources.append(
-                try await repo.addTagSource(tag: id, url: draftSource)
-            )
+            let source = try await repo.addTagSource(tag: id, url: url)
+            sources.append(source)
         }
 
         draftSource = ""
@@ -83,8 +82,8 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
 
     func commitDescription() async throws {
         try await withRepo("set description") { repo in
-            description = try await repo.set(
-                tag: id,
+            description = try await repo.setTagDescription(
+                id: id,
                 description: draftDescription
             )
         }
@@ -97,7 +96,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
 
     func delete() async throws {
         try await withRepo("delete tag") { repo in
-            try await repo.delete(tag: id)
+            try await repo.deleteTag(id: id)
         }
 
         Tag.deleted.send(id)
@@ -106,7 +105,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
     func deleteAlias(at index: Int) async throws {
         try await withRepo("delete alias") { repo in
             let alias = aliases.remove(at: index)
-            let result = try await repo.delete(tag: id, alias: alias)
+            let result = try await repo.deleteTagAlias(id: id, alias: alias)
             refresh(names: result)
         }
     }
@@ -115,7 +114,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
         let source = sources[index].id
 
         try await withRepo("delete source") { repo in
-            try await repo.delete(tag: id, source: source)
+            try await repo.deleteTagSource(id: id, source: source)
         }
 
         sources.remove(at: index)
@@ -123,7 +122,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
 
     override func refresh() async throws {
         try await withRepo("fetch data") { repo in
-            load(try await repo.get(tag: id))
+            load(try await repo.getTag(id: id))
         }
     }
 
@@ -131,7 +130,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
         name = tag.name
         aliases = tag.aliases
         description = tag.description
-        dateCreated = tag.dateCreated
+        dateCreated = tag.created
         sources = tag.sources
         postCount = tag.postCount
     }
@@ -147,7 +146,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
 
     private func setName(name: String) async throws {
         try await withRepo("set name") { repo in
-            refresh(names: try await repo.set(tag: id, name: name))
+            refresh(names: try await repo.setTagName(id: id, name: name))
         }
     }
 

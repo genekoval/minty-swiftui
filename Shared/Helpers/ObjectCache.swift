@@ -53,7 +53,7 @@ final class ObjectCache: ObjectSource {
             let logMessage = "\(message): \(error)"
 
             defaultLog.error("\(logMessage)")
-            throw MintyError.unspecified(message: message)
+            throw MintyError.other(message: message)
         }
 
         _ = ObjectCache.createCacheDirectory()
@@ -86,7 +86,7 @@ final class ObjectCache: ObjectSource {
             let log = "\(message) '\(file.id)': \(error)"
 
             defaultLog.error("\(log)")
-            throw MintyError.unspecified(message: message)
+            throw MintyError.other(message: message)
         }
 
         try super.remove(at: index)
@@ -129,7 +129,7 @@ final class ObjectCache: ObjectSource {
         }
 
         guard let repo = dataSource?.repo else { return nil }
-        try await repo.download(object: objectId, destination: url)
+        try await repo.download(object: objectId, to: url)
 
         updateModified()
 

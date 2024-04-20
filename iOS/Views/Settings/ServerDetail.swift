@@ -25,14 +25,14 @@ struct ServerDetail: View {
                 }
                 else if let info = data.server {
                     switch info {
-                    case .connected(let version):
+                    case .connected(let about):
                         Section(header: Text("Status")) {
                             Label("Connected", status: .ok)
                         }
 
                         Section {
                             Text("Server Version")
-                                .badge(version)
+                                .badge(about.version.number)
                         }
                     case .error(let message, let detail):
                         Section(header: Text("Status")) {

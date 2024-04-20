@@ -37,12 +37,12 @@ class ObjectSource: ObservableObject {
         }
 
         guard let repo = dataSource?.repo else {
-            throw MintyError.unspecified(
+            throw MintyError.other(
                 message: "Cannot get object: repo missing"
             )
         }
 
-        let object = try await repo.get(object: id)
+        let object = try await repo.getObject(id: id)
         return .existingObject(object.preview)
     }
 

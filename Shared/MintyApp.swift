@@ -6,7 +6,7 @@ private func info(key: String) -> String? {
 }
 
 private func connect(to server: URL) async throws -> MintyRepo {
-    guard let client = try await HTTPClient(baseURL: server) else {
+    guard let client = HTTPClient(baseURL: server) else {
         throw DisplayError("The server URL (\(server)) is invalid.")
     }
 

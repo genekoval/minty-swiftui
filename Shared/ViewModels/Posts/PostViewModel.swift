@@ -89,7 +89,7 @@ final class PostViewModel:
 
     func add(objects: [ObjectPreview]) async throws {
         try await withRepo("add objects") { repo in
-            modified = try await repo.add(
+            modified = try await repo.appendPostObjects(
                 post: id,
                 objects: objects.map { $0.id }
             )
@@ -111,8 +111,8 @@ final class PostViewModel:
         before destination: ObjectPreview
     ) async throws {
         try await withRepo("insert objects") { repo in
-            modified = try await repo.insert(
-                post: id,
+            modified = try await repo.insertPostObjects(
+                id: id,
                 objects: objects.map { $0.id },
                 before: destination.id
             )
@@ -152,31 +152,31 @@ final class PostViewModel:
 
     func commitDescription() async throws {
         try await withRepo("set description") { repo in
-            let update = try await repo.set(
-                post: id,
+            let update = try await repo.setPostDescription(
+                id: id,
                 description: draftDescription
             )
 
-            description = update.value
-            modified = update.modified
+            description = update.newValue
+            modified = update.dateModified
         }
     }
 
     func commitTitle() async throws {
         try await withRepo("set title") { repo in
-            let update = try await repo.set(
-                post: id,
+            let update = try await repo.setPostTitle(
+                id: id,
                 title: draftTitle
             )
 
-            title = update.value
-            modified = update.modified
+            title = update.newValue
+            modified = update.dateModified
         }
     }
 
     func createPost() async throws {
         try await withRepo("create post") { repo in
-            try await repo.createPost(draft: id)
+            try await repo.publishPost(id: id)
             try await refresh()
             isEditing = false
         }
@@ -184,7 +184,7 @@ final class PostViewModel:
 
     func delete() async throws {
         try await withRepo("delete post") { repo in
-            try await repo.delete(post: id)
+            try await repo.deletePost(id: id)
         }
 
         for tag in tags {
@@ -198,8 +198,8 @@ final class PostViewModel:
 
     func delete(objects: [ObjectPreview]) async throws {
         try await withRepo("delete objects") { repo in
-            modified = try await repo.delete(
-                post: id,
+            modified = try await repo.deletePostObjects(
+                id: id,
                 objects: objects.map { $0.id }
             )
 
@@ -209,7 +209,7 @@ final class PostViewModel:
 
     func delete(tag: TagViewModel) async throws {
         try await withRepo("delete tag") { repo in
-            try await repo.delete(post: id, tag: tag.id)
+            try await repo.deletePostTag(id: id, tag: tag.id)
             tags.remove(element: tag)
         }
     }
@@ -225,7 +225,7 @@ final class PostViewModel:
 
     func delete(post: PostViewModel) async throws {
         try await withRepo("delete related post") { repo in
-            try await repo.delete(post: id, related: post.id)
+            try await repo.deleteRelatedPost(id: id, related: post.id)
         }
 
         posts.remove(id: post.id)
@@ -235,8 +235,8 @@ final class PostViewModel:
         title = post.title
         description = post.description
         visibility = post.visibility
-        created = post.dateCreated
-        modified = post.dateModified
+        created = post.created
+        modified = post.modified
         objects = post.objects
         posts = post.posts.map { app!.state.posts.fetch(for: $0) }
         tags = post.tags.map { app!.state.tags.fetch(for: $0) }
@@ -248,7 +248,7 @@ final class PostViewModel:
         self.preview = preview.preview
         commentCount = preview.commentCount
         objectCount = preview.objectCount
-        created = preview.dateCreated
+        created = preview.created
     }
 
     private func postDeleted(id: UUID) {
@@ -259,7 +259,7 @@ final class PostViewModel:
 
     override func refresh() async throws {
         try await withRepo("fetch data") { repo in
-            load(try await repo.get(post: id))
+            load(try await repo.getPost(id: id))
         }
     }
 
@@ -269,7 +269,7 @@ final class PostViewModel:
 
     func removeTag(tag: TagViewModel) async throws {
         try await withRepo("delete tag") { repo in
-            try await repo.delete(post: id, tag: tag.id)
+            try await repo.deletePostTag(id: id, tag: tag.id)
         }
     }
 }

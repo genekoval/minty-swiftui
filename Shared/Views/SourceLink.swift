@@ -13,35 +13,31 @@ struct SourceLink: View {
             .aspectRatio(contentMode: .fit)
             .frame(width: 15)
 
-            Link(destination: url) {
+            Link(destination: source.url) {
                 ScrollView(.horizontal, showsIndicators: false) {
-                    Text(source.url)
+                    Text(source.url.absoluteString)
                 }
             }
         }
         .font(.caption)
         .contextMenu {
             Button {
-                UIPasteboard.general.string = source.url
+                UIPasteboard.general.string = source.url.absoluteString
             } label: {
                 Label("Copy Link", systemImage: "doc.on.doc")
             }
 
-            ShareLink(item: url)
+            ShareLink(item: source.url)
         } preview: {
             VStack(alignment: .leading, spacing: 10) {
-                Text(url.host!)
+                Text(source.url.host!)
                     .bold()
 
-                Text(url.absoluteString)
+                Text(source.url.absoluteString)
                     .foregroundColor(.secondary)
             }
             .padding(.horizontal)
             .padding(.vertical, 30)
         }
-    }
-
-    private var url: URL {
-        URL(string: source.url)!
     }
 }

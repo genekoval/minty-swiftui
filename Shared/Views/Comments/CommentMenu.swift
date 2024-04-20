@@ -95,10 +95,10 @@ struct CommentMenu: View {
     private func delete(recursive: Bool) {
         errorHandler.handle {
             guard let repo = data.repo else {
-                throw MintyError.unspecified(message: "Missing repo")
+                throw MintyError.other(message: "Missing repo")
             }
 
-            try await repo.delete(comment: comment.id, recursive: recursive)
+            try await repo.deleteComment(id: comment.id, recursive: recursive)
 
             if recursive {
                 CommentViewModel.deleted.send(comment.id)
@@ -113,11 +113,11 @@ struct CommentMenu: View {
         guard comment.content != comment.draftContent else { return }
 
         guard let repo = data.repo else {
-            throw MintyError.unspecified(message: "Missing repo")
+            throw MintyError.other(message: "Missing repo")
         }
 
-        comment.content = try await repo.set(
-            comment: comment.id,
+        comment.content = try await repo.setCommentContent(
+            id: comment.id,
             content: comment.draftContent
         )
     }

@@ -88,7 +88,7 @@ struct CommentRow: View {
 
     @ViewBuilder
     private var indent: some View {
-        Indent(spaces: comment.indent)
+        Indent(spaces: comment.level)
     }
 
     @ViewBuilder
