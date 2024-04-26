@@ -32,7 +32,7 @@ struct ServerDetail: View {
 
                         Section {
                             Text("Server Version")
-                                .badge(about.version.number)
+                                .badge(about.version)
                         }
                     case .error(let message, let detail):
                         Section(header: Text("Status")) {

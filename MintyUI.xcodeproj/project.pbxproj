@@ -121,6 +121,8 @@
 		BE8E71C927330F93009A4FE9 /* PostTagList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8E71C827330F93009A4FE9 /* PostTagList.swift */; };
 		BE8F5C7527E413A10007A8E9 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8F5C7427E413A10007A8E9 /* Object.swift */; };
 		BE8F5C7627E413A10007A8E9 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8F5C7427E413A10007A8E9 /* Object.swift */; };
+		BE93A7B92BDB5E6C001081C6 /* Minty in Frameworks */ = {isa = PBXBuildFile; productRef = BE93A7B82BDB5E6C001081C6 /* Minty */; };
+		BE93A7BC2BDB7803001081C6 /* Minty in Frameworks */ = {isa = PBXBuildFile; productRef = BE93A7BB2BDB7803001081C6 /* Minty */; };
 		BE99B63F2A4A75DB00C33F4E /* NewTagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE99B63E2A4A75DB00C33F4E /* NewTagButton.swift */; };
 		BE99B6402A4A75DB00C33F4E /* NewTagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE99B63E2A4A75DB00C33F4E /* NewTagButton.swift */; };
 		BE99B6432A4AAD4800C33F4E /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE99B6422A4AAD4800C33F4E /* UserView.swift */; };
@@ -131,7 +133,6 @@
 		BE9DE3012784E7DE00A1BE29 /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9DE3002784E7DE00A1BE29 /* CommentViewModel.swift */; };
 		BE9EAB9928370EDA00EDC8A7 /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EAB9828370EDA00EDC8A7 /* SheetView.swift */; };
 		BE9F922B2BD2458A002EE29D /* Minty in Frameworks */ = {isa = PBXBuildFile; productRef = BE9F922A2BD2458A002EE29D /* Minty */; };
-		BE9F922E2BD24ED7002EE29D /* Minty in Frameworks */ = {isa = PBXBuildFile; productRef = BE9F922D2BD24ED7002EE29D /* Minty */; };
 		BEA8C56D2785285300FFB7DD /* CommentEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA8C56C2785285300FFB7DD /* CommentEditor.swift */; };
 		BEAB78FC27925ECB00CF9AD6 /* Swipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAB78FB27925ECB00CF9AD6 /* Swipe.swift */; };
 		BEAB78FD27925ECB00CF9AD6 /* Swipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAB78FB27925ECB00CF9AD6 /* Swipe.swift */; };
@@ -377,9 +378,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE93A7BC2BDB7803001081C6 /* Minty in Frameworks */,
 				BE9F922B2BD2458A002EE29D /* Minty in Frameworks */,
 				BE5C08192A70AEAE00D100D4 /* Shimmer in Frameworks */,
-				BE9F922E2BD24ED7002EE29D /* Minty in Frameworks */,
+				BE93A7B92BDB5E6C001081C6 /* Minty in Frameworks */,
 				BEABFAEC285330ED0062604F /* Gifu in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -810,7 +812,8 @@
 				BEABFAEB285330ED0062604F /* Gifu */,
 				BE5C08182A70AEAE00D100D4 /* Shimmer */,
 				BE9F922A2BD2458A002EE29D /* Minty */,
-				BE9F922D2BD24ED7002EE29D /* Minty */,
+				BE93A7B82BDB5E6C001081C6 /* Minty */,
+				BE93A7BB2BDB7803001081C6 /* Minty */,
 			);
 			productName = "MintyUI (iOS)";
 			productReference = BE4654F4270CFA8E00D3C4FB /* MintyUI.app */;
@@ -907,7 +910,7 @@
 			packageReferences = (
 				BEABFAEA285330ED0062604F /* XCRemoteSwiftPackageReference "Gifu" */,
 				BE5C08172A70AEAE00D100D4 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */,
-				BE9F922C2BD24ED7002EE29D /* XCRemoteSwiftPackageReference "minty-swift" */,
+				BE93A7BA2BDB7803001081C6 /* XCRemoteSwiftPackageReference "minty-swift" */,
 			);
 			productRefGroup = BE4654F5270CFA8E00D3C4FB /* Products */;
 			projectDirPath = "";
@@ -1596,7 +1599,7 @@
 				minimumVersion = 1.3.0;
 			};
 		};
-		BE9F922C2BD24ED7002EE29D /* XCRemoteSwiftPackageReference "minty-swift" */ = {
+		BE93A7BA2BDB7803001081C6 /* XCRemoteSwiftPackageReference "minty-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://git.aurora.aur/genya/minty-swift.git";
 			requirement = {
@@ -1620,13 +1623,17 @@
 			package = BE5C08172A70AEAE00D100D4 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */;
 			productName = Shimmer;
 		};
-		BE9F922A2BD2458A002EE29D /* Minty */ = {
+		BE93A7B82BDB5E6C001081C6 /* Minty */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Minty;
 		};
-		BE9F922D2BD24ED7002EE29D /* Minty */ = {
+		BE93A7BB2BDB7803001081C6 /* Minty */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE9F922C2BD24ED7002EE29D /* XCRemoteSwiftPackageReference "minty-swift" */;
+			package = BE93A7BA2BDB7803001081C6 /* XCRemoteSwiftPackageReference "minty-swift" */;
+			productName = Minty;
+		};
+		BE9F922A2BD2458A002EE29D /* Minty */ = {
+			isa = XCSwiftPackageProductDependency;
 			productName = Minty;
 		};
 		BEABFAEB285330ED0062604F /* Gifu */ = {
