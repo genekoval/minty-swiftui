@@ -142,7 +142,7 @@ private struct TagPostSearch: View {
                 InfiniteScroll(
                     posts,
                     stopIf: posts.count == total,
-                    more: loadMore
+                    more: { [self] in try await self.loadMore() }
                 ) {
                     PostLink(post: $0)
                     Divider()

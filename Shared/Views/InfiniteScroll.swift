@@ -35,7 +35,7 @@ struct InfiniteScroll<Data, Content>: View where
         else if !stop {
             ProgressView()
                 .padding()
-                .task(fetch)
+                .task { [self] in await self.fetch() }
         }
     }
 
@@ -51,7 +51,6 @@ struct InfiniteScroll<Data, Content>: View where
         self.content = content
     }
 
-    @Sendable
     private func fetch() async {
         do {
             try await more()
@@ -86,7 +85,7 @@ struct InfiniteScroll_Previews: PreviewProvider {
                         InfiniteScroll(
                             posts,
                             stopIf: posts.count == total,
-                            more: loadMore
+                            more: { [self] in try await self.loadMore() }
                         ) {
                             PostRow(post: $0)
                         }

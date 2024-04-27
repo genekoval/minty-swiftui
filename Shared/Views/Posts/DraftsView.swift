@@ -71,7 +71,7 @@ struct DraftsView: View {
                     InfiniteScroll(
                         user.drafts,
                         stopIf: user.drafts.count == user.totalDrafts,
-                        more: loadMore
+                        more: { [self] in try await self.loadMore() }
                     ) {
                         PostLink(post: $0)
                         Divider()
@@ -82,7 +82,7 @@ struct DraftsView: View {
         .navigationTitle(user.totalDrafts.asCountOf("Draft"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { NewPostButton() }
-        .refreshable(action: refresh)
+        .refreshable { [self] in await self.refresh() }
     }
 
     private func loadMore() async throws {
@@ -96,7 +96,6 @@ struct DraftsView: View {
         user.totalDrafts = results.total
     }
 
-    @Sendable
     private func refresh() async {
         guard task == nil else { return }
 

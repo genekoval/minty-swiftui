@@ -26,7 +26,7 @@ struct Home: View {
                         InfiniteScroll(
                             posts,
                             stopIf: posts.count == total,
-                            more: loadMore
+                            more: { [self] in try await self.loadMore() }
                         ) {
                             PostLink(post: $0)
                             Divider()
@@ -42,7 +42,7 @@ struct Home: View {
             }
             .navigationTitle("Home")
             .navigationBarTitleDisplayMode(.inline)
-            .refreshable(action: search)
+            .refreshable { [self] in await self.search() }
             .scrollDisabled(state == .searching)
             .onReceive(data.$repo) { repo in
                 guard repo != nil else { return }
@@ -69,7 +69,6 @@ struct Home: View {
         .shimmering()
     }
 
-    @Sendable
     private func loadMore() async throws {
         let results = try await data.findPosts(from: posts.count, size: 100)
 
@@ -77,7 +76,6 @@ struct Home: View {
         total = results.total
     }
 
-    @Sendable
     private func search() async {
         do {
             let results = try await data.findPosts(size: 25)

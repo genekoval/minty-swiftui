@@ -63,7 +63,7 @@ private struct TagSearchOverlay<Content>: View where Content : View {
             InfiniteScroll(
                 tags,
                 stopIf: tags.count == total,
-                more: loadMore
+                more: { [self] in try await self.loadMore() }
             ) {
                 content($0)
                 Divider()
