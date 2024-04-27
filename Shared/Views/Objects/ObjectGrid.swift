@@ -4,7 +4,7 @@ import SwiftUI
 private struct PreviewItem: View {
     let object: ObjectPreview
 
-    @State private var infoPresented = false
+    @Binding var detail: UUID?
 
     var body: some View {
         PreviewImage(object: object)
@@ -12,9 +12,6 @@ private struct PreviewItem: View {
                 copy
                 info
                 share
-            }
-            .navigationDestination(isPresented: $infoPresented) {
-                ObjectDetail(id: object.id)
             }
     }
 
@@ -25,7 +22,7 @@ private struct PreviewItem: View {
 
     @ViewBuilder
     private var info: some View {
-        Button(action: { infoPresented = true }) {
+        Button(action: { detail = object.id }) {
             Label("Get Info", systemImage: "info.circle")
         }
     }
@@ -41,8 +38,12 @@ private struct ViewableItem: View {
 
     let object: ObjectPreview
 
+    @Binding var detail: UUID?
+
     var body: some View {
-        Button(action: viewObject) { PreviewItem(object: object) }
+        Button(action: viewObject) {
+            PreviewItem(object: object, detail: $detail)
+        }
     }
 
     private func viewObject() {
@@ -55,8 +56,12 @@ private struct MediaItem: View {
 
     let object: ObjectPreview
 
+    @Binding var detail: UUID?
+
     var body: some View {
-        Button(action: viewObject) { PreviewItem(object: object) }
+        Button(action: viewObject) {
+            PreviewItem(object: object, detail: $detail)
+        }
     }
 
     private func viewObject() {
@@ -68,9 +73,11 @@ private struct MediaItem: View {
 private struct PlainItem: View {
     let object: ObjectPreview
 
+    @Binding var detail: UUID?
+
     var body: some View {
         NavigationLink(destination: ObjectDetail(id: object.id)) {
-            PreviewItem(object: object)
+            PreviewItem(object: object, detail: $detail)
         }
     }
 }
@@ -80,14 +87,25 @@ struct ObjectGrid: View {
 
     let provider: ObjectProvider
 
+    @State private var detail: UUID?
+
     var body: some View {
         Grid {
             ForEach(provider.objects) { object in
-                if object.isMedia { MediaItem(object: object) }
-                else if object.isViewable { ViewableItem(object: object) }
-                else { PlainItem(object: object) }
+                if object.isMedia {
+                    MediaItem(object: object, detail: $detail)
+                }
+                else if object.isViewable {
+                    ViewableItem(object: object, detail: $detail)
+                }
+                else {
+                    PlainItem(object: object, detail: $detail)
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .navigationDestination(item: $detail) { id in
+            ObjectDetail(id: id)
         }
         .onAppear {
             overlay.load(provider: provider)
