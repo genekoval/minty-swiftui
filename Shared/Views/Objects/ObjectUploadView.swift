@@ -1,7 +1,7 @@
 import Minty
 import SwiftUI
 
-struct ObjectUploadView: View {
+private struct ObjectUploadView: View {
     @Environment(\.dismiss) var dismiss
 
     @EnvironmentObject var errorHandler: ErrorHandler
@@ -131,5 +131,31 @@ struct ObjectUploadView: View {
 
             dismiss()
         }
+    }
+}
+
+private struct ObjectUploadViewModifier: ViewModifier {
+    let onUpload: ([ObjectPreview]) async throws -> Void
+
+    @Binding var isPresented: Bool
+
+    func body(content: Content) -> some View {
+        content.sheet(isPresented: $isPresented) {
+            NavigationStack {
+                ObjectUploadView(onUpload: onUpload)
+            }
+        }
+    }
+}
+
+extension View {
+    func objectUploadView(
+        isPresented: Binding<Bool>,
+        onUpload: @escaping ([ObjectPreview]) async throws -> Void
+    ) -> some View {
+        modifier(ObjectUploadViewModifier(
+            onUpload: onUpload,
+            isPresented: isPresented
+        ))
     }
 }

@@ -137,14 +137,13 @@ private struct ObjectView: View {
     @EnvironmentObject private var errorHandler: ErrorHandler
 
     @ObservedObject var selectable: SelectableObject
-
-    let state: EditorState
+    @ObservedObject var editor: Editor
 
     var body: some View {
         PreviewImage(object: selectable.object)
             .opacity(moving ? 0.5 : 1.0)
             .onTapGesture {
-                switch state {
+                switch editor.state {
                 case .adding:
                     selectable.add()
                 case .moving:
@@ -157,8 +156,14 @@ private struct ObjectView: View {
                     selectable.selected.toggle()
                 }
             }
+            .onLongPressGesture {
+                if editor.state == .adding {
+                    editor.state = .selecting
+                    selectable.selected.toggle()
+                }
+            }
             .overlay {
-                if state == .selecting {
+                if editor.state == .selecting {
                     SelectionIndicator(isSelected: selectable.selected)
                         .font(.title2)
                 }
@@ -172,7 +177,7 @@ private struct ObjectView: View {
     }
 
     private var moving: Bool {
-        state == .moving && selectable.selected
+        editor.state == .moving && selectable.selected
     }
 }
 
@@ -188,7 +193,7 @@ struct ObjectEditorGrid: View {
             VStack {
                 Grid {
                     ForEach(editor.objects) {
-                        ObjectView(selectable: $0, state: editor.state)
+                        ObjectView(selectable: $0, editor: editor)
                     }
 
                     if state == .adding || (state == .moving && !movingLast) {
@@ -200,19 +205,11 @@ struct ObjectEditorGrid: View {
             }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    Button(action: {
-                        switch state {
-                        case .adding: fallthrough
-                        case .moving:
-                            editor.state = .selecting
-                        case .selecting:
+                    if state != .adding {
+                        Button(action: {
                             editor.state = .adding
-                        }
-                    }) {
-                        if state == .adding {
-                            Text("Select")
-                        }
-                        else {
+                            editor.deselectAll()
+                        }) {
                             Text("Done")
                                 .bold()
                         }
@@ -220,14 +217,16 @@ struct ObjectEditorGrid: View {
                 }
 
                 ToolbarItem(placement: .cancellationAction) {
-                    if state == .adding {
-                        Button("Cancel") { dismiss() }
-                    }
-                    else if state == .selecting {
+                    if state == .selecting {
                         Button(
                             "\(editor.allSelected ? "Deselect" : "Select") All"
                         ) {
                             editor.toggleSelection()
+                        }
+                    }
+                    else if state == .moving {
+                        Button("Cancel") {
+                            editor.state = .selecting
                         }
                     }
                 }
@@ -252,15 +251,10 @@ struct ObjectEditorGrid: View {
             editor.state == .selecting ? .visible : .hidden,
              for: .bottomBar
         )
-        .navigationTitle(title)
-        .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(editor.state != .adding)
-        .sheet(isPresented: $editor.showingUploadView) {
-            NavigationStack {
-                ObjectUploadView {
-                    try await editor.add(objects: $0)
-                }
-            }
+        .postControlsHdden(editor.state != .adding)
+        .objectUploadView(isPresented: $editor.showingUploadView) {
+            try await editor.add(objects: $0)
         }
     }
 

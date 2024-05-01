@@ -1,5 +1,35 @@
 import SwiftUI
 
+private struct ControlsKey: EnvironmentKey {
+    static let defaultValue: Binding<Bool> = .constant(false)
+}
+
+extension EnvironmentValues {
+    var postControlsHidden: Binding<Bool> {
+        get { self[ControlsKey.self] }
+        set { self[ControlsKey.self] = newValue }
+    }
+}
+
+private struct ControlsHidden: ViewModifier {
+    @Environment(\.postControlsHidden) private var postControlsHidden
+
+    let hidden: Bool
+
+    func body(content: Content) -> some View {
+        content
+            .onChange(of: hidden) {
+                postControlsHidden.wrappedValue = hidden
+            }
+    }
+}
+
+extension View {
+    func postControlsHdden(_ hidden: Bool) -> some View {
+        modifier(ControlsHidden(hidden: hidden))
+    }
+}
+
 struct PostHost: View {
     @Environment(\.dismiss) private var dismiss
 
@@ -8,12 +38,21 @@ struct PostHost: View {
 
     @ObservedObject var post: PostViewModel
 
+    @State private var controlsHidden = false
+
     var body: some View {
         content
             .loadEntity(post)
+            .environment(\.postControlsHidden, $controlsHidden)
             .navigationTitle(post.visibility == .draft ? "Draft" : "Post")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar { edit }
+            .toolbar {
+                if !controlsHidden {
+                    edit
+                    delete
+                    if post.visibility == .draft { publish }
+                }
+            }
             .onAppear { if post.deleted { dismiss() }}
             .onReceive(post.$deleted) { if $0 { dismiss() }}
     }
@@ -29,17 +68,37 @@ struct PostHost: View {
     }
 
     @ViewBuilder
+    private var delete: some View {
+        DeleteButton(
+            for: post.visibility == .draft ? "Draft" : "Post",
+            action: {
+                errorHandler.handle {
+                    try await post.delete()
+                }
+            }
+        )
+    }
+
+    @ViewBuilder
     private var edit: some View {
         Button(action: {
-            post.isEditing.toggle()
+            withAnimation {
+                post.isEditing.toggle()
+            }
         }) {
-            if post.isEditing {
-                Text(post.visibility == .draft ? "Preview" : "Done")
-                    .bold()
+            Image(systemName: "pencil.circle")
+                .symbolVariant(post.isEditing ? .fill : .none)
+        }
+    }
+
+    @ViewBuilder
+    private var publish: some View {
+        Button(action: {
+            errorHandler.handle {
+                try await post.createPost()
             }
-            else {
-                Text("Edit")
-            }
+        }) {
+            Image(systemName: "paperplane")
         }
     }
 }

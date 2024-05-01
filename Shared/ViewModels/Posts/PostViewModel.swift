@@ -151,6 +151,10 @@ final class PostViewModel:
     }
 
     func commitDescription() async throws {
+        draftDescription = draftDescription
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        guard draftDescription != description else { return }
+
         try await withRepo("set description") { repo in
             let update = try await repo.setPostDescription(
                 id: id,
@@ -163,6 +167,9 @@ final class PostViewModel:
     }
 
     func commitTitle() async throws {
+        draftTitle = draftTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard draftTitle != title else { return }
+
         try await withRepo("set title") { repo in
             let update = try await repo.setPostTitle(
                 id: id,

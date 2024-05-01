@@ -121,16 +121,23 @@ struct RelatedPostsEditorButton: View {
     @State private var isPresented = false
 
     var body: some View {
-        Button(action: { isPresented = true }) {
-            Label("Related Posts", systemImage: "doc.text.image")
+        SecondaryButton(action: { isPresented = true }) {
+            Label(label, systemImage: "doc.text.image")
         }
-        .badge(post.posts.count)
         .postListEditor(
             isPresented: $isPresented,
             posts: post.posts,
             add: add,
             remove: remove
         )
+    }
+
+    private var label: String {
+        if post.posts.isEmpty {
+            return "Link Posts"
+        }
+
+        return post.posts.count.asCountOf("Related Post")
     }
 
     private func add(related: PostViewModel) {

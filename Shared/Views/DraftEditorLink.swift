@@ -1,6 +1,6 @@
 import SwiftUI
 
-private struct DraftEditorView: View {
+struct DraftEditorView: View {
     @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject private var errorHandler: ErrorHandler

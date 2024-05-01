@@ -162,16 +162,25 @@ struct PostTagEditorButton: View {
     @State private var isPresented = false
 
     var body: some View {
-        Button(action: { isPresented = true }) {
-            Label("Tags", systemImage: "tag")
+        SecondaryButton(action: { isPresented = true }) {
+            HStack {
+                Label(label, systemImage: "number")
+            }
         }
-        .badge(post.tags.count)
         .tagListEditor(
             isPresented: $isPresented,
             tags: post.tags,
             add: add,
             remove: remove
         )
+    }
+
+    private var label: String {
+        if post.tags.isEmpty {
+            return "Add Tags"
+        }
+
+        return post.tags.count.asCountOf("Tag")
     }
 
     private func add(tag: TagViewModel) {
