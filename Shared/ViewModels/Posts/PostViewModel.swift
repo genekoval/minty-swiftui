@@ -186,6 +186,7 @@ final class PostViewModel:
             try await repo.publishPost(id: id)
             try await refresh()
             isEditing = false
+            Post.published.send(id)
         }
     }
 

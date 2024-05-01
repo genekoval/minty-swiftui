@@ -9,6 +9,11 @@ class CurrentUser: ObservableObject {
 
     init() {
         Post
+            .published
+            .sink { [weak self] id in self?.removeDraft(id: id) }
+            .store(in: &cancellables)
+
+        Post
             .deleted
             .sink { [weak self] id in self?.removeDraft(id: id) }
             .store(in: &cancellables)

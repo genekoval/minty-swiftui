@@ -4,6 +4,7 @@ import Minty
 
 extension Post {
     static let deleted = PassthroughSubject<UUID, Never>()
+    static let published = PassthroughSubject<UUID, Never>()
 }
 
 extension Tag {
