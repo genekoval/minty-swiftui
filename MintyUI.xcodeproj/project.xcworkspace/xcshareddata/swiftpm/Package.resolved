@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://git.aurora.aur/genya/minty-swift.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "eb84f4b8836899e5ec4c1b7b994bc7fd69ec12ab"
+        "revision" : "ee523752bfdcf043b03a2eb50391a91ea7227d2d",
+        "version" : "0.6.0"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://git.aurora.aur/genya/swift-http",
       "state" : {
-        "branch" : "main",
-        "revision" : "43d1cab49167471cc6258783288403ceb2f86566"
+        "revision" : "43d1cab49167471cc6258783288403ceb2f86566",
+        "version" : "0.1.0"
       }
     },
     {

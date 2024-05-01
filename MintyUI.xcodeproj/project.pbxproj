@@ -1607,8 +1607,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://git.aurora.aur/genya/minty-swift.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 0.6.0;
 			};
 		};
 		BEABFAEA285330ED0062604F /* XCRemoteSwiftPackageReference "Gifu" */ = {
