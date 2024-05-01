@@ -56,6 +56,10 @@ struct Home: View {
                     total -= 1
                 }
             }
+            .onReceive(Post.published) { post in
+                posts.insert(post, at: 0)
+                total += 1
+            }
         }
     }
 

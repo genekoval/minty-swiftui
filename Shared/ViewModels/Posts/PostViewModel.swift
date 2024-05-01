@@ -185,8 +185,14 @@ final class PostViewModel:
         try await withRepo("create post") { repo in
             try await repo.publishPost(id: id)
             try await refresh()
+
             isEditing = false
-            Post.published.send(id)
+
+            for tag in tags {
+                withAnimation { tag.postCount += 1 }
+            }
+
+            Post.published.send(self)
         }
     }
 

@@ -70,6 +70,8 @@ private struct TagControls: View {
     @ObservedObject var tag: TagViewModel
 
     @Binding var sort: PostQuery.Sort
+    @Binding var posts: [PostViewModel]
+    @Binding var total: Int
 
     var body: some View {
         HStack {
@@ -92,7 +94,10 @@ private struct TagControls: View {
 
     @ViewBuilder
     private var newPost: some View {
-        NewPostButton(tag: tag)
+        NewPostButton(tag: tag) { post in
+            posts.insert(post, at: 0)
+            total += 1
+        }
     }
 
     @ViewBuilder
@@ -108,11 +113,13 @@ private struct TagHeader: View {
     @ObservedObject var tag: TagViewModel
 
     @Binding var sort: PostQuery.Sort
+    @Binding var posts: [PostViewModel]
+    @Binding var total: Int
 
     var body: some View {
         if !isSearching {
             TagInfo(tag: tag)
-            TagControls(tag: tag, sort: $sort)
+            TagControls(tag: tag, sort: $sort, posts: $posts, total: $total)
         }
     }
 }
@@ -182,7 +189,7 @@ struct TagDetail: View {
 
     var body: some View {
         PaddedScrollView {
-            TagHeader(tag: tag, sort: $sort)
+            TagHeader(tag: tag, sort: $sort, posts: $posts, total: $total)
 
             ProgressView()
                 .opacity(showProgress ? 1 : 0)
