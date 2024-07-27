@@ -3,7 +3,7 @@ import SwiftUI
 private struct ConnectionView: View {
     @Environment(\.dismiss) private var dismiss
 
-    @EnvironmentObject private var settings: SettingsViewModel
+    @EnvironmentObject private var data: DataSource
 
     @State private var server = ""
 
@@ -38,8 +38,8 @@ private struct ConnectionView: View {
 
     private func connect() {
         guard let url = URL(string: server) else { return }
-
-        settings.connect(to: url)
+        
+        data.connect(to: url)
         dismiss()
     }
 }

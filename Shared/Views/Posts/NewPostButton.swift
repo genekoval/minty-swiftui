@@ -4,7 +4,6 @@ import SwiftUI
 struct NewPostButton: View {
     @EnvironmentObject private var data: DataSource
     @EnvironmentObject private var errorHandler: ErrorHandler
-    @EnvironmentObject private var user: CurrentUser
 
     private let tag: TagViewModel?
     private let onCreated: ((PostViewModel) -> Void)?
@@ -34,9 +33,6 @@ struct NewPostButton: View {
     private func createDraft() {
         errorHandler.handle {
             let draft = try await data.postDraft(tag: tag)
-
-            user.drafts.insert(draft, at: 0)
-            user.totalDrafts += 1
 
             onCreated?(draft)
 

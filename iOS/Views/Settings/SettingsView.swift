@@ -21,9 +21,9 @@ private struct IconLabel: View {
 }
 
 struct SettingsView: View {
+    @EnvironmentObject private var data: DataSource
     @EnvironmentObject private var errorHandler: ErrorHandler
     @EnvironmentObject private var objects: ObjectSource
-    @EnvironmentObject private var settings: SettingsViewModel
 
     @State private var refreshing = false
 
@@ -36,7 +36,7 @@ struct SettingsView: View {
                         icon: "network",
                         color: .blue
                     )
-                    .badge(settings.server?.host)
+                    .badge(data.settings.server?.url.host)
                 }
 
                 Section(header: Text("Cache")) {
@@ -85,6 +85,6 @@ struct SettingsView: View {
 
     private func reset() {
         clearCache()
-        settings.reset()
+        data.settings.reset()
     }
 }

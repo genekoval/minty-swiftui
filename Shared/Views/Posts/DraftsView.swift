@@ -2,17 +2,25 @@ import SwiftUI
 
 struct DraftsLink: View {
     @EnvironmentObject private var data: DataSource
-    @EnvironmentObject private var user: CurrentUser
+
+    @ObservedObject var user: User
 
     @State private var task: Task<Void, Never>?
     @State private var error: String?
 
     var body: some View {
-        NavigationLink(destination: DraftsView(task: $task, error: $error)) {
+        NavigationLink(
+            destination: DraftsView(user: user, task: $task, error: $error)
+        ) {
             Label("Drafts", systemImage: "doc")
                 .badge(user.totalDrafts)
         }
-        .onFirstAppearance(perform: fetch)
+        .onReceive(user.$draftsChecked) { draftsChecked in
+            if !draftsChecked {
+                fetch()
+                user.draftsChecked = true
+            }
+        }
     }
 
     private func fetch() {
@@ -40,7 +48,8 @@ struct DraftsLink: View {
 
 struct DraftsView: View {
     @EnvironmentObject private var data: DataSource
-    @EnvironmentObject private var user: CurrentUser
+
+    @ObservedObject var user: User
 
     @Binding var task: Task<Void, Never>?
     @Binding var error: String?

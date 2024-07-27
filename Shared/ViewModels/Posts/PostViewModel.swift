@@ -41,6 +41,7 @@ final class PostViewModel:
     @Published var visibility: Minty.Visibility = .invalid
 
     @Published private(set) var deleted = false
+    @Published private(set) var poster: User?
     @Published private(set) var title = ""
     @Published private(set) var description = ""
     @Published private(set) var created: Date = Date()
@@ -65,6 +66,16 @@ final class PostViewModel:
 
         Tag.deleted
             .sink { [weak self] in self?.removeLocalTag(id: $0)}
+            .store(in: &cancellables)
+
+        User.deleted
+            .sink { [weak self] id in
+                guard let self else { return }
+
+                if id == poster?.id {
+                    poster = nil
+                }
+            }
             .store(in: &cancellables)
 
         $title
@@ -201,11 +212,17 @@ final class PostViewModel:
             try await repo.deletePost(id: id)
         }
 
-        for tag in tags {
-            withAnimation { tag.postCount -= 1 }
-        }
-
         withAnimation {
+            if visibility != .draft {
+                if let poster {
+                    poster.postCount -= 1
+                }
+
+                for tag in tags {
+                    tag.postCount -= 1
+                }
+            }
+
             Post.deleted.send(id)
         }
     }
@@ -246,6 +263,12 @@ final class PostViewModel:
     }
 
     private func load(_ post: Post) {
+        var poster: User?
+        if let user = post.poster {
+            poster = app!.state.users.fetch(for: user)
+        }
+
+        self.poster = poster
         title = post.title
         description = post.description
         visibility = post.visibility

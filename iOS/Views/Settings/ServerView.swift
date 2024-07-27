@@ -2,20 +2,19 @@ import SwiftUI
 
 struct ServerView: View {
     @EnvironmentObject private var data: DataSource
-    @EnvironmentObject private var settings: SettingsViewModel
 
     @State private var showingConnectionView = false
 
     var body: some View {
         List {
-            if let server = settings.server {
+            if let server = data.settings.server {
                 Section {
                     NavigationLink(destination: ServerDetail(
                         title: "Current Server",
-                        server: server
+                        server: server.url
                     )) {
                         Label {
-                            Text(server.description)
+                            Text(server.url.description)
                         } icon: {
                             if let status = data.server {
                                 switch status {
@@ -37,9 +36,9 @@ struct ServerView: View {
                 showingConnectionView = true
             }
 
-            if !settings.serverList.isEmpty {
+            if !data.settings.recentServers.isEmpty {
                 Section(header: Text("Recent Servers")) {
-                    ForEach(settings.serverList, id: \.self) { server in
+                    ForEach(data.settings.recentServers, id: \.self) { server in
                         NavigationLink(destination: ServerDetail(
                             title: "Recent Server",
                             server: server
@@ -48,7 +47,12 @@ struct ServerView: View {
                         }
                     }
                     .onDelete {
-                        settings.serverList.remove(atOffsets: $0)
+                        let keys = Array(data.settings.servers.keys)
+
+                        for i in $0 {
+                            let key = keys[i]
+                            data.settings.servers.removeValue(forKey: key)
+                        }
                     }
                 }
             }

@@ -7,7 +7,7 @@ private struct AlertErrorHandler: ViewModifier {
         content
             .environmentObject(errorHandler)
             .alert(
-                "Error",
+                errorHandler.currentAlert?.title ?? "Error",
                 isPresented: $errorHandler.didError,
                 presenting: errorHandler.currentAlert
             ) { currentAlert in

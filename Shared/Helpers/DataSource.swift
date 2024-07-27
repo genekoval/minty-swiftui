@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 import Minty
+import os
 
 enum ServerStatus {
     case connected(about: About)
@@ -8,59 +9,156 @@ enum ServerStatus {
 }
 
 final class DataSource: ObservableObject {
-    typealias Connect = (URL) async throws -> MintyRepo
-
+    let settings = SettingsViewModel()
     let state = AppState()
-    var onFailedConnection: ((Error) -> Void)?
 
     @Published var repo: MintyRepo?
     @Published private(set) var connecting = false
     @Published private(set) var server: ServerStatus?
+    @Published private(set) var user: User?
 
-    private var cancellable: AnyCancellable?
-    private let connectAction: Connect
+    private var serverCancellable: AnyCancellable?
 
-    init(connect: @escaping Connect) {
-        connectAction = connect
+    @MainActor
+    var isAdmin: Bool {
+        user?.admin ?? false
     }
 
+    var url: URL? {
+        repo?.url
+    }
+
+    init() {
+        serverCancellable = settings.$server.sink { [weak self] in
+            guard
+                let self = self,
+                let server = $0
+            else {
+                self?.repo = nil
+                self?.server = nil
+
+                return
+            }
+
+            Task {
+                await self.connect(to: server)
+            }
+        }
+    }
+
+    @MainActor
     func addComment(
         to post: PostViewModel,
         content: String
     ) async throws -> CommentViewModel {
         guard let repo else { preconditionFailure("Missing repo") }
 
-        let comment = try await repo.addComment(post: post.id, content: content)
-        return state.comments.fetch(for: comment)
+        let data = try await repo.addComment(post: post.id, content: content)
+        let comment = state.comments.fetch(for: data)
+
+        if let user = data.user {
+            let user = state.users.fetch(for: user)
+            user.commentCount += 1
+            comment.user = user
+        }
+
+        return comment
     }
 
+    @MainActor
     func addTag(name: String) async throws -> TagViewModel {
         guard let repo else { preconditionFailure("Missing repo") }
 
         let id = try await repo.addTag(name: name)
-        return state.tags.fetch(id: id)
+        let tag = state.tags.fetch(id: id)
+
+        if let user {
+            user.tagCount += 1
+            tag.creator = user
+        }
+
+        return tag
+    }
+
+    func authenticate(_ login: Login) async throws {
+        try await signOut(keepingPassword: true)
+
+        let user = try await repo!.authenticate(login)
+        settings.addAccount(id: user, email: login.email)
     }
 
     @MainActor
-    private func connect(to server: URL) async {
+    func changeEmail(to email: String) async throws {
+        guard let user else { return }
+
+        try await repo!.setUserEmail(email)
+        user.email = email
+        settings.updateEmail(to: email)
+    }
+
+    func changePassword(to password: String) async throws {
+        try await repo!.setUserPassword(password)
+    }
+
+    func connect(to url: URL) {
+        settings.connect(to: url)
+    }
+
+    @MainActor
+    private func connect(to server: Server) async {
         connecting = true
         defer { connecting = false }
 
-        do {
-            let repo = try await connectAction(server)
-            let about = try await repo.about()
-
-            self.repo = repo
-            self.server = .connected(about: about)
-        }
-        catch {
+        guard let repo = HTTPClient(
+            baseURL: server.url,
+            user: server.user,
+            emails: settings.emails
+        )
+        else {
             self.server = .error(
-                message: "Connection Failure",
-                detail: error.localizedDescription
+                message: "Bad URL",
+                detail: "The server URL (\(server.url)) is invalid."
             )
-            onFailedConnection?(MintyError.other(
-                message: "Couldn't connect to the server."
-            ))
+            return
+        }
+
+        if repo.url != self.repo?.url {
+            do {
+                let about = try await repo.about()
+                self.server = .connected(about: about)
+            }
+            catch {
+                self.server = .error(
+                    message: "Connection Failure",
+                    detail: error.localizedDescription
+                )
+                return
+            }
+        }
+
+        if server.user != nil {
+            do {
+                let data = try await repo.getAuthenticatedUser()
+                self.user = fetchUser(data)
+            }
+            catch {
+                Logger.auth.error(
+                    "Failed to get user information: \(error)"
+                )
+            }
+        } else {
+            user = nil
+        }
+
+        self.repo = repo
+    }
+
+    @MainActor
+    func deleteAccount() async throws {
+        if let user {
+            try await repo!.deleteUser()
+            user.delete()
+            settings.removeAccount()
         }
     }
 
@@ -82,7 +180,15 @@ final class DataSource: ObservableObject {
     private func fetchComments(
         for comments: [CommentData]
     ) -> [CommentViewModel] {
-        return comments.map { state.comments.fetch(for: $0) }
+        return comments.map { data in
+            let comment = state.comments.fetch(for: data)
+
+            if let user = data.user {
+                comment.user = state.users.fetch(for: user)
+            }
+
+            return comment
+        }
     }
 
     @MainActor
@@ -100,7 +206,18 @@ final class DataSource: ObservableObject {
     }
 
     @MainActor
+    private func fetchUser(_ data: Minty.User) -> User {
+        settings.updateAccount(using: data)
+
+        let user = state.users.fetch(id: data.id)
+        user.load(data)
+
+        return user
+    }
+
+    @MainActor
     func findPosts(
+        poster: User? = nil,
         text: String? = nil,
         tags: [TagViewModel] = [],
         visibility: Minty.Visibility = .pub,
@@ -113,6 +230,7 @@ final class DataSource: ObservableObject {
         let results = try await repo.getPosts(query: PostQuery(
             from: from,
             size: size,
+            poster: poster?.id,
             text: text ?? "",
             tags: tags.map { $0.id },
             visibility: visibility,
@@ -140,7 +258,7 @@ final class DataSource: ObservableObject {
     ) async throws -> (hits: [TagViewModel], total: Int) {
         guard let repo else { return (hits: [], total: 0) }
 
-        let results = try await repo.getTags(query: TagQuery(
+        let results = try await repo.getTags(query: ProfileQuery(
             from: from,
             size: size,
             name: name,
@@ -153,22 +271,24 @@ final class DataSource: ObservableObject {
         )
     }
 
-    func observe(server: Published<URL?>.Publisher) {
-        cancellable = server.sink { [weak self] in
-            guard
-                let self = self,
-                let server = $0
-            else {
-                self?.repo = nil
-                self?.server = nil
+    @MainActor
+    func findUsers(
+        _ name: String,
+        from: Int = 0,
+        size: Int
+    ) async throws -> (hits: [User], total: Int) {
+        guard let repo else { preconditionFailure("Expected repo") }
 
-                return
-            }
+        let results = try await repo.getUsers(query: ProfileQuery(
+            from: from,
+            size: size,
+            name: name
+        ))
 
-            Task {
-                await self.connect(to: server)
-            }
-        }
+        return (
+            hits: results.hits.map { state.users.fetch(for: $0) },
+            total: results.total
+        )
     }
 
     @MainActor
@@ -190,21 +310,64 @@ final class DataSource: ObservableObject {
         draft.isEditing = true
         draft.visibility = .draft
 
+        user?.addDraft(draft)
+
         return draft
     }
 
+    func register(_ info: SignUp) async throws {
+        try await signOut(keepingPassword: true)
+
+        let user = try await repo!.signUp(info, invitation: nil)
+        settings.addAccount(id: user, email: info.email)
+    }
 
     @MainActor
     func reply(to comment: CommentViewModel) async throws -> CommentViewModel {
         guard let repo else { preconditionFailure("Missing repo") }
 
-        let result = try await repo.reply(
+        let data = try await repo.reply(
             to: comment.id,
             content: comment.draftReply
         )
 
         comment.draftReply.removeAll()
 
-        return state.comments.fetch(for: result)
+        let reply = state.comments.fetch(for: data)
+
+        if let user = data.user {
+            let user = state.users.fetch(for: user)
+            user.commentCount += 1
+            reply.user = user
+        }
+
+        return reply
+    }
+
+    @MainActor
+    func signOut(keepingPassword: Bool) async throws {
+        guard settings.server?.user != nil else { return }
+
+        try await repo!.signOut(keepingPassword: keepingPassword)
+
+        if !keepingPassword {
+            settings.removeAccount()
+        }
+    }
+
+    @MainActor
+    func switchAccount(to user: UUID?) async throws {
+        try await signOut(keepingPassword: true)
+
+        if let user {
+            try await repo!.authenticate(id: user)
+        }
+
+        settings.server?.user = user
+    }
+
+    @MainActor
+    func user(id: UUID) async throws -> User {
+        fetchUser(try await repo!.getUser(id: id))
     }
 }

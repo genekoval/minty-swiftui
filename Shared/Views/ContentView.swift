@@ -5,7 +5,6 @@ struct ContentView: View {
     @EnvironmentObject var errorHandler: ErrorHandler
     @EnvironmentObject var objects: ObjectSource
     @EnvironmentObject var player: MediaPlayer
-    @EnvironmentObject var settings: SettingsViewModel
 
     var body: some View {
         AppShell()
@@ -15,15 +14,9 @@ struct ContentView: View {
             }
     }
 
-    private func onFailedConnection(error: Error) {
-        errorHandler.handle(error: error)
-    }
-
     private func setUpEnvironment() {
         player.errorHandler = errorHandler
         player.source = objects
         objects.dataSource = data
-        data.onFailedConnection = onFailedConnection
-        data.observe(server: settings.$server)
     }
 }

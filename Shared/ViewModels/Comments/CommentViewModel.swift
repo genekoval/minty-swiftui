@@ -12,6 +12,7 @@ final class CommentViewModel:
     @Published var content = ""
     @Published var draftContent = ""
     @Published var draftReply = ""
+    @Published var user: User?
 
     var post: PostViewModel?
 
@@ -37,6 +38,7 @@ final class CommentViewModel:
 
     func delete() {
         content.removeAll()
+        user?.commentCount -= 1
         post?.commentCount -= 1
     }
 

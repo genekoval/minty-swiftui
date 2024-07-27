@@ -42,6 +42,10 @@ struct SearchHome: View {
                 SearchLabel("Posts", icon: "doc.text.image", color: .blue) {
                     PostHome()
                 }
+
+                SearchLabel("Users", icon: "person", color: .purple) {
+                    UserSearch()
+                }
             }
             .listStyle(.plain)
             .navigationBarTitle("Search")

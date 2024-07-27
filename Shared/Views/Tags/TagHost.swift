@@ -4,6 +4,8 @@ import SwiftUI
 struct TagHost: View {
     @Environment(\.dismiss) private var dismiss
 
+    @EnvironmentObject private var data: DataSource
+
     @ObservedObject var tag: TagViewModel
 
     @State private var cancellable: AnyCancellable?
@@ -13,9 +15,17 @@ struct TagHost: View {
             .loadEntity(tag)
             .navigationTitle(tag.isEditing ? "Edit Tag" : tag.name)
             .navigationBarTitleDisplayMode(tag.isEditing ? .inline : .large)
-            .toolbar { edit }
+            .toolbar {
+                if canEdit {
+                    edit
+                }
+            }
             .onAppear { if tag.deleted { dismiss() }}
             .onReceive(tag.$deleted) { if $0 { dismiss() }}
+    }
+
+    private var canEdit: Bool {
+        isCreator || data.isAdmin
     }
 
     @ViewBuilder
@@ -26,6 +36,10 @@ struct TagHost: View {
         else {
             TagDetail(tag: tag)
         }
+    }
+
+    private var isCreator: Bool {
+        tag.creator != nil && tag.creator == data.user
     }
 
     @ViewBuilder

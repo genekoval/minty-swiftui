@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://git.aurora.aur/genya/minty-swift.git",
       "state" : {
-        "revision" : "ee523752bfdcf043b03a2eb50391a91ea7227d2d",
-        "version" : "0.6.0"
+        "revision" : "360536108d9b0c6dd150d77f80567746f88a9ae0",
+        "version" : "0.7.0"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://git.aurora.aur/genya/swift-http",
       "state" : {
-        "revision" : "43d1cab49167471cc6258783288403ceb2f86566",
-        "version" : "0.1.0"
+        "revision" : "4adea350c4389f3d8c76dc75962a22802129dd4c",
+        "version" : "0.2.0"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/markiv/SwiftUI-Shimmer",
       "state" : {
-        "revision" : "5659a623567cefe258d1e3e67cb65585fbb6ecb6",
-        "version" : "1.4.2"
+        "revision" : "e3aa4226b0fafe345ca1c920f516b6a2f3e0aacc",
+        "version" : "1.5.0"
       }
     }
   ],

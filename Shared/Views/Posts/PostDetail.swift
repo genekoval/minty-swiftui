@@ -125,6 +125,7 @@ struct PostDetail: View {
     @ViewBuilder
     private var metadata: some View {
         VStack(alignment: .leading, spacing: 10) {
+            poster
             created
             modified
             objectCount
@@ -181,6 +182,21 @@ struct PostDetail: View {
     }
 
     @ViewBuilder
+    private var poster: some View {
+        if let poster = post.poster {
+            NavigationLink(destination: UserHost(user: poster)) {
+                Label(poster.name, systemImage: "person")
+                    .font(.caption)
+            }
+        } else {
+            Label("Deleted", systemImage: "person")
+                .italic()
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+    }
+
+    @ViewBuilder
     private var postInfo: some View {
         VStack(alignment: .leading, spacing: 10) {
             title
@@ -230,7 +246,10 @@ struct PostDetail: View {
 
         let deleted = comments[start..<end]
             .reduce(into: 0, { deleted, comment in
-                if !comment.content.isEmpty { deleted += 1 }
+                if !comment.content.isEmpty {
+                    comment.user?.commentCount -= 1
+                    deleted += 1
+                }
             })
 
         start = comments[0..<start].reversed().firstIndex(where: {

@@ -32,11 +32,28 @@ private struct TagInfo: View {
 
     @ViewBuilder
     private var created: some View {
-        Timestamp(
-            prefix: "Created",
-            systemImage: "calendar",
-            date: tag.dateCreated
-        )
+        HStack {
+            Image(systemName: "calendar")
+
+            VStack(alignment: .leading) {
+                HStack(spacing: 0) {
+                    Text("Created **\(tag.dateCreated.relative(.full))**")
+
+                    if let creator = tag.creator {
+                        Text(" by ")
+
+                        NavigationLink(creator.name) { UserHost(user: creator) }
+                            .foregroundColor(.accent)
+                    }
+                }
+
+                Text(tag.dateCreated.string)
+            }
+
+            Spacer()
+        }
+        .font(.caption)
+        .foregroundColor(.secondary)
     }
 
     @ViewBuilder

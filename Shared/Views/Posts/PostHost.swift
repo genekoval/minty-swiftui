@@ -47,7 +47,7 @@ struct PostHost: View {
             .navigationTitle(post.visibility == .draft ? "Draft" : "Post")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                if !controlsHidden {
+                if canEdit && !controlsHidden {
                     edit
                     delete
                     if post.visibility == .draft { publish }
@@ -55,6 +55,10 @@ struct PostHost: View {
             }
             .onAppear { if post.deleted { dismiss() }}
             .onReceive(post.$deleted) { if $0 { dismiss() }}
+    }
+
+    private var canEdit: Bool {
+        isPoster || data.isAdmin
     }
 
     @ViewBuilder
@@ -89,6 +93,10 @@ struct PostHost: View {
             Image(systemName: "pencil.circle")
                 .symbolVariant(post.isEditing ? .fill : .none)
         }
+    }
+
+    private var isPoster: Bool {
+        post.poster != nil && post.poster == data.user
     }
 
     @ViewBuilder

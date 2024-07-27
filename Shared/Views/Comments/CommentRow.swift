@@ -78,6 +78,8 @@ struct CommentRow: View {
     @ViewBuilder
     private var header: some View {
         HStack {
+            user
+
             Spacer()
 
             created
@@ -95,5 +97,19 @@ struct CommentRow: View {
     private var menu: some View {
         CommentMenu(comment: comment, onReply: onReply)
             .disabled(showingTimestamp)
+    }
+
+    @ViewBuilder
+    private var user: some View {
+        if let user = comment.user {
+            NavigationLink(destination: UserHost(user: user)) {
+                Label(user.name, systemImage: "person")
+                    .font(.caption)
+            }
+        } else {
+            Label("Deleted", systemImage: "person")
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
     }
 }

@@ -3,10 +3,13 @@ import Foundation
 import Minty
 
 final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
+    @Published var creator: User?
+
     @Published var draftAlias = ""
     @Published var draftDescription = ""
     @Published var draftName = ""
     @Published var draftSource = ""
+
     @Published var isEditing = false
     @Published var postCount = 0
 
@@ -39,6 +42,16 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
 
         Tag.deleted
             .sink { [weak self] in self?.tagDeleted(id: $0) }
+            .store(in: &cancellables)
+
+        User.deleted
+            .sink { [weak self] id in
+                guard let self else { return }
+
+                if id == creator?.id {
+                    creator = nil
+                }
+            }
             .store(in: &cancellables)
 
         $name
@@ -99,6 +112,10 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
             try await repo.deleteTag(id: id)
         }
 
+        if let creator {
+            creator.tagCount -= 1
+        }
+
         Tag.deleted.send(id)
     }
 
@@ -127,11 +144,15 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
     }
 
     private func load(_ tag: Tag) {
-        name = tag.name
-        aliases = tag.aliases
-        description = tag.description
-        dateCreated = tag.created
-        sources = tag.sources
+        if let creator = tag.creator {
+            self.creator = app!.state.users.fetch(for: creator)
+        }
+
+        name = tag.profile.name
+        aliases = tag.profile.aliases
+        description = tag.profile.description
+        dateCreated = tag.profile.created
+        sources = tag.profile.sources
         postCount = tag.postCount
     }
 
@@ -139,7 +160,7 @@ final class TagViewModel: IdentifiableEntity, ObservableObject, StorableEntity {
         name = preview.name
     }
 
-    private func refresh(names: TagName) {
+    private func refresh(names: ProfileName) {
         name = names.name
         aliases = names.aliases
     }

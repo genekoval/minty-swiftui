@@ -8,6 +8,7 @@ private enum Tab {
 }
 
 struct AppShell: View {
+    @EnvironmentObject private var data: DataSource
     @EnvironmentObject private var player: MediaPlayer
 
     @State private var playerFrame: CGRect = .zero
@@ -74,8 +75,12 @@ struct AppShell: View {
             UserView()
         }
         .tabItem {
-            Label("User", systemImage: "person.crop.circle")
+            Label(username, systemImage: "person.crop.circle")
         }
         .tag(Tab.user)
+    }
+
+    private var username: String {
+        data.user?.name ?? "Sign In"
     }
 }

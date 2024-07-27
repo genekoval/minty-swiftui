@@ -5,6 +5,7 @@ import Minty
 
 struct ErrorAlert: Identifiable {
     var id = UUID()
+    var title: String?
     var message: String
     var dismissAction: (() -> Void)?
 }
@@ -14,7 +15,25 @@ class ErrorHandler: ObservableObject {
     @Published var currentAlert: ErrorAlert?
     @Published var didError = false
 
-    func handle(error: Error, dismissAction: (() -> Void)? = nil) {
+    func present(
+        _ title: String? = nil,
+        message: String,
+        dismissAction: (() -> Void)? = nil
+    ) {
+        currentAlert = ErrorAlert(
+            title: title,
+            message: message,
+            dismissAction: dismissAction
+        )
+
+        didError = true
+    }
+
+    func handle(
+        error: Error,
+        title: String? = nil,
+        dismissAction: (() -> Void)? = nil
+    ) {
         guard !Task.isCancelled else {
             Logger.handler.debug("Task cancelled")
             return
@@ -37,17 +56,12 @@ class ErrorHandler: ObservableObject {
         }
 
         Logger.handler.error("\(error)")
-
-        currentAlert = ErrorAlert(
-            message: alertMessage,
-            dismissAction: dismissAction
-        )
-
-        didError = true
+        present(title, message: alertMessage, dismissAction: dismissAction)
     }
 
     func handle(
         action: @escaping () async throws -> Void,
+        title: String? = nil,
         dismissAction: (() -> Void)? = nil
     ) {
         Task {
@@ -55,7 +69,7 @@ class ErrorHandler: ObservableObject {
                 try await action()
             }
             catch {
-                handle(error: error, dismissAction: dismissAction)
+                handle(error: error, title: title, dismissAction: dismissAction)
             }
         }
     }

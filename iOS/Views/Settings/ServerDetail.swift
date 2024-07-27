@@ -3,7 +3,6 @@ import SwiftUI
 
 struct ServerDetail: View {
     @EnvironmentObject var data: DataSource
-    @EnvironmentObject var settings: SettingsViewModel
 
     let title: String
     let server: URL
@@ -13,7 +12,7 @@ struct ServerDetail: View {
             Text(server.absoluteString)
                 .textSelection(.enabled)
 
-            if server == settings.server {
+            if server == data.settings.server?.url {
                 if data.connecting {
                     Section(header: Text("Status")) {
                         Label {
@@ -48,7 +47,7 @@ struct ServerDetail: View {
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            if server != settings.server || connectionError {
+            if server != data.settings.server?.url || connectionError {
                 Button(action: connect) {
                     Text("Connect")
                         .bold()
@@ -69,6 +68,6 @@ struct ServerDetail: View {
     }
 
     private func connect() {
-        settings.connect(to: server)
+        data.settings.connect(to: server)
     }
 }
